@@ -48,7 +48,7 @@ class Cliente extends Model
 
 	public function secciones()
 	{
-		return $this->hasMany(ClienteSecciones::class, 'cliente_id', 'id');
+		return $this->hasMany(ClienteSecciones::class, 'cliente_id', 'id')->orderBy('orden', 'asc');
 	}
 
 	public function patrocinadores()

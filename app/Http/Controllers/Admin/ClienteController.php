@@ -297,75 +297,110 @@ class ClienteController extends Controller
 			}
 		}
 		// galeria
-		if (isset($campos['galeria_img']) && count($campos['galeria_img']) > 0) {
+		if (isset($campos['galeria_titulo']) && count($campos['galeria_titulo']) > 0) {
 			foreach ($cliente->galeria as $galeria) {
 				Storage::delete($galeria->archivo);
 			}
 			ClienteGaleria::where('cliente_id', $cliente->id)->delete();
-			foreach ($campos['galeria_img'] as $key => $file) {
+			foreach ($campos['galeria_titulo'] as $key => $titulo) {
+				// archivo viejo
+				if ($request->filled('galeria_old.' . $key)) {
+					$archivo = $request->input('galeria_old.' . $key);
+				}
+				if ($request->hasFile('galeria_img.' . $key) && $request->file('galeria_img.' . $key)->isValid()) {
+					$archivo = $request->file('galeria_img.' . $key)->store('clientes/galeria', 'public');
+				}
 				ClienteGaleria::insert([
 					'cliente_id' => $cliente->id,
-					'archivo' => $file->store('clientes/galeria', 'public'),
-					'titulo' => $campos['galeria_titulo'][$key],
+					'archivo' => $archivo,
+					'titulo' => $titulo,
 				]);
 			}
 		}
 		// libres
-		if (isset($campos['libres_img']) && count($campos['libres_img']) > 0) {
+		if (isset($campos['libres_titulo']) && count($campos['libres_titulo']) > 0) {
 			foreach ($cliente->libres as $libre) {
 				Storage::delete($libre->archivo);
 			}
 			ClienteLibres::where('cliente_id', $cliente->id)->delete();
-			foreach ($campos['libres_img'] as $key => $file) {
+			foreach ($campos['libres_titulo'] as $key => $titulo) {
+				// archivo viejo
+				if ($request->filled('libres_old.' . $key)) {
+					$archivo = $request->input('libres_old.' . $key);
+				}
+				if ($request->hasFile('libres_img.' . $key) && $request->file('libres_img.' . $key)->isValid()) {
+					$archivo = $request->file('libres_img.' . $key)->store('clientes/libres', 'public');
+				}
 				ClienteLibres::insert([
 					'cliente_id' => $cliente->id,
-					'archivo' => $file->store('clientes/libres', 'public'),
-					'titulo' => $campos['libres_titulo'][$key],
+					'archivo' => $archivo,
+					'titulo' => $titulo,
 				]);
 			}
 		}
 		// blog
-		if (isset($campos['blog_img']) && count($campos['blog_img']) > 0) {
+		if (isset($campos['blog_titulo']) && count($campos['blog_titulo']) > 0) {
 			foreach ($cliente->blog as $blog) {
 				Storage::delete($blog->archivo);
 			}
 			ClienteBlog::where('cliente_id', $cliente->id)->delete();
-			foreach ($campos['blog_img'] as $key => $file) {
+			foreach ($campos['blog_titulo'] as $key => $titulo) {
+				// archivo viejo
+				if ($request->filled('blog_old.' . $key)) {
+					$archivo = $request->input('blog_old.' . $key);
+				}
+				if ($request->hasFile('blog_img.' . $key) && $request->file('blog_img.' . $key)->isValid()) {
+					$archivo = $request->file('blog_img.' . $key)->store('clientes/blog', 'public');
+				}
 				ClienteBlog::insert([
 					'cliente_id' => $cliente->id,
-					'archivo' => $file->store('clientes/blog', 'public'),
-					'titulo' => $campos['blog_titulo'][$key],
+					'archivo' => $archivo,
+					'titulo' => $titulo,
 					'link' => $campos['blog_link'][$key],
 					'descripcion' => $campos['blog_descripcion'][$key],
 				]);
 			}
 		}
 		// playlist
-		if (isset($campos['playlist_img']) && count($campos['playlist_img']) > 0) {
+		if (isset($campos['playlist_plataforma']) && count($campos['playlist_plataforma']) > 0) {
 			foreach ($cliente->playlist as $playlist) {
 				Storage::delete($playlist->archivo);
 			}
 			ClientePlaylist::where('cliente_id', $cliente->id)->delete();
-			foreach ($campos['playlist_img'] as $key => $file) {
+			foreach ($campos['playlist_plataforma'] as $key => $plataforma) {
+				// archivo viejo
+				if ($request->filled('playlist_old.' . $key)) {
+					$archivo = $request->input('playlist_old.' . $key);
+				}
+				if ($request->hasFile('playlist_img.' . $key) && $request->file('playlist_img.' . $key)->isValid()) {
+					$archivo = $request->file('playlist_img.' . $key)->store('clientes/playlist', 'public');
+				}
 				ClientePlaylist::insert([
 					'cliente_id' => $cliente->id,
-					'archivo' => $file->store('clientes/playlist', 'public'),
-					'plataforma' => $campos['playlist_plataforma'][$key],
+					'archivo' => $archivo,
+					'plataforma' => $plataforma,
 					'link' => $campos['playlist_link'][$key],
 				]);
 			}
 		}
 		// experiencia
-		if (isset($campos['experiencia_img']) && count($campos['experiencia_img']) > 0) {
+		if (isset($campos['experiencia_titulo']) && count($campos['experiencia_titulo']) > 0) {
 			foreach ($cliente->experiencias as $experiencia) {
 				Storage::delete($experiencia->archivo);
 			}
 			ClienteExperiencia::where('cliente_id', $cliente->id)->delete();
-			foreach ($campos['experiencia_img'] as $key => $file) {
+			foreach ($campos['experiencia_titulo'] as $key => $titulo) {
+				// archivo viejo
+				if ($request->filled('experiencia_old.' . $key)) {
+					$archivo = $request->input('experiencia_old.' . $key);
+				}
+				if ($request->hasFile('experiencia_img.' . $key) && $request->file('experiencia_img.' . $key)->isValid()) {
+					$archivo = $request->file('experiencia_img.' . $key)->store('clientes/experiencias', 'public');
+				}
 				ClienteExperiencia::insert([
 					'cliente_id' => $cliente->id,
-					'archivo' => $file->store('clientes/experiencias', 'public'),
-					'titulo' => $campos['experiencia_titulo'][$key],
+					'archivo' => $archivo,
+					'titulo' => $titulo,
 					'link' => $campos['experiencia_link'][$key],
 					'descripcion' => $campos['experiencia_instrucciones'][$key],
 				]);

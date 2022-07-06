@@ -14,7 +14,7 @@
 		</form>
 	</div>
 	<div class="mt-3">
-		<a href="" target="_blank">ar-caddy/<span class="font-bold">{{ $slug }}</span></a>
+		<a href="{{ url("/{$slug}") }}" target="_blank">ar-caddy/<span class="font-bold">{{ $slug }}</span></a>
 	</div>
 	<div class="mt-2">
 		<a href="" class="rounded-full bg-pink-600 text-white px-5 py-2 block">Descargar QR</a>

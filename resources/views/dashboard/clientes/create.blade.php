@@ -391,7 +391,47 @@
 								</div>
 								<div id="blog-container" class="container-draggable mt-5 section-box">
 									@if ($cliente->id !== NULL)
-
+										@foreach ($cliente->blog as $entry)
+										<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+											<div class="p-3">
+												<div class="mb-2 relative">
+													<img src="{{ asset('storage/'.$entry->archivo) }}"
+														class="img-general object-cover w-100 border border-secondary">
+													<div class="examinar-img group-hover:block">
+														<div><button type="button"
+																class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+														</div>
+														<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+														<input type="hidden" name="blog_old[]" value="{{ $entry->archivo }}" />
+														<input type="file" name="blog_img[]" class="file-general" accept="image/*" style="display:none" />
+													</div>
+												</div>
+												<div class="mb-4">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Título:
+													</label>
+													<input class="input-underline" name="blog_titulo[]" value="{{ $entry->titulo }}" type="text">
+												</div>
+												<div class="mb-2">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Link externo:
+													</label>
+													<input class="input-underline" name="blog_link[]" value="{{ $entry->link }}" type="url">
+												</div>
+												<div class="mb-2">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Descripción:
+													</label>
+													<textarea class="input-border" name="blog_descripcion[]" rows="5">{{ $entry->descripcion }}</textarea>
+												</div>
+												<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+													<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+													<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+																class="fas fa-trash-alt"></i></a></div>
+												</div>
+											</div>
+										</div>
+										@endforeach
 									@else
 									<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 										<div class="p-3">
@@ -403,32 +443,27 @@
 															class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 													</div>
 													<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
-													<input type="file" name="blog_img[]" class="file-general" accept="image/*"
-														style="display:none" />
+													<input type="hidden" name="blog_old[]" value="" />
+													<input type="file" name="blog_img[]" class="file-general" accept="image/*" style="display:none" />
 												</div>
 											</div>
 											<div class="mb-4">
 												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 													Título:
 												</label>
-												<input
-													class="input-underline"
-													name="blog_titulo[]" type="text">
+												<input class="input-underline" name="blog_titulo[]" type="text">
 											</div>
 											<div class="mb-2">
 												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 													Link externo:
 												</label>
-												<input
-													class="input-underline"
-													name="blog_link[]" type="url">
+												<input class="input-underline" name="blog_link[]" type="url">
 											</div>
 											<div class="mb-2">
 												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 													Descripción:
 												</label>
-												<textarea class="input-border" name="blog_descripcion[]"
-													rows="5"></textarea>
+												<textarea class="input-border" name="blog_descripcion[]" rows="5"></textarea>
 											</div>
 											<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 												<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -453,7 +488,38 @@
 								</div>
 								<div id="galeria-container" class="container-draggable mt-5 section-box">
 									@if ($cliente->id !== NULL)
-
+										@foreach ($cliente->galeria as $entry)
+										<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+											<div class="p-3">
+												<div class="mb-2 relative">
+													<img src="{{ asset('storage/'.$entry->archivo) }}"
+														class="img-general object-cover w-100 border border-secondary">
+													<div class="examinar-img group-hover:block">
+														<div><button type="button"
+																class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+														</div>
+														<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+														<input type="hidden" name="galeria_old[]" value="{{ $entry->archivo }}" />
+														<input type="file" name="galeria_img[]" class="file-general" accept="image/*"
+															style="display:none" />
+													</div>
+												</div>
+												<div class="mb-2">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Título SEO:
+													</label>
+													<input
+														class="input-underline" value="{{ $entry->titulo }}"
+														name="galeria_titulo[]" type="text" required>
+												</div>
+												<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+													<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+													<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+																class="fas fa-trash-alt"></i></a></div>
+												</div>
+											</div>
+										</div>
+										@endforeach
 									@else
 									<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 										<div class="p-3">
@@ -465,6 +531,7 @@
 															class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 													</div>
 													<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+													<input type="hidden" name="galeria_old[]" value="" />
 													<input type="file" name="galeria_img[]" class="file-general" accept="image/*"
 														style="display:none" />
 												</div>
@@ -500,7 +567,46 @@
 								</div>
 								<div id="playlist-container" class="container-draggable mt-5 section-box">
 									@if ($cliente->id !== NULL)
-
+										@foreach ($cliente->playlist as $entry)
+										<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+											<div class="p-3">
+												<div class="mb-2 relative">
+													<img src="{{ asset('storage/'.$entry->archivo) }}"
+														class="img-general object-cover w-100 border border-secondary">
+													<div class="examinar-img group-hover:block">
+														<div><button type="button"
+																class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+														</div>
+														<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+														<input type="hidden" name="playlist_old[]" value="{{ $entry->archivo }}" />
+														<input type="file" name="playlist_img[]" class="file-general" accept="image/*"
+															style="display:none" />
+													</div>
+												</div>
+												<div class="mb-4">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Plataforma:
+													</label>
+													<input
+														class="input-underline" value="{{ $entry->plataforma }}"
+														name="playlist_plataforma[]" type="text">
+												</div>
+												<div class="mb-2">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Link:
+													</label>
+													<input
+														class="input-underline" value="{{ $entry->link }}"
+														name="playlist_link[]" type="url">
+												</div>
+												<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+													<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+													<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+																class="fas fa-trash-alt"></i></a></div>
+												</div>
+											</div>
+										</div>
+										@endforeach
 									@else
 									<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 										<div class="p-3">
@@ -512,6 +618,7 @@
 															class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 													</div>
 													<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+													<input type="hidden" name="playlist_old[]" value="" />
 													<input type="file" name="playlist_img[]" class="file-general" accept="image/*"
 														style="display:none" />
 												</div>
@@ -555,7 +662,53 @@
 								</div>
 								<div id="experiencia-container" class="container-draggable mt-5 section-box">
 									@if ($cliente->id !== NULL)
-
+										@foreach ($cliente->experiencias as $entry)
+										<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+											<div class="p-3">
+												<div class="mb-2 relative">
+													<img src="{{ asset('storage/'.$entry->archivo) }}"
+														class="img-general object-cover w-100 border border-secondary">
+													<div class="examinar-img group-hover:block">
+														<div><button type="button"
+																class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+														</div>
+														<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+														<input type="hidden" name="experiencia_old[]" value="{{ $entry->archivo }}" />
+														<input type="file" name="experiencia_img[]" class="file-general" accept="image/*"
+															style="display:none" />
+													</div>
+												</div>
+												<div class="mb-4">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Título:
+													</label>
+													<input
+														class="input-underline" value="{{ $entry->titulo }}"
+														name="experiencia_titulo[]" type="text">
+												</div>
+												<div class="mb-2">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Link:
+													</label>
+													<input
+														class="input-underline" value="{{ $entry->link }}"
+														name="experiencia_link[]" type="url">
+												</div>
+												<div class="mb-2">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Instrucciones:
+													</label>
+													<textarea class="input-border" name="experiencia_instrucciones[]"
+														rows="5">{{ $entry->descripcion }}</textarea>
+												</div>
+												<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+													<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+													<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+																class="fas fa-trash-alt"></i></a></div>
+												</div>
+											</div>
+										</div>
+										@endforeach
 									@else
 									<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 										<div class="p-3">
@@ -567,6 +720,7 @@
 															class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 													</div>
 													<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+													<input type="hidden" name="experiencia_old[]" value="" />
 													<input type="file" name="experiencia_img[]" class="file-general" accept="image/*"
 														style="display:none" />
 												</div>
@@ -617,7 +771,38 @@
 								</div>
 								<div id="libres-container" class="container-draggable mt-5 section-box">
 									@if ($cliente->id !== NULL)
-
+										@foreach ($cliente->libres as $entry)
+										<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+											<div class="p-3">
+												<div class="mb-2 relative">
+													<img src="{{ asset('storage/'.$entry->archivo) }}"
+														class="img-general object-cover w-100 border border-secondary">
+													<div class="examinar-img group-hover:block">
+														<div><button type="button"
+																class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+														</div>
+														<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+														<input type="hidden" name="libres_old[]" value="{{ $entry->archivo }}" />
+														<input type="file" name="libres_img[]" class="file-general" accept="image/*"
+															style="display:none" />
+													</div>
+												</div>
+												<div class="mb-2">
+													<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+														Título SEO:
+													</label>
+													<input
+														class="input-underline" value="{{ $entry->titulo }}"
+														name="libres_titulo[]" type="text" required>
+												</div>
+												<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+													<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+													<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+																class="fas fa-trash-alt"></i></a></div>
+												</div>
+											</div>
+										</div>
+										@endforeach
 									@else
 									<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 										<div class="p-3">
@@ -629,6 +814,7 @@
 															class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 													</div>
 													<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+													<input type="hidden" name="libres_old[]" value="" />
 													<input type="file" name="libres_img[]" class="file-general" accept="image/*"
 														style="display:none" />
 												</div>
@@ -927,32 +1113,27 @@
 											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 									</div>
 									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
-									<input type="file" name="blog_img[]" class="file-general" accept="image/*"
-										style="display:none" />
+									<input type="hidden" name="blog_old[]" value="" />
+									<input type="file" name="blog_img[]" class="file-general" accept="image/*" style="display:none" />
 								</div>
 							</div>
 							<div class="mb-4">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título:
 								</label>
-								<input
-									class="input-underline"
-									name="blog_titulo[]" type="text">
+								<input class="input-underline" name="blog_titulo[]" type="text">
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Link externo:
 								</label>
-								<input
-									class="input-underline"
-									name="blog_link[]" type="url">
+								<input class="input-underline" name="blog_link[]" type="url">
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Descripción:
 								</label>
-								<textarea class="input-border" name="blog_descripcion[]"
-									rows="5"></textarea>
+								<textarea class="input-border" name="blog_descripcion[]" rows="5"></textarea>
 							</div>
 							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -976,6 +1157,7 @@
 											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 									</div>
 									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+									<input type="hidden" name="galeria_old[]" value="" />
 									<input type="file" name="galeria_img[]" class="file-general" accept="image/*"
 										style="display:none" />
 								</div>
@@ -1010,6 +1192,7 @@
 											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 									</div>
 									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+									<input type="hidden" name="playlist_old[]" value="" />
 									<input type="file" name="playlist_img[]" class="file-general" accept="image/*"
 										style="display:none" />
 								</div>
@@ -1052,6 +1235,7 @@
 											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 									</div>
 									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+									<input type="hidden" name="experiencia_old[]" value="" />
 									<input type="file" name="experiencia_img[]" class="file-general" accept="image/*"
 										style="display:none" />
 								</div>
@@ -1101,6 +1285,7 @@
 											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 									</div>
 									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+									<input type="hidden" name="libres_old[]" value="" />
 									<input type="file" name="libres_img[]" class="file-general" accept="image/*"
 										style="display:none" />
 								</div>

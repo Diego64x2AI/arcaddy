@@ -15,6 +15,7 @@
         "postcss": "^8.4.6",
         "sortablejs": "^1.15.0",
         "sweetalert2": "^11.4.19",
+        "swiper": "^8.2.6",
         "tailwindcss": "^3.1.0",
         "vite": "^2.9.11"
     }

@@ -23,6 +23,13 @@ window.Sortable = Sortable;
 import Swal from 'sweetalert2'
 window.Swal = Swal;
 
+// import Swiper bundle with all modules installed
+import Swiper from 'swiper/bundle';
+// import styles bundle
+import 'swiper/css/bundle';
+
+window.Swiper = Swiper;
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
