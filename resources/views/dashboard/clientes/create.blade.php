@@ -78,17 +78,20 @@
 								</div>
 								<input name="logo" id="logo" type="file" class="file-general" accept="image/*" style="display: none">
 							</div>
+							@if($cliente->id !== NULL)
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="logo">
 									QR cliente
 								</label>
-								<img src="{{ ($cliente->id !== NULL) ? asset('images/qr.png') : asset('images/qr.png') }}"
+								<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}"
 														class="object-cover w-100 border border-secondary">
 								<div class="text-center mt-3">
 									<a role="button" class="rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Descargar QR</a>
 								</div>
 							</div>
+							@endif
 						</div>
+
 						<div id="secciones-container">
 							@php
 								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social'];

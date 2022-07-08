@@ -13,10 +13,12 @@ use App\Models\ClienteSecciones;
 use App\Models\ClienteExperiencia;
 use App\Http\Controllers\Controller;
 use App\Models\ClienteColaboradores;
+use Illuminate\Support\Facades\File;
 use App\Models\ClientePatrocinadores;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClienteController extends Controller
 {
@@ -168,6 +170,10 @@ class ClienteController extends Controller
 				]);
 			}
 		}
+		if (!is_dir(storage_path('app/public/qrcodes'))) {
+			File::makeDirectory(storage_path('app/public/qrcodes'));
+		}
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->margin(1)->generate('https://ar-caddy.com/vibraradio', storage_path('app/public/qrcodes/' . $cliente->slug . '.png'));
 		// dd($campos);
 		return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente.');
 	}
@@ -406,6 +412,10 @@ class ClienteController extends Controller
 				]);
 			}
 		}
+		if (!is_dir(storage_path('app/public/qrcodes'))) {
+			File::makeDirectory(storage_path('app/public/qrcodes'));
+		}
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->margin(1)->generate('https://ar-caddy.com/vibraradio', storage_path('app/public/qrcodes/' . $campos['slug'] . '.png'));
 		return redirect()->back()->with('success', 'Cliente editado correctamente.');
 	}
 
