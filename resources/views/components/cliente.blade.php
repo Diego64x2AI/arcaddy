@@ -1,6 +1,6 @@
 @props(['name', 'slug', 'logo', 'id'])
 
-<div {{ $attributes->merge(['class' => 'flex flex-col justify-center p-4 items-center border-r border-gray-700']) }}>
+<div {{ $attributes->merge(['class' => 'flex flex-col justify-center p-4 items-center border-b mb-5 md:border-b-0 md:border-r border-gray-700']) }}>
 	<div><img src="{{ $logo }}" class="block h-15 w-auto fill-current" alt="{{ $name }}"></div>
 	<div class="uppercase font-bold text-base mt-4">
 		{{ $name }}

@@ -17,7 +17,7 @@ return new class extends Migration
 			$table->id();
 			$table->unsignedBigInteger('cliente_id');
 			$table->string('seccion');
-			$table->string('orden')->unsignedSmallInteger()->default(0);
+			$table->unsignedSmallInteger('orden')->default(0);
 			$table->boolean('activa')->default(0);
 
 			$table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');

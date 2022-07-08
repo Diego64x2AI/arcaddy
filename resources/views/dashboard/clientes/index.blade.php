@@ -19,7 +19,7 @@
 						<div class="relative w-full p-4 text-white bg-lime-500 rounded-lg">{{ session('success') }}</div>
 					</div>
 					@endif
-					<div class="grid grid-cols-5 gap-5">
+					<div class="grid grid-cols-1 md:grid-cols-5 gap-5">
 						@foreach($clientes as $cliente)
 						<x-cliente @delete-cliente.window="title = $event.detail" :id="$cliente->id" :name="$cliente->cliente" :slug="$cliente->slug" :logo="asset('storage/'.$cliente->logo)" />
 						@endforeach

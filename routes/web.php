@@ -15,9 +15,7 @@ use App\Http\Controllers\Admin\ClienteController;
 |
 */
 
-Route::get('/', function () {
-  return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
 	Route::prefix('dashboard')->group(function () {
@@ -28,4 +26,4 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/{slug}', [HomeController::class, 'index'])->name('cliente');
+Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
