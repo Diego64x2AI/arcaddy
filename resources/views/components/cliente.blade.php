@@ -17,6 +17,6 @@
 		<a href="{{ url("/{$slug}") }}" target="_blank">ar-caddy/<span class="font-bold">{{ $slug }}</span></a>
 	</div>
 	<div class="mt-2">
-		<a href="" class="rounded-full bg-pink-600 text-white px-5 py-2 block">Descargar QR</a>
+		<a href="{{ asset('storage/qrcodes/'.$slug.'.png?'.time()) }}" target="_blank" class="rounded-full bg-pink-600 text-white px-5 py-2 block">Descargar QR</a>
 	</div>
 </div>

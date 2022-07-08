@@ -86,7 +86,7 @@
 								<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}"
 														class="object-cover w-100 border border-secondary">
 								<div class="text-center mt-3">
-									<a role="button" class="rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Descargar QR</a>
+									<a role="button" href="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}" target="_blank" class="rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Descargar QR</a>
 								</div>
 							</div>
 							@endif
