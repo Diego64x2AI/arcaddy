@@ -1,8 +1,8 @@
 <div id="descriptivos" class="bg-white p-3 mt-3 section-box">
 	<input type="hidden" name="secciones[]" value="descriptivos">
 	<div class="flex flex-row items-center font-bold">
-		<div class="text-3xl">Descriptivos</div>
-		<div class="ml-auto">Activar / Desactivar <input type="checkbox" name="descriptivos-activo" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'descriptivos')->first()->activa) checked @endif></div>
+		<div class="text-xl md:text-3xl truncate mr-1">Descriptivos</div>
+		<div class="ml-auto"><span class="hidden md:inline-block">Activar / Desactivar </span><input type="checkbox" name="descriptivos-activo" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'descriptivos')->first()->activa) checked @endif></div>
 		<div class="ml-5 cursor-move handler2">Mover <i class="fas fa-ellipsis-v"></i></div>
 	</div>
 	<div class="flex flex-wrap items-center -mx-3 mt-5">

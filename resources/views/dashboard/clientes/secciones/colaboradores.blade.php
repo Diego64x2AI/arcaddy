@@ -1,14 +1,14 @@
 <div id="colaboradores" class="bg-white p-3 mt-3">
 	<input type="hidden" name="secciones[]" value="colaboradores">
 	<div class="flex flex-row items-center font-bold">
-		<div class="text-3xl">Colaboradores / Artistas / Invitados / Responsables</div>
-		<div class="ml-auto">Activar / Desactivar <input type="checkbox" name="colaboradores-activo" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'colaboradores')->first()->activa) checked @endif></div>
+		<div class="text-xl md:text-3xl truncate mr-1">Colaboradores / Artistas / Invitados / Responsables</div>
+		<div class="ml-auto"><span class="hidden md:inline-block">Activar / Desactivar </span><input type="checkbox" name="colaboradores-activo" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'colaboradores')->first()->activa) checked @endif></div>
 		<div class="ml-5 cursor-move handler2">Mover <i class="fas fa-ellipsis-v"></i></div>
 	</div>
 	<div id="colaboradores-container" class="container-draggable mt-5 section-box">
 		@if ($cliente->id !== NULL)
 			@foreach ($cliente->colaboradores as $colaborador)
-			<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+			<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 				<div class="p-3">
 					<div class="mb-2 relative">
 						<img src="{{ asset('storage/'.$colaborador->archivo) }}"
@@ -49,7 +49,7 @@
 			</div>
 			@endforeach
 		@else
-		<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+		<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 			<div class="p-3">
 				<div class="mb-2 relative">
 					<img src="{{ asset('images/artista.jpg') }}"

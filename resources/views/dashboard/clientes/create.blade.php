@@ -174,7 +174,7 @@
 				// agregar banner
 				$('a#add_banner').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/banner.jpg') }}"
@@ -208,7 +208,7 @@
 				// agregar colaborador
 				$('a#add_artista').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/artista.jpg') }}"
@@ -257,7 +257,7 @@
 				// agregar patrocinador
 				$('a#add_patrocinador').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/patrocinador.png') }}"
@@ -290,7 +290,7 @@
 				// agregar blog
 				$('a#add_blog').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/blog.jpg') }}"
@@ -334,7 +334,7 @@
 				// agregar galeria
 				$('a#add_galeria').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/galeria-1.jpg') }}"
@@ -369,7 +369,7 @@
 				// agregar playlist
 				$('a#add_playlist').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/spotify.jpg') }}"
@@ -412,7 +412,7 @@
 				// agregar experiencia
 				$('a#add_experiencia').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/experiencia.jpg') }}"
@@ -462,7 +462,7 @@
 				// agregar libres
 				$('a#add_libres').on('click', function (e) {
 					e.preventDefault();
-					const html = `<div class="w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
 								<img src="{{ asset('images/banner.jpg') }}"
