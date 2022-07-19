@@ -54,9 +54,52 @@
 	</footer>
 	<script>
 		window.addEventListener('load', function() {
-			const swiper = new Swiper('.swiper', {
+			new Swiper('.swiper-1', {
 				// Optional parameters
 				direction: 'horizontal',
+				loop: false,
+				autoHeight: true,
+				pagination: {
+					el: '.swiper-pagination',
+				},
+			});
+			new Swiper('.swiper-3', {
+				// Optional parameters
+				direction: 'horizontal',
+				slidesPerView: 1,
+				spaceBetween: 0,
+				centerInsufficientSlides: true,
+				loop: false,
+				autoHeight: true,
+				breakpoints: {
+					1024: {
+						slidesPerView: 3,
+						spaceBetween: 0,
+					},
+				},
+				loop: false,
+				pagination: {
+					el: '.swiper-pagination',
+				},
+			});
+			new Swiper('.swiper-galeria', {
+				// Optional parameters
+				direction: 'horizontal',
+				slidesPerView: 1,
+				spaceBetween: 0,
+				centerInsufficientSlides: true,
+				loop: false,
+				autoHeight: true,
+				breakpoints: {
+					1024: {
+						slidesPerView: 3,
+						spaceBetween: 0,
+						autoHeight: false,
+						grid: {
+							rows: 2
+						}
+					},
+				},
 				loop: false,
 				pagination: {
 					el: '.swiper-pagination',

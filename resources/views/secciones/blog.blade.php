@@ -1,7 +1,7 @@
 @if($cliente->blog->count() > 0)
-<section id="blog" class="mt-5 py-5 text-center">
-	<div class="text-center text-4xl">Life<span class="color font-extrabold">Style</span></div>
-	<div id="blog-swiper" class="swiper mt-5">
+<section id="blog" class="mt-5 py-5 text-center lg:mt-10">
+	<div class="text-center text-4xl lg:text-8xl">Life<span class="color font-extrabold">Style</span></div>
+	<div id="blog-swiper" class="swiper swiper-3 mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper pb-14">
 			@foreach($cliente->blog as $entry)

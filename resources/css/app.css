@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.swiper-grid-column>.swiper-wrapper {
+	flex-wrap: wrap;
+	flex-direction: row!important;
+}
+
 .btn-pill {
-	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block
+	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block lg:text-2xl lg:py-3 lg:px-8
 }
 
 .input-underline {
@@ -12,4 +17,8 @@
 
 .input-border {
 	@apply appearance-none border border-gray-300 w-full py-1 px-1 text-gray-700 focus:border-gray-300 focus:ring-0 focus:outline-hidden
+}
+
+.center-website {
+	@apply max-w-7xl mx-auto sm:px-6 lg:px-8
 }

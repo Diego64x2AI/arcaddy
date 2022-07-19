@@ -1,7 +1,7 @@
 @if($cliente->banners->count() > 0)
 		<section id="banners">
 			<!-- Slider main container -->
-			<div class="swiper">
+			<div class="swiper swiper-1">
 				<!-- Additional required wrapper -->
 				<div class="swiper-wrapper">
 					@foreach($cliente->banners as $banner)

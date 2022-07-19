@@ -8,4 +8,10 @@ export default defineConfig({
 			'resources/js/app.js',
 		]),
 	],
+	resolve: {
+		alias: {
+			'@': '/resources/js',
+			'@assets': '/public',
+		},
+	},
 });
