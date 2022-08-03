@@ -34,7 +34,13 @@ class Cliente extends Model
 		'blog',
 		'playlist',
 		'experiencias',
+		'productos',
 	];
+
+	public function productos()
+	{
+		return $this->hasMany(ClienteProducto::class, 'cliente_id', 'id');
+	}
 
 	public function banners()
 	{

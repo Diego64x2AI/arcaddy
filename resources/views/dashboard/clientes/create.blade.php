@@ -94,7 +94,7 @@
 
 						<div id="secciones-container">
 							@php
-								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social'];
+								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos'];
 							@endphp
 							@foreach($secciones as $seccion)
 								@includeIf('dashboard.clientes.secciones.'.$seccion)
@@ -104,6 +104,10 @@
 					<div class="fixed top-20 right-0">
 						<button type="submit" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-12 h-12"><i class="fa fa-save"></i></button>
 					</div>
+				</form>
+				<form action="" method="POST" class="inline delete-form-producto">
+					@csrf
+					@method('DELETE')
 				</form>
 			</div>
 		</div>
@@ -512,6 +516,26 @@
 							esto.parent().parent().parent().remove();
 							// recordatorio();
 							Swal.fire('Eliminado', 'Recuerda guardar tus cambios para que tengan efecto.', 'success')
+						}
+					})
+				});
+				$('a.delete-form-producto').on('click', function(e) {
+					e.preventDefault();
+					const $action = $(this).attr('href');
+					const $form = $('form.delete-form-producto');
+					Swal.fire({
+						title: '¿Estás seguro?',
+						text: "Una ves que elimines el producto no podrás recuperar la información.",
+						icon: null,
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'SI, eliminarlo',
+						cancelButtonText: 'Cancelar',
+						allowOutsideClick: false,
+					}).then((result) => {
+						if (result.isConfirmed) {
+							$form.attr('action', $action).submit();
 						}
 					})
 				});

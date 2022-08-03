@@ -197,6 +197,7 @@ class ClienteController extends Controller
 	 */
 	public function edit(Cliente $cliente)
 	{
+		// dd($cliente);
 		return view('dashboard.clientes.create', [
 			'cliente' => $cliente,
 		]);
