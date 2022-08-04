@@ -9,10 +9,10 @@
 				<div class="relative">
 					<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" class="object-cover w-100 border border-secondary">
 					@if ($producto->descuento > 0 && !$producto->digital)
-						<div class="absolute bottom-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">{{ $producto->descuento }}% OFF</div>
+						<div class="absolute bottom-2 left-2 bg-client text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">{{ $producto->descuento }}% OFF</div>
 					@endif
 					@if ($producto->digital)
-						<div class="absolute bottom-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">DIGITAL</div>
+						<div class="absolute bottom-2 left-2 bg-client text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">DIGITAL</div>
 					@endif
 				</div>
 				<div class="text-center font-bold px-2 mt-2">{{ $producto->nombre }}</div>

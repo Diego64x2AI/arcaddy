@@ -161,6 +161,10 @@
 			color: {{ $cliente->color }} !important;
 		}
 
+		.bg-client {
+			background-color: {{ $cliente->color }} !important;
+		}
+
 		.swiper-pagination-bullet-active {
 			background: {{ $cliente->color }} !important;
 		}
