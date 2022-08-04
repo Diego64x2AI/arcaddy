@@ -59,6 +59,10 @@
 				direction: 'horizontal',
 				loop: false,
 				autoHeight: true,
+				autoplay: {
+          delay: 3000,
+          disableOnInteraction: true,
+        },
 				pagination: {
 					el: '.swiper-pagination',
 				},
@@ -69,8 +73,11 @@
 				slidesPerView: 1,
 				spaceBetween: 0,
 				centerInsufficientSlides: true,
-				loop: false,
 				autoHeight: true,
+				autoplay: {
+          delay: 3000,
+          disableOnInteraction: true,
+        },
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -90,6 +97,10 @@
 				centerInsufficientSlides: true,
 				loop: false,
 				autoHeight: true,
+				autoplay: {
+          delay: 3000,
+          disableOnInteraction: true,
+        },
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -100,7 +111,6 @@
 						}
 					},
 				},
-				loop: false,
 				pagination: {
 					el: '.swiper-pagination',
 				},
