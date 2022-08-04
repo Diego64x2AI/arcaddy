@@ -1,5 +1,5 @@
 @if($cliente->experiencias->count() > 0)
-<section id="playlist" class="mt-5 py-5 text-center lg:mt-10">
+<section id="experiencia" class="mt-5 py-5 text-center lg:mt-10">
 	<div id="libres-swiper" class="swiper swiper-1 mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper pb-14">

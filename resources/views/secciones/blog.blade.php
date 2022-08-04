@@ -8,10 +8,10 @@
 			<div class="swiper-slide">
 				<div><img src="{{ asset('storage/'.$entry->archivo) }}" class="object-fill w-full h-auto inline"></div>
 				@if ($entry->titulo !== NULL && $entry->titulo !== '')
-				<div class="text-center text-3xl font-extrabold px-5 mt-5">{{ $entry->titulo }}</div>
+				<div class="text-center text-3xl font-extrabold px-8 mt-5">{{ $entry->titulo }}</div>
 				@endif
 				@if ($entry->descripcion !== NULL && $entry->descripcion !== '')
-				<p class="text-center text-base px-4 mt-5">{!! nl2br($entry->descripcion) !!}</p>
+				<p class="text-center text-base px-8 mt-5">{!! nl2br($entry->descripcion) !!}</p>
 				@endif
 				@if ($entry->link !== NULL && $entry->link !== '')
 				<div class="text-center mt-4"><a href="{{ $entry->link }}" class="btn-pill" target="_blank">Ver más</a></div>
