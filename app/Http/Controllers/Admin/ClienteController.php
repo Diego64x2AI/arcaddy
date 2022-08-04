@@ -173,7 +173,7 @@ class ClienteController extends Controller
 		if (!is_dir(storage_path('app/public/qrcodes'))) {
 			File::makeDirectory(storage_path('app/public/qrcodes'));
 		}
-		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->margin(1)->generate('https://ar-caddy.com/' . $cliente->slug, storage_path('app/public/qrcodes/' . $cliente->slug . '.png'));
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/' . $cliente->slug, storage_path('app/public/qrcodes/' . $cliente->slug . '.png'));
 		// dd($campos);
 		return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente.');
 	}
@@ -416,7 +416,7 @@ class ClienteController extends Controller
 		if (!is_dir(storage_path('app/public/qrcodes'))) {
 			File::makeDirectory(storage_path('app/public/qrcodes'));
 		}
-		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->margin(1)->generate('https://ar-caddy.com/' . $campos['slug'], storage_path('app/public/qrcodes/' . $campos['slug'] . '.png'));
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/' . $cliente->slug, storage_path('app/public/qrcodes/' . $cliente->slug . '.png'));
 		return redirect()->back()->with('success', 'Cliente editado correctamente.');
 	}
 

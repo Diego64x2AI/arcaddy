@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\ClienteProductoDigital;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -29,5 +30,34 @@ class HomeController extends Controller
 		return view('cliente', [
 			'cliente' => $cliente,
 		]);
+	}
+
+	/**
+	 * Show the form reedem cuopons.
+	 *
+	 * @param  \App\Models\ClienteProducto  $cupon
+	 * @return \Illuminate\Http\Response
+	 */
+	public function digital(ClienteProductoDigital $cupon)
+	{
+		// dd($cupon);
+		return view('digital', [
+			'cupon' => $cupon,
+		]);
+	}
+
+	/**
+	 * reedem cuopons.
+	 *
+	 * @param  \App\Models\ClienteProducto  $cupon
+	 * @return \Illuminate\Http\Response
+	 */
+	public function canjear(ClienteProductoDigital $cupon)
+	{
+		$cupon->update([
+			'canjeado' => true,
+			'canjeado_at' => now(),
+		]);
+		return redirect()->back()->with('success', 'Cupón canjeado con éxito');
 	}
 }

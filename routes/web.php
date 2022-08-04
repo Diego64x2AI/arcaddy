@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\ProductoController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/digital/{cupon}', [HomeController::class, 'digital'])->name('digital');
+Route::get('/digital/canjear/{cupon}', [HomeController::class, 'canjear'])->name('digital_canjear');
 
 Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
@@ -26,6 +28,7 @@ Route::middleware('role:admin')->group(function () {
 			Route::get('/create/{cliente}', [ProductoController::class, 'create'])->name('productos.create');
 			Route::get('/edit/{cliente}/{producto}', [ProductoController::class, 'edit'])->name('productos.edit');
 			Route::delete('/delete/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+			Route::get('/qrcode/{producto}', [ProductoController::class, 'qrcode'])->name('productos.qrcode');
 			Route::post('/store/{cliente}', [ProductoController::class, 'store'])->name('productos.store');
 		});
 		// Route::resource('/productos', ProductoController::class);

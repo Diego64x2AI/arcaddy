@@ -9,6 +9,8 @@ use App\Models\ClienteProductoBanner;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteProductoRequest;
 use App\Http\Requests\UpdateClienteProductoRequest;
+use App\Models\ClienteProductoDigital;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ProductoController extends Controller
 {
@@ -46,6 +48,7 @@ class ProductoController extends Controller
 		// dd($request->all());
 		$campos = $request->validated();
 		$campos['cliente_id'] = $cliente->id;
+		$campos['digital'] = $request->boolean('digital');
 		// dd($campos);
 		$producto = ClienteProducto::create($campos);
 		// banners
@@ -81,6 +84,25 @@ class ProductoController extends Controller
 	public function edit(ClienteProducto $clienteProducto)
 	{
 		//
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  \App\Models\ClienteProducto  $producto
+	 * @return \Illuminate\Http\Response
+	 */
+	public function qrcode(ClienteProducto $producto)
+	{
+		$cupon = ClienteProductoDigital::create([
+			'producto_id' => $producto->id,
+		]);
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/digital/' . $cupon->id, storage_path('app/public/qrcodes/' . $cupon->id . '.png'));
+		return view('dashboard.productos.qrcode', [
+			'producto' => $producto,
+			'cupon' => $cupon,
+		]);
 	}
 
 	/**

@@ -26,6 +26,7 @@ class StoreClienteProductoRequest extends FormRequest
 		return [
 			'cliente' => 'required|numeric|min:1|exists:clientes,id',
 			'precio' => 'required|numeric',
+			'digital' => 'sometimes',
 			'descuento' => 'required|numeric|min:0|max:100',
 			'nombre' => 'required|string|max:255',
 			'sku' => 'required|string|max:255',

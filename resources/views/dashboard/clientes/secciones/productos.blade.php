@@ -11,13 +11,19 @@
 		<div class="w-2/4 md:w-1/4 bg-white mr-4">
 			<div class="relative">
 				<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" class="object-cover w-100 border border-secondary">
-				@if ($producto->descuento > 0)
+				@if ($producto->descuento > 0 && !$producto->digital)
 					<div class="absolute bottom-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">{{ $producto->descuento }}% OFF</div>
+				@endif
+				@if ($producto->digital)
+					<div class="absolute bottom-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">DIGITAL</div>
 				@endif
 			</div>
 			<div class="text-center px-2 mt-2">{{ $producto->nombre }}</div>
 			<div class="text-center font-bold px-2 mt-2">${{ $producto->precio }}</div>
 			<div class="text-center">
+				@if ($producto->digital)
+					<a href="{{ route('productos.qrcode', ['producto' => $producto->id]) }}" class="btn btn-primary"><i class="fas fa-qrcode"></i></a>
+				@endif
 				<a href="{{ route('productos.edit', ['cliente' => $cliente->id, 'producto' => $producto->id]) }}" class="text-sky-500"><i class="fa fa-edit"></i></a>
 				<a href="{{ route('productos.destroy', ['producto' => $producto->id]) }}" type="button" class="text-red-500 delete-form-producto">
 					<i class="fas fa-trash-alt"></i>

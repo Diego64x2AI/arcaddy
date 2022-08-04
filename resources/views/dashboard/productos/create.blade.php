@@ -75,6 +75,12 @@
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="descuento" id="descuento"
 									type="number" value="{{ ($producto->id !== NULL) ? $producto->descuento : old('descuento') }}" placeholder="0" required>
 							</div>
+							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="descuento">
+									Digital
+								</label>
+								<input type="checkbox" name="digital" value="on" @if($producto->id !== NULL && $producto->digital) checked @endif>
+							</div>
 						</div>
 
 						<div class="flex flex-wrap -mx-3 justify-center">

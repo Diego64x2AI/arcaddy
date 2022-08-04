@@ -15,7 +15,8 @@ class ClienteProducto extends Model
 		'sku',
 		'descripcion',
 		'precio',
-		'descuento'
+		'descuento',
+		'digital',
 	];
 
 	public $timestamps = false;
@@ -23,6 +24,7 @@ class ClienteProducto extends Model
 	protected $casts = [
 		'precio' => 'float',
 		'descuento' => 'float',
+		'digital' => 'boolean',
 	];
 
 	protected $with = ['imagenes'];
