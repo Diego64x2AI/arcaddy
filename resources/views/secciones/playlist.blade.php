@@ -1,7 +1,7 @@
 @if($cliente->playlist->count() > 0)
 <section id="playlist" class="mt-5 py-5 text-center lg:mt-10">
-	<div class="text-center color text-4xl font-extrabold lg:text-8xl">{{ $cliente->titulo }}</div>
-	<div class="text-center text-4xl font-light lg:text-8xl">Play<span class="color font-extrabold">List</span></div>
+	<div class="text-center px-5 color text-4xl font-extrabold lg:text-8xl">{{ $cliente->titulo }}</div>
+	<div class="text-center px-5 text-4xl font-light lg:text-8xl">Play<span class="color font-extrabold">List</span></div>
 	<div id="libres-swiper" class="swiper swiper-3 mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper pb-14">
