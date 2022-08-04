@@ -16,7 +16,7 @@
 						<div class="color text-center font-extrabold text-4xl mt-3">{{ $colaborador->nombre }}</div>
 						@endif
 						@if ($colaborador->descripcion !== NULL && $colaborador->descripcion !== '')
-						<p class="text-center text-base px-4 mt-5">{!! nl2br($colaborador->descripcion) !!}</p>
+						<p class="text-center text-base px-8 mt-5">{!! nl2br($colaborador->descripcion) !!}</p>
 						@endif
 					</div>
 					@endforeach
