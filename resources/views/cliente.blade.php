@@ -67,6 +67,28 @@
 					el: '.swiper-pagination',
 				},
 			});
+			new Swiper('.swiper-2', {
+				// Optional parameters
+				direction: 'horizontal',
+				slidesPerView: 2,
+				spaceBetween: 10,
+				centerInsufficientSlides: true,
+				autoHeight: true,
+				autoplay: {
+          delay: 3000,
+          disableOnInteraction: true,
+        },
+				breakpoints: {
+					1024: {
+						slidesPerView: 3,
+						spaceBetween: 0,
+					},
+				},
+				loop: false,
+				pagination: {
+					el: '.swiper-pagination',
+				},
+			});
 			new Swiper('.swiper-3', {
 				// Optional parameters
 				direction: 'horizontal',
