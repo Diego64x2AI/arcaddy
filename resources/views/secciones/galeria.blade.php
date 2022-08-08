@@ -1,6 +1,5 @@
 @if($cliente->galeria->count() > 0)
 <section id="galeria" class="mt-5 text-center lg:mt-10">
-	<div class="text-center px-5 color text-4xl lg:text-8xl">Así se vive</div>
 	<div class="text-center px-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->titulo }}</div>
 	<div id="galeria-swiper" class="swiper swiper-galeria mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->
