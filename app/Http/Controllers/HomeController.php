@@ -47,6 +47,20 @@ class HomeController extends Controller
 	}
 
 	/**
+	 * Show the share reedem cuopons.
+	 *
+	 * @param  \App\Models\ClienteProducto  $cupon
+	 * @return \Illuminate\Http\Response
+	 */
+	public function digital_share(ClienteProductoDigital $cupon)
+	{
+		// dd($cupon);
+		return view('digital_share', [
+			'cupon' => $cupon,
+		]);
+	}
+
+	/**
 	 * reedem cuopons.
 	 *
 	 * @param  \App\Models\ClienteProducto  $cupon

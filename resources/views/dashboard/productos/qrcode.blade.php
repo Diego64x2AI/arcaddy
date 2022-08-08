@@ -21,14 +21,16 @@
 				</div>
 				@endif
 				<div class="my-5">
-					<div class="relative w-full text-center p-4 text-white bg-lime-500 rounded-lg">Utiliza el siguiente QR para que el cliente pueda canjear un item del producto digital.</div>
+					<div class="relative w-full text-center p-4 text-white bg-lime-500 rounded-lg">Utiliza la siguiente URL para compartir el cupón:</div>
 				</div>
 				<div class="my-5 text-center">
-					URL: <a href="https://ar-caddy.com/digital/{{ $cupon->id }}" target="_blank">https://ar-caddy.com/digital/{{ $cupon->id }}</a>
+					<a href="{{ route('digital_share', ['cupon' => $cupon->id]) }}" target="_blank">{{ route('digital_share', ['cupon' => $cupon->id]) }}</a>
 				</div>
+				{{--
 				<div class="text-center my-5">
 					<img src="{{ asset("storage/qrcodes/{$cupon->id}.png") }}" class="object-cover w-100 h-auto max-w-sm border border-secondary inline-block">
 				</div>
+				--}}
 			</div>
 		</div>
 	</div>

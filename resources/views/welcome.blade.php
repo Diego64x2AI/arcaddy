@@ -18,14 +18,24 @@
 		<img src="{{ asset('images/banner-contacto.jpg') }}" class="h-auto w-full" alt="AR|CADDY - CONTÁCTANOS">
 	</div>
 	<div class="fixed top-0 right-0 px-6 py-4">
-		@auth
-		<a href="{{ url('/dashboard') }}" class="text-base text-white">Dashboard</a>
-		@else
-		<a href="{{ route('login') }}" class="text-base text-white">Log in</a>
-
-		@if (Route::has('register'))
-		<a href="{{ route('register') }}" class="ml-4 text-base text-white">Register</a>
-		@endif
-		@endauth
+		<div class="flex">
+			@auth
+				@role('admin')
+				<a href="{{ route('dashboard') }}" class="text-base text-white mr-4">Dashboard</a>
+				@endrole
+				<!-- Authentication -->
+				<form method="POST" action="{{ route('logout') }}">
+					@csrf
+					<a :href="route('logout')" class="text-base text-white" onclick="event.preventDefault(); this.closest('form').submit();">
+						{{ __('Log Out') }}
+					</a>
+				</form>
+			@else
+				<a href="{{ route('login') }}" class="text-base text-white">Log in</a>
+				@if (Route::has('register'))
+				<a href="{{ route('register') }}" class="ml-4 text-base text-white">Register</a>
+				@endif
+			@endauth
+		</div>
 	</div>
 </x-guest-layout>

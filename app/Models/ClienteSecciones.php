@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClienteSecciones extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-		protected $fillable = [
-				'cliente_id',
-				'seccion',
-				'orden',
-				'activa',
-		];
+	protected $fillable = [
+		'cliente_id',
+		'seccion',
+		'orden',
+		'activa',
+	];
 
-		public $timestamps = false;
+	public $timestamps = false;
 
-		protected $casts = [
-				'activa' => 'boolean',
-		];
+	protected $casts = [
+		'activa' => 'boolean',
+	];
 
-		public function cliente()
-		{
-			return $this->belongsTo(Cliente::class);
-		}
+	public function cliente()
+	{
+		return $this->belongsTo(Cliente::class);
+	}
 }

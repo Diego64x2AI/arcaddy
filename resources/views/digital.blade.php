@@ -6,8 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>{{ config('app.name', 'Laravel') }}</title>
-	<!-- Fonts -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 	<!-- Font Awesome Icons -->
 	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
@@ -75,7 +76,7 @@
 		<div class="degradado px-5 py-6 mt-5 text-white">
 			<div class="flex flex-row items-center justify-between">
 				<div>
-					<img src="https://arcaddy.dev/images/logo@2x.png" class="block h-6 w-auto fill-current text-gray-600">
+					<img src="{{ asset('images/logo@2x.png') }}" class="block h-6 w-auto fill-current text-gray-600">
 				</div>
 				<div class="text-lg">Reality is an illusion...</div>
 			</div>

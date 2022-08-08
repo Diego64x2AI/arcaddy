@@ -46,7 +46,7 @@
 		<div class="degradado px-5 py-6 mt-5 text-white">
 			<div class="flex flex-row items-center justify-between">
 				<div>
-					<img src="https://arcaddy.dev/images/logo@2x.png" class="block h-6 w-auto fill-current text-gray-600">
+					<img src="{{ asset('images/logo@2x.png') }}" class="block h-6 w-auto fill-current text-gray-600">
 				</div>
 				<div class="text-lg">Reality is an illusion...</div>
 			</div>
