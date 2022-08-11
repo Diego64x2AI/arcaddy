@@ -37,6 +37,8 @@ class UpdateClienteRequest extends FormRequest
 			'facebook' => 'nullable|string|max:255',
 			'instagram' => 'nullable|string|max:255',
 			'twitter' => 'nullable|string|max:255',
+			'tiktok' => 'nullable|string|max:255',
+			'whatsapp' => 'nullable|string|max:255',
 			'banners_img.*' => 'required|image|mimes:jpeg,png,jpg',
 			'banners_titulo.*' => 'required|string|max:255',
 			'colaboradores_img.*' => 'required|image|mimes:jpeg,png,jpg',

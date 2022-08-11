@@ -22,6 +22,8 @@ class Cliente extends Model
 		'facebook',
 		'instagram',
 		'twitter',
+		'tiktok',
+		'whatsapp',
 	];
 
 	protected $with = [

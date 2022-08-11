@@ -48,6 +48,35 @@
 				</div>
 			</div>
 		</div>
+		<div class="w-full md:w-1/3 px-3 mb-6 md:mb-2">
+			<div class="flex flex-row items-center">
+				<div>
+					<img src="{{ asset('images/tiktok.png') }}" class="object-fit w-12 h-auto" alt="Tiktok">
+				</div>
+				<div class="ml-3 grow">
+					<label class="block tracking-wide text-gray-900 text-base font-bold" for="tiktok">
+						Link
+					</label>
+					<input class="input-underline" name="tiktok" id="tiktok" value="{{ ($cliente->id !== NULL) ? $cliente->tiktok : old('tiktok') }}"
+						type="url">
+				</div>
+			</div>
+		</div>
+		<div class="w-full md:w-1/3 px-3 mb-6 md:mb-2">
+			<div class="flex flex-row items-center">
+				<div>
+					<img src="{{ asset('images/whatsapp.png') }}" class="object-fit w-12 h-auto" alt="Whatsapp">
+				</div>
+				<div class="ml-3 grow">
+					<label class="block tracking-wide text-gray-900 text-base font-bold" for="whatsapp">
+						Link
+					</label>
+					<input class="input-underline" name="whatsapp" id="whatsapp" value="{{ ($cliente->id !== NULL) ? $cliente->whatsapp : old('whatsapp') }}"
+						type="url">
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 </div>

@@ -32,13 +32,19 @@
 			<div class="text-xl">Síguenos:</div>
 			<div class="text-center mt-3 flex flex-row items-center justify-center">
 			@if ($cliente->instagram !== '' && $cliente->instagram !== NULL)
-			<a href="{{ $cliente->instagram }}" target="_blank" class="mr-2"><img src="{{ asset('images/instagram.png') }}" class="object-fit w-14 h-auto" alt="Facebook"></a>
+			<a href="{{ $cliente->instagram }}" target="_blank" class="mr-2"><img src="{{ asset('images/instagram.png') }}" class="object-fit w-14 h-auto" alt="Instagram"></a>
 			@endif
 			@if ($cliente->facebook !== '' && $cliente->facebook !== NULL)
 			<a href="{{ $cliente->facebook }}" target="_blank" class="mr-2"><img src="{{ asset('images/facebook.png') }}" class="object-fit w-14 h-auto" alt="Facebook"></a>
 			@endif
 			@if ($cliente->twitter !== '' && $cliente->twitter !== NULL)
-			<a href="{{ $cliente->twitter }}" target="_blank"><img src="{{ asset('images/twitter.png') }}" class="object-fit w-14 h-auto" alt="Facebook"></a>
+			<a href="{{ $cliente->twitter }}" target="_blank" class="mr-2"><img src="{{ asset('images/twitter.png') }}" class="object-fit w-14 h-auto" alt="Twitter"></a>
+			@endif
+			@if ($cliente->tiktok !== '' && $cliente->tiktok !== NULL)
+			<a href="{{ $cliente->tiktok }}" target="_blank" class="mr-2"><img src="{{ asset('images/tiktok.png') }}" class="object-fit w-14 h-auto" alt="Tiktok"></a>
+			@endif
+			@if ($cliente->whatsapp !== '' && $cliente->whatsapp !== NULL)
+			<a href="{{ $cliente->whatsapp }}" target="_blank"><img src="{{ asset('images/whatsapp.png') }}" class="object-fit w-14 h-auto" alt="Whatsapp"></a>
 			@endif
 			</div>
 		</div>
