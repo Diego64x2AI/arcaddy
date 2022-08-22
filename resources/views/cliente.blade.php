@@ -58,6 +58,27 @@
 			</div>
 		</div>
 	</footer>
+	<div class="fixed top-0 right-0 px-6 py-4">
+		<div class="flex">
+			@auth
+				@role('admin')
+				<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
+				@endrole
+				<!-- Authentication -->
+				<form method="POST" action="{{ route('logout') }}">
+					@csrf
+					<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
+						{{ __('Log Out') }}
+					</a>
+				</form>
+			@else
+				<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="text-base">Log in</a>
+				@if (Route::has('register'))
+				<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="ml-4 text-base">Register</a>
+				@endif
+			@endauth
+		</div>
+	</div>
 	<script>
 		window.addEventListener('load', function() {
 			new Swiper('.swiper-1', {

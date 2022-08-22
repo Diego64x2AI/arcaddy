@@ -1,5 +1,10 @@
 <?php
 
+use App\Models\User;
+use App\Models\Pedido;
+use App\Models\Cliente;
+use App\Notifications\PedidoCreado;
+use App\Notifications\RegistroCodigo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CarritoController;
@@ -7,8 +12,6 @@ use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\CuponesController;
 use App\Http\Controllers\Admin\PedidosController;
 use App\Http\Controllers\Admin\ProductoController;
-use App\Models\Pedido;
-use App\Notifications\PedidoCreado;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,8 +40,11 @@ Route::prefix('digital')->group(function () {
 	Route::get('/canjear/{cupon}', [HomeController::class, 'canjear'])->name('digital_canjear');
 });
 Route::get('/notification', function () {
-	$pedido = Pedido::find(2);
-	return (new PedidoCreado($pedido))->toMail($pedido->user);
+	/*$pedido = Pedido::find(2);
+	return (new PedidoCreado($pedido))->toMail($pedido->user);*/
+	$cliente = Cliente::find(2);
+	$user = User::find(8);
+	return (new RegistroCodigo($user, $cliente))->toMail($user);
 });
 
 Route::middleware('role:admin')->group(function () {

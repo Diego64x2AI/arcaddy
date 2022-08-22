@@ -2,53 +2,55 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
-    {
-        return view('auth.login');
-    }
+	/**
+	 * Display the login view.
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function create(Cliente $cliente)
+	{
+		// dd($cliente);
+		return view('auth.login', compact('cliente'));
+	}
 
-    /**
-     * Handle an incoming authentication request.
-     *
-     * @param  \App\Http\Requests\Auth\LoginRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(LoginRequest $request)
-    {
-        $request->authenticate();
+	/**
+	 * Handle an incoming authentication request.
+	 *
+	 * @param  \App\Http\Requests\Auth\LoginRequest  $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function store(LoginRequest $request)
+	{
+		$request->authenticate();
 
-        $request->session()->regenerate();
+		$request->session()->regenerate();
 
-        return (\Cart::isEmpty()) ? redirect()->intended(RouteServiceProvider::HOME) : redirect()->route('carrito');
-    }
+		return (\Cart::isEmpty()) ? redirect()->intended(RouteServiceProvider::HOME) : redirect()->route('carrito');
+	}
 
-    /**
-     * Destroy an authenticated session.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Request $request)
-    {
-        Auth::guard('web')->logout();
+	/**
+	 * Destroy an authenticated session.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function destroy(Request $request)
+	{
+		Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
+		$request->session()->invalidate();
 
-        $request->session()->regenerateToken();
+		$request->session()->regenerateToken();
 
-        return redirect('/');
-    }
+		return redirect('/');
+	}
 }

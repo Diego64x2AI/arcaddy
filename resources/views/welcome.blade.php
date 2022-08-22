@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout :classes="'degradado'">
 	<div>
 		<img src="{{ asset('images/banner-header.jpg') }}" class="h-auto w-full" alt="AR|CADDY - Reality is an illusion">
 	</div>
@@ -32,9 +32,6 @@
 				</form>
 			@else
 				<a href="{{ route('login') }}" class="text-base text-white">Log in</a>
-				@if (Route::has('register'))
-				<a href="{{ route('register') }}" class="ml-4 text-base text-white">Register</a>
-				@endif
 			@endauth
 		</div>
 	</div>

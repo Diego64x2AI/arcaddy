@@ -58,6 +58,7 @@ class ClienteController extends Controller
 		unset($campos['logo']);
 		$campos['slug'] = Str::slug($campos['slug']);
 		$campos['logo'] = $request->file('logo')->store('clientes/images', 'public');
+		$campos['registro'] = $request->boolean('registro');
 		// dd($campos);
 		$cliente = Cliente::create($campos);
 		// secciones orden
@@ -221,6 +222,7 @@ class ClienteController extends Controller
 			}
 			$campos['logo'] = $request->file('logo')->store('clientes/images', 'public');
 		}
+		$campos['registro'] = $request->boolean('registro');
 		$cliente->update($campos);
 		// secciones orden
 		if (isset($campos['secciones']) && count($campos['secciones']) > 0) {

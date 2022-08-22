@@ -64,6 +64,12 @@
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="color" id="color"
 									value="{{ ($cliente->id !== NULL) ? $cliente->color : old('color') }}" type="color" placeholder="#FF4E00" @if($cliente->id === NULL) required @endif>
 							</div>
+							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="registro">
+									Activar registro <input type="checkbox" id="registro" name="registro" value="on" @if($cliente->id !== NULL && $cliente->registro) checked @endif>
+								</label>
+
+							</div>
 						</div>
 						<div class="flex flex-wrap -mx-3 justify-center">
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">

@@ -24,6 +24,16 @@ class Cliente extends Model
 		'twitter',
 		'tiktok',
 		'whatsapp',
+		'registro',
+	];
+
+	/**
+	 * The attributes that should be cast.
+	 *
+	 * @var array<string, string>
+	 */
+	protected $casts = [
+		'registro' => 'boolean',
 	];
 
 	protected $with = [

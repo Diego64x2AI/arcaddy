@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout :classes="'degradado'">
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
