@@ -97,8 +97,8 @@
 										<a href="{{ route('pagar') }}" class="w-full uppercase text-center p-3 block bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600 mt-5">Pagar</a>
 									@else
 									<p class="text-white text-sm">Para completar tu pedido, necesitas iniciar sesión en tu cuenta o registrarte.</p>
-            			<a href="{{ route('login') }}" class="w-full text-center p-3 block bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600 mt-5">Iniciar sesión</a>
-									<a href="{{ route('register') }}" class="w-full text-center p-3 block bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600 mt-5">Registrarme</a>
+            			<a href="{{ route('login', ['cliente' => $carrito->first()->attributes->cliente_id]) }}" class="w-full text-center p-3 block bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600 mt-5">Iniciar sesión</a>
+									<a href="{{ route('register', ['cliente' => $carrito->first()->attributes->cliente_id]) }}" class="w-full text-center p-3 block bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600 mt-5">Registrarme</a>
 									@endauth
             		</div>
 							</div>
