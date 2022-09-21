@@ -62,6 +62,7 @@ Route::middleware('role:admin')->group(function () {
 		Route::prefix('productos')->group(function () {
 			Route::get('/create/{cliente}', [ProductoController::class, 'create'])->name('productos.create');
 			Route::get('/edit/{cliente}/{producto}', [ProductoController::class, 'edit'])->name('productos.edit');
+			Route::put('/edit/{producto}', [ProductoController::class, 'update'])->name('productos.update');
 			Route::delete('/delete/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 			Route::get('/qrcode/{producto}', [ProductoController::class, 'qrcode'])->name('productos.qrcode');
 			Route::post('/store/{cliente}', [ProductoController::class, 'store'])->name('productos.store');

@@ -78,12 +78,16 @@ class ProductoController extends Controller
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  \App\Models\ClienteProducto  $clienteProducto
+	 * @param  \App\Models\Cliente  $cliente
+	 * @param  \App\Models\ClienteProducto  $producto
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(ClienteProducto $clienteProducto)
+	public function edit(Cliente $cliente, ClienteProducto $producto)
 	{
-		//
+		return view('dashboard.productos.create', [
+			'producto' => $producto,
+			'cliente' => $cliente,
+		]);
 	}
 
 
@@ -109,12 +113,37 @@ class ProductoController extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \App\Http\Requests\UpdateClienteProductoRequest  $request
-	 * @param  \App\Models\ClienteProducto  $clienteProducto
+	 * @param  \App\Models\ClienteProducto  $producto
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(UpdateClienteProductoRequest $request, ClienteProducto $clienteProducto)
+	public function update(UpdateClienteProductoRequest $request, ClienteProducto $producto)
 	{
-		//
+		$campos = $request->validated();
+		$campos['digital'] = $request->boolean('digital');
+		// dd($campos);
+		$producto->update($campos);
+		// banners
+		if (isset($campos['banners_titulo']) && count($campos['banners_titulo']) > 0) {
+			foreach ($producto->imagenes as $banner) {
+				Storage::delete($banner->archivo);
+			}
+			ClienteProductoBanner::where('producto_id', $producto->id)->delete();
+			foreach ($campos['banners_titulo'] as $key => $titulo) {
+				// archivo viejo
+				if ($request->filled('banners_old.' . $key)) {
+					$archivo = $request->input('banners_old.' . $key);
+				}
+				if ($request->hasFile('banners_img.' . $key) && $request->file('banners_img.' . $key)->isValid()) {
+					$archivo = $request->file('banners_img.' . $key)->store('clientes/banners', 'public');
+				}
+				ClienteProductoBanner::insert([
+					'producto_id' => $producto->id,
+					'archivo' => $archivo,
+					'titulo' => $campos['banners_titulo'][$key],
+				]);
+			}
+		}
+		return redirect()->route('clientes.edit', ['cliente' => $producto->cliente_id])->with('success', 'Producto editado correctamente.');
 	}
 
 	/**
