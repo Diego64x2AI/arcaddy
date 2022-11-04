@@ -7,7 +7,7 @@
 	</div>
 	<div class="mt-5">
 		<label class="block tracking-wide text-gray-900 text-xl font-bold mb-2" for="facebook_live">
-			Link de Facebook:
+			Link de youtube:
 		</label>
 		<input class="input-underline" name="facebook_live" id="facebook_live" value="{{ ($cliente->id !== NULL) ? $cliente->facebook_live : old('facebook_live') }}"
 				type="url">
