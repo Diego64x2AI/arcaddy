@@ -25,6 +25,8 @@ class Cliente extends Model
 		'tiktok',
 		'whatsapp',
 		'registro',
+		'registro_descripcion',
+		'registro_img'
 	];
 
 	/**
@@ -47,7 +49,13 @@ class Cliente extends Model
 		'playlist',
 		'experiencias',
 		'productos',
+		'campos',
 	];
+
+	public function campos()
+	{
+		return $this->hasMany(ClienteUserField::class, 'cliente_id', 'id');
+	}
 
 	public function productos()
 	{

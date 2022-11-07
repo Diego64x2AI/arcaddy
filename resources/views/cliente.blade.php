@@ -58,6 +58,7 @@
 			</div>
 		</div>
 	</footer>
+	@if ($cliente->registro)
 	<div class="fixed top-0 right-0 px-6 py-4">
 		<div class="flex">
 			@auth
@@ -79,6 +80,22 @@
 			@endauth
 		</div>
 	</div>
+	@else
+	@role('admin')
+	<div class="fixed top-0 right-0 px-6 py-4">
+		<div class="flex">
+			<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
+			<!-- Authentication -->
+			<form method="POST" action="{{ route('logout') }}">
+				@csrf
+				<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
+					{{ __('Log Out') }}
+				</a>
+			</form>
+		</div>
+	</div>
+	@endrole
+	@endif
 	<script>
 		window.addEventListener('load', function() {
 			new Swiper('.swiper-1', {

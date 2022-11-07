@@ -18,6 +18,8 @@ use App\Models\ClientePatrocinadores;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
+use App\Models\Campos;
+use App\Models\ClienteUserField;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClienteController extends Controller
@@ -43,6 +45,7 @@ class ClienteController extends Controller
 	{
 		return view('dashboard.clientes.create', [
 			'cliente' => new Cliente(),
+			'campos' => Campos::all(),
 		]);
 	}
 
@@ -55,10 +58,13 @@ class ClienteController extends Controller
 	public function store(StoreClienteRequest $request)
 	{
 		$campos = $request->validated();
-		unset($campos['logo']);
+		unset($campos['logo'], $campos['registro_img']);
 		$campos['slug'] = Str::slug($campos['slug']);
 		$campos['logo'] = $request->file('logo')->store('clientes/images', 'public');
 		$campos['registro'] = $request->boolean('registro');
+		if ($request->hasFile('registro_img')) {
+			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
+		}
 		// dd($campos);
 		$cliente = Cliente::create($campos);
 		// secciones orden
@@ -175,6 +181,7 @@ class ClienteController extends Controller
 			File::makeDirectory(storage_path('app/public/qrcodes'));
 		}
 		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/' . $cliente->slug, storage_path('app/public/qrcodes/' . $cliente->slug . '.png'));
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/register/' . $cliente->id, storage_path('app/public/qrcodes/' . $cliente->slug . '_registro.png'));
 		// dd($campos);
 		return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente.');
 	}
@@ -201,6 +208,7 @@ class ClienteController extends Controller
 		// dd($cliente);
 		return view('dashboard.clientes.create', [
 			'cliente' => $cliente,
+			'campos' => Campos::all(),
 		]);
 	}
 
@@ -214,7 +222,7 @@ class ClienteController extends Controller
 	public function update(UpdateClienteRequest $request, Cliente $cliente)
 	{
 		$campos = $request->validated();
-		unset($campos['logo']);
+		unset($campos['logo'], $campos['registro_img']);
 		$campos['slug'] = Str::slug($campos['slug']);
 		if ($request->hasFile('logo')) {
 			if ($cliente->logo !== NULL) {
@@ -222,7 +230,14 @@ class ClienteController extends Controller
 			}
 			$campos['logo'] = $request->file('logo')->store('clientes/images', 'public');
 		}
+		if ($request->hasFile('registro_img')) {
+			if ($cliente->registro_img !== NULL) {
+				Storage::delete($cliente->registro_img);
+			}
+			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
+		}
 		$campos['registro'] = $request->boolean('registro');
+		// dd($campos['campos']);
 		$cliente->update($campos);
 		// secciones orden
 		if (isset($campos['secciones']) && count($campos['secciones']) > 0) {
@@ -240,6 +255,19 @@ class ClienteController extends Controller
 			}
 		}
 		// dd($request->all());
+		// campos
+		if (isset($campos['campos']) && count($campos['campos']) > 0) {
+			foreach ($campos['campos'] as $key => $nombre) {
+				// echo $key."-".$nombre."-".$request->boolean('campos_activo.'.$key);
+				ClienteUserField::updateOrCreate([
+					'cliente_id' => $cliente->id,
+					'campo_id' => $key,
+				], [
+					'nombre' => $nombre,
+					'activo' => $request->boolean('campos_activo.'.$key),
+				]);
+			}
+		}
 		// banners
 		if (isset($campos['banners_titulo']) && count($campos['banners_titulo']) > 0) {
 			foreach ($cliente->banners as $banner) {
@@ -419,6 +447,7 @@ class ClienteController extends Controller
 			File::makeDirectory(storage_path('app/public/qrcodes'));
 		}
 		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/' . $cliente->slug, storage_path('app/public/qrcodes/' . $cliente->slug . '.png'));
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/register/' . $cliente->id, storage_path('app/public/qrcodes/' . $cliente->slug . '_registro.png'));
 		return redirect()->back()->with('success', 'Cliente editado correctamente.');
 	}
 

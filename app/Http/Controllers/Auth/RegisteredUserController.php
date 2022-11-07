@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Notifications\Welcome;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\ClienteUserFieldValue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -38,10 +39,11 @@ class RegisteredUserController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$request->validate([
+		$campos = $request->validate([
 			'name' => ['required', 'string', 'max:255'],
 			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
 			'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'campos.*' => 'required|string|max:255',
 			'cliente_id' => ['required', 'numeric', 'exists:clientes,id'],
 		]);
 
@@ -66,10 +68,23 @@ class RegisteredUserController extends Controller
 				File::makeDirectory(storage_path('app/public/qrcodesr'));
 			}
 			QrCode::format('png')->size(500)->merge(storage_path('app/public/'.$cliente->logo), .3)->errorCorrection('H')->generate('https://ar-caddy.com/' . $cliente->slug, storage_path('app/public/qrcodesr/' . $user->id . '.png'));*/
+			// campos
+			if (isset($campos['campos']) && count($campos['campos']) > 0) {
+				foreach ($campos['campos'] as $key => $nombre) {
+					// echo $key."-".$nombre."-".$request->boolean('campos_activo.'.$key);
+					ClienteUserFieldValue::updateOrCreate([
+						'user_id' => $user->id,
+						'campo_id' => $key,
+					], [
+						'valor' => $nombre,
+					]);
+				}
+			}
 			$user->notify(new RegistroCodigo($user, $cliente));
 		} else {
 			$user->notify(new Welcome($user));
 		}
+		// dd($campos['campos']);
 		return (\Cart::isEmpty()) ? redirect()->route('cliente', ['slug' => $cliente->slug]) : redirect()->route('carrito');
 	}
 }

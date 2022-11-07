@@ -64,12 +64,6 @@
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="color" id="color"
 									value="{{ ($cliente->id !== NULL) ? $cliente->color : old('color') }}" type="color" placeholder="#FF4E00" @if($cliente->id === NULL) required @endif>
 							</div>
-							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
-								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="registro">
-									Activar registro <input type="checkbox" id="registro" name="registro" value="on" @if($cliente->id !== NULL && $cliente->registro) checked @endif>
-								</label>
-
-							</div>
 						</div>
 						<div class="flex flex-wrap -mx-3 justify-center">
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
@@ -97,6 +91,70 @@
 							</div>
 							@endif
 						</div>
+						<div id="registro" class="bg-white p-3 mt-3">
+							<input type="hidden" name="secciones[]" value="banners">
+							<div class="flex flex-row items-center font-bold">
+								<div class="text-xl md:text-3xl truncate mr-2">Registro</div>
+								<div class="ml-auto"><span class="hidden md:inline-block mr-2">Activar / Desactivar </span><input type="checkbox" id="registro" name="registro" value="on" @if($cliente->id !== NULL && $cliente->registro) checked @endif></div>
+							</div>
+							<div id="registro-container" class="container-draggable mt-5 section-box">
+								<div class="flex flex-wrap -mx-3 justify-center">
+									<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
+										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="registro_img">
+											Imagen registro
+										</label>
+										<img src="{{ ($cliente->id !== NULL && $cliente->registro_img !== NULL) ? asset('storage/'.$cliente->registro_img) : asset('images/1000x1000.png') }}"
+																class="img-general object-cover w-100 border border-secondary">
+										<div class="text-center mt-3">
+											<button type="button" class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+											<div class="examinar-size text-xs mt-2 text-gray-400">(1000x1000px)</div>
+										</div>
+										<input name="registro_img" id="registro_img" type="file" class="file-general" accept="image/*" style="display: none">
+									</div>
+									@if($cliente->id !== NULL)
+									<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
+										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="logo">
+											QR cliente
+										</label>
+										<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'_registro.png?'.time()) }}"
+																class="object-cover w-100 border border-secondary">
+										<div class="text-center mt-3">
+											<a role="button" href="{{ asset('storage/qrcodes/'.$cliente->slug.'_registro.png?'.time()) }}" target="_blank" class="rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Descargar QR</a>
+										</div>
+									</div>
+									@endif
+									<div class="w-full md:w-2/6 px-3 mb-6 md:mb-6 text-center ml-auto">
+										<div>
+											<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="registro_descripcion">
+												Texto descriptivo:
+											</label>
+											<textarea class="shadow appearance-none resize-none h-20 border-0 w-full py-2 px-3 text-gray-700" name="registro_descripcion" id="registro_descripcion"
+												type="text" placeholder="Texto descriptivo">{{ ($cliente->id !== NULL) ? $cliente->registro_descripcion : old('registro_descripcion') }}</textarea>
+										</div>
+										@foreach ($campos as $campo)
+											<div class="flex items-center justify-end mt-2">
+												@if ($campo->editable)
+													<div class="font-bold">{{ $campo->info }}</div>
+													<div class="ml-2 grow">
+														<input class="input-underline text-right" name="campos[{{ $campo->id }}]" value="{{ $cliente->campos->where('campo_id', $campo->id)->count() > 0 ? $cliente->campos->where('campo_id', $campo->id)->first()->nombre : $campo->nombre }}" placeholder="{{ $campo->nombre }}" type="text" required>
+													</div>
+												@else
+													<div class="ml-2 grow text-right">
+														<div class="font-bold">{{ $campo->nombre }}</div>
+														<input name="campos[{{ $campo->id }}]" value="{{ $campo->nombre }}" placeholder="{{ $campo->nombre }}" type="hidden" required>
+													</div>
+												@endif
+												<div class="ml-2">
+													<input type="checkbox" name="campos_activo[{{ $campo->id }}]" value="on" @if($cliente->campos->where('campo_id', $campo->id)->count() > 0 && $cliente->campos->where('campo_id', $campo->id)->first()->activo) checked @endif>
+												</div>
+											</div>
+										@endforeach
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /registro -->
+
 
 						<div id="secciones-container">
 							@php

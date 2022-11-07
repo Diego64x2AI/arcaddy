@@ -4,13 +4,19 @@ $classes = $cliente->id === NULL ? 'degradado' : 'bg-gray-100';
 <x-guest-layout :classes="$classes">
 	<x-auth-card>
 		<x-slot name="logo">
-			<a href="/">
-				@if ($cliente->id === NULL)
-					<x-application-logo class="w-auto h-20 fill-current text-gray-500" />
-				@else
-					<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-20 fill-current text-gray-500">
+			@if ($cliente->id === NULL)
+				<a href="{{ route('home') }}"><x-application-logo class="w-auto h-20 fill-current text-gray-500" /></a>
+			@else
+				<div class="flex justify-center">
+					<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}"><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-10 fill-current text-gray-500"></a>
+				</div>
+				<h1 class="text-center font-extrabold text-3xl mt-3">Login</h1>
+				@if($cliente->registro_img !== NULL)
+					<div class="mt-3">
+						<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general rounded-lg shadow object-cover w-100 border border-secondary">
+					</div>
 				@endif
-			</a>
+			@endif
 		</x-slot>
 
 		<!-- Session Status -->
@@ -55,10 +61,25 @@ $classes = $cliente->id === NULL ? 'degradado' : 'bg-gray-100';
 				</a>
 				@endif
 
-				<x-button class="ml-3">
+				<x-button class="ml-3 btn-pill">
 					{{ __('Log in') }}
 				</x-button>
 			</div>
 		</form>
 	</x-auth-card>
+	<div class="h-10"></div>
 </x-guest-layout>
+
+<style>
+	.btn-pill {
+		background-color: {{ $cliente->color }} !important;
+	}
+
+	.color {
+		color: {{ $cliente->color }} !important;
+	}
+
+	.bg-client {
+		background-color: {{ $cliente->color }} !important;
+	}
+</style>
