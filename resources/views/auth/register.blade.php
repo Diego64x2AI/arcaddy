@@ -13,7 +13,7 @@ $classes = $cliente->id === NULL ? 'degradado' : 'bg-gray-100';
 					<h1 class="text-center font-extrabold text-3xl mt-3">Registro</h1>
 					@if($cliente->registro_img !== NULL)
 						<div class="mt-3">
-							<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general rounded-lg shadow object-cover w-100 border border-secondary">
+							<img src="{{ asset('storage/'.$cliente->registro_img) }}" style="border-radius:50px" class="img-general rounded-lg shadow object-cover w-100 border border-secondary">
 						</div>
 					@endif
 					@if($cliente->registro_descripcion !== NULL)
@@ -51,7 +51,7 @@ $classes = $cliente->id === NULL ? 'degradado' : 'bg-gray-100';
 				<x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation"
 					required />
 			</div>
-			@foreach ($cliente->campos as $campo)
+			@foreach ($cliente->campos()->where('activo', 1)->get() as $campo)
 				<div class="mt-4">
 					<x-label for="campos[{{ $campo->campo_id }}]" :value="$campo->nombre" />
 					<x-input class="block mt-1 w-full" type="text" name="campos[{{ $campo->campo_id }}]" required />

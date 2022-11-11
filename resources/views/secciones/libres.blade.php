@@ -5,7 +5,11 @@
 		<div class="swiper-wrapper pb-14">
 			@foreach($cliente->libres as $banner)
 			<div class="swiper-slide">
-				<img src="{{ asset('storage/'.$banner->archivo) }}" alt="{{ $banner->titulo }}" class="object-fill w-full h-auto">
+				@if ($banner->link !== NULL && trim($banner->link) !== '')
+					<a href="{{ $banner->link }}" target="_blank"><img src="{{ asset('storage/'.$banner->archivo) }}" alt="{{ $banner->titulo }}" class="object-fill w-full h-auto"></a>
+				@else
+					<img src="{{ asset('storage/'.$banner->archivo) }}" alt="{{ $banner->titulo }}" class="object-fill w-full h-auto">
+				@endif
 			</div>
 			@endforeach
 		</div>

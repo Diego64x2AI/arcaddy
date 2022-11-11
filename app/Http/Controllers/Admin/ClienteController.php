@@ -90,6 +90,7 @@ class ClienteController extends Controller
 					'cliente_id' => $cliente->id,
 					'archivo' => $file->store('clientes/banners', 'public'),
 					'titulo' => $campos['banners_titulo'][$key],
+					'link' => $campos['banners_link'][$key],
 				]);
 			}
 		}
@@ -114,6 +115,7 @@ class ClienteController extends Controller
 					'cliente_id' => $cliente->id,
 					'archivo' => $file->store('clientes/patrocinadores', 'public'),
 					'titulo' => $campos['patrocinadores_titulo'][$key],
+					'link' => $campos['patrocinadores_link'][$key],
 				]);
 			}
 		}
@@ -136,6 +138,7 @@ class ClienteController extends Controller
 					'cliente_id' => $cliente->id,
 					'archivo' => $file->store('clientes/libres', 'public'),
 					'titulo' => $campos['libres_titulo'][$key],
+					'link' => $campos['libres_link'][$key],
 				]);
 			}
 		}
@@ -286,6 +289,7 @@ class ClienteController extends Controller
 					'cliente_id' => $cliente->id,
 					'archivo' => $archivo,
 					'titulo' => $titulo,
+					'link' => $campos['banners_link'][$key],
 				]);
 			}
 		}
@@ -330,6 +334,7 @@ class ClienteController extends Controller
 					'cliente_id' => $cliente->id,
 					'archivo' => $archivo,
 					'titulo' => $titulo,
+					'link' => $campos['patrocinadores_link'][$key],
 				]);
 			}
 		}
@@ -372,6 +377,7 @@ class ClienteController extends Controller
 					'cliente_id' => $cliente->id,
 					'archivo' => $archivo,
 					'titulo' => $titulo,
+					'link' => $campos['libres_link'][$key],
 				]);
 			}
 		}

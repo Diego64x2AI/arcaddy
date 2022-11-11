@@ -16,9 +16,11 @@
 
 <body class="font-sans antialiased">
 	<main>
+		{{--
 		<div class="flex items-center justify-center py-5">
 			<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-full h-auto max-w-xs" alt="{{ $cliente->cliente }}">
 		</div>
+		--}}
 		@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
 			@includeIf('secciones.'.$seccion->seccion)
 		@endforeach
@@ -58,46 +60,50 @@
 			</div>
 		</div>
 	</footer>
-	@if ($cliente->registro)
-	<div class="fixed top-0 right-0 px-6 py-4">
-		<div class="flex">
-			@auth
-				@role('admin')
-				<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
-				@endrole
-				<!-- Authentication -->
-				<form method="POST" action="{{ route('logout') }}">
-					@csrf
-					<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
-						{{ __('Log Out') }}
-					</a>
-				</form>
+	<div id="header" class="fixed top-0 right-0 w-full px-6 py-4 z-50 bg-white shadow-sm">
+		<div class="flex items-center justify-center">
+			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
+		</div>
+		<div class="flex items-center justify-center mt-1">
+			@if ($cliente->registro)
+				@auth
+					@role('admin')
+					<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
+					@endrole
+					<!-- Authentication -->
+					<form method="POST" action="{{ route('logout') }}">
+						@csrf
+						<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
+							{{ __('Log Out') }}
+						</a>
+					</form>
+				@else
+					<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="text-base">Log in</a>
+					@if (Route::has('register'))
+					<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="ml-4 text-base">Register</a>
+					@endif
+				@endauth
 			@else
-				<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="text-base">Log in</a>
-				@if (Route::has('register'))
-				<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="ml-4 text-base">Register</a>
-				@endif
-			@endauth
+				@role('admin')
+				<div class="fixed top-0 right-0 px-6 py-4">
+					<div class="flex">
+						<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
+						<!-- Authentication -->
+						<form method="POST" action="{{ route('logout') }}">
+							@csrf
+							<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
+								{{ __('Log Out') }}
+							</a>
+						</form>
+					</div>
+				</div>
+				@endrole
+			@endif
 		</div>
 	</div>
-	@else
-	@role('admin')
-	<div class="fixed top-0 right-0 px-6 py-4">
-		<div class="flex">
-			<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
-			<!-- Authentication -->
-			<form method="POST" action="{{ route('logout') }}">
-				@csrf
-				<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
-					{{ __('Log Out') }}
-				</a>
-			</form>
-		</div>
-	</div>
-	@endrole
-	@endif
 	<script>
 		window.addEventListener('load', function() {
+			$('body').css('paddingTop', $('#header').innerHeight())
 			new Swiper('.swiper-1', {
 				// Optional parameters
 				direction: 'horizontal',

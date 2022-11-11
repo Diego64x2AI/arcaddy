@@ -33,6 +33,18 @@ class HomeController extends Controller
 	}
 
 	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function registro(Cliente $cliente)
+	{
+		return view('registro', [
+			'cliente' => $cliente,
+		]);
+	}
+
+	/**
 	 * Show the form reedem cuopons.
 	 *
 	 * @param  \App\Models\ClienteProducto  $cupon

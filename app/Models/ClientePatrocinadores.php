@@ -13,6 +13,7 @@ class ClientePatrocinadores extends Model
 		'cliente_id',
 		'archivo',
 		'titulo',
+		'link'
 	];
 
 	public $timeStamps = false;

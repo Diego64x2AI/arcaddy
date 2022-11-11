@@ -28,6 +28,12 @@
 						</label>
 						<input class="input-underline" name="patrocinadores_titulo[]" value="{{ $patrocinador->titulo }}" type="text" required>
 					</div>
+					<div class="mb-2">
+						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+							LINK:
+						</label>
+						<input class="input-underline" name="patrocinadores_link[]" value="{{ $patrocinador->link }}" type="text">
+					</div>
 					<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 						<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
@@ -56,6 +62,12 @@
 						Título SEO:
 					</label>
 					<input class="input-underline" name="patrocinadores_titulo[]" type="text" required>
+				</div>
+				<div class="mb-2">
+					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+						LINK:
+					</label>
+					<input class="input-underline" name="patrocinadores_link[]" type="text">
 				</div>
 				<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 					<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>

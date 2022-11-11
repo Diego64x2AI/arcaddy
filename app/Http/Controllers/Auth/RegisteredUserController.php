@@ -81,6 +81,7 @@ class RegisteredUserController extends Controller
 				}
 			}
 			$user->notify(new RegistroCodigo($user, $cliente));
+			return redirect()->route('registro', ['cliente' => $request->cliente_id]);
 		} else {
 			$user->notify(new Welcome($user));
 		}

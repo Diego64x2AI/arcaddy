@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+	<title>{{ config('app.name', 'Laravel') }}</title>
+	<!-- Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+	<!-- Font Awesome Icons -->
+	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+	<!-- Scripts -->
+	@vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="font-sans antialiased">
+	<main class="px-5">
+		<div class="flex items-center justify-center py-5">
+			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
+		</div>
+		@if($cliente->registro_img !== NULL)
+			<div class="mt-3">
+				<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general shadow object-cover w-100 border border-secondary" style="border-radius:50px">
+			</div>
+		@endif
+		<h1 class="text-center font-extrabold text-3xl mt-3">¡Registro exitoso!</h1>
+		<h4 class="color uppercase font-bold text-center mt-5">Bienvenido</h4>
+		<div class="text-center font-semibold">{{ Auth::user()->name }}</div>
+		<div class="text-center font-semibold">{{ Auth::user()->email }}</div>
+		<div style="text-align: center; margin-top: 2rem;">
+			<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+		</div>
+		<div class="text-center text-2xl font-bold mt-8">
+			Se envió  este pase de acceso
+a tu email registrado
+		</div>
+		<div class="my-5 text-center">
+			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
+		</div>
+	</main>
+	<script>
+		window.addEventListener('load', function() {
+
+		});
+	</script>
+	<style>
+		.swiper {
+			width: 100%;
+			height: auto;
+			overflow: hidden;
+		}
+
+		.swiper-pagination-bullet {
+			width: 16px !important;
+			height: 16px !important;
+			background: #E6E6E6 !important;
+			opacity: 1 !important;
+		}
+
+		.btn-pill {
+			background-color: {{ $cliente->color }} !important;
+		}
+
+		.color {
+			color: {{ $cliente->color }} !important;
+		}
+
+		.bg-client {
+			background-color: {{ $cliente->color }} !important;
+		}
+
+		.swiper-pagination-bullet-active {
+			background: {{ $cliente->color }} !important;
+		}
+	</style>
+</body>
+
+</html>

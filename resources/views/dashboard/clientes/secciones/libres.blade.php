@@ -31,6 +31,12 @@
 							class="input-underline" value="{{ $entry->titulo }}"
 							name="libres_titulo[]" type="text" required>
 					</div>
+					<div class="mb-2">
+						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+							LINK:
+						</label>
+						<input class="input-underline" name="libres_link[]" value="{{ $entry->link }}" type="url">
+					</div>
 					<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 						<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
@@ -62,6 +68,12 @@
 					<input
 						class="input-underline"
 						name="libres_titulo[]" type="text" required>
+				</div>
+				<div class="mb-2">
+					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+						LINK:
+					</label>
+					<input class="input-underline" name="libres_link[]" type="url">
 				</div>
 				<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 					<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>

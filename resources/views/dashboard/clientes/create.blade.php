@@ -260,9 +260,13 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input
-									class="input-underline"
-									name="banners_titulo[]" type="text" required>
+								<input class="input-underline" name="banners_titulo[]" type="text" required>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									LINK:
+								</label>
+								<input class="input-underline" name="banners_link[]" type="url">
 							</div>
 							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -343,8 +347,13 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input
-									class="input-underline" name="patrocinadores_titulo[]" type="text" required>
+								<input class="input-underline" name="patrocinadores_titulo[]" type="text" required>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									LINK:
+								</label>
+								<input class="input-underline" name="patrocinadores_link[]" type="text" required>
 							</div>
 							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -549,9 +558,13 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input
-									class="input-underline"
-									name="libres_titulo[]" type="text" required>
+								<input class="input-underline" name="libres_titulo[]" type="text" required>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									LINK:
+								</label>
+								<input class="input-underline" name="libres_link[]" type="url">
 							</div>
 							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>

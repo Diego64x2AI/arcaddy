@@ -72,5 +72,5 @@ Route::middleware('role:admin')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
+Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('registro')->middleware('auth');
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
