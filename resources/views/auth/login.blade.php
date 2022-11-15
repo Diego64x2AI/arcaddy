@@ -5,14 +5,14 @@ $classes = $cliente->id === NULL ? 'degradado' : 'bg-gray-100';
 	<x-auth-card>
 		<x-slot name="logo">
 			@if ($cliente->id === NULL)
-				<a href="{{ route('home') }}"><x-application-logo class="w-auto h-20 fill-current text-gray-500" /></a>
+				<a href="{{ route('home') }}"><x-application-logo class="w-auto h-20 fill-current text-gray-500 w-full sm:max-w-md" /></a>
 			@else
-				<div class="flex justify-center">
+				<div class="flex justify-center w-full sm:max-w-md mt-5">
 					<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}"><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-10 fill-current text-gray-500"></a>
 				</div>
-				<h1 class="text-center font-extrabold text-3xl mt-3">Login</h1>
+				<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md">Login</h1>
 				@if($cliente->registro_img !== NULL)
-					<div class="mt-3">
+					<div class="mt-3 w-full sm:max-w-md">
 						<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general rounded-lg shadow object-cover w-100 border border-secondary">
 					</div>
 				@endif

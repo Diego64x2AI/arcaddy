@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Mexico_City',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -187,6 +187,7 @@ return [
          */
 				Spatie\Permission\PermissionServiceProvider::class,
 				Darryldecode\Cart\CartServiceProvider::class,
+				Laraveles\Spanish\SpanishServiceProvider::class,
 
         /*
          * Application Service Providers...
