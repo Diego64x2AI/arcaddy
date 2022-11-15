@@ -7,7 +7,7 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>{{ config('app.name', 'Laravel') }}</title>
 	<!-- Fonts -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap">
 	<!-- Font Awesome Icons -->
 	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
