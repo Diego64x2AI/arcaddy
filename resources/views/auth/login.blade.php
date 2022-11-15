@@ -13,7 +13,7 @@ $classes = $cliente->id === NULL ? 'degradado' : 'bg-gray-100';
 				<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md">Login</h1>
 				@if($cliente->registro_img !== NULL)
 					<div class="mt-3 w-full sm:max-w-md">
-						<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general rounded-lg shadow object-cover w-100 border border-secondary">
+						<img src="{{ asset('storage/'.$cliente->registro_img) }}" style="border-radius:50px" class="img-general rounded-lg shadow object-cover w-100 border border-secondary">
 					</div>
 				@endif
 			@endif
