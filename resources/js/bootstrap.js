@@ -16,6 +16,9 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] =  document.querySelector('
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
+import 'datatables.net'
+// import 'datatables.net-dt/css/jquery.dataTables'
+
 // Sortable
 import Sortable from 'sortablejs';
 window.Sortable = Sortable;

@@ -19,6 +19,52 @@
 						<div class="relative w-full p-4 text-white bg-lime-500 rounded-lg">{{ session('success') }}</div>
 					</div>
 					@endif
+					<div class="overflow-x-auto relative sm:rounded-lg">
+					<table id="clientes" class="w-full text-sm text-left border text-gray-500 dark:text-gray-400">
+						<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+							<tr>
+								<th class="p-3 !text-center">QR</th>
+								<th class="p-3 !text-center">Cliente</th>
+								<th class="p-3 !text-center">Link</th>
+								<th class="p-3 !text-center">Registro Personalizado</th>
+								<th class="p-3 !text-center" width="110px">Opciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach ($clientes as $cliente)
+							<tr class="bg-white border-b hover:bg-gray-50">
+								<td class="p-3 text-center"><img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}" class="inline-block" style="height: 40px; width: auto;"></td>
+								<td class="p-3 text-center">
+									<img src="{{ asset('storage/'.$cliente->logo) }}" class="inline-block" style="height: 30px; width: auto;">
+								</td>
+								<td class="p-3 text-center">
+									<a href="{{ url("/{$cliente->slug}") }}" target="_blank">{{ \Request::server ("HTTP_HOST") }}/<span class="font-bold">{{ $cliente->slug }}</span></a>
+								</td>
+								<td class="p-3 text-center">
+									@if ($cliente->registro)
+									<span class="bg-lime-500 text-white px-3 py-2 rounded-md">SI</span>
+									@else
+									<span class="bg-red-500 text-white px-3 py-2 rounded-md">NO</span>
+									@endif
+								</td>
+								<td class="p-3 text-center text-xl">
+									<a href="{{ route('clientes.edit', ['cliente' => $cliente->id]) }}" class="text-sky-500"><i class="fa fa-edit"></i></a>
+									<form action="{{ route('clientes.destroy', ['cliente' => $cliente->id]) }}" method="POST" class="inline delete-form">
+										@csrf
+										@method('DELETE')
+										<button href="{{ route('clientes.destroy', ['cliente' => $cliente->id]) }}" type="button" class="text-red-500">
+											<i class="fas fa-trash-alt"></i>
+										</button>
+									</form>
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
+					</div>
+					<div>
+						{{ $clientes->links() }}
+					</div>
 					<div class="grid grid-cols-1 md:grid-cols-5 gap-5">
 						@foreach($clientes as $cliente)
 						<x-cliente @delete-cliente.window="title = $event.detail" :id="$cliente->id" :name="$cliente->cliente" :slug="$cliente->slug" :logo="asset('storage/'.$cliente->logo)" />
@@ -37,7 +83,18 @@
 	</div>
 	@section('js')
 		<script>
-			window.addEventListener('load', function() {
+			document.addEventListener('DOMContentLoaded', function load() {
+    		if (!window.jQuery) return setTimeout(load, 50);
+				$('table#clientes').DataTable({
+					paging: true,
+					searching: true,
+    			ordering:  true,
+					serverSide: true,
+  				ajax: 'xhr.php',
+					language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.1/i18n/es-ES.json'
+        	}
+				});
 				$('form.delete-form button').on('click', function(e) {
 					e.preventDefault();
 					console.log('delete?')
