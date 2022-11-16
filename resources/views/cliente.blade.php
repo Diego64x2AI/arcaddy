@@ -66,7 +66,7 @@
 		<div class="flex items-center justify-center">
 			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
 		</div>
-		<div class="flex items-center justify-center mt-1">
+		<div class="flex items-center justify-center mt-3">
 			@if ($cliente->registro)
 				@auth
 					@role('admin')
@@ -80,9 +80,9 @@
 						</a>
 					</form>
 				@else
-					<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="text-base">Log in</a>
+					<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Login') }}</a>
 					@if (Route::has('register'))
-					<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="ml-4 text-base">Register</a>
+					<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Register') }}</a>
 					@endif
 				@endauth
 			@else

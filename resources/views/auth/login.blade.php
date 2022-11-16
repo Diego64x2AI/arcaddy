@@ -18,7 +18,7 @@ $classes = $cliente->id === NULL ? 'degradado' : 'bg-gray-100';
 				@endif
 			@endif
 		</x-slot>
-
+		{{--  <iframe src="https://drive.google.com/file/d/13gjNCbpJVPrsNMcTS2KBXmZa0Z0jOSKS/preview" width="640" height="480" allow="autoplay"></iframe>--}}
 		<!-- Session Status -->
 		<x-auth-session-status class="mb-4" :status="session('status')" />
 
