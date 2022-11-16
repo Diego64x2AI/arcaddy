@@ -63,33 +63,16 @@
 		</div>
 	</footer>
 	<div id="header" class="fixed top-0 right-0 w-full px-6 py-4 z-50 bg-white shadow-sm">
-		<div class="flex items-center justify-center">
-			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
-		</div>
-		<div class="flex items-center justify-center mt-3">
-			@if ($cliente->registro)
-				@auth
-					@role('admin')
-					<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
-					@endrole
-					<!-- Authentication -->
-					<form method="POST" action="{{ route('logout') }}">
-						@csrf
-						<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
-							{{ __('Log Out') }}
-						</a>
-					</form>
-				@else
-					<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Login') }}</a>
-					@if (Route::has('register'))
-					<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Register') }}</a>
-					@endif
-				@endauth
-			@else
-				@role('admin')
-				<div class="fixed top-0 right-0 px-6 py-4">
-					<div class="flex">
+		<div class="flex flex-col md:flex-row items-center justify-center">
+			<div class="flex flex-col md:flex-row items-center justify-center">
+				<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
+			</div>
+			<div class="flex items-center justify-center mt-3 md:mt-0 md:ml-auto">
+				@if ($cliente->registro)
+					@auth
+						@role('admin')
 						<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
+						@endrole
 						<!-- Authentication -->
 						<form method="POST" action="{{ route('logout') }}">
 							@csrf
@@ -97,10 +80,29 @@
 								{{ __('Log Out') }}
 							</a>
 						</form>
+					@else
+						@if (Route::has('register'))
+						<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Register') }}</a>
+						@endif
+						<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Login') }}</a>
+					@endauth
+				@else
+					@role('admin')
+					<div class="fixed top-0 right-0 px-6 py-4">
+						<div class="flex">
+							<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
+							<!-- Authentication -->
+							<form method="POST" action="{{ route('logout') }}">
+								@csrf
+								<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
+									{{ __('Log Out') }}
+								</a>
+							</form>
+						</div>
 					</div>
-				</div>
-				@endrole
-			@endif
+					@endrole
+				@endif
+			</div>
 		</div>
 	</div>
 	<script>
