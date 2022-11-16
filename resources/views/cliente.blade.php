@@ -212,7 +212,7 @@
 
 		@media (max-width: 800px) {
 			.slide-bg {
-				height: calc(70vh)!important;
+				height: calc(60vh)!important;
 			}
 		}
 
