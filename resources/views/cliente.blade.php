@@ -112,7 +112,6 @@
 				// Optional parameters
 				direction: 'horizontal',
 				loop: false,
-				autoHeight: true,
 				autoplay: {
           delay: 3000,
           disableOnInteraction: true,
@@ -205,6 +204,16 @@
 			height: 16px !important;
 			background: #E6E6E6 !important;
 			opacity: 1 !important;
+		}
+
+		.slide-bg {
+			height: calc(100vh - 72px)!important;
+		}
+
+		@media (max-width: 800px) {
+			.slide-bg {
+				height: calc(70vh)!important;
+			}
 		}
 
 		.btn-pill {
