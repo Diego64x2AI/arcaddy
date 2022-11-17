@@ -80,10 +80,18 @@ class RegisteredUserController extends Controller
 					]);
 				}
 			}
-			$user->notify(new RegistroCodigo($user, $cliente));
-			return redirect()->route('registro', ['cliente' => $request->cliente_id]);
+			try {
+				$user->notify(new RegistroCodigo($user, $cliente));
+				return redirect()->route('registro', ['cliente' => $request->cliente_id]);
+			} catch(\Exception $e) {
+				return redirect()->route('registro', ['cliente' => $request->cliente_id]);
+			}
 		} else {
-			$user->notify(new Welcome($user));
+			try {
+				$user->notify(new Welcome($user));
+			} catch(\Exception $e) {
+
+			}
 		}
 		// dd($campos['campos']);
 		return (\Cart::isEmpty()) ? redirect()->route('cliente', ['slug' => $cliente->slug]) : redirect()->route('carrito');
