@@ -20,22 +20,22 @@
 			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
 		</div>
 		@if($cliente->registro_img !== NULL)
-			<div class="mt-3 w-full sm:max-w-md">
+			<div class="mt-3 w-full sm:max-w-md mx-auto">
 				<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general shadow object-cover w-100 border border-secondary" style="border-radius:50px">
 			</div>
 		@endif
-		<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md">¡Registro exitoso!</h1>
-		<h4 class="color uppercase font-bold text-center mt-5 w-full sm:max-w-md">Bienvenido</h4>
-		<div class="text-center font-semibold w-full sm:max-w-md">{{ Auth::user()->name }}</div>
-		<div class="text-center font-semibold w-full sm:max-w-md">{{ Auth::user()->email }}</div>
-		<div class="w-full sm:max-w-md" style="text-align: center; margin-top: 2rem;">
+		<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md mx-auto">¡Registro exitoso!</h1>
+		<h4 class="color uppercase font-bold text-center mt-5 w-full sm:max-w-md mx-auto">Bienvenido</h4>
+		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->name }}</div>
+		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->email }}</div>
+		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
 			<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
 		</div>
-		<div class="text-center text-2xl font-bold mt-8 w-full sm:max-w-md">
+		<div class="text-center text-2xl font-bold mt-8 w-full sm:max-w-md mx-auto">
 			Se envió  este pase de acceso
 a tu email registrado
 		</div>
-		<div class="my-5 text-center w-full sm:max-w-md">
+		<div class="my-5 text-center w-full sm:max-w-md mx-auto">
 			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
 		</div>
 	</main>
