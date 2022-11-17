@@ -82,9 +82,7 @@ class RegisteredUserController extends Controller
 			}
 			try {
 				$user->notify(new RegistroCodigo($user, $cliente));
-				return redirect()->route('registro', ['cliente' => $request->cliente_id]);
 			} catch(\Exception $e) {
-				return redirect()->route('registro', ['cliente' => $request->cliente_id]);
 			}
 		} else {
 			try {
@@ -94,6 +92,6 @@ class RegisteredUserController extends Controller
 			}
 		}
 		// dd($campos['campos']);
-		return (\Cart::isEmpty()) ? redirect()->route('cliente', ['slug' => $cliente->slug]) : redirect()->route('carrito');
+		return redirect()->route('registro', ['cliente' => $request->cliente_id]);;
 	}
 }

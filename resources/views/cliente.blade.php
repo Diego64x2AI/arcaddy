@@ -71,8 +71,9 @@
 				@if ($cliente->registro)
 					@auth
 						@role('admin')
-						<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
+						<a href="{{ route('dashboard') }}" class="text-base mr-4 hidden md:inline-block">Dashboard</a>
 						@endrole
+						<div class="text-base mr-4 font-bold">Bienvenido {{ auth()->user()->name }}</div>
 						<!-- Authentication -->
 						<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
 							@csrf
