@@ -75,7 +75,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			<a href="https://wa.me/5213326293396?" target="_blank">Ayuda <i class="fa fa-whatsapp"></i></a>
 		</div>
 	</div>
-	@endif
+@endif
 <style>
 	.btn-pill {
 		background-color: {{ $cliente->color }} !important;
