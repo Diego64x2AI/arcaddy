@@ -33,5 +33,7 @@
     "All rights reserved.":  "Todos los derechos reservados.",
 		"Remember me":  "Recordarme",
 		"Forgot your password?":  "¿Olvidaste tu contraseña?",
-		"Already registered?": "¿Ya tienes una cuenta?"
+		"Already registered?": "¿Ya tienes una cuenta?",
+		"Email Password Reset Link": "Enviar link a mi correo",
+		"Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "¿Olvidaste tu contraseña? No te preocupes, escribe tu email registrado y te enviaremos un link que te permitira cambiar tu contraseña."
 }

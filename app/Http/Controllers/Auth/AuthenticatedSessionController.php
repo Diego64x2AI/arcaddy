@@ -28,13 +28,18 @@ class AuthenticatedSessionController extends Controller
 	 * @param  \App\Http\Requests\Auth\LoginRequest  $request
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function store(LoginRequest $request)
+	public function store(Cliente $cliente, LoginRequest $request)
 	{
+		// dd($cliente);
 		$request->authenticate();
-
 		$request->session()->regenerate();
-
-		return (\Cart::isEmpty()) ? redirect()->intended(RouteServiceProvider::HOME) : redirect()->route('carrito');
+		if ($cliente->id !== NULL) {
+			if (\Cart::isEmpty() === false) {
+				return redirect()->route('carrito');
+			}
+			return redirect()->route('cliente', ['slug' => $cliente->slug]);
+		}
+		return redirect()->intended(RouteServiceProvider::HOME);
 	}
 
 	/**
@@ -43,14 +48,14 @@ class AuthenticatedSessionController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function destroy(Request $request)
+	public function destroy(Cliente $cliente, Request $request)
 	{
 		Auth::guard('web')->logout();
-
 		$request->session()->invalidate();
-
 		$request->session()->regenerateToken();
-
+		if ($cliente->id !== NULL) {
+			return redirect()->route('cliente', ['slug' => $request->cliente->slug]);
+		}
 		return redirect('/');
 	}
 }

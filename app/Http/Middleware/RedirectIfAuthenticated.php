@@ -19,13 +19,13 @@ class RedirectIfAuthenticated
 	 */
 	public function handle(Request $request, Closure $next, ...$guards)
 	{
-		if ($request->cliente !== NULL) {
-			return redirect()->route('cliente', ['slug' => $request->cliente->slug]);
-		}
 		$guards = empty($guards) ? [null] : $guards;
 
 		foreach ($guards as $guard) {
 			if (Auth::guard($guard)->check()) {
+				if ($request->cliente !== NULL) {
+					return redirect()->route('cliente', ['slug' => $request->cliente->slug]);
+				}
 				return redirect(RouteServiceProvider::HOME);
 			}
 		}

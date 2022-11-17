@@ -74,9 +74,9 @@
 						<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
 						@endrole
 						<!-- Authentication -->
-						<form method="POST" action="{{ route('logout') }}">
+						<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
 							@csrf
-							<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
+							<a :href="route('logout', ['cliente' => $cliente->id])" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
 								{{ __('Log Out') }}
 							</a>
 						</form>
@@ -92,9 +92,9 @@
 						<div class="flex">
 							<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
 							<!-- Authentication -->
-							<form method="POST" action="{{ route('logout') }}">
+							<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
 								@csrf
-								<a :href="route('logout')" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
+								<a :href="route('logout', ['cliente' => $cliente->id])" class="text-base" onclick="event.preventDefault(); this.closest('form').submit();">
 									{{ __('Log Out') }}
 								</a>
 							</form>
