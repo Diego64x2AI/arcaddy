@@ -15,7 +15,7 @@
 </head>
 
 <body class="font-sans antialiased">
-	<main class="px-5">
+	<main class="px-5 pb-20">
 		<div class="flex items-center justify-center py-5">
 			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
 		</div>
@@ -39,6 +39,13 @@ a tu email registrado
 			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
 		</div>
 	</main>
+	@if ($cliente->slug === 'estafeta')
+	<div class="fixed right-0 bottom-0 mr-5 mb-5">
+		<div class="bg-[#25D366] py-3 px-5 text-white rounded-full text-xl">
+			<a href="https://wa.me/5213326293396?" target="_blank">Ayuda <i class="fa fa-whatsapp"></i></a>
+		</div>
+	</div>
+	@endif
 	<script>
 		window.addEventListener('load', function() {
 
