@@ -25,14 +25,14 @@
 					<table id="usuarios" class="w-full rounded-lg overflow-hidden sm:shadow-lg !my-5">
 						<thead class="text-white">
 							<tr class="bg-teal-400">
-								<th class="p-3 text-center">ID</th>
-								<th class="p-3 text-center">Nombre</th>
-								<th class="p-3 text-center">Email</th>
+								<th class="p-3 !text-center">ID</th>
+								<th class="p-3 !text-center">Nombre</th>
+								<th class="p-3 !text-center">Email</th>
 								@foreach ($fields as $field)
-								<th class="p-3 text-center">{{ $field->nombre }}</th>
+								<th class="p-3 !text-center">{{ $field->nombre }}</th>
 								@endforeach
-								<th class="p-3 text-center">Fecha de registro</th>
-								<th class="p-3 text-center" width="110px">Opciones</th>
+								<th class="p-3 !text-center">Fecha de registro</th>
+								<th class="p-3 !text-center" width="110px">Opciones</th>
 							</tr>
 						</thead>
 						<tbody>
