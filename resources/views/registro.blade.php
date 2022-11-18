@@ -31,10 +31,6 @@
 		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
 			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
 		</div>
-		<div class="text-center text-2xl font-bold mt-8 w-full sm:max-w-md mx-auto">
-			Se envió  este pase de acceso
-a tu email registrado
-		</div>
 		<div class="my-5 text-center w-full sm:max-w-md mx-auto">
 			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
 		</div>
