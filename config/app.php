@@ -188,6 +188,7 @@ return [
 				Spatie\Permission\PermissionServiceProvider::class,
 				Darryldecode\Cart\CartServiceProvider::class,
 				Laraveles\Spanish\SpanishServiceProvider::class,
+				Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -214,6 +215,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
 			'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
+			'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

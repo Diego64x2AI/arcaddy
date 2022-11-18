@@ -54,6 +54,7 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('/clientes', ClienteController::class);
 		Route::prefix('usuarios')->group(function () {
 			Route::get('/{cliente}', [UsuariosController::class, 'index'])->name('usuarios.index');
+			Route::get('/{cliente}/exportar', [UsuariosController::class, 'export'])->name('usuarios.export');
 		});
 		Route::prefix('cupones')->group(function () {
 			Route::get('/', [CuponesController::class, 'index'])->name('cupones.index');

@@ -1,8 +1,17 @@
 <x-app-layout>
 	<x-slot name="header">
-		<h2 class="font-semibold text-xl text-gray-800 leading-tight">
-			Usuarios
-		</h2>
+		<div class="flex items-center">
+			<div>
+				<h2 class="font-semibold text-xl text-gray-800 leading-tight">
+					Usuarios
+				</h2>
+			</div>
+			<div class="ml-auto">
+				<a href="{{ route('usuarios.export', ['cliente' => $cliente->id]) }}" class="rounded-full bg-pink-600 text-white px-5 py-2 block">
+					Exportar
+				</a>
+			</div>
+		</div>
 	</x-slot>
 
 	<div class="py-6">
