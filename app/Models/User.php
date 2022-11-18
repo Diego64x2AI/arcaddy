@@ -46,6 +46,10 @@ class User extends Authenticatable
 		'email_verified_at' => 'datetime',
 	];
 
+	public function campos() {
+		return $this->hasMany(ClienteUserFieldValue::class);
+	}
+
 	/**
 	 * The "booted" method of the model.
 	 *

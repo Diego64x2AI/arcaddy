@@ -28,6 +28,9 @@
 								<th class="p-3 text-center">ID</th>
 								<th class="p-3 text-center">Nombre</th>
 								<th class="p-3 text-center">Email</th>
+								@foreach ($fields as $field)
+								<th class="p-3 text-center">{{ $field->nombre }}</th>
+								@endforeach
 								<th class="p-3 text-center">Fecha de registro</th>
 								<th class="p-3 text-center" width="110px">Opciones</th>
 							</tr>
@@ -38,6 +41,9 @@
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->id }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->name }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->email }}</td>
+								@foreach ($fields as $field)
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->campos()->where('campo_id', $field->id)->first()->valor }}</td>
+								@endforeach
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->created_at }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 
@@ -77,6 +83,7 @@
 				paging: true,
 				searching: true,
 				ordering:  true,
+				pageLength: 25,
 				language: {
 					url: '//cdn.datatables.net/plug-ins/1.13.1/i18n/es-ES.json'
 				}
