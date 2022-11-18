@@ -75,7 +75,7 @@
 						@endrole
 						<div class="text-base mr-4 font-bold">
 							<a href="{{ route('registro', ['cliente' => $cliente->id]) }}" class="text-base">
-								Bienvenido {{ auth()->user()->name }}
+								Hola {{ auth()->user()->name }}
 							</a>
 						</div>
 						<!-- Authentication -->
