@@ -4,6 +4,7 @@
 	<div><img src="{{ $logo }}" class="block h-15 w-auto fill-current" alt="{{ $name }}"></div>
 	<div class="uppercase font-bold text-base mt-4">
 		{{ $name }}
+		<a href="{{ route('usuarios.index', ['cliente' => $id]) }}" class="text-purple-500"><i class="fa fa-user"></i></a>
 		<a href="{{ route('clientes.edit', ['cliente' => $id]) }}" class="text-sky-500"><i class="fa fa-edit"></i></a>
 		<form action="{{ route('clientes.destroy', ['cliente' => $id]) }}" method="POST" class="inline delete-form">
 			@csrf

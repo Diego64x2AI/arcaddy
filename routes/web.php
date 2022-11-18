@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\CuponesController;
 use App\Http\Controllers\Admin\PedidosController;
 use App\Http\Controllers\Admin\ProductoController;
+use App\Http\Controllers\Admin\UsuariosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,9 @@ Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
 		Route::resource('/clientes', ClienteController::class);
+		Route::prefix('usuarios')->group(function () {
+			Route::get('/{cliente}', [UsuariosController::class, 'index'])->name('usuarios.index');
+		});
 		Route::prefix('cupones')->group(function () {
 			Route::get('/', [CuponesController::class, 'index'])->name('cupones.index');
 			Route::get('/delete/{cupon}', [CuponesController::class, 'destroy'])->name('cupones.destroy');
