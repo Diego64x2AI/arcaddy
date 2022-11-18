@@ -73,7 +73,11 @@
 						@role('admin')
 						<a href="{{ route('dashboard') }}" class="text-base mr-4 hidden md:inline-block">Dashboard</a>
 						@endrole
-						<div class="text-base mr-4 font-bold">Bienvenido {{ auth()->user()->name }}</div>
+						<div class="text-base mr-4 font-bold">
+							<a href="{{ route('registro', ['cliente' => $cliente->id]) }}" class="text-base">
+								Bienvenido {{ auth()->user()->name }}
+							</a>
+						</div>
 						<!-- Authentication -->
 						<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
 							@csrf

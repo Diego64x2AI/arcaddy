@@ -29,7 +29,7 @@
 		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->name }}</div>
 		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->email }}</div>
 		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
-			<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
 		</div>
 		<div class="text-center text-2xl font-bold mt-8 w-full sm:max-w-md mx-auto">
 			Se envió  este pase de acceso

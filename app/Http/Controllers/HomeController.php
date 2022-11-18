@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\ClienteProductoDigital;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\File;
 
 class HomeController extends Controller
 {
@@ -39,6 +42,11 @@ class HomeController extends Controller
 	 */
 	public function registro(Cliente $cliente)
 	{
+		if (!is_dir(storage_path('app/public/qrcodesr'))) {
+			File::makeDirectory(storage_path('app/public/qrcodesr'));
+		}
+		// dd(storage_path('app/public/'.$cliente->logo)); '/storage/app/public/'.$cliente->logo
+		QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/'.$cliente->slug.'?user='.Auth::user()->id, storage_path('app/public/qrcodesr/' . Auth::user()->id . '.png'));
 		return view('registro', [
 			'cliente' => $cliente,
 		]);
