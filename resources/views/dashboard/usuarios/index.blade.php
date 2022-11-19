@@ -51,7 +51,7 @@
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->name }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->email }}</td>
 								@foreach ($fields as $field)
-								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->campos()->where('campo_id', $field->id)->first()->valor }}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ ($usuario->campos()->where('campo_id', $field->id)->first() !== null) ? $usuario->campos()->where('campo_id', $field->id)->first()->valor : '' }}</td>
 								@endforeach
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->created_at }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
