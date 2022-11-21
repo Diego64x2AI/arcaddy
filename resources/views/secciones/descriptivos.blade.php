@@ -12,3 +12,4 @@
 	<p class="text-center text-base px-4 mt-5 lg:text-2xl">{!! nl2br($cliente->descripcion) !!}</p>
 	@endif
 </section>
+@includeIf('secciones.votaciones')
