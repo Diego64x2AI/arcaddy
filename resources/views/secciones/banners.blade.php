@@ -17,3 +17,4 @@
 	</div>
 </section>
 @endif
+@includeIf('secciones.votaciones')

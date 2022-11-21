@@ -21,6 +21,9 @@
 					<x-nav-link :href="route('pedidos.index')" :active="request()->routeIs('pedidos.index')">
 						{{ __('Pedidos') }}
 					</x-nav-link>
+					<x-nav-link :href="route('votaciones.index')" :active="request()->routeIs('votaciones.index')">
+						{{ __('Votaciones') }}
+					</x-nav-link>
 				</div>
 			</div>
 

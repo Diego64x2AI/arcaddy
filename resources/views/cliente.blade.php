@@ -118,8 +118,109 @@
 		</div>
 	@endif
 	<script>
+		const votar_url = '{{ route('votar') }}';
 		window.addEventListener('load', function() {
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
 			$('body').css('paddingTop', $('#header').innerHeight())
+			const iso = new Isotope( '.grid', {
+				itemSelector: '.isotope-item',
+				percentPosition: true,
+  			layoutMode: 'fitRows',
+				stagger: 30,
+				transitionDuration: '0.3s',
+				masonry: {
+					columnWidth: '.isotope-item'
+				}
+			})
+			// filter items on button click
+			$('.filter-button-group').on( 'click', 'button', function() {
+				$('.filter-button-group button').removeClass('current-cat');
+				$(this).addClass('current-cat');
+				var filterValue = $(this).attr('data-filter');
+				iso.arrange({ filter: filterValue })
+				/*
+				iso.arrange({
+					// item element provided as argument
+					filter: function( itemElem ) {
+						var number = itemElem.querySelector('.number').innerText;
+						return parseInt( number, 10 ) > 50;
+					}
+				})
+				*/
+				// iso.Isotope({ filter: filterValue });
+			});
+			const Toast = Swal.mixin({
+				toast: true,
+				position: 'top-end',
+				showConfirmButton: false,
+				timer: 3000,
+				timerProgressBar: true,
+				didOpen: (toast) => {
+					toast.addEventListener('mouseenter', Swal.stopTimer)
+					toast.addEventListener('mouseleave', Swal.resumeTimer)
+				}
+			})
+			$('.isotope-item').click(function(e) {
+				e.preventDefault();
+				const nombre = $(this).data('nombre');
+				const categoria = $(this).data('categoria');
+				let votos = Number($(this).data('votos'));
+				const id = Number($(this).data('id'));
+				const video_id = $(this).data('video-id');
+				console.log('abrir', nombre, categoria, votos, video_id);
+				Swal.fire({
+					title: `<div class="font-bold uppercase mt-5 text-base color">${nombre}</div>`,
+					icon: null,
+					html: `<div class="aspect-w-16 aspect-h-9">
+						<iframe src="https://drive.google.com/file/d/${video_id}/preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</div>
+					<div class="text-center mt-2 votos-${id}">${votos} votos</div>
+					`,
+					showCloseButton: true,
+					showCancelButton: false,
+					focusConfirm: true,
+					buttonsStyling: false,
+					customClass: {
+						confirmButton: 'btn-pill',
+					},
+					confirmButtonText:
+						'<i class="fa fa-thumbs-up"></i> Votar',
+					confirmButtonAriaLabel: 'Votar',
+					cancelButtonText:
+						'<i class="fa fa-thumbs-down"></i>',
+					cancelButtonAriaLabel: 'Thumbs down'
+				}).then((result) => {
+					/* Read more about isConfirmed, isDenied below */
+					if (result.isConfirmed) {
+						$.ajax({
+							url: votar_url,
+							type: 'POST',
+							data: {
+								id: id,
+							},
+						}).then(function(data){
+							console.log(data)
+							$(`.participante-${id}`).data('votos', data.votos);
+							$(`.votos-${id}`).html(`${data.votos} votos`);
+							Toast.fire({
+								icon: 'success',
+								title: data.message
+							})
+						}).fail(function(error){
+							console.log(error.responseJSON.message)
+							Toast.fire({
+								icon: 'error',
+								title: error.responseJSON.message
+							})
+						});
+					}
+				})
+			});
+			$('.filter-button-group button:eq(0)').trigger('click');
 			new Swiper('.swiper-1', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -237,6 +338,11 @@
 		}
 
 		.bg-client {
+			background-color: {{ $cliente->color }} !important;
+		}
+
+		.current-cat {
+			color: #FFF;
 			background-color: {{ $cliente->color }} !important;
 		}
 

@@ -17,6 +17,7 @@ import $ from 'jquery';
 window.$ = window.jQuery = $;
 
 import 'datatables.net'
+import 'datatables.net-responsive'
 // import 'datatables.net-dt/css/jquery.dataTables'
 
 // Sortable
@@ -33,6 +34,12 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 
 window.Swiper = Swiper;
+
+import autoComplete from '@tarekraafat/autocomplete.js'
+window.autoComplete = autoComplete;
+
+import Isotope from 'isotope-layout'
+window.Isotope = Isotope;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

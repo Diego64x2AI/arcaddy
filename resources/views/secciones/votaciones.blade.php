@@ -1,0 +1,35 @@
+@if($cliente->votaciones->count() > 0)
+<section id="votaciones" class="py-10 px-5">
+	@foreach ($cliente->votaciones as $votacion)
+		<div class="text-center px-5 color text-4xl font-extrabold lg:text-8xl">Votación</div>
+		<div class="text-center px-5 text-4xl font-light lg:text-8xl">{{ $votacion->nombre }}</div>
+		<div class="flex flex-row justify-evenly py-5 filter-button-group">
+			@foreach ($votacion->categorias as $categoria)
+				<button class="btn-pill2 @if($loop->index === 0) current-cat @endif" data-filter=".cat-{{ $categoria->id }}"">{{ $categoria->nombre }}</button>
+			@endforeach
+		</div>
+		<div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+			@foreach ($votacion->participantes as $participante)
+				@php
+				@preg_match('~/d/\K[^/]+(?=/)~', $participante->link, $result);
+				$video_id = $result[0];
+				@endphp
+				<div
+					class="isotope-item border-4 border-transparent w-1/3 md:w-1/4 lg:w-1/6 mb-2 participante-{{ $participante->id }} cat-{{ $participante->categoria_id }}"
+					data-video-id="{{ $video_id }}"
+					data-categoria="{{ $votacion->categorias->where('id', $participante->categoria_id)->first()->nombre }}"
+					data-nombre="{{ $participante->user->name }}"
+					data-votos="{{ $participante->votos }}"
+					data-id="{{ $participante->id }}"
+				>
+					<div>
+						<img src="{{ asset('storage/'.$participante->imagen) }}" class="img-general inline-block object-cover w-full h-auto" alt="{{ $participante->user->name }}">
+					</div>
+					<div class="text-center text-sm font-bold uppercase mt-2">{{ $participante->user->name }}</div>
+					<div class="text-center text-sm font-bold color votos-{{ $participante->id }} uppercase">{{ $participante->votos }} votos</div>
+				</div>
+			@endforeach
+		</div>
+	@endforeach
+</section>
+@endif

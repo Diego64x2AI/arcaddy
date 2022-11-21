@@ -50,7 +50,13 @@ class Cliente extends Model
 		'experiencias',
 		'productos',
 		'campos',
+		'votaciones'
 	];
+
+	public function votaciones()
+	{
+		return $this->hasMany(Votaciones::class, 'cliente_id', 'id')->where('activa', 1);
+	}
 
 	public function campos()
 	{

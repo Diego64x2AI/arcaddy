@@ -11,6 +11,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css">
 	<!-- Font Awesome Icons -->
 	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
@@ -33,6 +34,25 @@
 			{{ $slot }}
 		</main>
 	</div>
+	<script>
+		window.addEventListener('load', function() {
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+			$('.open-modal').click(function(e){
+				e.preventDefault();
+				$('div#'+$(this).data('id')).toggleClass('opacity-0').toggleClass('pointer-events-none');
+				$('body').addClass('modal-active');
+			});
+			$('.modal-close').click(function(e){
+				e.preventDefault();
+				$(this).parent().parent().parent().parent().addClass('opacity-0').addClass('pointer-events-none');
+				$('body').removeClass('modal-active');
+			});
+		});
+	</script>
 	@yield('js')
 </body>
 

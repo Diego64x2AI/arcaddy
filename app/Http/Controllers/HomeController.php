@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\ClienteProductoDigital;
+use App\Models\VotacionesParticipantes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -20,6 +21,25 @@ class HomeController extends Controller
 	public function index()
 	{
 		return view('welcome');
+	}
+
+	public function votar(Request $request){
+		$request->validate([
+			'id' => 'required|numeric|min:1|exists:\App\Models\VotacionesParticipantes,id'
+		]);
+		$participante = VotacionesParticipantes::where('id', (int) $request->id)->first();
+		/*
+		if ($participante === null) {
+			return response()->json([
+				'message' => 'Probando error',
+			], 500);
+		}
+		*/
+		$participante->increment('votos');
+		return response()->json([
+			'message' => 'Gracias por tu voto.',
+			'votos' => $participante->votos
+		]);
 	}
 
 	/**

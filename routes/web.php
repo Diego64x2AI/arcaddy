@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\CuponesController;
 use App\Http\Controllers\Admin\PedidosController;
 use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\UsuariosController;
+use App\Http\Controllers\Admin\VotacionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ use App\Http\Controllers\Admin\UsuariosController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/votar', [HomeController::class, 'votar'])->name('votar');
 Route::prefix('carrito')->group(function () {
 	Route::get('/', [CarritoController::class, 'carrito'])->name('carrito');
 	Route::get('/agregar/{producto}', [CarritoController::class, 'agregar'])->name('agregar_carrito');
@@ -52,6 +54,23 @@ Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
 		Route::resource('/clientes', ClienteController::class);
+		Route::resource('/votaciones', VotacionesController::class);
+		Route::prefix('votaciones')->group(function () {
+			Route::post('/{votacione}/atributo', [VotacionesController::class, 'updatea'])->name('votaciones.updatea');
+			Route::prefix('categorias')->group(function () {
+				Route::get('/{votacione}', [VotacionesController::class, 'categorias'])->name('votaciones.categorias');
+				Route::post('/{votacione}', [VotacionesController::class, 'categorias_store'])->name('votaciones.categorias.store');
+				Route::delete('/{categoria}', [VotacionesController::class, 'categorias_destroy'])->name('votaciones.categorias.destroy');
+				Route::post('/{categoria}/atributo', [VotacionesController::class, 'categorias_updatea'])->name('votaciones.categorias.updatea');
+			});
+			Route::prefix('participantes')->group(function () {
+				Route::get('/{votacione}', [VotacionesController::class, 'participantes'])->name('votaciones.participantes');
+				Route::post('/{votacione}/search', [VotacionesController::class, 'participantes_search'])->name('votaciones.participantes.search');
+				Route::post('/{votacione}', [VotacionesController::class, 'participantes_store'])->name('votaciones.participantes.store');
+				Route::delete('/{participante}', [VotacionesController::class, 'participantes_destroy'])->name('votaciones.participantes.destroy');
+				Route::post('/{participante}/atributo', [VotacionesController::class, 'participantes_updatea'])->name('votaciones.participantes.updatea');
+			});
+		});
 		Route::prefix('usuarios')->group(function () {
 			Route::get('/{cliente}', [UsuariosController::class, 'index'])->name('usuarios.index');
 			Route::get('/{cliente}/exportar', [UsuariosController::class, 'export'])->name('usuarios.export');

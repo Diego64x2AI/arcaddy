@@ -5,6 +5,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@tailwindcss/aspect-ratio": "^0.4.2",
         "@tailwindcss/forms": "^0.5.2",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
@@ -20,7 +21,10 @@
         "vite": "^2.9.11"
     },
     "dependencies": {
+        "@tarekraafat/autocomplete.js": "^10.2.7",
         "datatables.net": "^1.13.1",
-        "datatables.net-dt": "^1.13.1"
+        "datatables.net-dt": "^1.13.1",
+        "datatables.net-responsive": "^2.4.0",
+        "isotope-layout": "^3.0.6"
     }
 }

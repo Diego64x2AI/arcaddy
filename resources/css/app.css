@@ -2,13 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+.modal {
+	transition: opacity 0.25s ease;
+}
+body.modal-active {
+	overflow-x: hidden;
+	overflow-y: visible !important;
+}
+
+.autoComplete_wrapper {
+	width: 100%;
+}
+
+input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}
+
 .swiper-grid-column>.swiper-wrapper {
 	flex-wrap: wrap;
 	flex-direction: row!important;
 }
 
+.swal2-html-container {
+	margin: 1em 0.6em .3em!important;
+}
+
 .btn-pill {
 	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block lg:text-xl lg:py-2 lg:px-8
+}
+
+.btn-pill2 {
+	@apply rounded-full bg-gray-300 text-gray-900 px-5 py-2 inline-block lg:text-xl lg:py-2 lg:px-8 font-bold
 }
 
 .input-underline {
