@@ -39,4 +39,9 @@ class VotacionesParticipantes extends Model
 	{
 		return $this->belongsTo(User::class);
 	}
+
+	public function votacion()
+	{
+		return $this->belongsTo(Votaciones::class, 'votacion_id');
+	}
 }

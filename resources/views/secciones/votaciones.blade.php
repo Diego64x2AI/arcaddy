@@ -9,7 +9,10 @@
 			@endforeach
 		</div>
 		<div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-			@foreach ($votacion->participantes as $participante)
+			@php
+			$participantes = ($votacion->finalistas) ? $votacion->participantes()->where('finalista', 1)->get() : $votacion->participantes;
+			@endphp
+			@foreach ($participantes as $participante)
 				@php
 				@preg_match('~/d/\K[^/]+(?=/)~', $participante->link, $result);
 				$video_id = $result[0];
@@ -21,6 +24,7 @@
 					data-nombre="{{ $participante->user->name }}"
 					data-votos="{{ $participante->votos }}"
 					data-id="{{ $participante->id }}"
+					data-votaciones="{{ $votacion->votar ? 'Y' : 'N' }}"
 				>
 					<div>
 						<img src="{{ asset('storage/'.$participante->imagen) }}" class="img-general inline-block object-cover w-full h-auto" alt="{{ $participante->user->name }}">

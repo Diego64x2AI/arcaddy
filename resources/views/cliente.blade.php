@@ -182,6 +182,7 @@
 					`,
 					showCloseButton: true,
 					showCancelButton: false,
+					showConfirmButton: ($(this).data('votaciones') === 'Y'),
 					focusConfirm: true,
 					buttonsStyling: false,
 					customClass: {

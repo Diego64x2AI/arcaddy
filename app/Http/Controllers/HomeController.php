@@ -28,13 +28,11 @@ class HomeController extends Controller
 			'id' => 'required|numeric|min:1|exists:\App\Models\VotacionesParticipantes,id'
 		]);
 		$participante = VotacionesParticipantes::where('id', (int) $request->id)->first();
-		/*
-		if ($participante === null) {
+		if (!$participante->votacion->votar) {
 			return response()->json([
-				'message' => 'Probando error',
+				'message' => 'Las votaciones están desactivadas.',
 			], 500);
 		}
-		*/
 		$participante->increment('votos');
 		return response()->json([
 			'message' => 'Gracias por tu voto.',
