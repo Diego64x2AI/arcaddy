@@ -30,7 +30,9 @@
 						<img src="{{ asset('storage/'.$participante->imagen) }}" class="img-general inline-block object-cover w-full h-auto" alt="{{ $participante->user->name }}">
 					</div>
 					<div class="text-center text-sm font-bold uppercase mt-2">{{ $participante->user->name }}</div>
+					@if($votacion->votar)
 					<div class="text-center text-sm font-bold color votos-{{ $participante->id }} uppercase">{{ $participante->votos }} votos</div>
+					@endif
 				</div>
 			@endforeach
 		</div>
