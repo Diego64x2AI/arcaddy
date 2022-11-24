@@ -1,7 +1,7 @@
 @if($cliente->votaciones->count() > 0)
 <section id="votaciones" class="py-10 px-5">
 	@foreach ($cliente->votaciones as $votacion)
-		<div class="text-center px-5 color text-4xl font-extrabold lg:text-8xl">Votación</div>
+		{{--<div class="text-center px-5 color text-4xl font-extrabold lg:text-8xl">Votación</div> --}}
 		<div class="text-center px-5 text-4xl font-light lg:text-8xl">{{ $votacion->nombre }}</div>
 		<div class="flex flex-row justify-evenly py-5 filter-button-group">
 			@foreach ($votacion->categorias as $categoria)
