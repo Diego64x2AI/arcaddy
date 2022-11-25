@@ -215,7 +215,7 @@
 							console.log(error.responseJSON.message)
 							Toast.fire({
 								icon: 'error',
-								title: error.responseJSON.message
+								title: error.responseJSON.message.replace('Too Many Attempts.', 'Ya votaste por este participante.')
 							})
 						});
 					}
