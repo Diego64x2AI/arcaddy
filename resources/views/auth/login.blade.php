@@ -45,11 +45,11 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			</div>
 
 			<!-- Remember Me -->
-			<div class="block mt-4">
+			<div class="block mt-4" style="display:none;">
 				<label for="remember_me" class="inline-flex items-center">
 					<input id="remember_me" type="checkbox"
 						class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-						name="remember">
+						name="remember" checked>
 					<span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
 				</label>
 			</div>
