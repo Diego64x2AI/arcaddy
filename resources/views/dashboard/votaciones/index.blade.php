@@ -46,7 +46,9 @@
 							@foreach ($votaciones as $votacion)
 							<tr>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $votacion->id }}</td>
-								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $votacion->nombre }}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									<div class="edit-inline-text" data-id="{{ $votacion->id }}" data-campo="nombre">{{ $votacion->nombre }}</div>
+								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<a href="{{ route('cliente', ['slug' => $votacion->cliente->slug]) }}" target="_blank">
 										<img src="{{ asset('storage/'.$votacion->cliente->logo) }}" class="img-general inline-block object-cover w-20 h-auto">
@@ -179,6 +181,35 @@
 	<script>
 		const url = '{{ url('dashboard/votaciones') }}';
 		window.addEventListener('load', function() {
+			const inlineEditElements = document.querySelectorAll('.edit-inline-text')
+			inlineEditElements.forEach(element => {
+				Flyter.attach(element, {
+					initialValue: element.innerHTML,
+					emptyValueDisplay: 'Escribe el valor del campo...',
+					submitOnEnter: true,
+					type: { name: 'text' },
+					okButton: {enabled: true,text: 'Guardar'},
+					cancelButton: {enabled: true,text: 'Cancelar'},
+					onSubmit: async function(valor) {
+						const formdata = new FormData()
+						formdata.append($(element).data('campo'), valor)
+						$.ajax({
+							url: `${url}/${$(element).data('id')}/atributo`,
+							type: "POST",
+							method: 'POST',
+							data: formdata,
+							cache: false,
+							processData: false,
+							contentType: false
+						}).done(function(data) {
+							console.log(data);
+							return true
+						}).fail(function() {
+							Swal.fire( "error" );
+						});
+					}
+				})
+			})
 			$('table#usuarios').DataTable({
 				paging: true,
 				searching: true,

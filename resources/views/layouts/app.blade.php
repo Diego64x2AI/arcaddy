@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css">
 	<!-- Font Awesome Icons -->
 	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://unpkg.com/@popperjs/core@2"></script>
 	<!-- Scripts -->
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

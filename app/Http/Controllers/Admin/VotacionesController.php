@@ -39,7 +39,8 @@ class VotacionesController extends Controller
 	{
 		return view('dashboard.votaciones.participantes', [
 			'votacion' => $votacione,
-			'categorias' => VotacionesCategorias::where('votacion_id', $votacione->id)->get(),
+			'categorias' => VotacionesCategorias::select('id', 'nombre')->where('votacion_id', $votacione->id)->get(),
+			'categorias2' => VotacionesCategorias::select('id as value', 'nombre as label')->where('votacion_id', $votacione->id)->get(),
 		]);
 	}
 
@@ -131,6 +132,9 @@ class VotacionesController extends Controller
 		}
 		if ($request->filled('link')) {
 			$participante->update(['link' => $request->link]);
+		}
+		if ($request->filled('categoria_id')) {
+			$participante->update(['categoria_id' => $request->categoria_id]);
 		}
 		return response()->json([
 			'result' => true,
@@ -283,6 +287,9 @@ class VotacionesController extends Controller
 		}
 		if ($request->filled('activa')) {
 			$votacione->update(['activa' => $request->boolean('activa')]);
+		}
+		if ($request->filled('nombre')) {
+			$votacione->update(['nombre' => $request->nombre]);
 		}
 		return response()->json([
 			'result' => true,

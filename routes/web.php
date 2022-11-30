@@ -54,14 +54,16 @@ Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
 		Route::resource('/clientes', ClienteController::class);
-		Route::resource('/votaciones', VotacionesController::class);
+		Route::resource('/votaciones', VotacionesController::class, [
+			'except' => ['update']
+		]);
 		Route::prefix('votaciones')->group(function () {
 			Route::post('/{votacione}/atributo', [VotacionesController::class, 'updatea'])->name('votaciones.updatea');
 			Route::prefix('categorias')->group(function () {
 				Route::get('/{votacione}', [VotacionesController::class, 'categorias'])->name('votaciones.categorias');
 				Route::post('/{votacione}', [VotacionesController::class, 'categorias_store'])->name('votaciones.categorias.store');
 				Route::delete('/{categoria}', [VotacionesController::class, 'categorias_destroy'])->name('votaciones.categorias.destroy');
-				Route::post('/{categoria}/atributo', [VotacionesController::class, 'categorias_updatea'])->name('votaciones.categorias.updatea');
+				//Route::post('/{categoria}/atributo', [VotacionesController::class, 'categorias_updatea'])->name('votaciones.categorias.updatea');
 			});
 			Route::prefix('participantes')->group(function () {
 				Route::get('/{votacione}', [VotacionesController::class, 'participantes'])->name('votaciones.participantes');

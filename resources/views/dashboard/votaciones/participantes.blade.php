@@ -20,7 +20,7 @@
 	</x-slot>
 
 	<div class="py-6">
-		<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+		<div class="max-w-xxl mx-auto sm:px-6 lg:px-8">
 			<div class="bg-white">
 				<div class="p-6 bg-white border border-white">
 					@if ($errors->any())
@@ -40,6 +40,7 @@
 								<th class="p-3 !text-center">Imagen</th>
 								<th class="p-3 !text-center">Nombre</th>
 								<th class="p-3 !text-center">Vídeo</th>
+								<th class="p-3 !text-center">Categoría</th>
 								<th class="p-3 !text-center">Activo</th>
 								<th class="p-3 !text-center">Finalista</th>
 								<th class="p-3 !text-center">Votos</th>
@@ -56,6 +57,9 @@
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $participante->user->name }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center break-all">
 									<div class="edit-inline-text" data-id="{{ $participante->id }}" data-campo="link">{{ $participante->link }}</div>
+								</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center break-all">
+									<div class="edit-inline-select" data-id="{{ $participante->id }}" data-value="{{ $participante->categoria_id }}" data-campo="categoria_id">{{ $participante->categoria->nombre }}</div>
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<div class="flex items-center justify-center w-full mb-2">
@@ -181,19 +185,60 @@
 			border-bottom: 2px solid rgba(0, 0, 0, .1);
 		}
 	</style>
-	<script type="text/javascript" src="https://unpkg.com/@popperjs/core@2"></script>
 	<script>
 		const url = '{{ url('dashboard/votaciones/participantes') }}';
 		const url_search = '{{ route('votaciones.participantes.search', ['votacione' => $votacion->id]) }}';
 		window.addEventListener('load', function() {
 			const inlineEditElements = document.querySelectorAll('.edit-inline-text')
 			inlineEditElements.forEach(element => {
-				console.log(element)
 				Flyter.attach(element, {
 					initialValue: element.innerHTML,
 					emptyValueDisplay: 'Escribe el valor del campo...',
 					submitOnEnter: true,
 					type: { name: 'text' },
+					okButton: {enabled: true,text: 'Guardar'},
+					cancelButton: {enabled: true,text: 'Cancelar'},
+					onSubmit: async function(valor) {
+						const formdata = new FormData()
+						formdata.append($(element).data('campo'), valor)
+						$.ajax({
+							url: `${url}/${$(element).data('id')}/atributo`,
+							type: "POST",
+							method: 'POST',
+							data: formdata,
+							cache: false,
+							processData: false,
+							contentType: false
+						}).done(function(data) {
+							console.log(data);
+							return true
+						}).fail(function() {
+							Swal.fire( "error" );
+						});
+					}
+				})
+			})
+			const inlineEditElementsSelect = document.querySelectorAll('.edit-inline-select')
+			inlineEditElementsSelect.forEach(async (element) => {
+				console.log(element, $(element).data('value'))
+				Flyter.attach(element, {
+					initialValue: $(element).data('value'),
+					submitOnEnter: true,
+					okButton: {enabled: true,text: 'Guardar'},
+					cancelButton: {enabled: true,text: 'Cancelar'},
+					type: {
+						name: 'select',
+						config: {
+							class: 'w-full',
+							multiple: false,
+							showEmptyValue: true,
+							dataSource: async () => {
+								return new Promise((resolve) => {
+									resolve({!! $categorias2->toJson() !!})
+								});
+							}
+						}
+					},
 					onSubmit: async function(valor) {
 						const formdata = new FormData()
 						formdata.append($(element).data('campo'), valor)

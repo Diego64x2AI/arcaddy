@@ -31,7 +31,7 @@ class VotacionesParticipantes extends Model
 		'finalista' => 'boolean',
 	];
 
-	protected $with = ['user'];
+	protected $with = ['user', 'categoria'];
 
 	public $timestamps = false;
 
@@ -43,5 +43,10 @@ class VotacionesParticipantes extends Model
 	public function votacion()
 	{
 		return $this->belongsTo(Votaciones::class, 'votacion_id');
+	}
+
+	public function categoria()
+	{
+		return $this->belongsTo(VotacionesCategorias::class, 'categoria_id');
 	}
 }

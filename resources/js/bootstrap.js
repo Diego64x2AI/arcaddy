@@ -45,16 +45,16 @@ import { createPopper } from '@popperjs/core'
 
 import flyter, {
   withPopupRenderer,
-  withInlineRenderer,
+  // withInlineRenderer,
   withTextType,
   withSelectType,
-  withCheckboxType,
-  withRadioType,
+  // withCheckboxType,
+  // withRadioType,
 } from 'flyter'
 withPopupRenderer()
 withTextType()
 withSelectType()
-withInlineRenderer()
+// withInlineRenderer()
 
 window.Flyter = flyter
 
