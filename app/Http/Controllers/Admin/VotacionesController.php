@@ -129,6 +129,9 @@ class VotacionesController extends Controller
 		if ($request->filled('finalista')) {
 			$participante->update(['finalista' => $request->boolean('finalista')]);
 		}
+		if ($request->filled('link')) {
+			$participante->update(['link' => $request->link]);
+		}
 		return response()->json([
 			'result' => true,
 		]);

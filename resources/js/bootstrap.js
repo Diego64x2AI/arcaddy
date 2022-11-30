@@ -7,39 +7,56 @@ window._ = _;
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
-window.axios = axios;
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.headers.common['X-CSRF-TOKEN'] =  document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+import axios from 'axios'
+window.axios = axios
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] =  document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
 // jQuery
-import $ from 'jquery';
-window.$ = window.jQuery = $;
+import $ from 'jquery'
+window.$ = window.jQuery = $
 
 import 'datatables.net'
 import 'datatables.net-responsive'
 // import 'datatables.net-dt/css/jquery.dataTables'
 
 // Sortable
-import Sortable from 'sortablejs';
-window.Sortable = Sortable;
+import Sortable from 'sortablejs'
+window.Sortable = Sortable
 
 // SweetAlert2
 import Swal from 'sweetalert2'
-window.Swal = Swal;
+window.Swal = Swal
 
 // import Swiper bundle with all modules installed
-import Swiper from 'swiper/bundle';
+import Swiper from 'swiper/bundle'
 // import styles bundle
-import 'swiper/css/bundle';
+import 'swiper/css/bundle'
 
-window.Swiper = Swiper;
+window.Swiper = Swiper
 
 import autoComplete from '@tarekraafat/autocomplete.js'
 window.autoComplete = autoComplete;
 
 import Isotope from 'isotope-layout'
-window.Isotope = Isotope;
+window.Isotope = Isotope
+
+import { createPopper } from '@popperjs/core'
+
+import flyter, {
+  withPopupRenderer,
+  withInlineRenderer,
+  withTextType,
+  withSelectType,
+  withCheckboxType,
+  withRadioType,
+} from 'flyter'
+withPopupRenderer()
+withTextType()
+withSelectType()
+withInlineRenderer()
+
+window.Flyter = flyter
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

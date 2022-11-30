@@ -39,6 +39,7 @@
 								<th class="p-3 !text-center">ID</th>
 								<th class="p-3 !text-center">Imagen</th>
 								<th class="p-3 !text-center">Nombre</th>
+								<th class="p-3 !text-center">Vídeo</th>
 								<th class="p-3 !text-center">Activo</th>
 								<th class="p-3 !text-center">Finalista</th>
 								<th class="p-3 !text-center">Votos</th>
@@ -53,6 +54,9 @@
 									<img src="{{ asset('storage/'.$participante->imagen) }}" class="img-general inline-block object-cover w-20 h-auto">
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $participante->user->name }}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center break-all">
+									<div class="edit-inline-text" data-id="{{ $participante->id }}" data-campo="link">{{ $participante->link }}</div>
+								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<div class="flex items-center justify-center w-full mb-2">
 										<label for="activa_{{ $participante->id }}" class="flex items-center cursor-pointer">
@@ -177,10 +181,39 @@
 			border-bottom: 2px solid rgba(0, 0, 0, .1);
 		}
 	</style>
+	<script type="text/javascript" src="https://unpkg.com/@popperjs/core@2"></script>
 	<script>
 		const url = '{{ url('dashboard/votaciones/participantes') }}';
 		const url_search = '{{ route('votaciones.participantes.search', ['votacione' => $votacion->id]) }}';
 		window.addEventListener('load', function() {
+			const inlineEditElements = document.querySelectorAll('.edit-inline-text')
+			inlineEditElements.forEach(element => {
+				console.log(element)
+				Flyter.attach(element, {
+					initialValue: element.innerHTML,
+					emptyValueDisplay: 'Escribe el valor del campo...',
+					submitOnEnter: true,
+					type: { name: 'text' },
+					onSubmit: async function(valor) {
+						const formdata = new FormData()
+						formdata.append($(element).data('campo'), valor)
+						$.ajax({
+							url: `${url}/${$(element).data('id')}/atributo`,
+							type: "POST",
+							method: 'POST',
+							data: formdata,
+							cache: false,
+							processData: false,
+							contentType: false
+						}).done(function(data) {
+							console.log(data);
+							return true
+						}).fail(function() {
+							Swal.fire( "error" );
+						});
+					}
+				})
+			})
 			const autoCompleteJS = new autoComplete({
 				selector: "#autoComplete",
 				placeHolder: "Buscar por nombre, id, email...",

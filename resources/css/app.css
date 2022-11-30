@@ -28,6 +28,11 @@ input:checked ~ .dot {
 	margin: 1em 0.6em .3em!important;
 }
 
+.swal2-popup {
+	width: 95%!important;
+	max-width: 1024px!important;
+}
+
 .btn-pill {
 	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block lg:text-xl lg:py-2 lg:px-8
 }
