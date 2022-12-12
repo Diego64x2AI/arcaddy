@@ -174,18 +174,20 @@
 				const plataforma = $(this).data('plataforma');
 				const plataforma_user = $(this).data('plataforma-user');
 				let media = '';
+				let votoshtml = '';
 				if (plataforma === 'google') {
 					media = `<iframe src="https://drive.google.com/file/d/${video_id}/preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
 				} else if (plataforma === 'vimeo') {
 					media = `<iframe src="https://player.vimeo.com/video/${video_id}?h=${plataforma_user}&amp;badge=0&autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
 				}
+				if ($(this).data('votaciones') === 'Y') {
+					votoshtml = `<div class="text-center mt-2 votos-${id}">${votos} votos</div>`
+				}
 				console.log('abrir', nombre, categoria, votos, video_id);
 				Swal.fire({
 					title: `<div class="font-bold uppercase mt-5 text-base color">${nombre}</div>`,
 					icon: null,
-					html: `<div class="aspect-w-16 aspect-h-9">${media}</div>
-					<div class="text-center mt-2 votos-${id}">${votos} votos</div>
-					`,
+					html: `<div class="aspect-w-16 aspect-h-9">${media}</div>${votoshtml}`,
 					showCloseButton: true,
 					showCancelButton: false,
 					showConfirmButton: ($(this).data('votaciones') === 'Y'),
