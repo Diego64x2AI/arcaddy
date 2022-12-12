@@ -25,7 +25,7 @@
 	<div class="aspect-w-16 aspect-h-9">
 		@if($plataforma === 'youtube')
 		<iframe
-			src="https://www.youtube.com/embed/{{ $matches[0] }}?&autoplay=1&mute=1&rel=0"
+			src="https://www.youtube.com/embed/{{ $video_id }}?&autoplay=1&mute=1&rel=0"
 			frameborder="0"
 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 			allowfullscreen
