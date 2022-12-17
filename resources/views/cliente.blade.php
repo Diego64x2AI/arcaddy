@@ -13,6 +13,15 @@
 	<!-- Font Awesome Icons -->
 	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-40ZEQ4JZ0Y"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-40ZEQ4JZ0Y');
+	</script>
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
