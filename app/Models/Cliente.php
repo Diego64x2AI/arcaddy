@@ -26,7 +26,10 @@ class Cliente extends Model
 		'whatsapp',
 		'registro',
 		'registro_descripcion',
-		'registro_img'
+		'registro_img',
+		'password',
+		'password_titulo',
+		'password_descripcion',
 	];
 
 	/**

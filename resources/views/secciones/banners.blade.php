@@ -1,5 +1,8 @@
 @if($cliente->banners->count() > 0)
 <section id="banners">
+	@if ($cliente->secciones()->where('seccion', 'banners')->first()->mostrar_titulo)
+	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'banners')->first()->titulo }}</div>
+	@endif
 	<!-- Slider main container -->
 	<div class="swiper swiper-1">
 		<!-- Additional required wrapper -->

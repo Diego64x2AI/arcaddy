@@ -252,7 +252,9 @@ class ClienteController extends Controller
 					],
 					[
 						'orden' => $key,
+						'titulo' => $request->input("titulos.{$seccion}"),
 						'activa' => $request->boolean($seccion . '-activo'),
+						'mostrar_titulo' => $request->boolean($seccion . '-activo2'),
 					]
 				);
 			}

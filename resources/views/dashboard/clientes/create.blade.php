@@ -91,13 +91,42 @@
 							</div>
 							@endif
 						</div>
+						<div id="privado" class="bg-white p-3 mt-3">
+							<div class="flex flex-row items-center font-bold">
+								<div class="text-xl md:text-3xl truncate mr-2">Arcaddy privado</div>
+							</div>
+							<div id="privado-container" class="mt-5 section-box">
+								<div class="flex flex-wrap items-center -mx-3">
+									<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
+											Título página
+										</label>
+										<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="password_titulo" id="password_titulo"
+											type="text" value="{{ ($cliente->id !== NULL) ? $cliente->password_titulo : old('password_titulo') }}">
+									</div>
+									<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
+											Descripción página
+										</label>
+										<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="password_descripcion" id="password_descripcion"
+											type="text" value="{{ ($cliente->id !== NULL) ? $cliente->password_descripcion : old('password_descripcion') }}">
+									</div>
+									<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
+											Contraseña
+										</label>
+										<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="password" id="password"
+											type="text" value="{{ ($cliente->id !== NULL) ? $cliente->password : old('password') }}">
+									</div>
+								</div>
+							</div>
+						</div>
 						<div id="registro" class="bg-white p-3 mt-3">
-							<input type="hidden" name="secciones[]" value="banners">
 							<div class="flex flex-row items-center font-bold">
 								<div class="text-xl md:text-3xl truncate mr-2">Registro</div>
 								<div class="ml-auto"><span class="hidden md:inline-block mr-2">Activar / Desactivar </span><input type="checkbox" id="registro" name="registro" value="on" @if($cliente->id !== NULL && $cliente->registro) checked @endif></div>
 							</div>
-							<div id="registro-container" class="container-draggable mt-5 section-box">
+							<div id="registro-container" class="mt-5 section-box">
 								<div class="flex flex-wrap -mx-3 justify-center">
 									<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
 										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="registro_img">

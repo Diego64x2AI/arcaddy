@@ -12,6 +12,8 @@ class ClienteSecciones extends Model
 	protected $fillable = [
 		'cliente_id',
 		'seccion',
+		'titulo',
+		'mostrar_titulo',
 		'orden',
 		'activa',
 	];
@@ -20,6 +22,7 @@ class ClienteSecciones extends Model
 
 	protected $casts = [
 		'activa' => 'boolean',
+		'mostrar_titulo' => 'boolean',
 	];
 
 	public function cliente()

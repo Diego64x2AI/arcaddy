@@ -1,6 +1,8 @@
 @if($cliente->productos()->where('digital', 0)->count() > 0)
 <section id="blog" class="mt-5 py-5 text-center lg:mt-10">
-	<div class="text-center text-4xl lg:text-8xl">Tienda <span class="color font-extrabold">Online</span></div>
+	@if ($cliente->secciones()->where('seccion', 'productos')->first()->mostrar_titulo)
+	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'productos')->first()->titulo }}</div>
+	@endif
 	<div id="blog-swiper" class="swiper swiper-2 mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper pb-14">

@@ -22,6 +22,9 @@
 		}
 	}
 	@endphp
+	@if ($cliente->secciones()->where('seccion', 'live')->first()->mostrar_titulo)
+	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'live')->first()->titulo }}</div>
+	@endif
 	<div class="aspect-w-16 aspect-h-9">
 		@if($plataforma === 'youtube')
 		<iframe

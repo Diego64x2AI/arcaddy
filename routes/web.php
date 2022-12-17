@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\VotacionesController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/votar', [HomeController::class, 'votar'])->name('votar')->middleware('votacionthrottle:1,1440');
+Route::post('/acceso/{cliente}', [HomeController::class, 'acceso'])->name('acceso');
 Route::prefix('carrito')->group(function () {
 	Route::get('/', [CarritoController::class, 'carrito'])->name('carrito');
 	Route::get('/agregar/{producto}', [CarritoController::class, 'agregar'])->name('agregar_carrito');
@@ -42,13 +43,13 @@ Route::prefix('digital')->group(function () {
 	Route::get('/share/{cupon}', [HomeController::class, 'digital_share'])->name('digital_share');
 	Route::get('/canjear/{cupon}', [HomeController::class, 'canjear'])->name('digital_canjear');
 });
+/*
 Route::get('/notification', function () {
-	/*$pedido = Pedido::find(2);
-	return (new PedidoCreado($pedido))->toMail($pedido->user);*/
 	$cliente = Cliente::find(2);
 	$user = User::find(8);
 	return (new RegistroCodigo($user, $cliente))->toMail($user);
 });
+*/
 
 Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {

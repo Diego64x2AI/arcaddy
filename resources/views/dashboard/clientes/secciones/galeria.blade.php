@@ -1,8 +1,16 @@
 <div id="galeria" class="bg-white p-3 mt-3">
 	<input type="hidden" name="secciones[]" value="galeria">
 	<div class="flex flex-row items-center font-bold">
-		<div class="text-xl md:text-3xl truncate mr-1">Galería:</div>
-		<div class="ml-auto"><span class="hidden md:inline-block">Activar / Desactivar </span><input type="checkbox" name="galeria-activo" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'galeria')->first()->activa) checked @endif></div>
+		<div class="text-xl md:text-3xl truncate mr-5 grow">
+			<input class="shadow appearance-none border w-full py-2 px-3 text-gray-700" name="titulos[galeria]" type="text"
+			value="{{ ($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'galeria')->first()->titulo !== NULL) ? $cliente->secciones()->where('seccion', 'galeria')->first()->titulo : 'Galería' }}">
+		</div>
+		<div class="ml-auto">
+			<span class="hidden md:inline-block">Mostrar título </span><input type="checkbox" name="galeria-activo2" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'galeria')->first()->mostrar_titulo) checked @endif>
+		</div>
+		<div class="ml-5">
+			<span class="hidden md:inline-block">Módulo activo </span><input type="checkbox" name="galeria-activo" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'galeria')->first()->activa) checked @endif>
+		</div>
 		<div class="ml-5 cursor-move handler2">Mover <i class="fas fa-ellipsis-v"></i></div>
 	</div>
 	<div id="galeria-container" class="container-draggable mt-5 section-box">

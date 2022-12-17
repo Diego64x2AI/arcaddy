@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
-use App\Models\ClienteProductoDigital;
-use App\Models\VotacionesParticipantes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\File;
+use App\Models\ClienteProductoDigital;
+use Illuminate\Support\Facades\Cookie;
+use App\Models\VotacionesParticipantes;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class HomeController extends Controller
 {
@@ -48,9 +49,31 @@ class HomeController extends Controller
 	public function cliente($slug = '')
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		if ($cliente->password !== NULL && trim($cliente->password) !== '' && Cookie::get('cpass') !== $cliente->password) {
+			return view('cliente-password', [
+				'cliente' => $cliente,
+			]);
+		}
 		return view('cliente', [
 			'cliente' => $cliente,
 		]);
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function acceso(Cliente $cliente, Request $request)
+	{
+		$request->validate([
+			'password' => 'required|string|min:1'
+		]);
+		if ($cliente->password !== $request->password) {
+			return redirect()->back()->withErrors(['password' => 'La contraseña es incorrecta.']);
+		}
+		Cookie::queue('cpass', $request->password, (60 * 24 * 30));
+		return redirect()->route('cliente', $cliente->slug);
 	}
 
 	/**

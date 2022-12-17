@@ -1,6 +1,8 @@
 @if($cliente->galeria->count() > 0)
 <section id="galeria" class="mt-5 text-center lg:mt-10">
-	{{-- <div class="text-center px-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->titulo }}</div> --}}
+	@if ($cliente->secciones()->where('seccion', 'galeria')->first()->mostrar_titulo)
+	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'galeria')->first()->titulo }}</div>
+	@endif
 	<div id="galeria-swiper" class="swiper swiper-galeria mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper pb-14">
