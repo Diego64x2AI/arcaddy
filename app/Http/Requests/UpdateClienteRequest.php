@@ -28,6 +28,8 @@ class UpdateClienteRequest extends FormRequest
 			'cliente' => 'required|string|max:255',
 			'slug' => 'required|string|max:100|unique:clientes,slug,'.$this->route('cliente')->id,
 			'color' => 'required|string|max:55',
+			'color_bg' => 'required|string|max:55',
+			'color_base' => 'required|string|max:55',
 			'logo' => 'nullable|sometimes|image|mimes:jpeg,png,jpg',
 			'titulo' => 'nullable|string|max:255',
 			'subtitulo' => 'nullable|string|max:255',

@@ -13,6 +13,8 @@ class Cliente extends Model
 		'cliente',
 		'slug',
 		'color',
+		'color_base',
+		'color_bg',
 		'logo',
 		'titulo',
 		'subtitulo',

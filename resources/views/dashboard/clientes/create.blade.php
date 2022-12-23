@@ -57,6 +57,22 @@
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="cliente" id="cliente"
 									type="text" value="{{ ($cliente->id !== NULL) ? $cliente->cliente : old('cliente') }}" placeholder="Ejemplo: Red Bull" required>
 							</div>
+						</div>
+						<div class="flex flex-wrap items-center -mx-3">
+							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color_bg">
+									Color de fondo
+								</label>
+								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="color_bg" id="color_bg"
+									value="{{ ($cliente->id !== NULL) ? $cliente->color_bg : old('color_bg') }}" type="color" placeholder="#FFFFFF" @if($cliente->id === NULL) required @endif>
+							</div>
+							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color_base">
+									Color del texto
+								</label>
+								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="color_base" id="color_base"
+									value="{{ ($cliente->id !== NULL) ? $cliente->color_base : old('color_base') }}" type="color" placeholder="#000000" @if($cliente->id === NULL) required @endif>
+							</div>
 							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color">
 									Color de contraste

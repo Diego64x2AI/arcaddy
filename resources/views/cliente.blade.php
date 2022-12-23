@@ -347,6 +347,15 @@
 			}
 		}
 
+		body {
+			background-color: {{ $cliente->color_bg }} !important;
+			color: {{ $cliente->color_base }} !important;
+		}
+
+		#header {
+			background-color: {{ $cliente->color_bg }} !important;
+		}
+
 		.btn-pill {
 			background-color: {{ $cliente->color }} !important;
 		}
