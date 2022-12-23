@@ -42,42 +42,40 @@
 					@method('PUT')
 					@endif
 					<div class="p-6 bg-gray-100 border border-white">
-						<div class="flex flex-wrap items-center -mx-3">
-							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+						<div class="grid grid-cols-1 md:grid-cols-7 items-center justify-around -mx-3">
+							<div class="col-span-2 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
 									ar-caddy.com/
 								</label>
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="slug" id="slug"
 									type="text" value="{{ ($cliente->id !== NULL) ? $cliente->slug : old('slug') }}" placeholder="Ejemplo: redbull" required>
 							</div>
-							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+							<div class="col-span-2 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
 									Nombre cliente
 								</label>
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="cliente" id="cliente"
 									type="text" value="{{ ($cliente->id !== NULL) ? $cliente->cliente : old('cliente') }}" placeholder="Ejemplo: Red Bull" required>
 							</div>
-						</div>
-						<div class="flex flex-wrap items-center -mx-3">
-							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+							<div class="px-3 mb-6 md:mb-6 text-center">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color_bg">
-									Color de fondo
+									Fondo
 								</label>
-								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="color_bg" id="color_bg"
+								<input name="color_bg" id="color_bg"
 									value="{{ ($cliente->id !== NULL) ? $cliente->color_bg : old('color_bg') }}" type="color" placeholder="#FFFFFF" @if($cliente->id === NULL) required @endif>
 							</div>
-							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+							<div class="px-3 mb-6 md:mb-6 text-center">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color_base">
-									Color del texto
+									Texto
 								</label>
-								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="color_base" id="color_base"
+								<input name="color_base" id="color_base"
 									value="{{ ($cliente->id !== NULL) ? $cliente->color_base : old('color_base') }}" type="color" placeholder="#000000" @if($cliente->id === NULL) required @endif>
 							</div>
-							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+							<div class="px-3 mb-6 md:mb-6 text-center">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color">
-									Color de contraste
+									Contraste
 								</label>
-								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="color" id="color"
+								<input name="color" id="color"
 									value="{{ ($cliente->id !== NULL) ? $cliente->color : old('color') }}" type="color" placeholder="#FF4E00" @if($cliente->id === NULL) required @endif>
 							</div>
 						</div>
