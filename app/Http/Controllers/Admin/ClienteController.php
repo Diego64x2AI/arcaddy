@@ -32,7 +32,7 @@ class ClienteController extends Controller
 	public function index()
 	{
 		return view('dashboard.clientes.index', [
-			'clientes' => Cliente::paginate(20),
+			'clientes' => Cliente::paginate(50),
 		]);
 	}
 
