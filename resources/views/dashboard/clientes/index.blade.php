@@ -79,7 +79,7 @@
 							</a>
 						</div>
 					</div>
-					<div class="flex flex-row items-center justify-center">
+					<div class="flex flex-col items-center justify-center">
 						{{ $clientes->links() }}
 					</div>
 				</div>
