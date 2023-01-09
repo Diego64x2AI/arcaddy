@@ -220,6 +220,7 @@
 		</div>
 	</div>
 	@section('js')
+	<script src="{{ asset('js/rcrop.min.js') }}" ></script>
 	<script>
 		window.addEventListener('load', function() {
 				$('body').on('click', 'button.examinar-btn', function (e) {
