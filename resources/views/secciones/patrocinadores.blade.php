@@ -5,11 +5,11 @@
 	@endif
 	<div class="flex flex-col flex-wrap lg:flex-row items-center">
 		@foreach($cliente->patrocinadores as $patrocinador)
-		<div class="w-full md:w-1/2 px-2 mt-10">
+		<div class="w-full md:w-1/2 lg:w-1/3 px-2 mt-10">
 			@if ($patrocinador->link !== NULL && trim($patrocinador->link) !== '')
-				<a href="{{ $patrocinador->link }}" target="_blank"><img src="{{ asset('storage/'.$patrocinador->archivo) }}" class="object-fill w-full h-auto inline"></a>
+				<a href="{{ $patrocinador->link }}" target="_blank"><img src="{{ asset('storage/'.$patrocinador->archivo) }}" class="object-fill w-3/4 h-auto inline"></a>
 			@else
-			<img src="{{ asset('storage/'.$patrocinador->archivo) }}" class="object-fill w-full h-auto inline">
+			<img src="{{ asset('storage/'.$patrocinador->archivo) }}" class="object-fill w-3/4 h-auto inline">
 			@endif
 		</div>
 		@endforeach
