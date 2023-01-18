@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Campos;
 use App\Models\Cliente;
 use App\Models\ClienteBlog;
 use Illuminate\Support\Str;
 use App\Models\ClienteBanner;
 use App\Models\ClienteLibres;
+use App\Models\ClienteBanner2;
 use App\Models\ClienteGaleria;
+use App\Models\ClienteFlotante;
 use App\Models\ClientePlaylist;
 use App\Models\ClienteSecciones;
+use App\Models\ClienteUserField;
 use App\Models\ClienteExperiencia;
 use App\Http\Controllers\Controller;
 use App\Models\ClienteColaboradores;
@@ -18,8 +22,6 @@ use App\Models\ClientePatrocinadores;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
-use App\Models\Campos;
-use App\Models\ClienteUserField;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClienteController extends Controller
@@ -80,6 +82,21 @@ class ClienteController extends Controller
 						'activa' => $request->boolean($seccion . '-activo'),
 					]
 				);
+			}
+		}
+		// flotantes
+		if (isset($campos['flotantes_texto']) && count($campos['flotantes_texto']) > 0) {
+			ClienteFlotante::where('cliente_id', $cliente->id)->delete();
+			foreach ($campos['flotantes_texto'] as $key => $texto) {
+				ClienteFlotante::insert([
+					'cliente_id' => $cliente->id,
+					'texto' => $texto,
+					'link' => $campos['flotantes_link'][$key],
+					'icono' => $campos['flotantes_icono'][$key],
+					'color' => $campos['flotantes_color'][$key],
+					'posicion' => $campos['flotantes_posicion'][$key],
+					'target' => $campos['flotantes_target'][$key],
+				]);
 			}
 		}
 		// banners
@@ -273,6 +290,21 @@ class ClienteController extends Controller
 				]);
 			}
 		}
+		// flotantes
+		if (isset($campos['flotantes_texto']) && count($campos['flotantes_texto']) > 0) {
+			ClienteFlotante::where('cliente_id', $cliente->id)->delete();
+			foreach ($campos['flotantes_texto'] as $key => $texto) {
+				ClienteFlotante::insert([
+					'cliente_id' => $cliente->id,
+					'texto' => $texto,
+					'link' => $campos['flotantes_link'][$key],
+					'icono' => $campos['flotantes_icono'][$key],
+					'color' => $campos['flotantes_color'][$key],
+					'posicion' => $campos['flotantes_posicion'][$key],
+					'target' => $campos['flotantes_target'][$key],
+				]);
+			}
+		}
 		// banners
 		if (isset($campos['banners_titulo']) && count($campos['banners_titulo']) > 0) {
 			foreach ($cliente->banners as $banner) {
@@ -292,6 +324,28 @@ class ClienteController extends Controller
 					'archivo' => $archivo,
 					'titulo' => $titulo,
 					'link' => $campos['banners_link'][$key],
+				]);
+			}
+		}
+		// banners 2
+		if (isset($campos['banners2_titulo']) && count($campos['banners2_titulo']) > 0) {
+			foreach ($cliente->banners2 as $banner) {
+				Storage::delete($banner->archivo);
+			}
+			ClienteBanner2::where('cliente_id', $cliente->id)->delete();
+			foreach ($campos['banners2_titulo'] as $key => $titulo) {
+				// archivo viejo
+				if ($request->filled('banners2_old.' . $key)) {
+					$archivo = $request->input('banners2_old.' . $key);
+				}
+				if ($request->hasFile('banners2_img.' . $key) && $request->file('banners2_img.' . $key)->isValid()) {
+					$archivo = $request->file('banners2_img.' . $key)->store('clientes/banners', 'public');
+				}
+				ClienteBanner2::insert([
+					'cliente_id' => $cliente->id,
+					'archivo' => $archivo,
+					'titulo' => $titulo,
+					'link' => $campos['banners2_link'][$key],
 				]);
 			}
 		}

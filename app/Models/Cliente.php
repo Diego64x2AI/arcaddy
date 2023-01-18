@@ -32,6 +32,8 @@ class Cliente extends Model
 		'password',
 		'password_titulo',
 		'password_descripcion',
+		'geo_bloqueo',
+		'geo_codes',
 	];
 
 	/**
@@ -41,10 +43,12 @@ class Cliente extends Model
 	 */
 	protected $casts = [
 		'registro' => 'boolean',
+		'geo_bloqueo' => 'integer',
 	];
 
 	protected $with = [
 		'banners',
+		'banners2',
 		'colaboradores',
 		'secciones',
 		'patrocinadores',
@@ -55,8 +59,14 @@ class Cliente extends Model
 		'experiencias',
 		'productos',
 		'campos',
-		'votaciones'
+		'votaciones',
+		'flotantes',
 	];
+
+	public function flotantes()
+	{
+		return $this->hasMany(ClienteFlotante::class, 'cliente_id', 'id');
+	}
 
 	public function votaciones()
 	{
@@ -76,6 +86,11 @@ class Cliente extends Model
 	public function banners()
 	{
 		return $this->hasMany(ClienteBanner::class, 'cliente_id', 'id');
+	}
+
+	public function banners2()
+	{
+		return $this->hasMany(ClienteBanner2::class, 'cliente_id', 'id');
 	}
 
 	public function colaboradores()

@@ -33,6 +33,23 @@ input:checked ~ .dot {
 	max-width: 1024px!important;
 }
 
+.flotante-b-l {
+	bottom: 0;
+	left: 0;
+}
+.flotante-b-r {
+	bottom: 0;
+	right: 0;
+}
+.flotante-t-l {
+	top: 0;
+	left: 0;
+}
+.flotante-t-r {
+	top: 0;
+	right: 0;
+}
+
 .btn-pill {
 	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block lg:text-xl lg:py-2 lg:px-8
 }

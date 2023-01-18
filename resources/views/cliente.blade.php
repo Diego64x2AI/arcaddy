@@ -119,13 +119,13 @@
 			</div>
 		</div>
 	</div>
-	@if ($cliente->slug === 'estafeta')
-		<div class="fixed right-0 bottom-0 mr-5 mb-5" style="z-index: 5000">
-			<div class="bg-[#25D366] py-3 px-5 text-white rounded-full text-xl">
-				<a href="https://wa.me/5213326293396?" target="_blank">Ayuda <i class="fa fa-whatsapp"></i></a>
+	@foreach ($cliente->flotantes as $flotante)
+		<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000">
+			<div class="py-3 px-5 text-white rounded-full text-xl" style="background-color: {{ $flotante->color }}">
+				<a href="{{ $flotante->link }}" target="{{ $flotante->target }}">{{ $flotante->texto }} <i class="{{ $flotante->icono }}"></i></a>
 			</div>
 		</div>
-	@endif
+	@endforeach
 	<script>
 		const votar_url = '{{ route('votar') }}';
 		window.addEventListener('load', function() {

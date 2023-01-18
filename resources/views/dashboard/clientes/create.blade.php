@@ -135,6 +135,34 @@
 								</div>
 							</div>
 						</div>
+						<div id="geolocalizacion" class="bg-white p-3 mt-3">
+							<div class="flex flex-row items-center font-bold">
+								<div class="text-xl md:text-3xl truncate mr-2">Geobloqueo</div>
+								<div class="ml-auto">
+									<span class="inline-block mr-2">Auto</span>
+									<input type="radio" name="geo_bloqueo" value="1" @if($cliente->id !== NULL && $cliente->geo_bloqueo === 1) checked @endif>
+								</div>
+								<div class="ml-2">
+									<span class="inline-block mr-2">Manual</span>
+									<input type="radio" name="geo_bloqueo" value="2" @if($cliente->id !== NULL && $cliente->geo_bloqueo === 2) checked @endif>
+								</div>
+								<div class="ml-2">
+									<span class="inline-block mr-2">Desactivado</span>
+									<input type="radio" name="geo_bloqueo" value="0" @if($cliente->id !== NULL && $cliente->geo_bloqueo === 0) checked @endif>
+								</div>
+							</div>
+							<div id="privado-container" class="mt-5 section-box">
+								<div class="flex flex-wrap items-center -mx-3">
+									<div class="w-full px-3 mb-6 md:mb-6">
+										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
+											Códigos postales aceptados:
+										</label>
+										<textarea class="shadow appearance-none resize-none h-20 border-0 w-full py-2 px-3 text-gray-700" name="geo_codes"
+												type="text" placeholder="Códigos postales separados por coma">{{ ($cliente->id !== NULL) ? $cliente->geo_codes : old('geo_codes') }}</textarea>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div id="registro" class="bg-white p-3 mt-3">
 							<div class="flex flex-row items-center font-bold">
 								<div class="text-xl md:text-3xl truncate mr-2">Registro</div>
@@ -144,7 +172,7 @@
 								<div class="flex flex-wrap -mx-3 justify-center">
 									<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
 										<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="registro_img">
-											Imagen registro
+											Imagen
 										</label>
 										<img src="{{ ($cliente->id !== NULL && $cliente->registro_img !== NULL) ? asset('storage/'.$cliente->registro_img) : asset('images/1000x1000.png') }}"
 																class="img-general object-cover w-100 border border-secondary">
@@ -196,12 +224,89 @@
 								</div>
 							</div>
 						</div>
-						<!-- /registro -->
-
-
+						<!-- /flotantes -->
+						<div id="flotantes" class="bg-white p-3 mt-3">
+							<div class="flex flex-row items-center font-bold">
+								<div class="text-xl md:text-3xl truncate mr-5 grow">
+									Flotantes
+								</div>
+							</div>
+							<div id="flotantes-container" class="container-draggable mt-5 section-box">
+								@if ($cliente->id !== NULL)
+									@foreach ($cliente->flotantes as $flotante)
+									<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+										<div class="p-3">
+											<div class="mb-2">
+												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+													Icono:
+												</label>
+												<select class="input-underline" name="flotantes_icono[]">
+													<option value="" @if($flotante->icono === '') selected @endif>Ninguno</option>
+													<option value="fas fa-phone" @if($flotante->icono === 'fas fa-phone') selected @endif>Teléfono</option>
+													<option value="fas fa-envelope" @if($flotante->icono === 'fas fa-envelope') selected @endif>Correo</option>
+													<option value="fas fa-map-marker-alt" @if($flotante->icono === 'fas fa-map-marker-alt') selected @endif>Ubicación</option>
+													<option value="fab fa-whatsapp" @if($flotante->icono === 'fab fa-whatsapp') selected @endif>Whatsapp</option>
+													<option value="fab fa-facebook" @if($flotante->icono === 'fab fa-facebook') selected @endif>Facebook</option>
+													<option value="fab fa-instagram" @if($flotante->icono === 'fab fa-instagram') selected @endif>Instagram</option>
+													<option value="fab fa-twitter" @if($flotante->icono === 'fab fa-twitter') selected @endif>Twitter</option>
+													<option value="fab fa-youtube" @if($flotante->icono === 'fab fa-youtube') selected @endif>Youtube</option>
+												</select>
+											</div>
+											<div class="mb-2">
+												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+													Texto:
+												</label>
+												<input class="input-underline" name="flotantes_texto[]" value="{{ $flotante->texto }}" type="text">
+											</div>
+											<div class="mb-2">
+												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+													LINK:
+												</label>
+												<input class="input-underline" name="flotantes_link[]" value="{{ $flotante->link }}" type="url" required>
+											</div>
+											<div class="mb-2">
+												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+													Target:
+												</label>
+												<select class="input-underline" name="flotantes_target[]" required>
+													<option value="_self" @if($flotante->target === '_self') selected @endif>Misma ventana</option>
+													<option value="_blank" @if($flotante->target === '_blank') selected @endif>Nueva ventana</option>
+												</select>
+											</div>
+											<div class="mb-2">
+												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+													Color de fondo:
+												</label>
+												<input name="flotantes_color[]" value="{{ $flotante->color }}" type="color" placeholder="#FFFFFF" required>
+											</div>
+											<div class="mb-2">
+												<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+													Posición:
+												</label>
+												<select class="input-underline" name="flotantes_posicion[]" required>
+													<option value="flotante-b-r" @if($flotante->posicion === 'flotante-b-r') selected @endif>Bottom right</option>
+													<option value="flotante-b-l" @if($flotante->posicion === 'flotante-b-l') selected @endif>Bottom left</option>
+													<option value="flotante-t-r" @if($flotante->posicion === 'flotante-t-r') selected @endif>Top right</option>
+													<option value="flotante-t-l" @if($flotante->posicion === 'flotante-t-l') selected @endif>Top left</option>
+												</select>
+											</div>
+											<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+												<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+															class="fas fa-trash-alt"></i></a></div>
+											</div>
+										</div>
+									</div>
+									@endforeach
+								@endif
+							</div>
+							<div class="text-right mt-5">
+								<a href="" id="add_flotante" class="btn-pill">+ Agregar</a>
+							</div>
+						</div>
+						<!-- /flotantes -->
 						<div id="secciones-container">
 							@php
-								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos'];
+								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos', 'banners2'];
 							@endphp
 							@foreach($secciones as $seccion)
 								@includeIf('dashboard.clientes.secciones.'.$seccion)
@@ -220,7 +325,6 @@
 		</div>
 	</div>
 	@section('js')
-	<script src="{{ asset('js/rcrop.min.js') }}" ></script>
 	<script>
 		window.addEventListener('load', function() {
 				$('body').on('click', 'button.examinar-btn', function (e) {
@@ -320,6 +424,111 @@
 						</div>
 					</div>`;
 					$('#banners-container').append(html);
+				});
+				// agregar banner 2
+				$('a#add_banner2').on('click', function (e) {
+					e.preventDefault();
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+						<div class="p-3">
+							<div class="mb-2 relative">
+								<img src="{{ asset('images/banner.jpg') }}"
+									class="img-general object-cover w-100 border border-secondary">
+								<div class="examinar-img group-hover:block">
+									<div><button type="button"
+											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+									</div>
+									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+									<input type="hidden" name="banners2_old[]" value="" />
+									<input type="file" name="banners2_img[]" class="file-general" accept="image/*" style="display:none" />
+								</div>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Título SEO:
+								</label>
+								<input class="input-underline" name="banners2_titulo[]" type="text" required>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									LINK:
+								</label>
+								<input class="input-underline" name="banners2_link[]" type="url">
+							</div>
+							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+								<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+											class="fas fa-trash-alt"></i></a></div>
+							</div>
+						</div>
+					</div>`;
+					$('#banners2-container').append(html);
+				});
+				// agregar flotante
+				$('a#add_flotante').on('click', function (e) {
+					e.preventDefault();
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+						<div class="p-3">
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Icono:
+								</label>
+								<select class="input-underline" name="flotantes_icono[]">
+									<option value="">Ninguno</option>
+									<option value="fas fa-phone">Teléfono</option>
+									<option value="fas fa-envelope">Correo</option>
+									<option value="fas fa-map-marker-alt">Ubicación</option>
+									<option value="fab fa-whatsapp">Whatsapp</option>
+									<option value="fab fa-facebook">Facebook</option>
+									<option value="fab fa-instagram">Instagram</option>
+									<option value="fab fa-twitter">Twitter</option>
+									<option value="fab fa-youtube">Youtube</option>
+								</select>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Texto:
+								</label>
+								<input class="input-underline" name="flotantes_texto[]" type="text">
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									LINK:
+								</label>
+								<input class="input-underline" name="flotantes_link[]" type="url" required>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Target:
+								</label>
+								<select class="input-underline" name="flotantes_target[]" required>
+									<option value="_self">Misma ventana</option>
+									<option value="_blank">Nueva ventana</option>
+								</select>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Texto:
+								</label>
+								<input name="flotantes_color[]" value="#000000" type="color" placeholder="#FFFFFF" required>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Posición:
+								</label>
+								<select class="input-underline" name="flotantes_posicion[]" required>
+									<option value="flotante-b-r">Bottom right</option>
+									<option value="flotante-b-l">Bottom left</option>
+									<option value="flotante-t-r">Top right</option>
+									<option value="flotante-t-l">Top left</option>
+								</select>
+							</div>
+							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+								<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+											class="fas fa-trash-alt"></i></a></div>
+							</div>
+						</div>
+					</div>`;
+					$('#flotantes-container').append(html);
 				});
 				// agregar colaborador
 				$('a#add_artista').on('click', function (e) {

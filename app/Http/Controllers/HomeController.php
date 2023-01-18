@@ -54,9 +54,39 @@ class HomeController extends Controller
 				'cliente' => $cliente,
 			]);
 		}
+		// Geo Bloqueo Automatico
+		if ($cliente->geo_bloqueo === 1 && Cookie::get('geo_bloqueo') !== 'autorizado') {
+			return view('cliente-gps', [
+				'cliente' => $cliente,
+			]);
+		}
+		// Geo Bloqueo Manual
+		if ($cliente->geo_bloqueo === 2 && Cookie::get('geo_bloqueo') !== 'autorizado') {
+			return view('cliente-zip', [
+				'cliente' => $cliente,
+			]);
+		}
 		return view('cliente', [
 			'cliente' => $cliente,
 		]);
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function zipcode(Cliente $cliente, Request $request)
+	{
+		$request->validate([
+			'zip' => 'required|min:5'
+		]);
+		$zip_codes = explode(",", $cliente->geo_codes);
+		if (!in_array($request->zip, $zip_codes)) {
+			return redirect()->back()->withErrors(['zip' => 'Este código postal no está permitido.']);
+		}
+		Cookie::queue('geo_bloqueo', 'autorizado', 60);
+		return redirect()->route('cliente', $cliente->slug);
 	}
 
 	/**

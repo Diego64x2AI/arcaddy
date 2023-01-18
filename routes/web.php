@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\VotacionesController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/votar', [HomeController::class, 'votar'])->name('votar')->middleware('votacionthrottle:1,1440');
 Route::post('/acceso/{cliente}', [HomeController::class, 'acceso'])->name('acceso');
+Route::post('/zipcode/{cliente}', [HomeController::class, 'zipcode'])->name('zipcode');
 Route::prefix('carrito')->group(function () {
 	Route::get('/', [CarritoController::class, 'carrito'])->name('carrito');
 	Route::get('/agregar/{producto}', [CarritoController::class, 'agregar'])->name('agregar_carrito');

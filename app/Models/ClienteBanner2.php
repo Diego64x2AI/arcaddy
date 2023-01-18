@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ClienteBanner2 extends Model
+{
+	use HasFactory;
+
+	protected $fillable = [
+		'cliente_id',
+		'archivo',
+		'titulo',
+		'link'
+	];
+
+	public $timeStamps = false;
+
+	public function cliente()
+	{
+		return $this->belongsTo(Cliente::class);
+	}
+}
