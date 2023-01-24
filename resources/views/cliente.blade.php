@@ -135,33 +135,35 @@
 				}
 			});
 			$('body').css('paddingTop', $('#header').innerHeight())
-			const iso = new Isotope( '.grid', {
-				itemSelector: '.isotope-item',
-				percentPosition: true,
-  			layoutMode: 'fitRows',
-				stagger: 30,
-				transitionDuration: '0.3s',
-				masonry: {
-					columnWidth: '.isotope-item'
-				}
-			})
-			// filter items on button click
-			$('.filter-button-group').on( 'click', 'button', function() {
-				$('.filter-button-group button').removeClass('current-cat');
-				$(this).addClass('current-cat');
-				var filterValue = $(this).attr('data-filter');
-				iso.arrange({ filter: filterValue })
-				/*
-				iso.arrange({
-					// item element provided as argument
-					filter: function( itemElem ) {
-						var number = itemElem.querySelector('.number').innerText;
-						return parseInt( number, 10 ) > 50;
+			if ($('.isotope').length > 0) {
+				const iso = new Isotope( '.grid', {
+					itemSelector: '.isotope-item',
+					percentPosition: true,
+					layoutMode: 'fitRows',
+					stagger: 30,
+					transitionDuration: '0.3s',
+					masonry: {
+						columnWidth: '.isotope-item'
 					}
 				})
-				*/
-				// iso.Isotope({ filter: filterValue });
-			});
+				// filter items on button click
+				$('.filter-button-group').on( 'click', 'button', function() {
+					$('.filter-button-group button').removeClass('current-cat');
+					$(this).addClass('current-cat');
+					var filterValue = $(this).attr('data-filter');
+					iso.arrange({ filter: filterValue })
+					/*
+					iso.arrange({
+						// item element provided as argument
+						filter: function( itemElem ) {
+							var number = itemElem.querySelector('.number').innerText;
+							return parseInt( number, 10 ) > 50;
+						}
+					})
+					*/
+					// iso.Isotope({ filter: filterValue });
+				});
+			}
 			const Toast = Swal.mixin({
 				toast: true,
 				position: 'top-end',
@@ -295,6 +297,7 @@
 					el: '.swiper-pagination',
 				},
 			});
+			console.log($('.swiper-galeria .swiper-slide').length)
 			new Swiper('.swiper-galeria', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -313,7 +316,7 @@
 						spaceBetween: 0,
 						autoHeight: false,
 						grid: {
-							rows: 2
+							rows: ($('.swiper-galeria .swiper-slide').length >= 6) ? 2 : 1,
 						}
 					},
 				},
