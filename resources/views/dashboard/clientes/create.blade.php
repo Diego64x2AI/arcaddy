@@ -306,7 +306,7 @@
 						<!-- /flotantes -->
 						<div id="secciones-container">
 							@php
-								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos', 'banners2'];
+								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos', 'banners2', 'menu'];
 							@endphp
 							@foreach($secciones as $seccion)
 								@includeIf('dashboard.clientes.secciones.'.$seccion)
@@ -377,6 +377,18 @@
 					animation: 150,
 					direction: 'vertical',
 				});
+				new Sortable(document.getElementById('menu-container'), {
+					handle: '.handler', // handle's class
+					animation: 150,
+					direction: 'vertical',
+				});
+				if (document.querySelector('#menu-container #menu-items') !== null) {
+					new Sortable(document.querySelector('#menu-container #menu-items'), {
+						handle: '.handler2', // handle's class
+						animation: 150,
+						direction: 'horizontal',
+					});
+				}
 				$('body').on('change', '.file-general', function () {
 					const $esto = $(this);
 					if (this.files && this.files[0]) {
@@ -386,6 +398,86 @@
 						}
 						reader.readAsDataURL(this.files[0]);
 					}
+				});
+				// agregar categorías menu
+				$('a#add_menu_cat').on('click', function (e) {
+					e.preventDefault();
+					const html = `<div class="w-2/4 md:w-2/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+						<div class="p-3">
+							<div>
+								<input class="input-underline" name="menu_cat_nombre[]" type="text" placeholder="Nombre de la categoría" required>
+							</div>
+							<div id="menu-items" class="flex flex-col">
+							</div>
+							<div class="text-center mt-2">
+								<a href="" class="btn-pill3 add_menu_item">+ Item</a>
+							</div>
+							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+								<div class="handler cursor-move hidden"><i class="fas fa-ellipsis-v"></i></div>
+								<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+											class="fas fa-trash-alt"></i></a></div>
+							</div>
+						</div>
+					</div>`;
+					$('#menu-container').append(html);
+				});
+				// agregar item menu
+				$('body').on('click', '.add_menu_item', function(e) {
+					e.preventDefault();
+					const index = $(this).parent().parent().parent().index();
+					const html = `<div class="bg-white item-container mt-2 p-2 flex flex-row h-16 overflow-hidden">
+						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+						<div class="ml-4 w-1/5">
+							<div class="relative">
+								<img src="{{ asset('images/banner.jpg') }}"
+									class="img-general object-cover w-100 border border-secondary">
+								<div class="examinar-img2 absolute top-0 left-0 w-full h-full hidden flex-row items-center justify-center group-hover:flex">
+									<div><button type="button"
+											class="examinar-btn rounded-full bg-pink-600 text-white text-xs px-2 py-1 inline-block">Examinar...</button>
+									</div>
+									<input type="hidden" name="menu_item_old[${index}][]" value="" />
+									<input type="file" name="menu_item_img[${index}][]" class="file-general" accept="image/*" style="display:none" />
+								</div>
+							</div>
+						</div>
+						<div class="ml-2 grow grid grid-cols-2 gap-2">
+							<div>
+								<input class="input-underline" name="menu_item_nombre[${index}][]" type="text" placeholder="Nombre" required>
+							</div>
+							<div>
+								<input class="input-underline" name="menu_item_cantidad[${index}][]" type="text" placeholder="Cantidad (gr, ml, unidades)">
+							</div>
+							<div>
+								<input class="input-underline" name="menu_item_precio[${index}][]" type="text" placeholder="Precio">
+							</div>
+							<div>
+								<input class="input-underline" name="menu_item_boton_titulo[${index}][]" type="text" placeholder="Título botón">
+							</div>
+							<div>
+								<input class="input-underline" name="menu_item_boton_link[${index}][]" type="url" placeholder="Link">
+							</div>
+							<div>
+								<input class="input-underline" name="menu_item_canje_texto[${index}][]" type="text" placeholder="Titulo canje gratis">
+							</div>
+							<div class="mb-2 col-span-2">
+								<textarea class="input-border" name="menu_item_descripcion[${index}][]" rows="2" placeholder="Descripción"></textarea>
+							</div>
+						</div>
+						<div class="ml-4">
+							<div class="delete-item">
+								<a href="javascript:void(0);" class="text-dark"><i class="fas fa-trash-alt"></i></a>
+							</div>
+							<div class="expand-item">
+								<a href="javascript:void(0);" class="text-dark"><i class="fas fa-chevron-down"></i></a>
+							</div>
+						</div>
+					</div>`;
+					$(this).parent().parent().find('#menu-items').append(html);
+					new Sortable(document.querySelector('#menu-container #menu-items'), {
+						handle: '.handler2', // handle's class
+						animation: 150,
+						direction: 'horizontal',
+					});
 				});
 				// agregar banner
 				$('a#add_banner').on('click', function (e) {
@@ -848,6 +940,40 @@
 							Swal.fire('Eliminado', 'Recuerda guardar tus cambios para que tengan efecto.', 'success')
 						}
 					})
+				});
+				// eliminar items
+				$('body').on('click', 'div.delete-item a', function (e) {
+					e.preventDefault();
+					const esto = $(this);
+					Swal.fire({
+						title: '¿Estás seguro?',
+						text: "Este cambio se puede deshacer si actualizas la página sin guardar, en el momento que guardes tus cambios ya no podrás recuperar nada.",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'SI, eliminar',
+						cancelButtonText: 'NO, cancelar'
+					}).then((result) => {
+						if (result.isConfirmed) {
+							esto.parent().parent().parent().remove();
+							// recordatorio();
+							Swal.fire('Eliminado', 'Recuerda guardar tus cambios para que tengan efecto.', 'success')
+						}
+					})
+				});
+				// expand items
+				$('body').on('click', 'div.expand-item a', function (e) {
+					e.preventDefault();
+					const esto = $(this);
+					console.log(esto.parent().parent().parent())
+					if (esto.parent().parent().parent().height() > 100) {
+						esto.parent().parent().parent().css('height', '64px');
+						return;
+					} else {
+						esto.parent().parent().parent().css('height', 'auto');
+						return;
+					}
 				});
 				$('a.delete-form-producto').on('click', function(e) {
 					e.preventDefault();

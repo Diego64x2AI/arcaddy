@@ -164,6 +164,35 @@
 					// iso.Isotope({ filter: filterValue });
 				});
 			}
+			if ($('.isotope-menu').length > 0) {
+				const iso = new Isotope( '.isotope-menu', {
+					itemSelector: '.isotope-menu',
+					percentPosition: true,
+					layoutMode: 'fitRows',
+					stagger: 30,
+					transitionDuration: '0.3s',
+					masonry: {
+						columnWidth: '.isotope-menu'
+					}
+				})
+				// filter items on button click
+				$('.filter-button-group2').on( 'click', 'button', function() {
+					$('.filter-button-group2 button').removeClass('current-cat');
+					$(this).addClass('current-cat');
+					var filterValue = $(this).attr('data-filter');
+					iso.arrange({ filter: filterValue })
+					/*
+					iso.arrange({
+						// item element provided as argument
+						filter: function( itemElem ) {
+							var number = itemElem.querySelector('.number').innerText;
+							return parseInt( number, 10 ) > 50;
+						}
+					})
+					*/
+					// iso.Isotope({ filter: filterValue });
+				});
+			}
 			const Toast = Swal.mixin({
 				toast: true,
 				position: 'top-end',
@@ -241,6 +270,7 @@
 				})
 			});
 			$('.filter-button-group button:eq(0)').trigger('click');
+			$('.filter-button-group2 button:eq(0)').trigger('click');
 			new Swiper('.swiper-1', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -297,7 +327,6 @@
 					el: '.swiper-pagination',
 				},
 			});
-			console.log($('.swiper-galeria .swiper-slide').length)
 			new Swiper('.swiper-galeria', {
 				// Optional parameters
 				direction: 'horizontal',

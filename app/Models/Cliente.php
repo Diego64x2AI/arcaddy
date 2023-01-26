@@ -61,7 +61,13 @@ class Cliente extends Model
 		'campos',
 		'votaciones',
 		'flotantes',
+		'menu',
 	];
+
+	public function menu()
+	{
+		return $this->hasMany(ClienteMenu::class, 'cliente_id', 'id');
+	}
 
 	public function flotantes()
 	{

@@ -22,6 +22,7 @@ use App\Models\ClientePatrocinadores;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
+use App\Models\ClienteMenu;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClienteController extends Controller
@@ -97,6 +98,36 @@ class ClienteController extends Controller
 					'posicion' => $campos['flotantes_posicion'][$key],
 					'target' => $campos['flotantes_target'][$key],
 				]);
+			}
+		}
+		// menu
+		if (isset($campos['menu_cat_nombre']) && count($campos['menu_cat_nombre']) > 0) {
+			// ClienteBanner::where('cliente_id', $cliente->id)->delete();
+			ClienteMenu::where('cliente_id', $cliente->id)->delete();
+			foreach ($campos['menu_cat_nombre'] as $key => $categoria_nombre) {
+				$categoria_nombre = strtolower($categoria_nombre);
+				foreach ($campos['menu_item_nombre'][$key] as $key2 => $nombre) {
+					$archivo = NULL;
+					// archivo viejo
+					if ($request->filled('menu_item_old.'.$key.'.'.$key2)) {
+						$archivo = $request->input('menu_item_old.'.$key.'.'.$key2);
+					}
+					if ($request->hasFile('menu_item_img.'.$key.'.'.$key2) && $request->file('menu_item_img.'.$key.'.'.$key2)->isValid()) {
+						$archivo = $request->file('menu_item_img.'.$key.'.'.$key2)->store('clientes/menu', 'public');
+					}
+					ClienteMenu::insert([
+						'cliente_id' => $cliente->id,
+						'archivo' => $archivo,
+						'nombre' => $nombre,
+						'cantidad' => $campos['menu_item_cantidad'][$key][$key2],
+						'precio' => $campos['menu_item_precio'][$key][$key2],
+						'categoria' => $categoria_nombre,
+						'boton_titulo' => $campos['menu_item_boton_titulo'][$key][$key2],
+						'boton_link' => $campos['menu_item_boton_link'][$key][$key2],
+						'canje_texto' => $campos['menu_item_canje_texto'][$key][$key2],
+						'descripcion' => $campos['menu_item_descripcion'][$key][$key2],
+					]);
+				}
 			}
 		}
 		// banners
@@ -257,7 +288,6 @@ class ClienteController extends Controller
 			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
 		}
 		$campos['registro'] = $request->boolean('registro');
-		// dd($campos['campos']);
 		$cliente->update($campos);
 		// secciones orden
 		if (isset($campos['secciones']) && count($campos['secciones']) > 0) {
@@ -303,6 +333,36 @@ class ClienteController extends Controller
 					'posicion' => $campos['flotantes_posicion'][$key],
 					'target' => $campos['flotantes_target'][$key],
 				]);
+			}
+		}
+		// menu
+		if (isset($campos['menu_cat_nombre']) && count($campos['menu_cat_nombre']) > 0) {
+			// ClienteBanner::where('cliente_id', $cliente->id)->delete();
+			ClienteMenu::where('cliente_id', $cliente->id)->delete();
+			foreach ($campos['menu_cat_nombre'] as $key => $categoria_nombre) {
+				$categoria_nombre = strtolower($categoria_nombre);
+				foreach ($campos['menu_item_nombre'][$key] as $key2 => $nombre) {
+					$archivo = NULL;
+					// archivo viejo
+					if ($request->filled('menu_item_old.'.$key.'.'.$key2)) {
+						$archivo = $request->input('menu_item_old.'.$key.'.'.$key2);
+					}
+					if ($request->hasFile('menu_item_img.'.$key.'.'.$key2) && $request->file('menu_item_img.'.$key.'.'.$key2)->isValid()) {
+						$archivo = $request->file('menu_item_img.'.$key.'.'.$key2)->store('clientes/menu', 'public');
+					}
+					ClienteMenu::insert([
+						'cliente_id' => $cliente->id,
+						'archivo' => $archivo,
+						'nombre' => $nombre,
+						'cantidad' => $campos['menu_item_cantidad'][$key][$key2],
+						'precio' => $campos['menu_item_precio'][$key][$key2],
+						'categoria' => $categoria_nombre,
+						'boton_titulo' => $campos['menu_item_boton_titulo'][$key][$key2],
+						'boton_link' => $campos['menu_item_boton_link'][$key][$key2],
+						'canje_texto' => $campos['menu_item_canje_texto'][$key][$key2],
+						'descripcion' => $campos['menu_item_descripcion'][$key][$key2],
+					]);
+				}
 			}
 		}
 		// banners
