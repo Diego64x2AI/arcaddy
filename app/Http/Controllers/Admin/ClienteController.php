@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Campos;
 use App\Models\Cliente;
 use App\Models\ClienteBlog;
+use App\Models\ClienteMenu;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Models\ClienteBanner;
 use App\Models\ClienteLibres;
 use App\Models\ClienteBanner2;
@@ -22,7 +24,6 @@ use App\Models\ClientePatrocinadores;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
-use App\Models\ClienteMenu;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClienteController extends Controller
@@ -49,6 +50,28 @@ class ClienteController extends Controller
 		return view('dashboard.clientes.create', [
 			'cliente' => new Cliente(),
 			'campos' => Campos::all(),
+		]);
+	}
+
+	public function crop(Request $request)
+	{
+		$data = $request->validate([
+			'croppedImage' => 'required|image',
+			'id' => 'required|integer',
+			'tipo' => 'required|string',
+		]);
+		if ($data['tipo'] === 'banners') {
+			ClienteBanner::where('id', $data['id'])->update([
+				'archivo' => $data['croppedImage']->store('clientes/banners', 'public'),
+			]);
+			return response()->json([
+				'status' => true,
+				'message' => 'Imagen recortada correctamente.',
+			]);
+		}
+		return response()->json([
+			'status' => false,
+			'message' => 'No se pudo recortar la imagen, el tipo no es soportado.',
 		]);
 	}
 

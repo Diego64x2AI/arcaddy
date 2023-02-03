@@ -15,7 +15,7 @@ class ClienteGaleria extends Model
 		'titulo',
 	];
 
-	public $timeStamps = false;
+	public $timestamps = false;
 
 	public function cliente()
 	{

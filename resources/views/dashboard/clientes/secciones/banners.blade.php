@@ -19,13 +19,18 @@
 			<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 				<div class="p-3">
 					<div class="mb-2 relative">
-						<img src="{{ asset('storage/'.$banner->archivo) }}"
-							class="img-general object-cover w-100 border border-secondary">
+						<img id="banners-{{ $banner->id }}" src="{{ asset('storage/'.$banner->archivo) }}" class="img-general object-cover w-100 border border-secondary">
 						<div class="examinar-img group-hover:block">
-							<div><button type="button"
-									class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+							<div>
+								<button type="button" class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">
+									Examinar...
+								</button>
 							</div>
-							<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+							<div class="mt-2 text-center text-xs">
+								<a href="javascript:void(0);" class="text-dark crop-image" data-id="{{ $banner->id }}" data-tipo="banners" data-image="{{ asset('storage/'.$banner->archivo) }}" data-width="1903" data-height="1008">
+									<i class="fas fa-crop"></i> Recortar
+								</a>
+							</div>
 							<input type="hidden" name="banners_old[]" value="{{$banner->archivo}}" />
 							<input type="file" name="banners_img[]" class="file-general" accept="image/*" style="display:none" />
 						</div>

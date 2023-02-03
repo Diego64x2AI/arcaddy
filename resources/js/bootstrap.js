@@ -32,8 +32,12 @@ window.Swal = Swal
 import Swiper from 'swiper/bundle'
 // import styles bundle
 import 'swiper/css/bundle'
-
 window.Swiper = Swiper
+
+// cropperjs
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
+window.Cropper = Cropper
 
 import autoComplete from '@tarekraafat/autocomplete.js'
 window.autoComplete = autoComplete;

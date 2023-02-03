@@ -16,7 +16,7 @@ class ClienteLibres extends Model
 		'link'
 	];
 
-	public $timeStamps = false;
+	public $timestamps = false;
 
 	public function cliente()
 	{

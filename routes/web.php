@@ -55,6 +55,7 @@ Route::get('/notification', function () {
 Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
+		Route::post('/clientes/crop', [ClienteController::class, 'crop'])->name('clientes.crop');
 		Route::resource('/clientes', ClienteController::class);
 		Route::resource('/votaciones', VotacionesController::class, [
 			'except' => ['update']

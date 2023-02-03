@@ -22,7 +22,7 @@ class ClienteMenu extends Model
 		'categoria',
 	];
 
-	public $timeStamps = false;
+	public $timestamps = false;
 
 	public function cliente()
 	{

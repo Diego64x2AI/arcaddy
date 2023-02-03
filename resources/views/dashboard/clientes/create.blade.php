@@ -324,9 +324,110 @@
 			</div>
 		</div>
 	</div>
+	<!-- Main modal -->
+	<div id="cropModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 hidden z-[5000px] w-full overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+		<div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+		<div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full lg:max-w-6xl">
+			<!-- Modal content -->
+			<div class="relative bg-gray-50 rounded-lg p-4 shadow-lg">
+				<!-- Modal header -->
+				<div class="flex items-start justify-between py-3 border-b rounded-t">
+					<h3 class="text-xl font-semibold text-gray-900">
+						Cortar imagen
+					</h3>
+					<button id="closeCropModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="defaultModal">
+						<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+						<span class="sr-only">Close modal</span>
+					</button>
+				</div>
+				<!-- Modal body -->
+				<div class="space-y-6 py-2 w-full h-[500px] overflow-auto">
+					<div class="img-container py-4">
+						<img id="image-crop" src="" alt="Picture" class="w-full h-auto">
+					</div>
+				</div>
+				<!-- Modal footer -->
+				<div class="flex items-center py-3 space-x-2 border-t border-gray-200 rounded-b">
+					<button onclick="saveCropImage();" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+						Guardar cambios
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	@section('js')
 	<script>
+		let cropper;
+		let cropTipo, cropId;
+		function saveCropImage () {
+			cropper.getCroppedCanvas().toBlob((blob) => {
+				var reader = new FileReader();
+        reader.readAsDataURL(blob);
+				reader.onloadend = function() {
+					var base64data = reader.result;
+					console.log(`${cropTipo}-${cropId}`)
+					$(`#${cropTipo}-${cropId}`).attr('src', `${base64data}`);
+					const formData = new FormData();
+					formData.append('croppedImage', blob);
+					formData.append('tipo', cropTipo);
+					formData.append('id', cropId);
+					axios.post('{{ route("clientes.crop") }}', formData, {
+						headers: {
+							'Content-Type': 'multipart/form-data'
+						}
+					}).then((response) => {
+						console.log(response);
+						$('#closeCropModal').trigger('click');
+						Swal.fire({
+							icon: response.data.status ? 'success' : 'error',
+							title: response.data.message,
+							showConfirmButton: false,
+							timer: 1500
+						});
+					});
+				}
+			});
+		}
 		window.addEventListener('load', function() {
+				$('body').on('click', 'a.crop-image', function (e) {
+					e.preventDefault();
+					const image = $(this).data('image');
+					const width = $(this).data('width');
+					const height = $(this).data('height');
+					cropTipo = $(this).data('tipo');
+					cropId = $(this).data('id');
+					console.log('crop', image, width, height);
+					$('#image-crop').attr('src', image);
+					if ($('#cropModal').hasClass('hidden')) {
+						$('#cropModal').removeClass('hidden').addClass('flex');
+						// $('.img-container').css('width', width).css('height', height);
+						cropper = new Cropper(document.getElementById('image-crop'), {
+							dragMode: 'move',
+							aspectRatio: width / height,
+							autoCropArea: 1,
+							// minCropBoxWidth: width,
+							// minCropBoxHeight: height,
+							restore: false,
+							guides: false,
+							center: false,
+							highlight: false,
+							cropBoxMovable: false,
+							cropBoxResizable: false,
+							toggleDragModeOnDblclick: false,
+							zoomable: true,
+							rotatable: true,
+							responsive: true,
+						});
+					} else {
+						$('#cropModal').removeClass('flex').addClass('hidden');
+						cropper.destroy();
+					}
+				});
+				$('body').on('click', 'button#closeCropModal', function (e) {
+					e.preventDefault();
+					$('#cropModal').removeClass('flex').addClass('hidden');
+					cropper.destroy();
+				});
 				$('body').on('click', 'button.examinar-btn', function (e) {
 					e.preventDefault();
 					console.log('click')
