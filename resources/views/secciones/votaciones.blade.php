@@ -8,7 +8,7 @@
 				<button class="btn-pill2 @if($loop->index === 0) current-cat @endif" data-filter=".cat-{{ $categoria->id }}"">{{ $categoria->nombre }}</button>
 			@endforeach
 		</div>
-		<div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+		<div class="isotope-votaciones grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
 			@php
 			$participantes = ($votacion->finalistas) ? $votacion->participantes()->where('finalista', 1)->get() : $votacion->participantes;
 			@endphp
@@ -31,7 +31,7 @@
 				}
 				@endphp
 				<div
-					class="isotope-item border-4 border-transparent w-1/3 md:w-1/4 lg:w-1/6 mb-2 participante-{{ $participante->id }} cat-{{ $participante->categoria_id }}"
+					class="isotope-votaciones-item border-4 border-transparent w-1/3 md:w-1/4 lg:w-1/6 mb-2 participante-{{ $participante->id }} cat-{{ $participante->categoria_id }}"
 					data-video-id="{{ $video_id }}"
 					data-plataforma="{{ $plataforma }}"
 					data-plataforma-user="{{ $plataforma_user }}"

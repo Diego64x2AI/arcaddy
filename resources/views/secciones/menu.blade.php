@@ -11,7 +11,7 @@
 	<div class="isotope-menu grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6">
 		@foreach ($cliente->menu()->groupBy('categoria')->pluck('categoria') as $key => $menu_categoria)
 			@foreach ($cliente->menu->where('categoria', $menu_categoria) as $menu)
-				<div class="isotope-menu relative cat-{{ $menu_categoria }} w-full flex flex-row items-center shadow rounded-3xl text-gray-800 hover:bg-gray-100 mb-4 px-4 py-3">
+				<div class="isotope-menu-item relative cat-{{ $menu_categoria }} w-full flex flex-row items-center shadow rounded-3xl text-gray-800 hover:bg-gray-100 mb-4 px-4 py-3">
 					<div><img src="{{ ($menu->archivo !== NULL && trim($menu->archivo) !== '') ? asset('storage/'.$menu->archivo) : asset('images/blank.png') }}" alt="{{ $menu->nombre }}" class="w-10 h-10 md:w-20 md:h-20"></div>
 					<div class="grow ml-2 text-sm md:text-xl">
 						<div class="font-semibold">{{ $menu->nombre }}</div>

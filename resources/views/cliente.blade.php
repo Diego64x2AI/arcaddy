@@ -135,15 +135,15 @@
 				}
 			});
 			$('body').css('paddingTop', $('#header').innerHeight())
-			if ($('.isotope').length > 0) {
-				const iso = new Isotope( '.grid', {
-					itemSelector: '.isotope-item',
+			if ($('.isotope-votaciones').length > 0) {
+				const iso = new Isotope( '.isotope-votaciones', {
+					itemSelector: '.isotope-votaciones-item',
 					percentPosition: true,
 					layoutMode: 'fitRows',
 					stagger: 30,
 					transitionDuration: '0.3s',
 					masonry: {
-						columnWidth: '.isotope-item'
+						columnWidth: '.isotope-votaciones-item'
 					}
 				})
 				// filter items on button click
@@ -166,13 +166,13 @@
 			}
 			if ($('.isotope-menu').length > 0) {
 				const iso = new Isotope( '.isotope-menu', {
-					itemSelector: '.isotope-menu',
+					itemSelector: '.isotope-menu-item',
 					percentPosition: true,
 					layoutMode: 'fitRows',
 					stagger: 30,
 					transitionDuration: '0.3s',
 					masonry: {
-						columnWidth: '.isotope-menu'
+						columnWidth: '.isotope-menu-item'
 					}
 				})
 				// filter items on button click
@@ -181,16 +181,6 @@
 					$(this).addClass('current-cat');
 					var filterValue = $(this).attr('data-filter');
 					iso.arrange({ filter: filterValue })
-					/*
-					iso.arrange({
-						// item element provided as argument
-						filter: function( itemElem ) {
-							var number = itemElem.querySelector('.number').innerText;
-							return parseInt( number, 10 ) > 50;
-						}
-					})
-					*/
-					// iso.Isotope({ filter: filterValue });
 				});
 			}
 			const Toast = Swal.mixin({
