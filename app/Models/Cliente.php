@@ -34,6 +34,9 @@ class Cliente extends Model
 		'password_descripcion',
 		'geo_bloqueo',
 		'geo_codes',
+		'idioma',
+		'imagen_background',
+		'metadescription',
 	];
 
 	/**

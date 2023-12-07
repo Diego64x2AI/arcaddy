@@ -134,7 +134,7 @@
 						<input class="!shadow appearance-none !placeholder-gray-500 !rounded-none !border !border-blue-500 !w-full py-2 px-3 !text-gray-700" name="autoComplete" id="autoComplete" type="text" placeholder="Nombre del participante" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1">
 					</div>
 					<div class="mt-4">
-						<input class="shadow appearance-none border border-blue-500 w-full py-2 px-3 text-gray-700" name="link" id="link" type="url" placeholder="Link del vídeo" required>
+						<input class="shadow appearance-none border border-blue-500 w-full py-2 px-3 text-gray-700" name="link" id="link" type="url" placeholder="Link del vídeo">
 					</div>
 					<div class="mt-4">
 						<select class="shadow appearance-none border border-blue-500 w-full py-2 px-3 text-gray-700" name="categoria_id" id="categoria_id" required>

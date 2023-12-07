@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="degradado">
+<nav x-data="{ open: false }" class="degradado" style="background-color: #000000;">
 	<!-- Primary Navigation Menu -->
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="flex justify-between h-16">
@@ -23,6 +23,12 @@
 					</x-nav-link>
 					<x-nav-link :href="route('votaciones.index')" :active="request()->routeIs('votaciones.index')">
 						{{ __('Votaciones') }}
+					</x-nav-link>
+    				<x-nav-link :href="route('usuarios-cliente.index')" :active="request()->routeIs('usuarios-cliente.index')">
+    						{{ __('Administrador cliente') }}
+					</x-nav-link>
+						<x-nav-link :href="route('games.index')" :active="request()->routeIs('usuarios-cliente.index')">
+    						{{ __('Games') }}
 					</x-nav-link>
 				</div>
 			</div>

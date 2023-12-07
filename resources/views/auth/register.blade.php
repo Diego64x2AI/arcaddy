@@ -29,6 +29,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		<form method="POST" action="{{ route('register_store') }}">
 			@csrf
 			<input type="hidden" name="cliente_id" value="{{ $cliente->id }}">
+			<input type="hidden" name="sinlogin" value="{{ $sinlogin }}">
 			<!-- Name -->
 			<div>
 				<x-label for="name" :value="__('Name')" />
@@ -54,7 +55,11 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			@foreach ($cliente->campos()->where('activo', 1)->get() as $campo)
 				<div class="mt-4">
 					<x-label for="campos[{{ $campo->campo_id }}]" :value="$campo->nombre" />
+					@if($campo->campo_id != 4) 
 					<x-input class="block mt-1 w-full" type="text" name="campos[{{ $campo->campo_id }}]" required />
+					@else
+					    <input type="date" id="nacimiento" name="nacimiento" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1" required>
+					@endif
 				</div>
 			@endforeach
 			<div class="flex items-center justify-end mt-4">

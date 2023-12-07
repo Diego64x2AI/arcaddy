@@ -17,21 +17,53 @@
 				$plataforma = '';
 				$plataforma_user = '';
 				$video_id = '';
+				
+				$link = $participante->link;
+				
+				if($participante->link == ''){
+				
+				   
+					$plataforma = 'imagen';
+				    
+				}
+				else{ /*INICIO CON con LINK*/
 				@preg_match('~/d/\K[^/]+(?=/)~', $participante->link, $result);
 				if (!empty($result)) {
 					$video_id = $result[0];
 					$plataforma = 'google';
-				} else {
-					$response = json_decode(@file_get_contents("https://vimeo.com/api/oembed.json?url=".$participante->link));
-  				//dd($response);
-					//@preg_match('/(https?:\/\/)?(www\.)?(player\.)?vimeo\.com\/?(showcase\/)*([0-9))([a-z]*\/)*([0-9]{6,11})[?]?.*/', $participante->link, $result);
-					$video_id = $response->video_id;
-					$plataforma = 'vimeo';
-					$plataforma_user = explode(":", $response->uri)[1];
+				} 
+				else {
+				        $host = parse_url($link, PHP_URL_HOST);
+				        
+                        if ($host === "youtube.com" || $host === "www.youtube.com") {
+                        
+                        	// Obtener los par¨¢metros de la URL
+                        	$queryParams = parse_url($link, PHP_URL_QUERY);
+                        
+                        	// Parsear los par¨¢metros en un array
+                        	parse_str($queryParams, $params);
+                        
+                        	// Obtener el valor de la variable 'v'
+                        	$vValue = $params['v'];
+                        	
+                        	$video_id = $vValue;
+            				$plataforma = 'youtube';
+                            
+                        } 
+                        else {  
+                        
+                            	$response = json_decode(@file_get_contents("https://vimeo.com/api/oembed.json?url=".$participante->link));
+              			
+            					$video_id = $response->video_id;
+            					$plataforma = 'vimeo';
+                           
+                        }
+				
 				}
+				}/*FIn con LINK*/
 				@endphp
 				<div
-					class="isotope-votaciones-item border-4 border-transparent w-1/3 md:w-1/4 lg:w-1/6 mb-2 participante-{{ $participante->id }} cat-{{ $participante->categoria_id }}"
+					class="isotope-item isotope-votaciones-item border-4 border-transparent w-1/3 md:w-1/4 lg:w-1/6 mb-2 participante-{{ $participante->id }} cat-{{ $participante->categoria_id }}"
 					data-video-id="{{ $video_id }}"
 					data-plataforma="{{ $plataforma }}"
 					data-plataforma-user="{{ $plataforma_user }}"
@@ -39,7 +71,8 @@
 					data-nombre="{{ $participante->user->name }}"
 					data-votos="{{ $participante->votos }}"
 					data-id="{{ $participante->id }}"
-					data-votaciones="{{ $votacion->votar ? 'Y' : 'N' }}"
+					data-votaciones="{{ $votacion->votar ? 'Y' : 'N' }}" 
+					data-imagen="{{ asset('storage/'.$participante->imagen) }}"
 				>
 					<div>
 						<img src="{{ asset('storage/'.$participante->imagen) }}" class="img-general inline-block object-cover w-full h-auto" alt="{{ $participante->user->name }}">

@@ -37,7 +37,7 @@
 						</label>
 						<input
 							class="input-underline" value="{{ $entry->titulo }}"
-							name="libres_titulo[]" type="text" required>
+							name="libres_titulo[]" type="text" >
 					</div>
 					<div class="mb-2">
 						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
@@ -75,7 +75,7 @@
 					</label>
 					<input
 						class="input-underline"
-						name="libres_titulo[]" type="text" required>
+						name="libres_titulo[]" type="text" >
 				</div>
 				<div class="mb-2">
 					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">

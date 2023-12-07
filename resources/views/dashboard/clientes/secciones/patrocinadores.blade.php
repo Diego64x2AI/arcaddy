@@ -34,7 +34,7 @@
 						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 							Título SEO:
 						</label>
-						<input class="input-underline" name="patrocinadores_titulo[]" value="{{ $patrocinador->titulo }}" type="text" required>
+						<input class="input-underline" name="patrocinadores_titulo[]" value="{{ $patrocinador->titulo }}" type="text" >
 					</div>
 					<div class="mb-2">
 						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
@@ -69,7 +69,7 @@
 					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 						Título SEO:
 					</label>
-					<input class="input-underline" name="patrocinadores_titulo[]" type="text" required>
+					<input class="input-underline" name="patrocinadores_titulo[]" type="text" >
 				</div>
 				<div class="mb-2">
 					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">

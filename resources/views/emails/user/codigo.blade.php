@@ -53,7 +53,13 @@ width: 100% !important;
 	<div class="text-center">{{ $user->name }}</div>
 	<div class="text-center">{{ $user->email }}</div>
 	<div style="text-align: center; margin-top: 2rem;">
-	<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+	
+	<?php /*
+	<img src="{{ asset('storage/qrcodes/'.$cliente->slug.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">*/?>
+
+	<img src="{{ asset('storage/qrregister/'.$codigo.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+
+
 	</div>
 	<div style="text-align: center; margin-top: 2rem;">
 	<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn-pill" style="background-color: {{ $cliente->color }};">Ir a página principal</a>

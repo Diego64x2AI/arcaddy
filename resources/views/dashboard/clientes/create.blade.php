@@ -21,6 +21,8 @@
 			background-color: #FFF;
 			padding: 10px;
 		}
+		
+		
 
 	</style>
 	<div class="py-6">
@@ -42,6 +44,31 @@
 					@method('PUT')
 					@endif
 					<div class="p-6 bg-gray-100 border border-white">
+					    
+					    @if($cliente->id !== NULL)
+					    <div style="text-align: right;">
+								    	<a href="{{ url("/{$cliente->slug}") }}" target="_blank"	>
+								    	Ver sitio web 
+								    	 ar-caddy/<span class="font-bold">{{ $cliente->slug }}</span></a>
+						</div>
+								    	
+								@endif
+								
+						<div style="display: none;">
+						    <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
+									Idioma
+							</label>
+							<select class="shadow appearance-none border-0 py-2 px-3 text-gray-700" style="width: 200px;" name="idioma">
+							    @if($cliente->id !== NULL)
+							    <option value="ES" {{($cliente->idioma == 'ES')?'selected':''}} >Español</option>
+							    <option value="EN" {{($cliente->idioma == 'EN')?'selected':''}}>Inglés</option>
+							    @else
+							    <option value="ES">Español</option>
+							    <option value="EN">Inglés</option>
+							    @endif
+							</select>
+						</div>
+						<br>
 						<div class="grid grid-cols-1 md:grid-cols-7 items-center justify-around -mx-3">
 							<div class="col-span-2 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
@@ -49,6 +76,8 @@
 								</label>
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="slug" id="slug"
 									type="text" value="{{ ($cliente->id !== NULL) ? $cliente->slug : old('slug') }}" placeholder="Ejemplo: redbull" required>
+							
+							
 							</div>
 							<div class="col-span-2 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
@@ -56,6 +85,8 @@
 								</label>
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="cliente" id="cliente"
 									type="text" value="{{ ($cliente->id !== NULL) ? $cliente->cliente : old('cliente') }}" placeholder="Ejemplo: Red Bull" required>
+									
+								
 							</div>
 							<div class="px-3 mb-6 md:mb-6 text-center">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color_bg">
@@ -79,8 +110,29 @@
 									value="{{ ($cliente->id !== NULL) ? $cliente->color : old('color') }}" type="color" placeholder="#FF4E00" @if($cliente->id === NULL) required @endif>
 							</div>
 						</div>
+						
+						
+					
+						<div class="flex flex-wrap -mx-3">
+							<div class="w-full md:w-3/6 px-3 mb-6 md:mb-6">
+        						<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
+        									Meta description
+        						</label>
+        						<textarea name="metadescription" style="width: 100%; height: 100px;" class="shadow appearance-none border-0">{{ ($cliente->id !== NULL) ? $cliente->metadescription : old('metadescription') }}</textarea>
+        					</div>
+						
+						</div>
+					    <br>
+					    
+					    
+						
+						
+						
+						
+						
 						<div class="flex flex-wrap -mx-3 justify-center">
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
+							    <div>
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="logo">
 									Logo cliente
 								</label>
@@ -91,6 +143,7 @@
 									<div class="examinar-size text-xs mt-2 text-gray-400">(1000x1000px)</div>
 								</div>
 								<input name="logo" id="logo" type="file" class="file-general" accept="image/*" style="display: none">
+								</div>
 							</div>
 							@if($cliente->id !== NULL)
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
@@ -104,7 +157,25 @@
 								</div>
 							</div>
 							@endif
+							
+							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
+							    <div>
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="logo">
+									Background
+								</label>
+								<img src="{{ ($cliente->id !== NULL && $cliente->imagen_background != '') ? asset('storage/'.$cliente->imagen_background) : asset('images/1000x1000.png') }}"
+														class="img-general object-cover w-100 border border-secondary">
+								<div class="text-center mt-3">
+									<button type="button" class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+									<div class="examinar-size text-xs mt-2 text-gray-400"></div>
+								</div>
+								<input name="imagen_background" id="imagen_background" type="file" class="file-general" accept="image/*" style="display: none">
+								</div>
+							</div>
 						</div>
+					
+							     
+						
 						<div id="privado" class="bg-white p-3 mt-3">
 							<div class="flex flex-row items-center font-bold">
 								<div class="text-xl md:text-3xl truncate mr-2">Arcaddy privado</div>
@@ -148,7 +219,7 @@
 								</div>
 								<div class="ml-2">
 									<span class="inline-block mr-2">Desactivado</span>
-									<input type="radio" name="geo_bloqueo" value="0" @if($cliente->id !== NULL && $cliente->geo_bloqueo === 0) checked @endif>
+									<input type="radio" name="geo_bloqueo" value="0" @if(($cliente->id !== NULL && $cliente->geo_bloqueo === 0) || $cliente->id === NULL ) checked @endif>
 								</div>
 							</div>
 							<div id="privado-container" class="mt-5 section-box">
@@ -202,6 +273,18 @@
 											<textarea class="shadow appearance-none resize-none h-20 border-0 w-full py-2 px-3 text-gray-700" name="registro_descripcion" id="registro_descripcion"
 												type="text" placeholder="Texto descriptivo">{{ ($cliente->id !== NULL) ? $cliente->registro_descripcion : old('registro_descripcion') }}</textarea>
 										</div>
+										
+										<?php /*<div class="flex items-center justify-end mt-2">
+										    <div class="ml-2 grow text-right">
+												<div class="font-bold">
+												    Fecha nacimiento
+												</div>
+											</div>
+											<div class="ml-2">
+												<input type="checkbox" name="nacimiento" value="on">
+											</div>
+										</div> */?>
+										
 										@foreach ($campos as $campo)
 											<div class="flex items-center justify-end mt-2">
 												@if ($campo->editable)
@@ -356,6 +439,7 @@
 		</div>
 	</div>
 	@section('js')
+	<script src="https://ar-caddy.com/build/assets/edtr/tinymce/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
 	<script>
 		let cropper;
 		let cropTipo, cropId;
@@ -601,7 +685,7 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input class="input-underline" name="banners_titulo[]" type="text" required>
+								<input class="input-underline" name="banners_titulo[]" type="text">
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
@@ -639,7 +723,7 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input class="input-underline" name="banners2_titulo[]" type="text" required>
+								<input class="input-underline" name="banners2_titulo[]" type="text" >
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
@@ -793,7 +877,7 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input class="input-underline" name="patrocinadores_titulo[]" type="text" required>
+								<input class="input-underline" name="patrocinadores_titulo[]" type="text" >
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
@@ -878,7 +962,7 @@
 								</label>
 								<input
 									class="input-underline"
-									name="galeria_titulo[]" type="text" required>
+									name="galeria_titulo[]" type="text" >
 							</div>
 							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -958,7 +1042,7 @@
 									class="input-underline"
 									name="experiencia_titulo[]" type="text">
 							</div>
-							<div class="mb-2">
+							<div class="mb-4">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Link:
 								</label>
@@ -966,7 +1050,15 @@
 									class="input-underline"
 									name="experiencia_link[]" type="url">
 							</div>
-							<div class="mb-2">
+							<div class="mb-4">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Texto botón:
+								</label>
+								<input
+									class="input-underline"
+									name="experiencia_btn[]" type="text">
+							</div>
+							<div class="mb-4">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Instrucciones:
 								</label>
@@ -1004,7 +1096,7 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input class="input-underline" name="libres_titulo[]" type="text" required>
+								<input class="input-underline" name="libres_titulo[]" type="text" >
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
@@ -1098,5 +1190,12 @@
 				});
 			});
 	</script>
+	<script type="text/javascript">
+        tinymce.init({
+          selector: 'textarea.alx-editor',
+          plugins: 'link code lists',
+          toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link code'
+        });
+    </script>
 	@endsection
 </x-app-layout>

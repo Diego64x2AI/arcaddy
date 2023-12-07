@@ -23,7 +23,10 @@
 					<div class="absolute bottom-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">{{ $producto->descuento }}% OFF</div>
 				@endif
 				@if ($producto->digital)
-					<div class="absolute bottom-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">DIGITAL</div>
+					<div class="absolute bottom-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl">CUP&Oacute;N</div>
+				@endif
+				@if ($producto->regalado)
+					<div class="absolute top-2 left-2 bg-pink-600 text-white py-2 px-4 rounded-t-2xl rounded-br-2xl" style="top: 5px;">CANJE</div>
 				@endif
 			</div>
 			<div class="text-center px-2 mt-2">{{ $producto->nombre }}</div>
@@ -40,6 +43,12 @@
 		</div>
 		@endforeach
 		</div>
+		<br><br>
+		<b>Cup&oacute;n:</b> No se muestra en la p&aacute;gina, es para generar un cup&oacute;n directo.
+		<br>
+		<b>Canje:</b>	Se muestra en la p&aacute;gina, con bot&oacute;n para canjear con el QR del usuario.
+		<br>
+		<b>Venta:</b> Por el momento la p&aacute;gina no muestra productos para venta.
 	@else
 		<p class="text-center py-10">Para poder agregar productos, guarda primero la información para generar el cliente.</p>
 	@endif

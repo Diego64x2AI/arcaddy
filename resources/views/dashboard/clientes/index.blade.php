@@ -67,6 +67,7 @@
 					<div>
 						{{ $clientes->links() }}
 					</div>--}}
+					
 					<div class="grid grid-cols-1 md:grid-cols-5 gap-5">
 						@foreach($clientes as $cliente)
 						<x-cliente @delete-cliente.window="title = $event.detail" :id="$cliente->id" :name="$cliente->cliente" :slug="$cliente->slug" :logo="asset('storage/'.$cliente->logo)" />

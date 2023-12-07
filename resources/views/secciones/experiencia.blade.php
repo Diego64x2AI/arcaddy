@@ -16,7 +16,16 @@
 				<p class="text-center text-base px-8 mt-5 lg:text-2xl">{!! nl2br($item->descripcion) !!}</p>
 				@endif
 				<div class="text-center">
-					<a href="{{ $item->link }}" target="_blank" class="btn-pill mt-5">Ingresar a VR</span></a>
+					<a href="{{ $item->link }}" class="btn-pill mt-5">
+					
+
+					<?php /*{{($cliente->id != 33 && $cliente->id != 42 && $cliente->id != 44)?'Ingresar a VR':'Ingresar a AR'}}*/?>
+					@if($item->texto_boton != '')
+					{{ $item->texto_boton }}
+					@else
+						Ingresar a AR
+					@endif
+					</a>
 				</div>
 			</div>
 			@endforeach

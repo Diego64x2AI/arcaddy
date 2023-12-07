@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\UserQr;
 use App\Models\User;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
@@ -26,7 +27,22 @@ class RegisteredUserController extends Controller
 	 */
 	public function create(Cliente $cliente)
 	{
-		return view('auth.register', compact('cliente'));
+		$sinlogin = 0;
+		return view('auth.register', compact('cliente','sinlogin'));
+	}
+	
+	 /*Esta funcion es para registrar usuario sin que se haga el login, es apra que otra persona registre usuarios*/
+	public function registroDeUsuario( $clienteid)
+	{
+		$sinlogin = 1;
+		$cliente = Cliente::find($clienteid);
+		return view('auth.register', compact('cliente','sinlogin'));
+	}
+	
+	public function registroInternoDeUsuario( $clienteid)
+	{
+		$cliente = Cliente::find($clienteid);
+		return view('registro-interno-de-usuario', compact('cliente'));
 	}
 
 	/**
@@ -46,6 +62,35 @@ class RegisteredUserController extends Controller
 			'campos.*' => 'required|string|max:255',
 			'cliente_id' => ['required', 'numeric', 'exists:clientes,id'],
 		]);
+		
+		
+	/*	if($request->cliente_id == 2){
+		    //dd($campos);
+		    
+            
+            Para convertir cualquier formato al que deseamos
+            $fechaEnCualquierFormato = $campos['nacimiento'];
+            $formatosPosibles = [
+                'Y-m-d', 'm/d/Y', 'd-m-Y', // Agrega aquí más formatos según tus necesidades
+            ];
+            $fechaFormateada = null;
+            foreach ($formatosPosibles as $formato) {
+                $fechaObj = DateTime::createFromFormat($formato, $fechaEnCualquierFormato);
+                
+                if ($fechaObj !== false) {
+                    $fechaFormateada = $fechaObj->format('Y-m-d');
+                    break;
+                }
+            }
+
+
+
+
+		}*/
+		
+	
+		
+	
 
 		$user = User::create([
 			'name' => $request->name,
@@ -53,17 +98,54 @@ class RegisteredUserController extends Controller
 			'cliente_id' => $request->cliente_id,
 			'password' => Hash::make($request->password),
 		]);
+		
+		if(isset($request->nacimiento)){
+		    $user->nacimiento = $request->nacimiento;
+		    $user->save();
+		}
+		
 		$user->assignRole('user');
-		if (!$user->hasStripeId()) {
+		/*if (!$user->hasStripeId()) {
 			$user->createAsStripeCustomer([
 				'metadata' => ['user_id' => $user->id],
 			]);
-		}
+		}*/
 		event(new Registered($user));
-		Auth::login($user);
+		
+		if($request->sinlogin == 0){
+			Auth::login($user);
+		}
 
 		$cliente = Cliente::find($request->cliente_id);
 		if ($cliente->registro) {
+
+			$elCodigo = $cliente->id.'-1-'.$user->id.'-'.date('YmdHis');
+
+			/*QR ALEX*/
+			QrCode::format('png')
+	        ->size(500)
+	        ->margin(1)
+	        ->color(0,0,0)
+	        ->backgroundColor(255,255,255)
+	        ->merge('/public/images/qr-logo.png', .3)
+	        ->errorCorrection('H')
+	        ->generate($elCodigo, public_path('storage/qrregister/'.$elCodigo.'.png'));
+
+
+	        $userQr = UserQr::create([
+				'cliente_id' => $cliente->id,
+				'user_id' => $user->id,
+				'evento_id' => 1,
+				'codigo' => $elCodigo,
+				'usado'  => 0,
+			]);
+			
+			
+
+			/*FIN QR ALEX*/
+
+
+
 			/*if (!is_dir(storage_path('app/public/qrcodes'))) {
 				File::makeDirectory(storage_path('app/public/qrcodesr'));
 			}
@@ -81,7 +163,7 @@ class RegisteredUserController extends Controller
 				}
 			}
 			try {
-				$user->notify(new RegistroCodigo($user, $cliente));
+				$user->notify(new RegistroCodigo($user, $cliente, $elCodigo));
 			} catch(\Exception $e) {
 			}
 		} else {
@@ -92,6 +174,117 @@ class RegisteredUserController extends Controller
 			}
 		}
 		// dd($campos['campos']);
-		return redirect()->route('registro', ['cliente' => $request->cliente_id]);;
+		if($request->sinlogin == 0){
+
+			return redirect()->route('registro', ['cliente' => $request->cliente_id]);
+		}
+		else{
+
+			return view('registro2', [
+				'cliente' => $cliente,
+				'userQr' => $userQr,
+				'ver' => 0,
+				'user' => $user
+			]);
+
+		}
+	}
+	
+	/*RECIBE LOS REGISTROS INTERNOS DESDE MY APP CLIENT*/
+	public function recibeRegistroInternoDeUsuario(Request $request)
+	{
+
+		$campos = $request->validate([
+			'name' => ['required', 'string', 'max:255'],
+			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+			'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'campos.*' => 'required|string|max:255',
+			'cliente_id' => ['required', 'numeric', 'exists:clientes,id'],
+		]);
+
+
+
+
+		$user = User::create([
+			'name' => $request->name,
+			'email' => $request->email,
+			'cliente_id' => $request->cliente_id,
+			'password' => Hash::make($request->password),
+		]);
+		
+		if(isset($request->nacimiento)){
+		    $user->nacimiento = $request->nacimiento;
+		    $user->save();
+		}
+		
+		$user->assignRole('user');
+		/*if (!$user->hasStripeId()) {
+			$user->createAsStripeCustomer([
+				'metadata' => ['user_id' => $user->id],
+			]);
+		}*/
+		event(new Registered($user));
+
+
+		
+		
+
+		$cliente = Cliente::find($request->cliente_id);
+		if ($cliente->registro) {
+
+			$elCodigo = $cliente->id.'-1-'.$user->id.'-'.date('YmdHis');
+
+			/*QR ALEX*/
+			QrCode::format('png')
+	        ->size(500)
+	        ->margin(1)
+	        ->color(0,0,0)
+	        ->backgroundColor(255,255,255)
+	        ->merge('/public/images/qr-logo.png', .3)
+	        ->errorCorrection('H')
+	        ->generate($elCodigo, public_path('storage/qrregister/'.$elCodigo.'.png'));
+
+
+	        $userQr = UserQr::create([
+				'cliente_id' => $cliente->id,
+				'user_id' => $user->id,
+				'evento_id' => 1,
+				'codigo' => $elCodigo,
+				'usado'  => 0,
+			]);
+
+			/*FIN QR ALEX*/
+
+
+
+			
+			if (isset($campos['campos']) && count($campos['campos']) > 0) {
+				foreach ($campos['campos'] as $key => $nombre) {
+					
+					ClienteUserFieldValue::updateOrCreate([
+						'user_id' => $user->id,
+						'campo_id' => $key,
+					], [
+						'valor' => $nombre,
+					]);
+				}
+			}
+			try {
+				$user->notify(new RegistroCodigo($user, $cliente, $elCodigo));
+			} catch(\Exception $e) {
+			}
+		} 
+		
+		
+
+		return view('qr-registro-interno-de-usuario', [
+			'cliente' => $cliente,
+			'userQr' => $userQr,
+			'ver' => 0,
+			'user' => $user
+		]);
+
+		
+		
 	}
 }

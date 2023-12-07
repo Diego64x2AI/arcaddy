@@ -24,12 +24,17 @@
 				<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general shadow object-cover w-100 border border-secondary" style="border-radius:50px">
 			</div>
 		@endif
-		<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md mx-auto">¡Registro exitoso!</h1>
+		<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md mx-auto">{{($ver == 0)?'¡Registro exitoso!':'Mi QR'}}</h1>
 		<h4 class="color uppercase font-bold text-center mt-5 w-full sm:max-w-md mx-auto">Bienvenido</h4>
 		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->name }}</div>
 		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->email }}</div>
 		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
+
+			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+			
+			<?php /*
 			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+			*/?>
 		</div>
 		<div class="my-5 text-center w-full sm:max-w-md mx-auto">
 			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>

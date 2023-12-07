@@ -15,6 +15,7 @@ class ClienteExperiencia extends Model
 		'titulo',
 		'link',
 		'descripcion',
+		'texto_boton',
 	];
 
 	public $timestamps = false;

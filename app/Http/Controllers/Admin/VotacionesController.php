@@ -83,7 +83,8 @@ class VotacionesController extends Controller
 			'user_id' => 'required|numeric|min:1|exists:\App\Models\User,id',
 			'categoria_id' => 'required|numeric|min:1|exists:\App\Models\VotacionesCategorias,id',
 			'imagen' => 'required|image',
-			'link' => 'required|url',
+			//'link' => 'required|url',
+			//'link' => 'url',
 			'activa' => 'sometimes',
 			'finalista' => 'sometimes',
 		]);

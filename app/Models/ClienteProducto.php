@@ -17,6 +17,7 @@ class ClienteProducto extends Model
 		'precio',
 		'descuento',
 		'digital',
+		'regalado',
 	];
 
 	public $timestamps = false;

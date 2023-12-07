@@ -19,10 +19,11 @@ class RegistroCodigo extends Notification
 	 *
 	 * @return void
 	 */
-	public function __construct($user, $cliente)
+	public function __construct($user, $cliente, $elCodigo)
 	{
 		$this->user = $user;
 		$this->cliente = $cliente;
+		$this->elCodigo = $elCodigo;
 	}
 
 	/**
@@ -44,7 +45,7 @@ class RegistroCodigo extends Notification
 	 */
 	public function toMail($notifiable)
 	{
-		return (new MailMessage)->markdown('emails.user.codigo', ['user' => $this->user, 'cliente' => $this->cliente])->subject('Bienvenido a '.$this->cliente->cliente);
+		return (new MailMessage)->markdown('emails.user.codigo', ['user' => $this->user, 'cliente' => $this->cliente, 'codigo' => $this->elCodigo])->subject('Bienvenido a '.$this->cliente->cliente);
 	}
 
 	/**

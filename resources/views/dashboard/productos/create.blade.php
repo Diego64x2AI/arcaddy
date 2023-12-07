@@ -77,9 +77,19 @@
 							</div>
 							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="descuento">
-									Digital
+									Cupón
 								</label>
+								No se muestra en la página, es para generar un cupón directo.
+								<br>
 								<input type="checkbox" name="digital" value="on" @if($producto->id !== NULL && $producto->digital) checked @endif>
+							</div>
+							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="descuento">
+									Canje
+								</label>
+								Se muestra en la página, con botón para canjear con el QR del usuario.
+								<br>
+								<input type="checkbox" name="regalado" value="on" @if($producto->id !== NULL && $producto->regalado) checked @endif>
 							</div>
 						</div>
 

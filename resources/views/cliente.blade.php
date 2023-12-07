@@ -5,7 +5,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<title>{{ config('app.name', 'Laravel') }}</title>
+	<title>{{ $cliente->cliente}} <?php  /*{{ config('app.name', 'Laravel') }}*/ ?></title>
+	<meta name="description" content="{{ $cliente->metadescription}}">
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +24,22 @@
 		gtag('config', 'G-40ZEQ4JZ0Y');
 	</script>
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
+	
+	<style>
+	.alx-btn-add-calendario{
+	    padding: 0px 10px;
+	    line-height: 30px;
+	    border-radius: 30px;
+	    border: 1px solid #FFFFFF;
+	    display: block;
+	    width: 200px;
+	    margin-left: 20px;
+	    font-weight: bold;
+	}
+	</style>
+	
+	
+	
 </head>
 
 <body class="font-sans antialiased">
@@ -32,9 +49,129 @@
 			<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-full h-auto max-w-xs" alt="{{ $cliente->cliente }}">
 		</div>
 		--}}
+		
+		@if($cliente->id != 82)
 		@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
 			@includeIf('secciones.'.$seccion->seccion)
+			
+			
 		@endforeach
+		@else
+		@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
+			@includeIf('secciones.'.$seccion->seccion)
+			@if($seccion->seccion == "libres")
+			
+		
+	    <!-- Alebrije -->
+        <link type="text/css" href="https://ar-caddy.com/projects/ar-scio/styles.css" rel="stylesheet"/>
+        <style>
+        #libres{
+            display: none;
+        }
+        #alebrije{
+            height: 400px;
+            width: 100%;
+            margin: 0px auto;
+        }
+        @media screen and (min-width: 768px) { 
+            #alebrije{
+                height: 340px;
+                 width: 50%;
+            }
+        }
+        @media screen and (min-width: 992px) { 
+            #alebrije{
+                height: 340px;
+                 width: 50%;
+            }
+        }
+         @media screen and (min-width: 1200px) { 
+            #alebrije{
+                height: 600px;
+                 width: 50%;
+            }
+        }
+        #alx-base-3d{
+            position: relative;
+        }
+        #alx-tapa-3d{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: 10;
+            left: 0px;
+            top: 0px;
+        }
+        #alx-btn-simula-ver{
+                background-image: url('https://ar-caddy.com/projects/ar-scio/ar_icon.png');
+                background-repeat: no-repeat;
+                
+                background-size: 20px 20px;
+                background-position: 12px 50%;
+                width: 170px;
+                height: 30px;
+                border: 1px solid #DADCE0;
+                border-radius: 20px;
+                font-size: 12px;
+                line-height: 30px;
+                text-align: center;
+                margin: -40px auto 50px;
+                position: relative;
+                z-index: 10;
+                color: #4285f4;
+                padding-left: 22px;
+                display: none;
+        }
+        @media screen and (max-width: 991px) { 
+            #alx-btn-simula-ver{
+               display: block;
+            }
+        }
+        #alebrije{
+            background-color: transparent;
+        }
+        </style>
+    <div id="alx-base-3d">
+    <model-viewer id="alebrije" src="https://ar-caddy.com/projects/ar-scio/albreije volador.glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls poster="https://ar-caddy.com/projects/ar-scio/poster.png" shadow-intensity="1" ios-src="https://ar-caddy.com/projects/ar-scio/Alebrije_10.usdz" autoplay>
+    
+      <div class="progress-bar hide" slot="progress-bar">
+          <div class="update-bar"></div>
+      </div>
+      <button slot="ar-button" id="ar-button" style="display: none;">
+          View in your space
+      </button>
+      <div id="ar-prompt">
+          <img src="https://ar-caddy.com/projects/ar-scio/ar_hand_prompt.png">
+      </div>
+    </model-viewer>  
+    <div id="alx-tapa-3d"></div>
+    </div>
+    <div id="alx-btn-simula-ver" onclick="document.getElementById('ar-button').click();">
+        View in your space
+    </div>
+    
+    <script src="https://ar-caddy.com/projects/ar-scio/script.js"></script>
+ 
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.2.0/model-viewer.min.js"></script> 
+	
+	
+			
+			
+			
+			
+			
+			
+			
+			@endif
+			
+		@endforeach
+		@endif
+		
+		
+		
+		
+		
+		
 	</main>
 	<footer class="mt-5">
 		<div class="flex items-center justify-center">
@@ -42,22 +179,23 @@
 		</div>
 		@if ($cliente->secciones()->where('activa', 1)->where('seccion', 'social')->count() > 0)
 		<div class="text-center mt-5">
-			<div class="text-xl">Síguenos:</div>
+		    
+			<div class="text-xl">{{($cliente->id != 82)?'Síguenos:':'Follow us:'}}</div>
 			<div class="text-center mt-3 flex flex-row items-center justify-center">
 			@if ($cliente->instagram !== '' && $cliente->instagram !== NULL)
-			<a href="{{ $cliente->instagram }}" target="_blank" class="mr-2"><img src="{{ asset('images/instagram.png') }}" class="object-fit w-14 h-auto" alt="Instagram"></a>
+			<a href="{{ $cliente->instagram }}" target="_blank" class="mr-2"><img src="{{ asset('images/instagram.png') }}?v=1" class="object-fit w-14 h-auto" alt="Instagram"></a>
 			@endif
 			@if ($cliente->facebook !== '' && $cliente->facebook !== NULL)
-			<a href="{{ $cliente->facebook }}" target="_blank" class="mr-2"><img src="{{ asset('images/facebook.png') }}" class="object-fit w-14 h-auto" alt="Facebook"></a>
+			<a href="{{ $cliente->facebook }}" target="_blank" class="mr-2"><img src="{{ asset('images/facebook.png') }}?v=1" class="object-fit w-14 h-auto" alt="Facebook"></a>
 			@endif
 			@if ($cliente->twitter !== '' && $cliente->twitter !== NULL)
-			<a href="{{ $cliente->twitter }}" target="_blank" class="mr-2"><img src="{{ asset('images/twitter.png') }}" class="object-fit w-14 h-auto" alt="Twitter"></a>
+			<a href="{{ $cliente->twitter }}" target="_blank" class="mr-2"><img src="{{ asset('images/twitter.png') }}?v=1" class="object-fit w-14 h-auto" alt="Twitter"></a>
 			@endif
 			@if ($cliente->tiktok !== '' && $cliente->tiktok !== NULL)
-			<a href="{{ $cliente->tiktok }}" target="_blank" class="mr-2"><img src="{{ asset('images/tiktok.png') }}" class="object-fit w-14 h-auto" alt="Tiktok"></a>
+			<a href="{{ $cliente->tiktok }}" target="_blank" class="mr-2"><img src="{{ asset('images/tiktok.png') }}?v=1" class="object-fit w-14 h-auto" alt="Tiktok"></a>
 			@endif
 			@if ($cliente->whatsapp !== '' && $cliente->whatsapp !== NULL)
-			<a href="{{ $cliente->whatsapp }}" target="_blank"><img src="{{ asset('images/whatsapp.png') }}" class="object-fit w-14 h-auto" alt="Whatsapp"></a>
+			<a href="{{ $cliente->whatsapp }}" target="_blank"><img src="{{ asset('images/whatsapp.png') }}?v=1" class="object-fit w-14 h-auto" alt="Whatsapp"></a>
 			@endif
 			</div>
 		</div>
@@ -79,14 +217,28 @@
 			<div class="flex items-center justify-center mt-3 md:mt-0 md:ml-auto">
 				@if ($cliente->registro)
 					@auth
-						@role('admin')
-						<a href="{{ route('dashboard') }}" class="text-base mr-4 hidden md:inline-block">Dashboard</a>
-						@endrole
 						<div class="text-base mr-4 font-bold">
-							<a href="{{ route('registro', ['cliente' => $cliente->id]) }}" class="text-base">
+						    Hola {{ auth()->user()->name }}
+							<?php /*<a href="{{ route('registro', ['cliente' => $cliente->id]) }}" class="text-base">
 								Hola {{ auth()->user()->name }}
-							</a>
+							</a> */?>
 						</div>
+
+						@role('admin')
+						<a href="{{ route('dashboard') }}" class="text-base mr-4 hiddenalex md:inline-block">Dashboard</a>
+						@endrole
+						
+						
+						@role('client')
+						<a href="{{ route('my-app-client.home') }}" class="text-base mr-4 hiddenalex md:inline-block">Mi App Client</a>
+						@endrole
+
+						@role('user')
+    					
+    						<a href="{{route('registro',['cliente' => $cliente->id])}}?ver=1" class="text-base mr-4 hiddenalex md:inline-block">Mi QR</a>
+    					
+						@endrole
+
 						<!-- Authentication -->
 						<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
 							@csrf
@@ -95,10 +247,12 @@
 							</a>
 						</form>
 					@else
-						@if (Route::has('register'))
+				
+						@if (Route::has('register') && $cliente->id == 65 )
 						<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Register') }}</a>
 						@endif
 						<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Login') }}</a>
+					
 					@endauth
 				@else
 					@role('admin')
@@ -120,8 +274,8 @@
 		</div>
 	</div>
 	@foreach ($cliente->flotantes as $flotante)
-		<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000">
-			<div class="py-3 px-5 text-white rounded-full text-xl" style="background-color: {{ $flotante->color }}">
+		<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000; font-size: 0.9em;">
+			<div class="py-3 px-5 text-white rounded-full " style="background-color: {{ $flotante->color }}; font-weight: bold;">
 				<a href="{{ $flotante->link }}" target="{{ $flotante->target }}">{{ $flotante->texto }} <i class="{{ $flotante->icono }}"></i></a>
 			</div>
 		</div>
@@ -139,7 +293,7 @@
 				const iso = new Isotope( '.isotope-votaciones', {
 					itemSelector: '.isotope-votaciones-item',
 					percentPosition: true,
-					layoutMode: 'fitRows',
+					layoutMode: 'masonry', /*fitRows*/
 					stagger: 30,
 					transitionDuration: '0.3s',
 					masonry: {
@@ -203,12 +357,26 @@
 				const video_id = $(this).data('video-id');
 				const plataforma = $(this).data('plataforma');
 				const plataforma_user = $(this).data('plataforma-user');
+				const imagen = $(this).data('imagen');
 				let media = '';
 				let votoshtml = '';
 				if (plataforma === 'google') {
 					media = `<iframe src="https://drive.google.com/file/d/${video_id}/preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
 				} else if (plataforma === 'vimeo') {
-					media = `<iframe src="https://player.vimeo.com/video/${video_id}?h=${plataforma_user}&amp;badge=0&autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
+					/*media = `<iframe src="https://player.vimeo.com/video/${video_id}?h=${plataforma_user}&amp;badge=0&autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`*/
+					
+					media = `<iframe src="https://player.vimeo.com/video/${video_id}?autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
+					
+					
+					
+
+					
+				} else if( plataforma === 'youtube'){
+				    	media = `<iframe  src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen  style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
+				    	
+				} else if( plataforma === 'imagen'){
+				    	//media = `<img src="${imagen}" class="img-general inline-block object-cover w-full h-auto" />`
+				    	media = `<div class="img-votacion-detalle" style="background-image: url(${imagen})"></div>`
 				}
 				if ($(this).data('votaciones') === 'Y') {
 					votoshtml = `<div class="text-center mt-2 votos-${id}">${votos} votos</div>`
@@ -332,10 +500,10 @@
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
-						spaceBetween: 0,
+						spaceBetween: 10,
 						autoHeight: false,
 						grid: {
-							rows: ($('.swiper-galeria .swiper-slide').length >= 6) ? 2 : 1,
+							rows: ($('.swiper-galeria .swiper-slide').length >= 6) ? 1 : 1,
 						}
 					},
 				},
@@ -372,6 +540,14 @@
 		body {
 			background-color: {{ $cliente->color_bg }} !important;
 			color: {{ $cliente->color_base }} !important;
+			
+			@if($cliente->imagen_background != '')
+			background-image: url('{{ asset('storage/'.$cliente->imagen_background) }}');
+			background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+			@endif
 		}
 
 		#header {
@@ -397,6 +573,17 @@
 
 		.swiper-pagination-bullet-active {
 			background: {{ $cliente->color }} !important;
+		}
+		
+		.img-votacion-detalle{
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+		}
+		.isotope-menu-item:hover{
+		    color: #000000;
 		}
 	</style>
 </body>

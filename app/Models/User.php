@@ -25,6 +25,7 @@ class User extends Authenticatable
 		'email',
 		'password',
 		'cliente_id',
+		'nacimiento'
 	];
 
 	/**
@@ -47,7 +48,7 @@ class User extends Authenticatable
 	];
 
 	public function campos() {
-		return $this->hasMany(ClienteUserFieldValue::class);
+		return $this->hasMany(ClienteUserFieldValue::class,  'user_id', 'id');
 	}
 
 	/**

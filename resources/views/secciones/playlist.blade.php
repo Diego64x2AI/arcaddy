@@ -10,7 +10,7 @@
 			<div class="swiper-slide">
 				<div><img src="{{ asset('storage/'.$item->archivo) }}" alt="{{ $item->plataforma }}" class="object-fill w-3/4 h-auto inline"></div>
 				<div class="text-center">
-					<a href="{{ $item->link }}" target="_blank" class="btn-pill mt-5">Escuchar en <span class="uppercase">{{ $item->plataforma }}</span></a>
+					<a href="{{ $item->link }}" target="_blank" class="btn-pill mt-5"><span class="uppercase">{{ $item->plataforma }}</span></a>
 				</div>
 			</div>
 			@endforeach

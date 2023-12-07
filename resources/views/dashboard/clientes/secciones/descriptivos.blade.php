@@ -32,7 +32,7 @@
 		<label class="block tracking-wide text-gray-900 text-xl font-bold mb-2" for="descripcion">
 			Descripción
 		</label>
-		<textarea class="input-border" name="descripcion" id="descripcion"
+		<textarea class="input-border alx-editor" name="descripcion" id="descripcion"
 			rows="5">{{ ($cliente->id !== NULL) ? $cliente->descripcion : old('descripcion') }}</textarea>
 		</label>
 	</div>

@@ -23,6 +23,17 @@
 				@role('admin')
 				<a href="{{ route('dashboard') }}" class="text-base text-white mr-4">Dashboard</a>
 				@endrole
+
+				@role('client')
+				<a href="{{ route('my-app-client.home') }}" class="text-base text-white mr-4">My App Client</a>
+				@endrole
+
+				@role('user')
+				@if(isset($userQr))
+				<a href="{{ route('registro',['cliente' => $userQr->cliente_id]) }}" class="text-base text-white mr-4">Mi QR</a>
+				@endif
+				@endrole
+
 				<!-- Authentication -->
 				<form method="POST" action="{{ route('logout') }}">
 					@csrf

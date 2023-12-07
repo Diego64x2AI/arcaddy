@@ -39,6 +39,30 @@ class AuthenticatedSessionController extends Controller
 			}
 			return redirect()->route('cliente', ['slug' => $cliente->slug]);
 		}
+		
+		$cliente = Cliente::find(auth()->user()->cliente_id);
+        if($cliente){
+            //auth()->user()->logo = $cliente->logo;
+             //dd(auth()->user()->logo);
+
+	        // Obtener el usuario actualmente autenticado
+			//$user = auth()->user();
+
+			// Agregar un valor personalizado al objeto User en la sesión
+			session()->put('logo', $cliente->logo);
+
+			// Obtener el valor personalizado del objeto User desde la sesión
+			//$miValor = session()->get('logo');
+
+			// Agregar el valor personalizado al objeto User
+			//$user->logo = $miValor;
+
+			//auth()->user()->logo = $miValor;
+
+        }
+
+        //dd(auth()->user()->logo);
+        
 		return redirect()->intended(RouteServiceProvider::HOME);
 	}
 

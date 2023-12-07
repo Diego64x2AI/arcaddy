@@ -39,7 +39,7 @@
 							class="input-underline" value="{{ $entry->titulo }}"
 							name="experiencia_titulo[]" type="text">
 					</div>
-					<div class="mb-2">
+					<div class="mb-4">
 						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 							Link:
 						</label>
@@ -47,7 +47,15 @@
 							class="input-underline" value="{{ $entry->link }}"
 							name="experiencia_link[]" type="url">
 					</div>
-					<div class="mb-2">
+					<div class="mb-4">
+						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+							Texto botón:
+						</label>
+						<input
+							class="input-underline" value="{{ $entry->texto_boton }}" 
+							name="experiencia_btn[]" type="text">
+					</div>
+					<div class="mb-4">
 						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 							Instrucciones:
 						</label>
@@ -86,7 +94,7 @@
 						class="input-underline"
 						name="experiencia_titulo[]" type="text">
 				</div>
-				<div class="mb-2">
+				<div class="mb-4">
 					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 						Link:
 					</label>
@@ -94,7 +102,15 @@
 						class="input-underline"
 						name="experiencia_link[]" type="url">
 				</div>
-				<div class="mb-2">
+				<div class="mb-4">
+						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+							Texto botón:
+						</label>
+						<input
+							class="input-underline" 
+							name="experiencia_btn[]" type="text">
+					</div>
+				<div class="mb-4">
 					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 						Instrucciones:
 					</label>

@@ -37,7 +37,7 @@
 						</label>
 						<input
 							class="input-underline" value="{{ $entry->titulo }}"
-							name="galeria_titulo[]" type="text" required>
+							name="galeria_titulo[]" type="text" >
 					</div>
 					<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 						<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -69,7 +69,7 @@
 					</label>
 					<input
 						class="input-underline"
-						name="galeria_titulo[]" type="text" required>
+						name="galeria_titulo[]" type="text" >
 				</div>
 				<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 					<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>

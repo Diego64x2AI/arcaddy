@@ -82,14 +82,17 @@ class ClienteController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(StoreClienteRequest $request)
-	{
+	{ 
 		$campos = $request->validated();
-		unset($campos['logo'], $campos['registro_img']);
+		unset($campos['logo'], $campos['registro_img'], $campos['imagen_background']);
 		$campos['slug'] = Str::slug($campos['slug']);
 		$campos['logo'] = $request->file('logo')->store('clientes/images', 'public');
 		$campos['registro'] = $request->boolean('registro');
 		if ($request->hasFile('registro_img')) {
 			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
+		}
+		if ($request->hasFile('imagen_background')) {
+			$campos['imagen_background'] = $request->file('imagen_background')->store('clientes/images', 'public');
 		}
 		// dd($campos);
 		$cliente = Cliente::create($campos);
@@ -248,6 +251,7 @@ class ClienteController extends Controller
 					'titulo' => $campos['experiencia_titulo'][$key],
 					'link' => $campos['experiencia_link'][$key],
 					'descripcion' => $campos['experiencia_instrucciones'][$key],
+					'texto_boton' => $campos['experiencia_btn'][$key],
 				]);
 			}
 		}
@@ -295,8 +299,9 @@ class ClienteController extends Controller
 	 */
 	public function update(UpdateClienteRequest $request, Cliente $cliente)
 	{
+	    
 		$campos = $request->validated();
-		unset($campos['logo'], $campos['registro_img']);
+		unset($campos['logo'], $campos['registro_img'], $campos['imagen_background']);
 		$campos['slug'] = Str::slug($campos['slug']);
 		if ($request->hasFile('logo')) {
 			if ($cliente->logo !== NULL) {
@@ -310,6 +315,22 @@ class ClienteController extends Controller
 			}
 			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
 		}
+		
+		if ($request->hasFile('imagen_background')) {
+		    
+		    if ($cliente->imagen_background !== NULL) {
+				Storage::delete($cliente->imagen_background);
+			}
+			
+			$campos['imagen_background'] = $request->file('imagen_background')->store('clientes/images', 'public');
+		}
+		
+	
+		
+		
+		
+		
+		
 		$campos['registro'] = $request->boolean('registro');
 		$cliente->update($campos);
 		// secciones orden
@@ -334,6 +355,8 @@ class ClienteController extends Controller
 		if (isset($campos['campos']) && count($campos['campos']) > 0) {
 			foreach ($campos['campos'] as $key => $nombre) {
 				// echo $key."-".$nombre."-".$request->boolean('campos_activo.'.$key);
+				
+				
 				ClienteUserField::updateOrCreate([
 					'cliente_id' => $cliente->id,
 					'campo_id' => $key,
@@ -585,6 +608,7 @@ class ClienteController extends Controller
 					'titulo' => $titulo,
 					'link' => $campos['experiencia_link'][$key],
 					'descripcion' => $campos['experiencia_instrucciones'][$key],
+					'texto_boton' => $campos['experiencia_btn'][$key],
 				]);
 			}
 		}

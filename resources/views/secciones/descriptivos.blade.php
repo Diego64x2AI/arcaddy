@@ -9,7 +9,22 @@
 	<div class="text-center font-bold text-xl mt-2 lg:text-2xl">{{ $cliente->fecha }}</div>
 	@endif
 	@if ($cliente->descripcion !== NULL && $cliente->descripcion !== '')
-	<p class="text-center text-base px-4 mt-5 lg:text-2xl">{!! nl2br($cliente->descripcion) !!}</p>
+	<p class="text-center text-base px-4 mt-5 lg:text-2xl">
+	    <div class="alx-editor-impresion">
+	    <?php /*{!! nl2br($cliente->descripcion) !!} */?>
+	    {!! $cliente->descripcion !!}
+	    </div>
+	</p>
 	@endif
 </section>
 @includeIf('secciones.votaciones')
+<style>
+.alx-editor-impresion ul{
+    list-style: disc;
+    padding-left: 40px;
+}
+.alx-editor-impresion ol{
+    list-style: auto;
+    padding-left: 40px;
+}
+</style>
