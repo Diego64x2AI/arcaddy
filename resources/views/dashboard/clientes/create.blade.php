@@ -21,8 +21,8 @@
 			background-color: #FFF;
 			padding: 10px;
 		}
-		
-		
+
+
 
 	</style>
 	<div class="py-6">
@@ -44,16 +44,16 @@
 					@method('PUT')
 					@endif
 					<div class="p-6 bg-gray-100 border border-white">
-					    
+
 					    @if($cliente->id !== NULL)
 					    <div style="text-align: right;">
 								    	<a href="{{ url("/{$cliente->slug}") }}" target="_blank"	>
-								    	Ver sitio web 
+								    	Ver sitio web
 								    	 ar-caddy/<span class="font-bold">{{ $cliente->slug }}</span></a>
 						</div>
-								    	
+
 								@endif
-								
+
 						<div style="display: none;">
 						    <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
 									Idioma
@@ -76,8 +76,8 @@
 								</label>
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="slug" id="slug"
 									type="text" value="{{ ($cliente->id !== NULL) ? $cliente->slug : old('slug') }}" placeholder="Ejemplo: redbull" required>
-							
-							
+
+
 							</div>
 							<div class="col-span-2 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
@@ -85,8 +85,8 @@
 								</label>
 								<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="cliente" id="cliente"
 									type="text" value="{{ ($cliente->id !== NULL) ? $cliente->cliente : old('cliente') }}" placeholder="Ejemplo: Red Bull" required>
-									
-								
+
+
 							</div>
 							<div class="px-3 mb-6 md:mb-6 text-center">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="color_bg">
@@ -110,9 +110,9 @@
 									value="{{ ($cliente->id !== NULL) ? $cliente->color : old('color') }}" type="color" placeholder="#FF4E00" @if($cliente->id === NULL) required @endif>
 							</div>
 						</div>
-						
-						
-					
+
+
+
 						<div class="flex flex-wrap -mx-3">
 							<div class="w-full md:w-3/6 px-3 mb-6 md:mb-6">
         						<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
@@ -120,16 +120,16 @@
         						</label>
         						<textarea name="metadescription" style="width: 100%; height: 100px;" class="shadow appearance-none border-0">{{ ($cliente->id !== NULL) ? $cliente->metadescription : old('metadescription') }}</textarea>
         					</div>
-						
+
 						</div>
 					    <br>
-					    
-					    
-						
-						
-						
-						
-						
+
+
+
+
+
+
+
 						<div class="flex flex-wrap -mx-3 justify-center">
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
 							    <div>
@@ -157,7 +157,7 @@
 								</div>
 							</div>
 							@endif
-							
+
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
 							    <div>
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="logo">
@@ -173,9 +173,9 @@
 								</div>
 							</div>
 						</div>
-					
-							     
-						
+
+
+
 						<div id="privado" class="bg-white p-3 mt-3">
 							<div class="flex flex-row items-center font-bold">
 								<div class="text-xl md:text-3xl truncate mr-2">Arcaddy privado</div>
@@ -273,7 +273,7 @@
 											<textarea class="shadow appearance-none resize-none h-20 border-0 w-full py-2 px-3 text-gray-700" name="registro_descripcion" id="registro_descripcion"
 												type="text" placeholder="Texto descriptivo">{{ ($cliente->id !== NULL) ? $cliente->registro_descripcion : old('registro_descripcion') }}</textarea>
 										</div>
-										
+
 										<?php /*<div class="flex items-center justify-end mt-2">
 										    <div class="ml-2 grow text-right">
 												<div class="font-bold">
@@ -284,7 +284,7 @@
 												<input type="checkbox" name="nacimiento" value="on">
 											</div>
 										</div> */?>
-										
+
 										@foreach ($campos as $campo)
 											<div class="flex items-center justify-end mt-2">
 												@if ($campo->editable)
@@ -304,7 +304,23 @@
 											</div>
 										@endforeach
 									</div>
+
 								</div>
+								<div class="font-semibold">
+									Base de datos para permitir registros
+								</div>
+								<div class="flex flex-row">
+									<div class="text-center mt-3">
+										<button type="button" class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+										<div class="examinar-size text-xs mt-2 text-gray-400">(solamente .xlsx)</div>
+									</div>
+									<input name="registro_base" id="registro_base" type="file" accept=".xlsx" style="display: none">
+								</div>
+								@if ($cliente->registro_base)
+								<div class="text-xs mt-2">
+									Actualmente cuentas con una base de datos cargada: <a href="{{ route('clientes.registrodb.delete', ['cliente' => $cliente->id]) }}">Eliminar</a>
+								</div>
+								@endif
 							</div>
 						</div>
 						<!-- /flotantes -->

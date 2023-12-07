@@ -62,7 +62,7 @@ Route::get('/notification', function () {
 Route::middleware('role:client')->group(function () {
 
 	Route::prefix('my-app-client')->group(function () {
-		
+
 		Route::get('/home', [MyAppClientController::class, 'home'])->name('my-app-client.home');
 		Route::get('/reporte-activaciones', [MyAppClientController::class, 'reporteActivaciones'])->name('my-app-client.reporte-activaciones');
 		Route::get('/reporte-redenciones', [MyAppClientController::class, 'reporteRedenciones'])->name('my-app-client.reporte-redenciones');
@@ -76,7 +76,7 @@ Route::middleware('role:client')->group(function () {
 
 
 		Route::get('/check-in', [MyAppClientController::class, 'checkIn'])->name('my-app-client.check-in');
-		
+
 		Route::get('/check-in2', [MyAppClientController::class, 'checkIn2'])->name('my-app-client.check-in2');
 
 		Route::get('/check-in-validar/{codigo}', [MyAppClientController::class, 'checkInValidar'])->name('my-app-client.check-in-validar');
@@ -88,15 +88,15 @@ Route::middleware('role:client')->group(function () {
 		Route::get('/producto-redencion-validar/{producto_id}/{codigo}/{usuario_id}', [MyAppClientController::class, 'productoRedencionValidar'])->name('my-app-client.producto-redencion-validar');
 
 		Route::get('/reenviar-acceso/{clienteid}/{usuarioid}', [MyAppClientController::class, 'reenviarAcceso'])->name('my-app-client.reenviar-acceso');
-		
-		
+
+
 		/*Registro de usuario en la app de client*/
 		Route::get('/registro-interno-de-usuario/{clienteid}', [RegisteredUserController::class, 'registroInternoDeUsuario'])->name('registro-interno-de-usuario');
 
 		Route::post('/recibe-registro-interno-de-usuario/{clienteid}', [RegisteredUserController::class, 'recibeRegistroInternoDeUsuario'])->name('recibe-registro-interno-de-usuario');
 
 
-		
+
 
 
 
@@ -109,6 +109,7 @@ Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
 		Route::post('/clientes/crop', [ClienteController::class, 'crop'])->name('clientes.crop');
+		Route::get('/clientes/registrodb/delete/{cliente}', [ClienteController::class, 'registrodb_delete'])->name('clientes.registrodb.delete');
 		Route::resource('/clientes', ClienteController::class);
 		Route::resource('/votaciones', VotacionesController::class, [
 			'except' => ['update']
@@ -150,11 +151,11 @@ Route::middleware('role:admin')->group(function () {
 			Route::post('/store/{cliente}', [ProductoController::class, 'store'])->name('productos.store');
 		});
 		// Route::resource('/productos', ProductoController::class);
-		
+
 		Route::resource('/usuarios-cliente', UsuariosClienteController::class);
-		
+
 		Route::resource('/games', GameController::class);
-	
+
 		Route::get('/games/borrar/{juegoid}', [GameController::class, 'borrar'])->name('games.borrar');
 	});
 });

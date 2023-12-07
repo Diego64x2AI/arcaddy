@@ -47,8 +47,10 @@ class ClienteController extends Controller
 	 */
 	public function create()
 	{
+		$cliente = new Cliente();
+		$cliente->registro_base = false;
 		return view('dashboard.clientes.create', [
-			'cliente' => new Cliente(),
+			'cliente' => $cliente,
 			'campos' => Campos::all(),
 		]);
 	}
@@ -82,7 +84,7 @@ class ClienteController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(StoreClienteRequest $request)
-	{ 
+	{
 		$campos = $request->validated();
 		unset($campos['logo'], $campos['registro_img'], $campos['imagen_background']);
 		$campos['slug'] = Str::slug($campos['slug']);
@@ -283,11 +285,20 @@ class ClienteController extends Controller
 	 */
 	public function edit(Cliente $cliente)
 	{
+		$cliente->registro_base = Storage::disk('local')->exists("registro/{$cliente->id}.xlsx");
 		// dd($cliente);
 		return view('dashboard.clientes.create', [
 			'cliente' => $cliente,
 			'campos' => Campos::all(),
 		]);
+	}
+
+	public function registrodb_delete(Cliente $cliente)
+	{
+		if (Storage::disk('local')->exists("registro/{$cliente->id}.xlsx")) {
+			Storage::disk('local')->delete("registro/{$cliente->id}.xlsx");
+		}
+		return redirect()->back()->with('success', 'Base de datos eliminada correctamente.');
 	}
 
 	/**
@@ -299,9 +310,9 @@ class ClienteController extends Controller
 	 */
 	public function update(UpdateClienteRequest $request, Cliente $cliente)
 	{
-	    
+
 		$campos = $request->validated();
-		unset($campos['logo'], $campos['registro_img'], $campos['imagen_background']);
+		unset($campos['logo'], $campos['registro_img'], $campos['imagen_background'], $campos['registro_base']);
 		$campos['slug'] = Str::slug($campos['slug']);
 		if ($request->hasFile('logo')) {
 			if ($cliente->logo !== NULL) {
@@ -315,22 +326,15 @@ class ClienteController extends Controller
 			}
 			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
 		}
-		
 		if ($request->hasFile('imagen_background')) {
-		    
-		    if ($cliente->imagen_background !== NULL) {
+		  if ($cliente->imagen_background !== NULL) {
 				Storage::delete($cliente->imagen_background);
 			}
-			
 			$campos['imagen_background'] = $request->file('imagen_background')->store('clientes/images', 'public');
 		}
-		
-	
-		
-		
-		
-		
-		
+		if ($request->hasFile('registro_base')) {
+			$request->file('registro_base')->storeAs('registro', "{$cliente->id}.xlsx", 'local');
+		}
 		$campos['registro'] = $request->boolean('registro');
 		$cliente->update($campos);
 		// secciones orden
@@ -355,8 +359,8 @@ class ClienteController extends Controller
 		if (isset($campos['campos']) && count($campos['campos']) > 0) {
 			foreach ($campos['campos'] as $key => $nombre) {
 				// echo $key."-".$nombre."-".$request->boolean('campos_activo.'.$key);
-				
-				
+
+
 				ClienteUserField::updateOrCreate([
 					'cliente_id' => $cliente->id,
 					'campo_id' => $key,

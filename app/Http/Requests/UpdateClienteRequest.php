@@ -25,7 +25,7 @@ class UpdateClienteRequest extends FormRequest
 	public function rules()
 	{
 		return [
-		    'idioma' => 'required',
+		  'idioma' => 'required',
 			'cliente' => 'required|string|max:255',
 			'slug' => 'required|string|max:100|unique:clientes,slug,'.$this->route('cliente')->id,
 			'color' => 'required|string|max:55',
@@ -47,6 +47,7 @@ class UpdateClienteRequest extends FormRequest
 			'password_titulo' => 'nullable|string|max:255',
 			'password_descripcion' => 'nullable|string|max:255',
 			'registro_img' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif',
+			'registro_base' => 'nullable|sometimes|file|mimes:xlsx',
 			'registro_descripcion' => 'nullable|string',
 			'geo_bloqueo' => 'required|integer',
 			'geo_codes' => 'nullable|string',
