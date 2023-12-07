@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Notifications\Welcome;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\ClienteUserField;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -87,10 +88,12 @@ class RegisteredUserController extends Controller
 		}*/
 		$permitirRegistro = true;
 		// validar si esta lleno el campo 3 que es el identificador (este no va a ser optimo por las prisas alex jaja)
-		$idsUsuarios = User::where('cliente_id', $request->cliente_id)->select('id', 'cliente_id')->pluck('id');
-		$identificadores = array_map('intval', ClienteUserFieldValue::where('campo_id', 3)->whereIn('user_id', $idsUsuarios)->pluck('valor')->toArray());
-		if (in_array(intval($campos['campos'][3]), $identificadores)) {
-			return redirect()->back()->withInput()->withErrors(['Ya existe un registro con este identificador.']);
+		if (ClienteUserField::where('cliente_id', $request->cliente_id)->where('campo_id', 3)->where('activo', 1)->exists()) {
+			$idsUsuarios = User::where('cliente_id', $request->cliente_id)->select('id', 'cliente_id')->pluck('id');
+			$identificadores = array_map('intval', ClienteUserFieldValue::where('campo_id', 3)->whereIn('user_id', $idsUsuarios)->pluck('valor')->toArray());
+			if (in_array(intval($campos['campos'][3]), $identificadores)) {
+				return redirect()->back()->withInput()->withErrors(['Ya existe un registro con este identificador.']);
+			}
 		}
 		// validar si existe base de datos de validacion y realizar comprobaciones necesarias
 		if (Storage::disk('local')->exists("registro/{$request->cliente_id}.xlsx")) {
