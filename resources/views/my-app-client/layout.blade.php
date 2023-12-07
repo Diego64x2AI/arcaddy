@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>@yield('titulo')</title>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-	<link href="{{ asset('build/assets/alx-bootstrap.min.css')}}" rel="stylesheet">
-	<link rel="stylesheet" href="{{ asset('build/assets/alx-owl-carousel/owl.carousel.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('build/assets/alx-owl-carousel/owl.theme.default.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('build/assets/alx-css.css')}}?v=10">
+	<link href="{{ asset('assets/alx-bootstrap.min.css')}}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('assets/alx-owl-carousel/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/alx-owl-carousel/owl.theme.default.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/alx-css.css')}}?v=10">
     @yield('metas')
 </head>
 <body>
@@ -42,9 +42,9 @@
 		</div>
 
 	</div>
-	<script src="{{ asset('build/assets/alx-jquery.js')}}"></script>
-	<script src="{{ asset('build/assets/alx-bootstrap.min.js')}}"></script>
-	<script src="{{ asset('build/assets/alx-owl-carousel/owl.carousel.js')}}"></script>
+	<script src="{{ asset('assets/alx-jquery.js')}}"></script>
+	<script src="{{ asset('assets/alx-bootstrap.min.js')}}"></script>
+	<script src="{{ asset('assets/alx-owl-carousel/owl.carousel.js')}}"></script>
 	@yield('js')
 </body>
 </html>
