@@ -324,8 +324,8 @@ body{
 	padding-top: 21px;
 }
 #alx-header-etq{
-	border-radius: 0px 29px 29px 0px;
-	box-shadow: 0px 5px 10px #D0D0D0;
+	/*border-radius: 0px 29px 29px 0px;*/
+	/*box-shadow: 0px 5px 10px #D0D0D0;*/
 	font-size: 27px;
 	height: 58px;
 	line-height: 58px;
@@ -338,10 +338,12 @@ body{
 
 }
 #alx-header-etq img{
-	height: 32px;
+	/*height: 32px;*/
+	height: auto;
 	position: relative;
 	margin-top: -6px;
 	margin-left: 10px;
+	max-width: 140px;
 }
 #alx-body{
 	
@@ -350,12 +352,21 @@ body{
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
+#alx-footerfantasma{
+    height: 70px;
+	position: relative;
+	display: block;
+}
 #alx-footer{
 	background-image: url('/images-my-app/footer.png');
 	background-color: #0C060C;
 	background-position: center center;
 	height: 70px;
-	position: relative;
+	position: fixed;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	z-index: 999;
 }
 #alx-footer-logo{
 	background-image: url('/images-my-app/logo-footer.png');
@@ -439,7 +450,11 @@ body{
 	background-image: url('/images-my-app/btn-redenciones.png');
 }
 #alx-btn-usuarios::before{
-	background-image: url('/images-my-app/btn-usuarios.png');
+	/*background-image: url('/images-my-app/btn-usuarios.png');*/
+	background-image: url('/images-my-app/monitos.png');
+	background-size: 50px auto;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 #alx-btn-estadisticas::before{
 	background-image: url('/images-my-app/btn-estadisticas.png');
@@ -592,6 +607,9 @@ body{
 }
 .alx-info-scaner-ocultar{
 	display: none;
+}
+#alx-info-scaner-img-prodcuto.alx-info-img-scaner{
+    	width: 180px;
 }
 
 
