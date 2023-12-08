@@ -124,7 +124,7 @@
 	<div id="alx-info-scaner" class="text-center">
 		
 		<div id="alx-info-scaner-ok" class="alx-info-scaner-ocultar">
-			<img src="{{asset('/build/assets/images-my-app/qrok.png')}}" class="alx-info-img-scaner">
+			<img src="{{asset('/images-my-app/qrok.png')}}" class="alx-info-img-scaner">
 			<br>
 			<div class="alx-w-extrabold alx-txt-super">¡Acceso enviado!</div>
 			<br>

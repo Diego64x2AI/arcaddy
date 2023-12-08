@@ -18,8 +18,9 @@
 	<video id="preview"></video>
 </div>
 
-<script src="{{ asset('alx-jquery.js')}}"></script>
-<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="{{ asset('assets/alx-jquery.js')}}"></script>
+<?php /*<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>*/?>
+<script src="{{ asset('js/instascan.min.js')}}"></script>
 
 <script type="text/javascript">
     

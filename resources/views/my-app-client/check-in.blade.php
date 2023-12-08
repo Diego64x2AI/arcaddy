@@ -35,7 +35,7 @@
 		<div id="alx-info-scaner" class="text-center">
 			
 			<div id="alx-info-scaner-ok" class="alx-info-scaner-ocultar">
-				<img src="{{asset('/build/assets/images-my-app/qrok.png')}}" class="alx-info-img-scaner">
+				<img src="{{asset('/images-my-app/qrok.png')}}" class="alx-info-img-scaner">
 				<br>
 				<div class="alx-w-extrabold alx-txt-super">¡Acceso exitoso!</div>
 				<br>
@@ -43,7 +43,7 @@
 			</div>
 
 			<div id="alx-info-scaner-no" class="alx-info-scaner-ocultar">
-				<img src="{{asset('/build/assets/images-my-app/qrno.png')}}" class="alx-info-img-scaner">
+				<img src="{{asset('/images-my-app/qrno.png')}}" class="alx-info-img-scaner">
 				<br>
 				<div class="alx-w-extrabold alx-txt-super">
 					Este código <br> ya ingresó al evento
@@ -52,7 +52,7 @@
 			</div>
 
 			<div id="alx-info-scaner-no-found" class="alx-info-scaner-ocultar">
-				<img src="{{asset('/build/assets/images-my-app/qrno.png')}}" class="alx-info-img-scaner">
+				<img src="{{asset('/images-my-app/qrno.png')}}" class="alx-info-img-scaner">
 				<br>
 				<div class="alx-w-extrabold alx-txt-super">
 					Usuario <br> no registrado
@@ -79,7 +79,7 @@
 @section('js')
 	<!--<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>-->
 
-	<script src="{{ asset('/build/assets/instascan.min.js')}}"></script>
+	<script src="{{ asset('js/instascan.min.js')}}"></script>
 
 <script type="text/javascript">
 

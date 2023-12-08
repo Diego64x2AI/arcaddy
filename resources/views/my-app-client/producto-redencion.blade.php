@@ -35,11 +35,11 @@
 		<div id="alx-info-scaner" class="text-center">
 			
 			<div id="alx-info-scaner-ok" class="alx-info-scaner-ocultar">
-				<img src="{{asset('/build/assets/images-my-app/qrok.png')}}" class="alx-info-img-scaner">
+				<img src="{{asset('/images-my-app/qrok.png')}}" class="alx-info-img-scaner">
 				<br>
 				<div class="alx-w-extrabold alx-txt-super">Canje exitoso!</div>
 				<br>
-				<img src="{{asset('/build/assets/images-my-app/qrno.png')}}" class="alx-info-img-scaner" id="alx-info-scaner-img-prodcuto">
+				<img src="{{asset('/images-my-app/qrno.png')}}" class="alx-info-img-scaner" id="alx-info-scaner-img-prodcuto">
 				
 			
 				<div class="alx-w-extrabold alx-txt-pink alx-txt-ch" id="alx-info-scaner-nombre-producto"></div>
@@ -47,7 +47,7 @@
 			</div>
 
 			<div id="alx-info-scaner-no" class="alx-info-scaner-ocultar">
-				<img src="{{asset('/build/assets/images-my-app/qrno.png')}}" class="alx-info-img-scaner">
+				<img src="{{asset('/images-my-app/qrno.png')}}" class="alx-info-img-scaner">
 				<br>
 				<div class="alx-w-extrabold alx-txt-super">
 					Ya canjeaste<br> este beneficio
@@ -75,7 +75,7 @@
 @section('js')
 	<!--<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>-->
 
-	<script src="{{ asset('/build/assets/instascan.min.js')}}"></script>
+	<script src="{{ asset('js/instascan.min.js')}}"></script>
 
 <script type="text/javascript">
 
