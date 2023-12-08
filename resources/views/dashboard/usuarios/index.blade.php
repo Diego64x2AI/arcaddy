@@ -53,7 +53,7 @@
 								@foreach ($fields as $field)
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 								    
-								    @if($campo->campo_id != 4)
+								    @if($field->campo_id != 4)
 								   
 								    
 								    {{ ($usuario->campos()->where('campo_id', $field->campo_id)->first() !== null) ? $usuario->campos()->where('campo_id', $field->campo_id)->first()->valor : '' }}
