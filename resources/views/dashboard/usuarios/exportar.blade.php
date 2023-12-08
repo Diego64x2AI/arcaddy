@@ -17,7 +17,20 @@
 			<td style="text-align: center; width: 250px;">{{ $usuario->name }}</td>
 			<td style="text-align: center; width: 250px;">{{ $usuario->email }}</td>
 			@foreach ($fields as $field)
-			<td style="text-align: center; width: 250px;">{{ ($usuario->campos()->where('campo_id', $field->campo_id)->first() !== null) ? $usuario->campos()->where('campo_id', $field->campo_id)->first()->valor : '' }}</td>
+
+			<td style="text-align: center; width: 250px;">
+
+				@if($campo->campo_id != 4)
+
+				{{ ($usuario->campos()->where('campo_id', $field->campo_id)->first() !== null) ? $usuario->campos()->where('campo_id', $field->campo_id)->first()->valor : '' }}
+
+				@else
+			    	{{ $usuario->nacimiento }}
+			    @endif
+
+		    </td>
+
+
 			@endforeach
 			<td style="text-align: center; width: 250px;">{{ $usuario->created_at }}</td>
 		</tr>
