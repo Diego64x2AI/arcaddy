@@ -455,7 +455,7 @@
 		</div>
 	</div>
 	@section('js')
-	<script src="https://ar-caddy.com/build/assets/edtr/tinymce/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+	<script src="{{ asset('assets/editor/tinymce/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 	<script>
 		let cropper;
 		let cropTipo, cropId;
