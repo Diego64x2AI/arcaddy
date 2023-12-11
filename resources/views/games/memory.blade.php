@@ -654,7 +654,7 @@
 		    color: #000000;
 		}
 	</style>
-	<script src="{{ asset('assets/jquery-3.6.4.min.js') }}"></script>
+	<script src="{{ asset('assets/alx-jquery.js') }}"></script>
 	<?php /*style="background-image: url({{ asset('storage/clientes/games/memory/'.$c->imagen) }});"*/?>
 	<script>
     $(document).ready(function () {
