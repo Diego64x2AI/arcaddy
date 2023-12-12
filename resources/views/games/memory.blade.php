@@ -626,7 +626,20 @@
 		}
 
 		#header {
-			background-color: {{ $cliente->color_bg }} !important;
+			/*background-color: {{ $cliente->color_bg }} !important;*/
+			background-color: transparent !important;
+		}
+		#header-back{
+		    background-color: {{ $cliente->color_bg }};
+		    height: 100%;
+		    width: 100%;
+		    display: block;
+		    position: absolute;
+		    z-index: -1;
+		    opacity: 0.8;
+		    left: 0px;
+		    top: 0px;
+			
 		}
 
 		.btn-pill {
@@ -652,6 +665,11 @@
 		
 		.isotope-menu-item:hover{
 		    color: #000000;
+		}
+		@media (min-width: 1024px){
+			.lg\:text-8xl {
+			    font-size: 3rem;
+			}
 		}
 	</style>
 	<script src="{{ asset('assets/alx-jquery.js') }}"></script>
