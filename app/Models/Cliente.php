@@ -37,6 +37,7 @@ class Cliente extends Model
 		'idioma',
 		'imagen_background',
 		'metadescription',
+		'login_bloqueo',
 	];
 
 	/**

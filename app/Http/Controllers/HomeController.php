@@ -191,7 +191,7 @@ END:VCALENDAR";
 		}
 
 
-		if($cliente->id == 2){
+		if($cliente->login_bloqueo){
 
 			if (auth()->check()) {
                 return view('cliente', [
