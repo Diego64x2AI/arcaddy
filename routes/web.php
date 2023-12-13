@@ -60,49 +60,24 @@ Route::get('/notification', function () {
 */
 
 Route::middleware('role:client')->group(function () {
-
 	Route::prefix('my-app-client')->group(function () {
-
 		Route::get('/home', [MyAppClientController::class, 'home'])->name('my-app-client.home');
 		Route::get('/reporte-activaciones', [MyAppClientController::class, 'reporteActivaciones'])->name('my-app-client.reporte-activaciones');
 		Route::get('/reporte-redenciones', [MyAppClientController::class, 'reporteRedenciones'])->name('my-app-client.reporte-redenciones');
 		Route::get('/reporte-base-usuarios', [MyAppClientController::class, 'reporteBaseUsuarios'])->name('my-app-client.reporte-base-usuarios');
 		Route::get('/reporte-estadisticas', [MyAppClientController::class, 'reporteEstadisticas'])->name('my-app-client.reporte-estadisticas');
-
-
 		Route::get('/home-qr', [MyAppClientController::class, 'homeQr'])->name('my-app-client.home-qr');
-
 		Route::get('/home-escaner', [MyAppClientController::class, 'homeEscaner'])->name('my-app-client.home-escaner');
-
-
 		Route::get('/check-in', [MyAppClientController::class, 'checkIn'])->name('my-app-client.check-in');
-
 		Route::get('/check-in2', [MyAppClientController::class, 'checkIn2'])->name('my-app-client.check-in2');
-
 		Route::get('/check-in-validar/{codigo}', [MyAppClientController::class, 'checkInValidar'])->name('my-app-client.check-in-validar');
-
-
 		Route::get('/producto-redencion/{producto_id}', [MyAppClientController::class, 'productoRedencion'])->name('my-app-client.producto-redencion');
-
-
 		Route::get('/producto-redencion-validar/{producto_id}/{codigo}/{usuario_id}', [MyAppClientController::class, 'productoRedencionValidar'])->name('my-app-client.producto-redencion-validar');
-
 		Route::get('/reenviar-acceso/{clienteid}/{usuarioid}', [MyAppClientController::class, 'reenviarAcceso'])->name('my-app-client.reenviar-acceso');
-
-
 		/*Registro de usuario en la app de client*/
 		Route::get('/registro-interno-de-usuario/{clienteid}', [RegisteredUserController::class, 'registroInternoDeUsuario'])->name('registro-interno-de-usuario');
-
 		Route::post('/recibe-registro-interno-de-usuario/{clienteid}', [RegisteredUserController::class, 'recibeRegistroInternoDeUsuario'])->name('recibe-registro-interno-de-usuario');
-
-
-
-
-
-
-
 	});
-
 });
 
 Route::middleware('role:admin')->group(function () {
@@ -165,7 +140,9 @@ Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('re
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
 Route::get('/{slug}/start-game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
 
-
+Route::middleware('auth')->group(function () {
+	Route::post('/{slug}/save-game/{claveJuego}', [HomeController::class, 'saveGame'])->name('cliente.save-game');
+});
 
 
 
