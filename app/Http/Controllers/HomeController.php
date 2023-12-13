@@ -194,11 +194,12 @@ END:VCALENDAR";
 		if($cliente->id == 2){
 
 			if (auth()->check()) {
-                // Usuario autenticado, continúa con la lógica del controlador
-                return "Usuario autenticado..";
+                return view('cliente', [
+					'cliente' => $cliente,
+				]);
             } else {
                 // Usuario no autenticado, redirige al formulario de inicio de sesión
-                return redirect()->route('login')->with('message', 'Inicia sesión para acceder.');
+                return redirect()->route('login',$cliente->id)->with('message', 'Inicia sesión para acceder.');
             }
 
 		}
