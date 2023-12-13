@@ -209,9 +209,30 @@ END:VCALENDAR";
 				'cliente' => $cliente,
 			]);
 		}
-		return view('cliente', [
-			'cliente' => $cliente,
-		]);
+
+
+		if($cliente->id == 2){
+
+			if (auth()->check()) {
+                // Usuario autenticado, continúa con la lógica del controlador
+                return "Usuario autenticado..";
+            } else {
+                // Usuario no autenticado, redirige al formulario de inicio de sesión
+                return redirect()->route('login')->with('message', 'Inicia sesión para acceder.');
+            }
+
+		}
+		else{
+
+			return view('cliente', [
+				'cliente' => $cliente,
+			]);
+
+		}
+
+
+
+		
 	}
 
 	/**
