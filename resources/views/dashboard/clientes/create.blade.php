@@ -175,7 +175,17 @@
 						</div>
 
 
-
+						<div id="login_bloqueo" class="bg-white p-3 mt-3">
+							<div class="flex flex-row items-center font-bold">
+								<div class="text-xl md:text-3xl truncate mr-2">
+									Ver Arcaddy solo con login
+								</div>
+								<div class="ml-auto">
+									<span class="mr-2">Activar / Desactivar </span>
+									<input type="checkbox" id="login_bloqueo" name="login_bloqueo" value="on" @if($cliente->id !== NULL && $cliente->login_bloqueo) checked @endif>
+								</div>
+							</div>
+						</div>
 						<div id="privado" class="bg-white p-3 mt-3">
 							<div class="flex flex-row items-center font-bold">
 								<div class="text-xl md:text-3xl truncate mr-2">Arcaddy privado</div>

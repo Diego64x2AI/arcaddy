@@ -90,6 +90,7 @@ class ClienteController extends Controller
 		$campos['slug'] = Str::slug($campos['slug']);
 		$campos['logo'] = $request->file('logo')->store('clientes/images', 'public');
 		$campos['registro'] = $request->boolean('registro');
+		$campos['login_bloqueo'] = $request->boolean('login_bloqueo');
 		if ($request->hasFile('registro_img')) {
 			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
 		}
@@ -336,6 +337,7 @@ class ClienteController extends Controller
 			$request->file('registro_base')->storeAs('registro', "{$cliente->id}.xlsx", 'local');
 		}
 		$campos['registro'] = $request->boolean('registro');
+		$campos['login_bloqueo'] = $request->boolean('login_bloqueo');
 		$cliente->update($campos);
 		// secciones orden
 		if (isset($campos['secciones']) && count($campos['secciones']) > 0) {
