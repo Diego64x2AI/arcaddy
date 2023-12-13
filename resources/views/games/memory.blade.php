@@ -235,7 +235,7 @@
 					<div class="en-mobile"></div>
 					<span class="etiquetas">Tiempo:</span> <span id="timer" class="der">0</span>seg.
 				</div>
-				<div id="restart-button" class="btn-pill">Reiniciar</div>
+				<div class="btn-pill restart-game">Reiniciar</div>
 				<div class="l"></div>
 			</div>
 
