@@ -32,6 +32,7 @@ class FillModulos extends Seeder
 			'productos',
 			'banners2',
 			'menu',
+			'ranking',
 		];
 		$titulos = [
 			'banners' => 'Banners',
@@ -48,6 +49,7 @@ class FillModulos extends Seeder
 			'productos' => 'Productos',
 			'banners2' => 'Banners 2',
 			'menu' => 'Menú / Catálogo / Producto o servicio',
+			'ranking' => 'Ranking',
 		];
 		foreach ($clientes as $cliente) {
 			foreach ($secciones as $seccion) {

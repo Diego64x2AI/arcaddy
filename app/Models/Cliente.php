@@ -65,6 +65,7 @@ class Cliente extends Model
 		'votaciones',
 		'flotantes',
 		'menu',
+		'juegos',
 	];
 
 	public function menu()
@@ -140,5 +141,10 @@ class Cliente extends Model
 	public function experiencias()
 	{
 		return $this->hasMany(ClienteExperiencia::class, 'cliente_id', 'id');
+	}
+
+	public function juegos()
+	{
+		return $this->hasMany(Juego::class, 'cliente_id', 'id')->where('activo', 1);
 	}
 }
