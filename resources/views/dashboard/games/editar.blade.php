@@ -30,7 +30,7 @@
                             URL
                         </label>
                         <a href="{{route('cliente.start-game',[$juego->cliente_id, $juego->clave])}}" target="_blank">
-                        {{route('cliente.start-game',[$juego->cliente_id, $juego->clave])}}</a><br><br>
+                        {{route('cliente.start-game',[$juego->cliente->slug, $juego->clave])}}</a><br><br>
 
                         <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
                             Cliente
