@@ -210,6 +210,7 @@
 		</div>
 	</footer>
 	<div id="header" class="fixed top-0 right-0 w-full px-6 py-4 z-50 bg-white shadow-sm">
+		<div id="header-back"></div>
 		<div class="flex flex-col md:flex-row items-center justify-center">
 			<div class="flex flex-col md:flex-row items-center justify-center">
 				<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
@@ -551,7 +552,20 @@
 		}
 
 		#header {
-			background-color: {{ $cliente->color_bg }} !important;
+			/*background-color: {{ $cliente->color_bg }} !important;*/
+			background-color: transparent !important;
+		}
+		#header-back{
+		    background-color: {{ $cliente->color_bg }};
+		    height: 100%;
+		    width: 100%;
+		    display: block;
+		    position: absolute;
+		    z-index: -1;
+		    opacity: 0.8;
+		    left: 0px;
+		    top: 0px;
+			
 		}
 
 		.btn-pill {
@@ -584,6 +598,11 @@
 		}
 		.isotope-menu-item:hover{
 		    color: #000000;
+		}
+		@media (min-width: 1024px){
+			.lg\:text-8xl {
+			    font-size: 3rem;
+			}
 		}
 	</style>
 </body>
