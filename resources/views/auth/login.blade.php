@@ -68,8 +68,10 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			</div>
 			@if($cliente->btn_registro_en_login)
 			<div class="mt-4">
-				<a class="btn-pill" href="{{ route('register', ['cliente' => $cliente->id]) }}">
+				<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
+					<x-button type="button" class="ml-3 btn-pill">
 					Registrate aquí
+					</x-button>
 				</a>
 			</div>
 			@endif
