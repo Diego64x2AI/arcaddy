@@ -3,6 +3,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 @endphp
 <x-guest-layout :classes="$classes">
 	<x-auth-card>
+		<?php /*
 		<x-slot name="logo">
 			@if ($cliente->id === NULL)
 				<a href="{{ route('home') }}"><x-application-logo class="w-auto h-20 fill-current text-gray-500 w-full sm:max-w-md" /></a>
@@ -17,7 +18,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 					</div>
 				@endif
 			@endif
-		</x-slot>
+		</x-slot>*/?>
 
 
 		<x-slot name="registro">
@@ -136,5 +137,8 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 	.contenedor-eres-nuevo{
 		text-align: center;
 		margin: 20px auto 0px;
+	}
+	.esq-redondas{
+		border-radius: 20px;
 	}
 </style>
