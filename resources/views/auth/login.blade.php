@@ -18,26 +18,26 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				@endif
 			@endif
 		</x-slot>
-	</x-auth-card>
+
 
 
 		@if($cliente->btn_registro_en_login)	
-		<div class="flex flex-col sm:justify-center items-center pt-0 px-4 sm:pt-0">
-		<div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md sm:rounded-lg back-alternativo contenedor-eres-nuevo">
-			<div class="mt-4">
-				<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
-				<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
-					<x-button type="button" class="ml-3 btn-pill">
-					Registrate
-					</x-button>
-				</a>
-			</div>
+	<div class="flex flex-col sm:justify-center items-center pt-0 px-4 sm:pt-0">
+	<div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md sm:rounded-lg back-alternativo contenedor-eres-nuevo">
+		<div class="mt-4">
+			<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
+			<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
+				<x-button type="button" class="ml-3 btn-pill">
+				Registrate
+				</x-button>
+			</a>
 		</div>
-		</div>
-		@endif
+	</div>
+	</div>
+	@endif
 
 
-	<x-auth-card>
+		
 		{{--  <iframe src="https://drive.google.com/file/d/13gjNCbpJVPrsNMcTS2KBXmZa0Z0jOSKS/preview" width="640" height="480" allow="autoplay"></iframe>--}}
 		<!-- Session Status -->
 		<x-auth-session-status class="mb-4" :status="session('status')" />
