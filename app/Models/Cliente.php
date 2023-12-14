@@ -38,6 +38,7 @@ class Cliente extends Model
 		'imagen_background',
 		'metadescription',
 		'login_bloqueo',
+		'btn_registro_en_login',
 	];
 
 	/**

@@ -91,6 +91,7 @@ class ClienteController extends Controller
 		$campos['logo'] = $request->file('logo')->store('clientes/images', 'public');
 		$campos['registro'] = $request->boolean('registro');
 		$campos['login_bloqueo'] = $request->boolean('login_bloqueo');
+		$campos['btn_registro_en_login'] = $request->boolean('btn_registro_en_login');
 		if ($request->hasFile('registro_img')) {
 			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
 		}
@@ -338,6 +339,7 @@ class ClienteController extends Controller
 		}
 		$campos['registro'] = $request->boolean('registro');
 		$campos['login_bloqueo'] = $request->boolean('login_bloqueo');
+		$campos['btn_registro_en_login'] = $request->boolean('btn_registro_en_login');
 		$cliente->update($campos);
 		// secciones orden
 		if (isset($campos['secciones']) && count($campos['secciones']) > 0) {

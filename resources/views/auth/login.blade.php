@@ -54,16 +54,22 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				</label>
 			</div>
 
-			<div class="flex items-center justify-end mt-4">
+			<div class="mt-4">
 				@if (Route::has('password.request'))
 				<a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request', ['cliente' => $cliente->id]) }}">
 					{{ __('Forgot your password?') }}
 				</a>
 				@endif
 
-				<x-button class="ml-3 btn-pill">
+				<x-button class="ml-3 btn-pill f-right">
 					{{ __('Log in') }}
 				</x-button>
+				<div style="clear"></div>
+			</div>
+			<div class="mt-4">
+				<a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register', ['cliente' => $cliente->id]) }}">
+					Registro
+				</a>
 			</div>
 		</form>
 	</x-auth-card>
@@ -87,5 +93,11 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 
 	.bg-client {
 		background-color: {{ $cliente->color }} !important;
+	}
+	.clear{
+		clear: both;
+	}
+	.f-right{
+		float: right;
 	}
 </style>
