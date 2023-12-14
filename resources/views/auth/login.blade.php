@@ -54,20 +54,20 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				</label>
 			</div>
 
-			<div class="mt-4">
+			<div class="flex items-center justify-end mt-4">
 				@if (Route::has('password.request'))
 				<a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request', ['cliente' => $cliente->id]) }}">
 					{{ __('Forgot your password?') }}
 				</a>
 				@endif
 
-				<x-button class="ml-3 btn-pill f-right">
+				<x-button class="ml-3 btn-pill">
 					{{ __('Log in') }}
 				</x-button>
 				<div style="clear"></div>
 			</div>
 			@if($cliente->btn_registro_en_login)
-			<div class="mt-4">
+			<div class="btn-pill">
 				<a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register', ['cliente' => $cliente->id]) }}">
 					Registrate aquí
 				</a>
