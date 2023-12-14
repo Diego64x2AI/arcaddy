@@ -71,6 +71,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 
 
 	@if($cliente->btn_registro_en_login)	
+	<div class="flex flex-col sm:justify-center items-center pt-6 px-4 sm:pt-0">
 	<div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md sm:rounded-lg back-alternativo contenedor-eres-nuevo">
 		<div class="mt-4">
 			<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
@@ -80,6 +81,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				</x-button>
 			</a>
 		</div>
+	</div>
 	</div>
 	@endif
 
