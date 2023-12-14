@@ -28,6 +28,10 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		<form method="POST" action="{{ route('login', ['cliente' => $cliente->id]) }}">
 			@csrf
 
+			<div class="titulo-alternativo">
+				¿YA ERES USUARIO REGISTRADO?
+			</div>
+
 			<!-- Email Address -->
 			<div>
 				<x-label for="email" :value="__('Email')" />
@@ -116,6 +120,10 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		font-weight: 700;
 		margin-bottom: 12px;
 		color: {{ $cliente->color_bg }};
+	}
+	.titulo-alternativo{
+		font-weight: 700;
+		margin-bottom: 12px;
 	}
 	.back-alternativo{
 		
