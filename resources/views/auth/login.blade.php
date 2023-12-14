@@ -66,17 +66,23 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				</x-button>
 				<div style="clear"></div>
 			</div>
-			@if($cliente->btn_registro_en_login)
+		</form>
+	</x-auth-card>
+
+
+	@if($cliente->btn_registro_en_login)	
+	<x-auth-card>
 			<div class="mt-4">
+				¿ERES NUEVO POR AQUÍ?
 				<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
 					<x-button type="button" class="ml-3 btn-pill">
-					Registrate aquí
+					Registrate
 					</x-button>
 				</a>
 			</div>
-			@endif
-		</form>
 	</x-auth-card>
+	@endif
+	
 	<div class="h-10"></div>
 </x-guest-layout>
 @if ($cliente->slug === 'estafeta')
