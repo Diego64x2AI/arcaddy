@@ -70,7 +70,18 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 	</x-auth-card>
 
 
-	
+	@if($cliente->btn_registro_en_login)	
+	<div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md sm:rounded-lg back-alternativo">
+		<div class="mt-4">
+			<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
+			<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
+				<x-button type="button" class="ml-3 btn-pill">
+				Registrate
+				</x-button>
+			</a>
+		</div>
+	</div>
+	@endif
 
 	<div class="h-10"></div>
 </x-guest-layout>
@@ -98,5 +109,11 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 	}
 	.f-right{
 		float: right;
+	}
+	.color-text-alternativo{
+		color: {{ $cliente->color_bg }};
+	}
+	.back-alternativo{
+		background-color: {{ $cliente->color_base }};
 	}
 </style>
