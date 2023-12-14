@@ -18,7 +18,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				@endif
 			@endif
 		</x-slot>
-
+	</x-auth-card>
 
 
 		@if($cliente->btn_registro_en_login)	
@@ -37,7 +37,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		@endif
 
 
-		
+	<x-auth-card>
 		{{--  <iframe src="https://drive.google.com/file/d/13gjNCbpJVPrsNMcTS2KBXmZa0Z0jOSKS/preview" width="640" height="480" allow="autoplay"></iframe>--}}
 		<!-- Session Status -->
 		<x-auth-session-status class="mb-4" :status="session('status')" />
