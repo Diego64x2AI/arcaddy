@@ -66,11 +66,13 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				</x-button>
 				<div style="clear"></div>
 			</div>
+			@if($cliente->btn_registro_en_login)
 			<div class="mt-4">
 				<a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register', ['cliente' => $cliente->id]) }}">
-					Registro
+					Registrate aquí
 				</a>
 			</div>
+			@endif
 		</form>
 	</x-auth-card>
 	<div class="h-10"></div>
