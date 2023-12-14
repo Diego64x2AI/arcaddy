@@ -71,9 +71,10 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 
 
 	@if($cliente->btn_registro_en_login)	
-	<div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md sm:rounded-lg back-alternativo">
+	<div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md sm:rounded-lg back-alternativo contenedor-eres-nuevo">
 		<div class="mt-4">
 			<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
+			<br>
 			<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
 				<x-button type="button" class="ml-3 btn-pill">
 				Registrate
@@ -111,9 +112,17 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		float: right;
 	}
 	.color-text-alternativo{
+		font-weight: 700;
+		margin-bottom: 12px;
 		color: {{ $cliente->color_bg }};
 	}
 	.back-alternativo{
+		
 		background-color: {{ $cliente->color_base }};
+
+	}
+	.contenedor-eres-nuevo{
+		text-align: center;
+		margin: 20px auto;
 	}
 </style>
