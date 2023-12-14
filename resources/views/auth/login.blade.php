@@ -124,9 +124,10 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 	.titulo-alternativo{
 		font-weight: 700;
 		margin-bottom: 12px;
+		text-align: center;
 	}
 	.back-alternativo{
-		
+		 
 		background-color: {{ $cliente->color_base }};
 
 	}
