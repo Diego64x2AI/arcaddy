@@ -1,8 +1,8 @@
 @php
-$scores = \App\Models\JuegoResultado::whereIn('juego_id', $cliente->juegos->pluck('id')->toArray())->orderBy('puntos', 'desc')->orderBy('tiempo', 'asc')->get();
+$scores = \App\Models\JuegoResultado::whereIn('juego_id', $cliente->juegos->pluck('id')->toArray())->orderBy('tiempo', 'asc')->orderBy('errores', 'asc')->get();
 @endphp
 @if($scores->count() > 0)
-<section id="ranking" class="mt-5 py-5 text-center lg:mt-10">
+<section id="ranking" class="mt-5 py-5 text-center lg:mt-10 mx-auto w-full max-w-xl">
 	<div class="flex flex-row items-center justify-center">
 		<div class="text-4xl font-extrabold lg:text-8xl">Ranking</div>
 		<div class="color text-2xl font-extrabold lg:text-4xl ml-3 mt-1">Usuarios</div>
