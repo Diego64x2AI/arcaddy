@@ -70,19 +70,8 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 	</x-auth-card>
 
 
-	@if($cliente->btn_registro_en_login)	
-	<x-auth-card>
-			<div class="mt-4">
-				¿ERES NUEVO POR AQUÍ?
-				<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
-					<x-button type="button" class="ml-3 btn-pill">
-					Registrate
-					</x-button>
-				</a>
-			</div>
-	</x-auth-card>
-	@endif
 	
+
 	<div class="h-10"></div>
 </x-guest-layout>
 @if ($cliente->slug === 'estafeta')
