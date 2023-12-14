@@ -74,7 +74,6 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 	<div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md sm:rounded-lg back-alternativo contenedor-eres-nuevo">
 		<div class="mt-4">
 			<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
-			<br>
 			<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
 				<x-button type="button" class="ml-3 btn-pill">
 				Registrate
