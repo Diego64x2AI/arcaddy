@@ -21,19 +21,13 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 
 
 		<x-slot name="registro">
-		@if($cliente->btn_registro_en_login)	
-		<div class="">
-		<div class="">
-			<div class="mt-4">
-				<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
-				<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
-					<x-button type="button" class="ml-3 btn-pill">
-					Registrate
-					</x-button>
-				</a>
-			</div>
-		</div>
-		</div>
+		@if($cliente->btn_registro_en_login)
+			<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
+			<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
+				<x-button type="button" class="ml-3 btn-pill">
+				Registrate
+				</x-button>
+			</a>
 		@endif
 		</x-slot>
 
@@ -141,6 +135,6 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 	}
 	.contenedor-eres-nuevo{
 		text-align: center;
-		margin: 20px auto;
+		margin: 20px auto 0px;
 	}
 </style>
