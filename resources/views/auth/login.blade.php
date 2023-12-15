@@ -21,17 +21,18 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			@endif
 		</x-slot>
 
-
-		<x-slot name="registro">
 		@if($cliente->btn_registro_en_login)
+		<x-slot name="registro">
+		
 			<div class="color-text-alternativo">¿ERES NUEVO POR AQUÍ?</div>
 			<a href="{{ route('register', ['cliente' => $cliente->id]) }}">
 				<x-button type="button" class="ml-3 btn-pill">
 				Registrate
 				</x-button>
 			</a>
-		@endif
+		
 		</x-slot>
+		@endif
 
 
 
