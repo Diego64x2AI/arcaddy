@@ -389,6 +389,9 @@ class ClienteController extends Controller
 				]);
 			}
 		}
+		else{
+			ClienteFlotante::where('cliente_id', $cliente->id)->delete();
+		}
 		// menu
 		if (isset($campos['menu_cat_nombre']) && count($campos['menu_cat_nombre']) > 0) {
 			// ClienteBanner::where('cliente_id', $cliente->id)->delete();
