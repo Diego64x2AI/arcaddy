@@ -7,18 +7,18 @@
   <g id="icono_QR" data-name="icono QR" transform="translate(-631 7)">
     <g id="Grupo_9" data-name="Grupo 9" transform="translate(631 -7)">
       <g id="Grupo_8" data-name="Grupo 8" clip-path="url(#clip-path)">
-        <path id="Trazado_984" data-name="Trazado 984" d="M43.588,8.707A8.73,8.73,0,0,0,34.88,0H8.707A8.73,8.73,0,0,0,0,8.707V34.88a8.729,8.729,0,0,0,8.707,8.707H34.88a8.729,8.729,0,0,0,8.707-8.707ZM34.88,34.88H8.707V8.707H34.88Z" fill-rule="evenodd"/>
-        <rect id="Rectángulo_1166" data-name="Rectángulo 1166" width="8.759" height="8.759" transform="translate(17.414 17.415)"/>
-        <path id="Trazado_985" data-name="Trazado 985" d="M257.726,249.019V222.846a8.774,8.774,0,0,0-8.707-8.759H222.846a8.818,8.818,0,0,0-8.759,8.759v26.173a8.774,8.774,0,0,0,8.759,8.707h26.173a8.73,8.73,0,0,0,8.707-8.707m-34.88-26.173h26.173v26.173H222.846Z" transform="translate(-170.499 -170.499)" fill-rule="evenodd"/>
-        <rect id="Rectángulo_1167" data-name="Rectángulo 1167" width="8.707" height="8.707" transform="translate(61.054 61.054)"/>
-        <path id="Trazado_986" data-name="Trazado 986" d="M351.4,34.88h8.707V8.707A8.73,8.73,0,0,0,351.4,0H342.64V8.707H351.4Z" transform="translate(-272.879)" fill-rule="evenodd"/>
-        <rect id="Rectángulo_1168" data-name="Rectángulo 1168" width="17.415" height="8.707" transform="translate(52.346 26.173)"/>
-        <rect id="Rectángulo_1169" data-name="Rectángulo 1169" width="8.707" height="8.707" transform="translate(61.054 8.707)"/>
-        <rect id="Rectángulo_1170" data-name="Rectángulo 1170" width="8.707" height="8.707" transform="translate(52.346)"/>
-        <path id="Trazado_987" data-name="Trazado 987" d="M8.707,249.515H0v26.173A8.73,8.73,0,0,0,8.707,284.4h8.707v-8.707H8.707Z" transform="translate(0 -198.714)" fill-rule="evenodd"/>
-        <rect id="Rectángulo_1171" data-name="Rectángulo 1171" width="17.466" height="8.707" transform="translate(17.415 50.801)"/>
-        <rect id="Rectángulo_1172" data-name="Rectángulo 1172" width="8.759" height="8.759" transform="translate(17.415 68.215)"/>
-        <rect id="Rectángulo_1173" data-name="Rectángulo 1173" width="8.707" height="8.707" transform="translate(26.173 76.974)"/>
+        <path class="color2" id="Trazado_984" data-name="Trazado 984" d="M43.588,8.707A8.73,8.73,0,0,0,34.88,0H8.707A8.73,8.73,0,0,0,0,8.707V34.88a8.729,8.729,0,0,0,8.707,8.707H34.88a8.729,8.729,0,0,0,8.707-8.707ZM34.88,34.88H8.707V8.707H34.88Z" fill-rule="evenodd"/>
+        <rect class="color2" id="Rectángulo_1166" data-name="Rectángulo 1166" width="8.759" height="8.759" transform="translate(17.414 17.415)"/>
+        <path class="color2" id="Trazado_985" data-name="Trazado 985" d="M257.726,249.019V222.846a8.774,8.774,0,0,0-8.707-8.759H222.846a8.818,8.818,0,0,0-8.759,8.759v26.173a8.774,8.774,0,0,0,8.759,8.707h26.173a8.73,8.73,0,0,0,8.707-8.707m-34.88-26.173h26.173v26.173H222.846Z" transform="translate(-170.499 -170.499)" fill-rule="evenodd"/>
+        <rect class="color2" id="Rectángulo_1167" data-name="Rectángulo 1167" width="8.707" height="8.707" transform="translate(61.054 61.054)"/>
+        <path class="color2" id="Trazado_986" data-name="Trazado 986" d="M351.4,34.88h8.707V8.707A8.73,8.73,0,0,0,351.4,0H342.64V8.707H351.4Z" transform="translate(-272.879)" fill-rule="evenodd"/>
+        <rect class="color2" id="Rectángulo_1168" data-name="Rectángulo 1168" width="17.415" height="8.707" transform="translate(52.346 26.173)"/>
+        <rect class="color2" id="Rectángulo_1169" data-name="Rectángulo 1169" width="8.707" height="8.707" transform="translate(61.054 8.707)"/>
+        <rect class="color2" id="Rectángulo_1170" data-name="Rectángulo 1170" width="8.707" height="8.707" transform="translate(52.346)"/>
+        <path class="color2" id="Trazado_987" data-name="Trazado 987" d="M8.707,249.515H0v26.173A8.73,8.73,0,0,0,8.707,284.4h8.707v-8.707H8.707Z" transform="translate(0 -198.714)" fill-rule="evenodd"/>
+        <rect class="color2" id="Rectángulo_1171" data-name="Rectángulo 1171" width="17.466" height="8.707" transform="translate(17.415 50.801)"/>
+        <rect class="color2" id="Rectángulo_1172" data-name="Rectángulo 1172" width="8.759" height="8.759" transform="translate(17.415 68.215)"/>
+        <rect class="color2" id="Rectángulo_1173" data-name="Rectángulo 1173" width="8.707" height="8.707" transform="translate(26.173 76.974)"/>
       </g>
     </g>
   </g>
