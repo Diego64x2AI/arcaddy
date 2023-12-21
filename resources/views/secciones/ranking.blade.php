@@ -14,11 +14,9 @@ if (auth()->check()) {
 	</div>
 	<div id="ranking-leaderboard" class="mt-5 lg:mt-10 px-5">
 	</div>
-	@if($scores->hasMorePages())
 	<div id="hasMorePages" class="mt-5">
 		<a id="load-ranking" href="#" class="btn-pill">Cargar más</a>
 	</div>
-	@endif
 </section>
 <script>
 	let currentPage = 0;
