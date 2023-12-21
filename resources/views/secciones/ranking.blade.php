@@ -23,7 +23,7 @@ if (auth()->check()) {
 <script>
 	let currentPage = 0;
 	let perPage = {{ $scores->perPage() }};
-	let hasMorePages = {{ $scores->hasMorePages() }};
+	let hasMorePages = {{ $scores->hasMorePages() ? 'true' : 'false' }};
 	let lastPage = {{ $scores->lastPage() }};
 	let rakingLoading = false;
 	let rankingFrom = 0;
