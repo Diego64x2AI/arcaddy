@@ -570,6 +570,11 @@
 			fill: {{ $cliente->color }} !important;
 		}
 
+		.color2 {
+			color: {{ $cliente->color_base }} !important;
+			fill: {{ $cliente->color_base }} !important;
+		}
+
 		.bg-client {
 			background-color: {{ $cliente->color }} !important;
 		}
