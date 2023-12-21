@@ -174,8 +174,8 @@
 
 	</main>
 	<footer class="mt-5">
-		<div class="grid grid-cols-2 px-3">
-			<div><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-16" alt="{{ $cliente->cliente }}"></div>
+		<div class="grid grid-cols-2 px-3 items-center">
+			<div><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-12" alt="{{ $cliente->cliente }}"></div>
 			<div class="ml-auto">{!! file_get_contents(public_path('images/logo.svg')) !!}</div>
 		</div>
 		@if ($cliente->secciones()->where('activa', 1)->where('seccion', 'social')->count() > 0)
@@ -221,9 +221,7 @@
 	<div id="header" class="fixed top-0 right-0 w-full px-2 py-3 z-50 bg-white shadow-sm">
 		<div id="header-back"></div>
 		<div class="flex flex-row justify-center items-center">
-			<div class="mr-auto">
-				<a href="{{route('cliente', $cliente->slug)}}">{!! file_get_contents(public_path('images/back.svg')) !!}</a>
-			</div>
+			<div class="mr-auto"><span class="w-10 h-auto inline-block">&nbsp;</span></div>
 			<div class="flex flex-col md:flex-row items-center justify-center">
 				<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
 			</div>
