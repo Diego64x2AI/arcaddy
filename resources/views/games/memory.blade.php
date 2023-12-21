@@ -229,7 +229,7 @@
 	</main>
 
 	<footer class="mt-5">
-		<div class="grid grid-cols-2 px-3">
+		<div class="grid grid-cols-2 px-3 items-center">
 			<div><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-12" alt="{{ $cliente->cliente }}"></div>
 			<div class="ml-auto">{!! file_get_contents(public_path('images/logo.svg')) !!}</div>
 		</div>
