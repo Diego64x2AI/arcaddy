@@ -13,7 +13,7 @@
 				<div class="color text-center font-extrabold text-4xl mt-3">{{ $item->titulo }}</div>
 				@endif
 				@if ($item->descripcion !== NULL && $item->descripcion !== '')
-				<p class="text-center text-base px-8 mt-5 lg:text-2xl">{!! nl2br($item->descripcion) !!}</p>
+				<p class="text-center text-base px-8 mt-5">{!! nl2br($item->descripcion) !!}</p>
 				@endif
 				<div class="text-center">
 					<a href="{{ $item->link }}" class="btn-pill mt-5">
