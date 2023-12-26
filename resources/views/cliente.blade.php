@@ -433,15 +433,26 @@
 			new Swiper('.swiper-1', {
 				// Optional parameters
 				direction: 'horizontal',
+				slidesPerView: 1,
+				spaceBetween: 10,
+				centerInsufficientSlides: true,
+				autoHeight: true,
+				breakpoints: {
+					1024: {
+						slidesPerView: 3,
+						spaceBetween: 0,
+					},
+				},
 				loop: false,
 				autoplay: {
-          delay: 3000,
-          disableOnInteraction: true,
-        },
+		          delay: 3000,
+		          disableOnInteraction: true,
+		        },
 				pagination: {
 					el: '.swiper-pagination',
 				},
 			});
+
 			new Swiper('.swiper-2', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -450,9 +461,9 @@
 				centerInsufficientSlides: true,
 				autoHeight: true,
 				autoplay: {
-          delay: 3000,
-          disableOnInteraction: true,
-        },
+		          delay: 3000,
+		          disableOnInteraction: true,
+		        },
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -464,6 +475,7 @@
 					el: '.swiper-pagination',
 				},
 			});
+
 			new Swiper('.swiper-3', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -472,9 +484,9 @@
 				centerInsufficientSlides: true,
 				autoHeight: true,
 				autoplay: {
-          delay: 3000,
-          disableOnInteraction: true,
-        },
+		          delay: 3000,
+		          disableOnInteraction: true,
+		        },
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -486,6 +498,7 @@
 					el: '.swiper-pagination',
 				},
 			});
+
 			new Swiper('.swiper-galeria', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -495,9 +508,9 @@
 				loop: false,
 				autoHeight: true,
 				autoplay: {
-          delay: 3000,
-          disableOnInteraction: true,
-        },
+		          delay: 3000,
+		          disableOnInteraction: true,
+		        },
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
