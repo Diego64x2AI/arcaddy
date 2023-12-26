@@ -52,18 +52,12 @@
 		}
 
 		.card {
-			width: 130px;
-			height: 180px;
+			width: 100%;
 			perspective: 1000px;
-			margin: 10px;
 			cursor: pointer;
-
 			border: 0px solid #000000;
 			position: relative;
 			float: left;
-
-
-
 		}
 
 		.card .flipper {
@@ -168,18 +162,8 @@
 			}
 
 			#maximo {
-				width: 300px;
-			}
-
-			.card {
-
-				/*width: 65px;
-                height: 90px;
-                margin: 5px;*/
-
-				width: 90px;
-				height: 130px;
-				margin: 5px;
+				width: 100%;
+				padding: 0 10px;
 			}
 
 			.datos {
@@ -207,53 +191,51 @@
 		#btn-regresar-de-juego {
 			margin: 10px;
 		}
+		.swal2-container.swal2-backdrop-show, .swal2-container.swal2-noanimation {
+    background: rgba(255,255,255,.4)!important;
+    backdrop-filter: blur(10px);
+}
 	</style>
 
 
 
 </head>
 
-<body class="font-sans antialiased">
-	<main>
-
-		<a class="btn-pill" id="btn-regresar-de-juego" href="{{route('cliente', $cliente->slug)}}">Regresar</a>
-		<h1 class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl" style="color: {{ $cliente->color }};">{!!
+<body class="font-sans antialiased pb-20">
+	<main class="pt-[100px]">
+		<h1 class="text-center px-5 py-5 text-3xl font-extrabold lg:text-5xl" style="color: {{ $cliente->color }};">{!!
 			$juego->nombre !!}</h1>
-
-		<div class="text-center" style="font-weight: 400;">
-			{!! $juego->descripcion !!}
-		</div>
-		<br><br>
-
-
+		<span id="correct-count" class="hidden">0</span>
+		<span id="error-count" class="hidden">0</span>
 		<div id="maximo">
-			<div id="stats-container">
-				<div class="datos">
-					<span class="etiquetas">Aciertos:</span> <span id="correct-count" class="der">0</span>
-					<div class="en-mobile"></div>
-					<span class="etiquetas">Errores:</span> <span id="error-count" class="der">0</span>
-					<div class="en-mobile"></div>
-					<span class="etiquetas">Tiempo:</span> <span id="timer" class="der">0</span>seg.
+			<div class="text-center font-bold">
+				{!! $juego->descripcion !!}
+			</div>
+			<div class="flex flex-row justify-evenly items-center my-5">
+				<div class="text-xl">
+					<div class="color">Tiempo:</div>
+					<div class="-mt-2">
+						<span id="timer" class="der">0</span>seg.
+					</div>
 				</div>
-				<div class="btn-pill restart-game">Reiniciar</div>
-				<div class="l"></div>
+				<div class="ml-auto">
+					<div class="btn-pill restart-game">Reiniciar</div>
+				</div>
 			</div>
 
-			<div id="game-container"></div>
+			<div id="game-container" class="grid grid-cols-4 gap-1"></div>
 			<br><br>
-
 		</div>
-
 	</main>
 
 	<footer class="mt-5">
-		<div class="flex items-center justify-center">
-			<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-full h-auto max-w-xs" alt="{{ $cliente->cliente }}">
+		<div class="grid grid-cols-2 px-3 items-center">
+			<div><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-12" alt="{{ $cliente->cliente }}"></div>
+			<div class="ml-auto">{!! file_get_contents(public_path('images/logo.svg')) !!}</div>
 		</div>
 		@if ($cliente->secciones()->where('activa', 1)->where('seccion', 'social')->count() > 0)
 		<div class="text-center mt-5">
-
-			<div class="text-xl">{{($cliente->id != 82)?'Síguenos:':'Follow us:'}}</div>
+			<div class="text-xl">{{($cliente->id !== 82)?'Síguenos:':'Follow us:'}}</div>
 			<div class="text-center mt-3 flex flex-row items-center justify-center">
 				@if ($cliente->instagram !== '' && $cliente->instagram !== NULL)
 				<a href="{{ $cliente->instagram }}" target="_blank" class="mr-2"><img
@@ -278,81 +260,52 @@
 			</div>
 		</div>
 		@endif
-		<div class="degradado px-5 py-6 mt-5 text-white">
-			<div class="flex flex-row items-center justify-between">
-				<div>
-					<img src="{{ asset('images/logo@2x.png') }}" class="block h-6 w-auto fill-current text-gray-600">
-				</div>
-				<div class="text-lg">Reality is an illusion...</div>
-			</div>
+		@auth
+		<div class="text-center mt-3">
+			<!-- Authentication -->
+			<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
+				@csrf
+				<a :href="route('logout', ['cliente' => $cliente->id])" class="text-base flex flex-row items-center justify-center" onclick="event.preventDefault(); this.closest('form').submit();">
+					<div>{!! file_get_contents(public_path('images/salir.svg')) !!}</div>
+					<div class="ml-2">{{ __('Log Out') }}</div>
+				</a>
+			</form>
 		</div>
+		@endauth
 	</footer>
-	<div id="header" class="fixed top-0 right-0 w-full px-6 py-4 z-50 bg-white shadow-sm">
-		<div class="flex flex-col md:flex-row items-center justify-center">
+	<div id="header" class="fixed top-0 right-0 w-full px-2 py-3 z-50 bg-white shadow-sm">
+		<div id="header-back"></div>
+		<div class="flex flex-row justify-center items-center">
+			<div class="mr-auto">
+				<a href="{{route('cliente', $cliente->slug)}}">{!! file_get_contents(public_path('images/back.svg')) !!}</a>
+			</div>
 			<div class="flex flex-col md:flex-row items-center justify-center">
-				<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto"
-					alt="{{ $cliente->cliente }}">
+				<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
 			</div>
-			<div class="flex items-center justify-center mt-3 md:mt-0 md:ml-auto">
+			@auth
+			<div class="ml-auto">
+				@role('admin')
+				<a href="{{ route('dashboard') }}">{!! file_get_contents(public_path('images/admin.svg')) !!}</a>
+				@else
+				<a href="{{route('registro',['cliente' => $cliente->id])}}?ver=1">{!! file_get_contents(public_path('images/qr.svg')) !!}</a>
+				@endrole
+			</div>
+			@else
+			<div class="ml-auto"><span class="w-10 h-auto inline-block">&nbsp;</span></div>
+			@endauth
+		</div>
+		<div class="text-center mt-2 font-normal flex flex-row items-center justify-center">
+			@auth
+				{{ auth()->user()->name }}
+			@else
 				@if ($cliente->registro)
-				@auth
-				<div class="text-base mr-4 font-bold">
-					Hola {{ auth()->user()->name }}
-					<?php /*<a href="{{ route('registro', ['cliente' => $cliente->id]) }}" class="text-base">
-								Hola {{ auth()->user()->name }}
-							</a> */?>
-				</div>
-
-				@role('admin')
-				<a href="{{ route('dashboard') }}" class="text-base mr-4 hiddenalex md:inline-block">Dashboard</a>
-				@endrole
-
-
-				@role('client')
-				<a href="{{ route('my-app-client.home') }}" class="text-base mr-4 hiddenalex md:inline-block">Mi App Client</a>
-				@endrole
-
-				@role('user')
-
-				<a href="{{route('registro',['cliente' => $cliente->id])}}?ver=1"
-					class="text-base mr-4 hiddenalex md:inline-block">Mi QR</a>
-
-				@endrole
-
-				<!-- Authentication -->
-				<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
-					@csrf
-					<a :href="route('logout', ['cliente' => $cliente->id])" class="text-base"
-						onclick="event.preventDefault(); this.closest('form').submit();">
-						{{ __('Log Out') }}
-					</a>
-				</form>
-				@else
-
-				@if (Route::has('register') && $cliente->id == 65 )
-				<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Register') }}</a>
+					@if (Route::has('register'))
+					<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Register') }}</a>
+					<div class="ml-2">|</div>
+					@endif
+					<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Login') }}</a>
 				@endif
-				<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Login') }}</a>
-
-				@endauth
-				@else
-				@role('admin')
-				<div class="fixed top-0 right-0 px-6 py-4">
-					<div class="flex">
-						<a href="{{ route('dashboard') }}" class="text-base mr-4">Dashboard</a>
-						<!-- Authentication -->
-						<form method="POST" action="{{ route('logout', ['cliente' => $cliente->id]) }}">
-							@csrf
-							<a :href="route('logout', ['cliente' => $cliente->id])" class="text-base"
-								onclick="event.preventDefault(); this.closest('form').submit();">
-								{{ __('Log Out') }}
-							</a>
-						</form>
-					</div>
-				</div>
-				@endrole
-				@endif
-			</div>
+			@endauth
 		</div>
 	</div>
 	@foreach ($cliente->flotantes as $flotante)
@@ -367,6 +320,8 @@
 	<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 	<script src="{{ asset('assets/alx-jquery.js') }}"></script>
 	<script>
+		let logged = {{ auth()->check() ? 'true' : 'false' }};
+		let name = '{{ auth()->check() ? auth()->user()->name : '' }}';
 		var cards = [];
 		var flippedCards = [];
 		var correctCount = 0;
@@ -408,7 +363,7 @@
 			gameContainer.empty();
 
 			for (var i = 0; i < cards.length; i++) {
-				var card = $("<div>", { class: "card", "data-index": i, id: "carta-"+i });
+				var card = $("<div>", { class: "card h-[120px] lg:h-[180px]", "data-index": i, id: "carta-"+i });
 				var flipper = $("<div>", { class: "flipper" });
 				var front = $("<div>", { class: "front", style: "background-image: url('"+path+"/"+cards[i]+"');" });
 				var back = $("<div>", { class: "back" });
@@ -464,28 +419,38 @@
 			if (correctCount === cards.length / 2) {
 				stopTimer();
 				saveScore();
-				Swal.fire({
-					icon: null,
-					title: null,
-					width: '22em',
-					focusConfirm: false,
-					returnFocus: false,
-					html: `<div class="flex flex-row justify-center items-center">
+				let modalContent = `<div class="flex flex-row justify-center items-center">
 						<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
 						</div>
-						<div class="font-extrabold text-4xl">¡Felicidades!</div>
-						<div class="mt-5 flex flex-row justify-center font-bold">
+						<div class="font-extrabold text-4xl color">¡Felicidades!</div>`;
+					if (logged) {
+						modalContent += `<div class="text-base">${name}</div>`;
+					}
+					modalContent += `<div class="mt-5 flex flex-row items-center justify-center font-bold">
 							<div class="mr-4">
 								<div class="color">Tiempo:</div>
 								<div class="">${timer} seg</div>
 							</div>
 							<div>
-								<a href="#" class="btn-pill restart-game">Reiniciar</a>
+								<a href="#" class="btn-pill2 restart-game">Volver a jugar</a>
 							</div>
-						</div>
-						`,
-					showConfirmButton: false
-				});
+						</div>`;
+					if (!logged) {
+						modalContent += `<div class="mt-7 text-base">Al parecer no eres un usuario registrado, <span class="font-bold">si deseas aparecer en el Ranking:</span></div>
+						<div class="mt-7"><a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="btn-pill">Regístrate aquí</a></div>
+						`;
+					}
+					Swal.fire({
+						icon: null,
+						title: null,
+						width: '22em',
+						focusConfirm: false,
+						returnFocus: false,
+						html: modalContent,
+						showConfirmButton: false,
+						showCloseButton: true,
+						closeButtonHtml: `{!! file_get_contents(public_path('images/cerrar.svg')) !!}`,
+					});
 			}
 		}
 
@@ -531,7 +496,6 @@
 			});
 			$('body').on('click', '.restart-game', function(e){
 				e.preventDefault();
-				console.log('sdfsdf');
 				restartGame();
 			});
 			// Iniciar el juego al cargar la página
@@ -596,8 +560,19 @@
 			background-color: {{ $cliente->color }} !important;
 		}
 
+		.btn-pill2 {
+			background-color: {{ $cliente->color_base }} !important;
+			color: {{ $cliente->color_bg }} !important;
+		}
+
 		.color {
 			color: {{ $cliente->color }} !important;
+			fill: {{ $cliente->color }} !important;
+		}
+
+		.color2 {
+			color: {{ $cliente->color_base }} !important;
+			fill: {{ $cliente->color_base }} !important;
 		}
 
 		.bg-client {
@@ -620,11 +595,6 @@
 
 		.isotope-menu-item:hover{
 		    color: #000000;
-		}
-		@media (min-width: 1024px){
-			.lg\:text-8xl {
-			    font-size: 3rem;
-			}
 		}
 		.swal2-popup {
 			width: 95%!important;
