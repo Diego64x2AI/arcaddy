@@ -10,7 +10,7 @@
 			<div class="swiper-slide">
 				<div><img src="{{ asset('storage/'.$item->archivo) }}" alt="{{ $item->titulo }}" class="object-fill w-full h-auto inline"></div>
 				@if ($item->titulo !== NULL && $item->titulo !== '')
-				<div class="text-center color text-3xl font-extrabold px-8 mt-5 lg:text-6xl">{{ $item->titulo }}</div>
+				<div class="color text-center font-extrabold text-4xl mt-3">{{ $item->titulo }}</div>
 				@endif
 				@if ($item->descripcion !== NULL && $item->descripcion !== '')
 				<p class="text-center text-base px-8 mt-5 lg:text-2xl">{!! nl2br($item->descripcion) !!}</p>
