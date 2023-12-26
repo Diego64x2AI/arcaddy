@@ -488,7 +488,7 @@
 					el: '.swiper-pagination',
 				},
 			});
-			
+
 			new Swiper('.swiper-galeria', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -511,6 +511,29 @@
 						}
 					},
 				},
+				pagination: {
+					el: '.swiper-pagination',
+				},
+			});
+
+			new Swiper('.swiper-experiencia', {
+				// Optional parameters
+				direction: 'horizontal',
+				slidesPerView: 1,
+				spaceBetween: 10,
+				centerInsufficientSlides: true,
+				autoHeight: true,
+				breakpoints: {
+					1024: {
+						slidesPerView: 3,
+						spaceBetween: 0,
+					},
+				},
+				loop: false,
+				autoplay: {
+		          delay: 3000,
+		          disableOnInteraction: true,
+		        },
 				pagination: {
 					el: '.swiper-pagination',
 				},
