@@ -200,6 +200,9 @@
 			</div>
 		</div>
 		@endif
+
+		<div style="width: 100%; height: 40px;"></div>
+		<?php /*
 		<div class="degradado px-5 py-6 mt-5 text-white">
 			<div class="flex flex-row items-center justify-between">
 				<div>
@@ -207,7 +210,7 @@
 				</div>
 				<div class="text-lg">Reality is an illusion...</div>
 			</div>
-		</div>
+		</div> */?>
 	</footer>
 	<div id="header" class="fixed top-0 right-0 w-full px-6 py-4 z-50 bg-white shadow-sm">
 		<div id="header-back"></div>
