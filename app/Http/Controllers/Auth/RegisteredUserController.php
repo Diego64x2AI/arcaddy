@@ -148,7 +148,7 @@ class RegisteredUserController extends Controller
 				->margin(1)
 				->color(0, 0, 0)
 				->backgroundColor(255, 255, 255)
-				/*->merge('/public/images/qr-logo.png', .3)*/
+				->merge('/public/images/qr-logo.png', .3)
 				->errorCorrection('H')
 				->generate($elCodigo, public_path('storage/qrregister/' . $elCodigo . '.png'));
 			$userQr = UserQr::create([
@@ -234,7 +234,7 @@ class RegisteredUserController extends Controller
 				->margin(1)
 				->color(0, 0, 0)
 				->backgroundColor(255, 255, 255)
-				/*->merge('/public/images/qr-logo.png', .3)*/
+				->merge('/public/images/qr-logo.png', .3)
 				->errorCorrection('H')
 				->generate($elCodigo, public_path('storage/qrregister/' . $elCodigo . '.png'));
 			$userQr = UserQr::create([
