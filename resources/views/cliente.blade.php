@@ -230,8 +230,12 @@
 		<div class="ml-auto">
 			@role('admin')
 			<a href="{{ route('dashboard') }}">{!! file_get_contents(public_path('images/admin.svg')) !!}</a>
-			@else
-			<a href="{{route('registro',['cliente' => $cliente->id])}}?ver=1">{!! file_get_contents(public_path('images/qr.svg')) !!}</a>
+			@endrole
+			@role('client')
+			<a href="{{ route('my-app-client.home') }}">{!! file_get_contents(public_path('images/admin.svg')) !!}</a>
+			@endrole
+			@role('user')
+			<a href="{{route('registro', ['cliente' => $cliente->id])}}?ver=1">{!! file_get_contents(public_path('images/qr.svg')) !!}</a>
 			@endrole
 		</div>
 		@else
