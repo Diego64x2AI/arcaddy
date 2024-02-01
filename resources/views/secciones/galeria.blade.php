@@ -3,16 +3,18 @@
 	@if ($cliente->secciones()->where('seccion', 'galeria')->first()->mostrar_titulo)
 	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'galeria')->first()->titulo }}</div>
 	@endif
-	<div id="galeria-swiper" class="swiper swiper-galeria mt-5 lg:mt-10">
-		<!-- Additional required wrapper -->
-		<div class="swiper-wrapper pb-14">
-			@foreach($cliente->galeria as $banner)
-			<div class="swiper-slide">
+	<div class="isotope-galeria grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+		@foreach($cliente->galeria as $banner)
+		<div
+			class="isotope-item isotope-galeria-item border-transparent w-1/3 md:w-1/4 lg:w-1/6"
+			data-imagen="{{ asset('storage/'.$banner->archivo) }}"
+			data-titulo="{{ $banner->titulo }}"
+		>
+			<div>
 				<img src="{{ asset('storage/'.$banner->archivo) }}" alt="{{ $banner->titulo }}" class="object-fill w-full h-auto">
 			</div>
-			@endforeach
 		</div>
-		<div class="swiper-pagination"></div>
+		@endforeach
 	</div>
 </section>
 @endif

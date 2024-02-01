@@ -24,7 +24,6 @@
 		gtag('config', 'G-40ZEQ4JZ0Y');
 	</script>
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
-
 	<style>
 	.alx-btn-add-calendario{
 	    padding: 0px 10px;
@@ -37,12 +36,9 @@
 	    font-weight: bold;
 	}
 	</style>
-
-
-
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased overflow-x-hidden">
 	<main>
 		{{--
 		<div class="flex items-center justify-center py-5">
@@ -225,7 +221,7 @@
 	<div id="header-back"></div>
 	<div class="flex flex-row justify-center items-center">
 		<div class="mr-auto">
-			<a href="{{route('cliente', $cliente->slug)}}">{!! file_get_contents(public_path('images/back.svg')) !!}</a>
+			&nbsp;
 		</div>
 		<div class="flex flex-col md:flex-row items-center justify-center">
 			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
@@ -303,6 +299,18 @@
 					// iso.Isotope({ filter: filterValue });
 				});
 			}
+			if ($('.isotope-galeria').length > 0) {
+				const iso = new Isotope( '.isotope-galeria', {
+					itemSelector: '.isotope-galeria-item',
+					percentPosition: true,
+					layoutMode: 'masonry', /*fitRows*/
+					stagger: 30,
+					transitionDuration: '0.3s',
+					masonry: {
+						columnWidth: '.isotope-galeria-item'
+					}
+				})
+			}
 			if ($('.isotope-menu').length > 0) {
 				const iso = new Isotope( '.isotope-menu', {
 					itemSelector: '.isotope-menu-item',
@@ -332,8 +340,28 @@
 					toast.addEventListener('mouseenter', Swal.stopTimer)
 					toast.addEventListener('mouseleave', Swal.resumeTimer)
 				}
-			})
-			$('.isotope-item').click(function(e) {
+			});
+			$('.isotope-galeria-item').click(function(e) {
+				e.preventDefault();
+				const nombre = $(this).data('titulo');
+				const imagen = $(this).data('imagen');
+				let media = `<img class="w-full h-auto" src="${imagen}">`;
+				console.log('abrir', nombre, imagen);
+				Swal.fire({
+					title: `<div class="font-bold uppercase mt-5 text-base color">${nombre}</div>`,
+					icon: null,
+					html: `<div>${media}</div>`,
+					showCloseButton: true,
+					showCancelButton: false,
+					showConfirmButton: false,
+					focusConfirm: true,
+					buttonsStyling: false,
+					customClass: {
+						confirmButton: 'btn-pill',
+					},
+				});
+			});
+			$('.isotope-votaciones-item').click(function(e) {
 				e.preventDefault();
 				const nombre = $(this).data('nombre');
 				const categoria = $(this).data('categoria');
@@ -349,19 +377,12 @@
 					media = `<iframe src="https://drive.google.com/file/d/${video_id}/preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
 				} else if (plataforma === 'vimeo') {
 					/*media = `<iframe src="https://player.vimeo.com/video/${video_id}?h=${plataforma_user}&amp;badge=0&autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`*/
-
 					media = `<iframe src="https://player.vimeo.com/video/${video_id}?autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
-
-
-
-
-
 				} else if( plataforma === 'youtube'){
-				    	media = `<iframe  src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen  style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
-
+					media = `<iframe  src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen  style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
 				} else if( plataforma === 'imagen'){
-				    	//media = `<img src="${imagen}" class="img-general inline-block object-cover w-full h-auto" />`
-				    	media = `<div class="img-votacion-detalle" style="background-image: url(${imagen})"></div>`
+					//media = `<img src="${imagen}" class="img-general inline-block object-cover w-full h-auto" />`
+					media = `<div class="img-votacion-detalle" style="background-image: url(${imagen})"></div>`
 				}
 				if ($(this).data('votaciones') === 'Y') {
 					votoshtml = `<div class="text-center mt-2 votos-${id}">${votos} votos</div>`
@@ -419,12 +440,13 @@
 				direction: 'horizontal',
 				loop: false,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
-				pagination: {
-					el: '.swiper-pagination',
+					delay: 3000,
+					disableOnInteraction: true,
 				},
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+      	},
 			});
 
 			new Swiper('.swiper-2', {
@@ -445,9 +467,10 @@
 					},
 				},
 				loop: false,
-				pagination: {
-					el: '.swiper-pagination',
-				},
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+      	},
 			});
 
 			new Swiper('.swiper-3', {
@@ -468,9 +491,10 @@
 					},
 				},
 				loop: false,
-				pagination: {
-					el: '.swiper-pagination',
-				},
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+      	},
 			});
 
 			new Swiper('.swiper-galeria', {
@@ -495,9 +519,10 @@
 						}
 					},
 				},
-				pagination: {
-					el: '.swiper-pagination',
-				},
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+      	},
 			});
 
 			new Swiper('.swiper-experiencia', {
@@ -518,12 +543,17 @@
 		          delay: 3000,
 		          disableOnInteraction: true,
 		        },
-				pagination: {
-					el: '.swiper-pagination',
-				},
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+      	},
 			});
 		});
 	</script>
+	@php
+	list($r, $g, $b) = sscanf($cliente->color_bg, "#%02x%02x%02x");
+	list($r2, $g2, $b2) = sscanf($cliente->color, "#%02x%02x%02x");
+	@endphp
 	<style>
 		.swiper {
 			width: 100%;
@@ -575,9 +605,18 @@
 		    opacity: 0.8;
 		    left: 0px;
 		    top: 0px;
-
 		}
-
+		.swal2-popup {
+			background-color: rgba({{ $r }},{{ $g }},{{ $b }},0.8)!important;
+			color: {{ $cliente->color }} !important;
+		}
+		.swiper-button-next, .swiper-button-prev {
+			background: linear-gradient(270deg, rgba({{ $r }},{{ $g }},{{ $b }},0.5) 0%, rgba({{ $r }},{{ $g }},{{ $b }},1) 100%);
+			color: {{ $cliente->color }} !important;
+		}
+		.swiper-button-next {
+			background: linear-gradient(45deg, rgba({{ $r }},{{ $g }},{{ $b }},0.5) 0%, rgba({{ $r }},{{ $g }},{{ $b }},1) 100%);
+		}
 		.btn-pill {
 			background-color: {{ $cliente->color }} !important;
 		}
@@ -586,8 +625,11 @@
 			background-color: {{ $cliente->color_base }} !important;
 			color: {{ $cliente->color_bg }} !important;
 		}
-
-		.color {
+		.isotope-menu-item {
+			background-color: {{ $cliente->color_bg }} !important;
+			border: 1px solid rgba({{ $r2 }},{{ $g2 }},{{ $b2 }},0.5) !important;
+		}
+		.color, .swal2-close {
 			color: {{ $cliente->color }} !important;
 			fill: {{ $cliente->color }} !important;
 		}

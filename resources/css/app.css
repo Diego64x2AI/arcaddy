@@ -49,6 +49,23 @@ input:checked ~ .dot {
 	top: 0;
 	right: 0;
 }
+.swiper-button-prev {
+	left: 0!important;
+}
+.swiper-button-next {
+	right: 0!important;
+}
+.swal2-close:focus {
+	box-shadow: none!important;
+}
+.swiper-button-next, .swiper-button-prev {
+	font-size: 1.5rem!important;
+	top: 45%!important;
+	@apply !px-5 !py-5;
+}
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after, .swiper-button-next:after, .swiper-rtl .swiper-button-left:after {
+	content: ''!important;
+}
 
 .btn-pill {
 	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block lg:text-xl lg:py-2 lg:px-8
