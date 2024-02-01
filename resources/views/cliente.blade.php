@@ -321,14 +321,22 @@
 					masonry: {
 						columnWidth: '.isotope-menu-item'
 					}
-				})
-				// filter items on button click
-				$('.filter-button-group2').on( 'click', 'button', function() {
-					$('.filter-button-group2 button').removeClass('current-cat');
-					$(this).addClass('current-cat');
-					var filterValue = $(this).attr('data-filter');
-					iso.arrange({ filter: filterValue })
 				});
+				if ($('.filter-button-group2').length > 0) {
+					// filter items on button click
+					$('.filter-button-group2').on( 'click', 'button', function() {
+						$('.filter-button-group2 button').removeClass('current-cat');
+						$(this).addClass('current-cat');
+						var filterValue = $(this).attr('data-filter');
+						iso.arrange({ filter: filterValue })
+					});
+				}
+				if ($('#select-menu').length > 0) {
+					$('#select-menu').change(function() {
+						var filterValue = $(this).val();
+						iso.arrange({ filter: filterValue })
+					}).trigger('change');
+				}
 			}
 			const Toast = Swal.mixin({
 				toast: true,
@@ -357,6 +365,49 @@
 					focusConfirm: true,
 					buttonsStyling: false,
 					customClass: {
+						confirmButton: 'btn-pill',
+					},
+				});
+			});
+			$('.isotope-menu-item').click(function(e) {
+				e.preventDefault();
+				const nombre = $(this).data('nombre');
+				const imagen = $(this).data('imagen');
+				const descripcion = $(this).data('descripcion');
+				const canje = $(this).data('canje-texto');
+				const precio = $(this).data('precio');
+				const boton = $(this).data('boton');
+				const link = $(this).data('link');
+				const cantidad = ($(this).data('cantidad') !== null && jQuery.trim($(this).data('cantidad')) !== '') ? $(this).data('cantidad') : '';
+				let media = `<img class="w-full h-auto" src="${imagen}">`;
+				let canjeText = '';
+				let botonHtml = '';
+				if (canje !== '' && canje !== null) {
+					canjeText = `<div class="absolute -bottom-3 right-0 bg-client text-[9px] text-white rounded-3xl px-3 py-2 uppercase font-semibold">${canje}</div>`;
+				}
+				if (boton !== '' && link !== '') {
+					botonHtml = `<a href="${link}" target="_blank" class="btn-pill mt-3">${boton}</a>`;
+				}
+				Swal.fire({
+					title: `<div class="font-bold uppercase text-xs color2">&nbsp;</div>`,
+					icon: null,
+					html: `
+						<div class="relative">${media}${canjeText}</div>
+						<div class="grow text-xl color2 mt-5 text-center w-full">
+							<div class="font-semibold">${nombre}</div>
+							<div class="text-xs">${cantidad}</div>
+						</div>
+						<div class="text-base color font-bold">${precio}</div>
+						<div class="my-3 color2">${descripcion}</div>
+						${botonHtml}
+					`,
+					showCloseButton: true,
+					showCancelButton: false,
+					showConfirmButton: false,
+					focusConfirm: true,
+					buttonsStyling: false,
+					customClass: {
+						popup: 'popup-menu',
 						confirmButton: 'btn-pill',
 					},
 				});
@@ -620,14 +671,25 @@
 		.btn-pill {
 			background-color: {{ $cliente->color }} !important;
 		}
-
+		select {
+			background-color: {{ $cliente->color_bg }} !important;
+			border-color: rgba({{ $r2 }},{{ $g2 }},{{ $b2 }},0.5) !important;
+			outline-color: transparent !important;
+			color: {{ $cliente->color_base }} !important;
+		}
+		option, option:hover, option:focus, option:active {
+			background-color: {{ $cliente->color_bg }} !important;
+		}
+		option:checked {
+			background-color: rgba({{ $r2 }},{{ $g2 }},{{ $b2 }},0.2) !important;
+		}
 		.btn-pill2 {
 			background-color: {{ $cliente->color_base }} !important;
 			color: {{ $cliente->color_bg }} !important;
 		}
 		.isotope-menu-item {
-			background-color: {{ $cliente->color_bg }} !important;
-			border: 1px solid rgba({{ $r2 }},{{ $g2 }},{{ $b2 }},0.5) !important;
+			background-color: {{ $cliente->color_bg }};
+			border: 1px solid rgba({{ $r2 }},{{ $g2 }},{{ $b2 }},0.5);
 		}
 		.color, .swal2-close {
 			color: {{ $cliente->color }} !important;

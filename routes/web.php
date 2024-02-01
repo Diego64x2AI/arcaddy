@@ -79,7 +79,6 @@ Route::middleware('role:client')->group(function () {
 		Route::post('/recibe-registro-interno-de-usuario/{clienteid}', [RegisteredUserController::class, 'recibeRegistroInternoDeUsuario'])->name('recibe-registro-interno-de-usuario');
 	});
 });
-
 Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
@@ -126,11 +125,8 @@ Route::middleware('role:admin')->group(function () {
 			Route::post('/store/{cliente}', [ProductoController::class, 'store'])->name('productos.store');
 		});
 		// Route::resource('/productos', ProductoController::class);
-
 		Route::resource('/usuarios-cliente', UsuariosClienteController::class);
-
 		Route::resource('/games', GameController::class);
-
 		Route::get('/games/borrar/{juegoid}', [GameController::class, 'borrar'])->name('games.borrar');
 	});
 });
