@@ -340,14 +340,12 @@
 		<?php
 			$imgBack = "";
 			foreach($juego->cartas as $key => $c){
-				if($c->borrado == 0){
-					if($c->frente === 1){
-						echo "cardId[".$key."] = ".$c->id."; \n";
-						echo "cardImg[".$key."] = '".$c->imagen."'; \n";
-					}
-					else{
-						$imgBack = $c->imagen;
-					}
+				if($c->frente === 1){
+					echo "cardId[".$key."] = ".$c->id."; \n";
+					echo "cardImg[".$key."] = '".$c->imagen."'; \n";
+				}
+				else{
+					$imgBack = $c->imagen;
 				}
 			}
 		?>
