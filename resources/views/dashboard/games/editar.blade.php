@@ -162,6 +162,7 @@
         display: block;
         float: left;
         margin-right: 10px;
+        margin-bottom: 10px;
         position: relative;
     }
     .cartaBase{
