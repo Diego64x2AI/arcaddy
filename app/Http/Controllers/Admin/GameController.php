@@ -194,8 +194,9 @@ class GameController extends Controller
 	            $registroAEliminar = JuegoCarta::find($b);
 	            
                 if ($registroAEliminar) {
-                  $registroAEliminar->borrado = 1;
-                  $registroAEliminar->save();
+                  /*$registroAEliminar->borrado = 1;
+                  $registroAEliminar->save();*/
+                  $registroAEliminar->delete();
                     
                 } 
 	        }
