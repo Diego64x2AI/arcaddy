@@ -111,7 +111,7 @@
       margin: 5px;
     }
   </style>
-<script src="{{ asset('build/assets/jquery-3.6.4.min.js') }}"></script>
+<script src="{{ asset('assets/alx-jquery.js') }}"></script>
   
 <script>
 $(document).ready(function () {
