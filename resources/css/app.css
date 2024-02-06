@@ -49,6 +49,32 @@ input:checked ~ .dot {
 	top: 0;
 	right: 0;
 }
+.swiper-button-prev {
+	left: 0!important;
+}
+.swiper-button-next {
+	right: 0!important;
+}
+.swal2-close:focus {
+	box-shadow: none!important;
+}
+.swal2-html-container {
+	@apply !overflow-x-hidden;
+}
+select {
+	@apply bg-gray-50 border uppercase border-gray-300 text-gray-900 text-sm rounded-xl px-5 py-3 focus:ring-transparent focus:border-transparent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-transparent dark:focus:border-transparent;
+}
+.swal2-popup {
+	max-width: 600px!important;
+}
+.swiper-button-next, .swiper-button-prev {
+	font-size: 1.5rem!important;
+	top: 45%!important;
+	@apply !px-5 !py-5;
+}
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after, .swiper-button-next:after, .swiper-rtl .swiper-button-left:after {
+	content: ''!important;
+}
 
 .btn-pill {
 	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block lg:text-xl lg:py-2 lg:px-8

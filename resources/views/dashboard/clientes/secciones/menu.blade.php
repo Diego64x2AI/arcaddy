@@ -15,15 +15,15 @@
 	</div>
 	<div id="menu-container" class="container-draggable mt-5 section-box">
 		@if ($cliente->id !== NULL)
-			@foreach ($cliente->menu()->groupBy('categoria')->pluck('categoria') as $key => $menu_categoria)
-			<div class="w-2/4 md:w-2/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+			@foreach ($cliente->menu()->orderBy('id', 'asc')->groupBy('categoria')->pluck('categoria') as $key => $menu_categoria)
+			<div class="w-full float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 				<div class="p-3">
 					<div>
 						<input class="input-underline" name="menu_cat_nombre[]" value="{{ ucwords($menu_categoria) }}" type="text" placeholder="Nombre de la categoría" required>
 					</div>
 					<div id="menu-items" class="flex flex-col">
 						@foreach ($cliente->menu->where('categoria', $menu_categoria) as $menu)
-						<div class="bg-white item-container mt-2 p-2 flex flex-row h-16 overflow-hidden">
+						<div class="bg-white item-container mt-2 p-2 flex flex-row h-20 overflow-hidden">
 							<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 							<div class="ml-4 w-1/5">
 								<div class="relative">
@@ -76,7 +76,7 @@
 						<a href="" class="btn-pill3 add_menu_item">+ Item</a>
 					</div>
 					<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
-						<div class="handler cursor-move hidden"><i class="fas fa-ellipsis-v"></i></div>
+						<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
 									class="fas fa-trash-alt"></i></a></div>
 					</div>

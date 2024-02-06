@@ -14,7 +14,12 @@
 			</div>
 			@endforeach
 		</div>
-		<div class="swiper-pagination"></div>
+		<div class="swiper-button-next">
+			<i class="fa fa-chevron-right"></i>
+		</div>
+    <div class="swiper-button-prev">
+			<i class="fa fa-chevron-left"></i>
+		</div>
 	</div>
 </section>
 @endif

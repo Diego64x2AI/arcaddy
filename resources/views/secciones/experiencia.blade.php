@@ -17,7 +17,7 @@
 				@endif
 				<div class="text-center">
 					<a href="{{ $item->link }}" class="btn-pill mt-5">
-					
+
 
 					<?php /*{{($cliente->id != 33 && $cliente->id != 42 && $cliente->id != 44)?'Ingresar a VR':'Ingresar a AR'}}*/?>
 					@if($item->texto_boton != '')
@@ -30,7 +30,12 @@
 			</div>
 			@endforeach
 		</div>
-		<div class="swiper-pagination"></div>
+		<div class="swiper-button-next">
+			<i class="fa fa-chevron-right"></i>
+		</div>
+    <div class="swiper-button-prev">
+			<i class="fa fa-chevron-left"></i>
+		</div>
 	</div>
 </section>
 @endif

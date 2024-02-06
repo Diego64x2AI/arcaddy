@@ -42,14 +42,19 @@
 					<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" class="object-cover w-full h-auto inline-block border border-secondary">
 				</div>
 				<div class="text-center font-bold px-2 mt-2">{{ $producto->nombre }}</div>
-			
+
 				<div class="text-center mt-4">
 					<a href="javascript: void(0);" class="btn-pill">Canjear</a>
 				</div>
 			</div>
 			@endforeach
 		</div>
-		<div class="swiper-pagination"></div>
+		<div class="swiper-button-next">
+			<i class="fa fa-chevron-right"></i>
+		</div>
+    <div class="swiper-button-prev">
+			<i class="fa fa-chevron-left"></i>
+		</div>
 	</div>
 </section>
 @endif
