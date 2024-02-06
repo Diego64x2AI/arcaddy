@@ -39,6 +39,7 @@
                             </option>
                         @endforeach
                     </select>
+                    <div class="separador"></div>
 					
 					
 					
@@ -47,7 +48,7 @@
 					
 
 					<form method="GET" action="{{route('games.index')}}">
-						<select name="cliente_id">
+						<select name="cliente_id" class="opc-filtro">
                         <option value="0" >Cliente</option>
                         @foreach($clientes as $cliente)
                             <option value="{{$cliente->id}}" 
@@ -55,7 +56,7 @@
                         @endforeach
                     	</select>
                     	
-                    	<select name="categoria_id">
+                    	<select name="categoria_id" class="opc-filtro">
                         <option value="0" >Categoria</option>
                         @foreach($juegoCategorias as $cat)
                             <option value="{{$cat->id}}" 
@@ -63,6 +64,7 @@
                         @endforeach
                     	</select>
                     	<button type="submit" class="bg-lime-500 text-white px-5 py-2 rounded-md">Filtrar</button>
+                    	<div class="separador"></div>
 					</form>
 
 					
@@ -116,6 +118,19 @@
         }
       </script>
 	<style>
+		#nuevo-juego{
+			float: right;
+			width: 200px;
+			margin-bottom: 10px;
+		}
+		.opc-filtro{
+			width: 200px;
+		    float: left;
+		    margin-right: 10px;
+		}
+		.separador{
+			clear: both;
+		}
 		@media (min-width: 640px) {
 			table {
 				display: inline-table !important;
