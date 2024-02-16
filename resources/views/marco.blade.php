@@ -33,6 +33,7 @@
 		<canvas id="c" width="400" height="400"></canvas>
 		<button id="uploadButton" class="absolute top-1/2 left-1/2 btn-pill2 !py-4 !px-8 !text-sm uppercase -translate-x-[85px] -translate-y-[35px]">Selecciona<br>tu foto</button>
 		<input type="file" id="upload" accept="image/*" style="display: none;" />
+		<div id="info" style="display:none;"></div>
 		<div id="buttonsContainer" style="display: none;" class="flex flex-row gap-5 mt-5 items-center justify-evenly">
 			<div>
 				<button id="selectAnother" class="btn-pill2 !py-4 !px-8 !text-sm uppercase">Seleccionar<br>otra imagen</button>
@@ -61,6 +62,7 @@
 		}
 		window.addEventListener('load', function() {
 			uploadButton = document.getElementById('uploadButton');
+			let info = document.getElementById('info');
 			const roundedCorners = (fabricObject, cornerRadius) => new fabric.Rect({
 				width: fabricObject.width,
 				height: fabricObject.height,
@@ -140,25 +142,24 @@
 			document.getElementById('selectAnother').onclick = function() {
 				document.getElementById('upload').click();
 			};
-			document.getElementById('finishEditing').onclick = function() {
+			document.getElementById('finishEditing').onclick = async () => {
 				canvas.discardActiveObject().renderAll();
 				// Convertir el canvas de Fabric.js a data URL y luego a Blob
-				var dataURL = canvas.toDataURL({
-					format: 'png',
-					quality: 1
-				});
+				var dataURL = canvas.toDataURL();
 				function dataURLtoBlob(dataURL) {
 					var arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
 					bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
 					while(n--){
 						u8arr[n] = bstr.charCodeAt(n);
 					}
+					console.log(mime)
 					return new Blob([u8arr], {type:mime});
 				}
-				var blob = dataURLtoBlob(dataURL);
+				// var blob = dataURLtoBlob(dataURL);
+				const blob = await (await fetch(dataURL)).blob()
 				if (navigator.share) {
 					navigator.share({
-						files: [new File([blob], "imagen_final.png", {type: blob.type})],
+						files: [new File([blob], "imagen_final.png", {type: blob.type, lastModified: new Date().getTime()})],
 						title: 'Compartir Imagen',
 						text: 'Mira mi imagen creada.'
 					}).catch(error => {
