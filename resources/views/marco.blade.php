@@ -108,7 +108,7 @@
 					selectable: false,
 					evented: false,
 				});
-				frame.set("clipPath", roundedCorners(frame, 80))
+				// frame.set("clipPath", roundedCorners(frame, 80))
 				canvas.add(frame);
 				canvas.sendToBack(frame);
 				resizeCanvas();
