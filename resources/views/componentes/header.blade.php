@@ -2,7 +2,11 @@
 		<div id="header-back"></div>
 		<div class="flex flex-row justify-center items-center">
 			<div class="mr-auto">
+				@if (Route::currentRouteName() !== 'cliente')
+				<a href="{{route('cliente', $cliente->slug)}}">{!! file_get_contents(public_path('images/back.svg')) !!}</a>
+				@else
 				&nbsp;
+				@endif
 			</div>
 			<div class="flex flex-col md:flex-row items-center justify-center">
 				<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
