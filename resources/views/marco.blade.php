@@ -131,9 +131,8 @@
 					imgObj.onload = function() {
 						userImage = new fabric.Image(imgObj);
 						userImage.scaleToHeight(canvas.height * 0.9); // Ajusta según la proporción deseada
-						userImage.set("clipPath", roundedCorners(frame, 80))
 						canvas.add(userImage);
-						canvas.sendToBack(userImage); // Asegura que la imagen esté detrás del marco
+						canvas.sendToBack(userImage);
 						document.getElementById('buttonsContainer').style.display = 'flex';
 					}
 				}
@@ -146,25 +145,24 @@
 				canvas.discardActiveObject().renderAll();
 				// Convertir el canvas de Fabric.js a data URL y luego a Blob
 				var dataURL = canvas.toDataURL();
-				function dataURLtoBlob(dataURL) {
-					var arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
-					bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-					while(n--){
-						u8arr[n] = bstr.charCodeAt(n);
-					}
-					console.log(mime)
-					return new Blob([u8arr], {type:mime});
-				}
 				// var blob = dataURLtoBlob(dataURL);
 				const blob = await (await fetch(dataURL)).blob()
+				console.log(blob)
 				if (navigator.share) {
-					navigator.share({
-						files: [new File([blob], "imagen_final.png", {type: blob.type, lastModified: new Date().getTime()})],
-						title: 'Compartir Imagen',
-						text: 'Mira mi imagen creada.'
-					}).catch(error => {
-						console.error('Error al compartir: ', error);
-					});
+					const filesArray = [
+						new File(
+							[blob],
+							'animation.png',
+							{
+								type: blob.type,
+								lastModified: new Date().getTime()
+							}
+						)
+					];
+					const shareData = {
+						files: filesArray,
+					};
+					navigator.share(shareData);
 				} else {
 					var link = document.createElement('a');
 					link.download = 'imagen_final.png';
