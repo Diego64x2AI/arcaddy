@@ -128,7 +128,7 @@
 					imgObj.src = event.target.result;
 					imgObj.onload = function() {
 						userImage = new fabric.Image(imgObj);
-						userImage.scaleToHeight(canvas.height * 0.7); // Ajusta según la proporción deseada
+						userImage.scaleToHeight(canvas.height * 0.9); // Ajusta según la proporción deseada
 						userImage.set("clipPath", roundedCorners(frame, 80))
 						canvas.add(userImage);
 						canvas.sendToBack(userImage); // Asegura que la imagen esté detrás del marco
@@ -158,7 +158,7 @@
 				var blob = dataURLtoBlob(dataURL);
 				if (navigator.share) {
 					navigator.share({
-						files: [new File([blob], "imagen_final.jpg", {type: "image/jpeg"})],
+						files: [new File([blob], "imagen_final.png", {type: blob.type})],
 						title: 'Compartir Imagen',
 						text: 'Mira mi imagen creada.'
 					}).catch(error => {
@@ -166,7 +166,7 @@
 					});
 				} else {
 					var link = document.createElement('a');
-					link.download = 'imagen_final.jpg';
+					link.download = 'imagen_final.png';
 					link.href = URL.createObjectURL(blob);
 					document.body.appendChild(link); // Necesario para Firefox
 					link.click();
