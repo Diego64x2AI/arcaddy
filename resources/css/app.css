@@ -61,7 +61,7 @@ input:checked ~ .dot {
 .swal2-html-container {
 	@apply !overflow-x-hidden;
 }
-select {
+select:not(.input-underline) {
 	@apply bg-gray-50 border uppercase border-gray-300 text-gray-900 text-sm rounded-xl px-5 py-3 focus:ring-transparent focus:border-transparent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-transparent dark:focus:border-transparent;
 }
 .swal2-popup {
