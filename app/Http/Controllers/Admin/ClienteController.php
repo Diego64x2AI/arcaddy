@@ -37,6 +37,7 @@ class ClienteController extends Controller
 	{
 		return view('dashboard.clientes.index', [
 			'clientes' => Cliente::paginate(50),
+			'q' => '',
 		]);
 	}
 
@@ -52,6 +53,18 @@ class ClienteController extends Controller
 		return view('dashboard.clientes.create', [
 			'cliente' => $cliente,
 			'campos' => Campos::all(),
+		]);
+	}
+
+	public function search(Request $request)
+	{
+		$data = $request->validate([
+			'q' => 'required|string|min:3',
+		]);
+		$clientes = Cliente::where("cliente", "like", "%{$data['q']}%")->OrWhere("slug", "like", "%{$data['q']}%")->paginate(50);
+		return view('dashboard.clientes.index', [
+			'clientes' => $clientes,
+			'q' => $data['q'],
 		]);
 	}
 
