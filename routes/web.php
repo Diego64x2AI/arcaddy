@@ -8,6 +8,8 @@ use App\Notifications\RegistroCodigo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\Admin\GameController;
+use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\CuponesController;
 use App\Http\Controllers\Admin\PedidosController;
@@ -15,9 +17,8 @@ use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\UsuariosController;
 use App\Http\Controllers\Admin\VotacionesController;
 use App\Http\Controllers\Admin\MyAppClientController;
-use App\Http\Controllers\Admin\UsuariosClienteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Admin\GameController;
+use App\Http\Controllers\Admin\UsuariosClienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,11 +84,13 @@ Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
 		Route::post('/clientes/crop', [ClienteController::class, 'crop'])->name('clientes.crop');
+		Route::get('/clientes/search', [ClienteController::class, 'search'])->name('clientes.search');
 		Route::get('/clientes/registrodb/delete/{cliente}', [ClienteController::class, 'registrodb_delete'])->name('clientes.registrodb.delete');
-		Route::resource('/clientes', ClienteController::class);
-		Route::resource('/votaciones', VotacionesController::class, [
+		Route::resource('clientes', ClienteController::class);
+		Route::resource('votaciones', VotacionesController::class, [
 			'except' => ['update']
 		]);
+		Route::resource('cliente.quiz', QuizController::class);
 		Route::prefix('votaciones')->group(function () {
 			Route::post('/{votacione}/atributo', [VotacionesController::class, 'updatea'])->name('votaciones.updatea');
 			Route::prefix('categorias')->group(function () {
@@ -135,6 +138,7 @@ require __DIR__.'/auth.php';
 Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('registro')->middleware('auth');
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
 Route::get('/{slug}/start-game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
+Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cliente.marco');
 
 Route::middleware('auth')->group(function () {
 	Route::post('/{slug}/save-game/{claveJuego}', [HomeController::class, 'saveGame'])->name('cliente.save-game');

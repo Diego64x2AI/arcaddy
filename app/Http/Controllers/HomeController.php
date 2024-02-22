@@ -138,6 +138,14 @@ END:VCALENDAR";
 		]);
 	}
 
+	public function cliente_marco($slug = '')
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		return view('marco', [
+			'cliente' => $cliente,
+		]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -193,31 +201,21 @@ END:VCALENDAR";
 				'cliente' => $cliente,
 			]);
 		}
-
-
-		if($cliente->login_bloqueo){
+		if ($cliente->login_bloqueo) {
 
 			if (auth()->check()) {
-                return view('cliente', [
+				return view('cliente', [
 					'cliente' => $cliente,
 				]);
-            } else {
-                // Usuario no autenticado, redirige al formulario de inicio de sesión
-                return redirect()->route('login',$cliente->id)->with('message', 'Inicia sesión para acceder.');
-            }
-
-		}
-		else{
-
+			} else {
+				// Usuario no autenticado, redirige al formulario de inicio de sesión
+				return redirect()->route('login', $cliente->id)->with('message', 'Inicia sesión para acceder.');
+			}
+		} else {
 			return view('cliente', [
 				'cliente' => $cliente,
 			]);
-
 		}
-
-
-
-		
 	}
 
 	/**
