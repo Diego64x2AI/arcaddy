@@ -180,6 +180,10 @@ END:VCALENDAR";
 			header("Location: https://stitch.betterware.com.mx/stitch");
 			exit();
 		}
+		elseif (strpos($_SERVER['HTTP_HOST'], 'chandrany.com') !== false && $slug !== 'chandrany') {
+			header("Location: https://chandrany.com/chandrany");
+			exit();
+		}
 		/*elseif(strpos($_SERVER['HTTP_HOST'], 'oce-eg-ra.mx') !== false && $slug == 'gelicart'){
 
 	    }*/
