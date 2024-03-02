@@ -91,7 +91,7 @@ if ($quiz->random) {
 			const tipo = $activeSlide.data('tipo');
 			const swiper = document.querySelector('.swiper-quiz').swiper;
 			let formData = new FormData();
-			console.log(`quizId: ${quizId}, preguntaId: ${preguntaId}, tipo: ${tipo}`, $(`input[name=respuesta-${preguntaId}]:checked`));
+			console.log(`quizId: ${quizId}, preguntaId: ${preguntaId}, tipo: ${tipo}`, $(`input[name=respuesta-${preguntaId}]:checked`), $activeSlide, $activeSlide.data('quiz'));
 			if (tipo === 'option') {
 				let otra = Number($(`input[name=respuesta-${preguntaId}]:checked`).data('otra'));
 				if ($(`input[name=respuesta-${preguntaId}]:checked`).length === 0) {
