@@ -176,7 +176,7 @@ if ($quiz->random) {
 				}
 				formData.append('respuesta', respuestaId);
 			} else if (tipo === 'open') {
-				if (jQuery.trim($('#open-answer').val()) === '') {
+				if (jQuery.trim($(`#open-answer-${preguntaId}`).val()) === '') {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
@@ -185,8 +185,8 @@ if ($quiz->random) {
 					});
 					return;
 				}
-				formData.append('respuesta', $('#open-answer').data('respuesta'));
-				formData.append('otra', $('#open-answer').val());
+				formData.append('respuesta', $(`#open-answer-${preguntaId}`).data('respuesta'));
+				formData.append('otra', $(`#open-answer-${preguntaId}`).val());
 			} else if (tipo === 'level') {
 				formData.append('range', $('#steps-range').val());
 				formData.append('respuesta', $('#steps-range').data('respuesta'));
