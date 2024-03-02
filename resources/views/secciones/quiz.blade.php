@@ -85,7 +85,7 @@ if ($quiz->random) {
 				});
 				return;
 			}
-			$activeSlide = $('.swiper-slide-active');
+			$activeSlide = $('#quiz-slider .swiper-slide-active');
 			const quizId = Number($activeSlide.data('quiz'));
 			const preguntaId = Number($activeSlide.data('pregunta'));
 			const tipo = $activeSlide.data('tipo');
