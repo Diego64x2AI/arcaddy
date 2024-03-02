@@ -34,6 +34,9 @@ import Swiper from 'swiper/bundle'
 import 'swiper/css/bundle'
 window.Swiper = Swiper
 
+// jquery-match-height
+import 'jquery-match-height';
+
 // cropperjs
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'

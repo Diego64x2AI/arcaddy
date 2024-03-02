@@ -527,7 +527,32 @@
 					prevEl: ".swiper-button-prev",
       	},
 			});
+			new Swiper('.swiper-1', {
+				// Optional parameters
+				direction: 'horizontal',
+				loop: false,
+				autoplay: {
+					delay: 3000,
+					disableOnInteraction: true,
+				},
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+      	},
+			});
 
+			new Swiper('.swiper-quiz', {
+				// Optional parameters
+				direction: 'horizontal',
+				slidesPerView: 1,
+				spaceBetween: 0,
+				centerInsufficientSlides: true,
+				autoHeight: true,
+				autoplay: false,
+				loop: false,
+				noSwiping: true,
+				noSwipingClass: 'swiper-slide',
+			});
 			new Swiper('.swiper-3', {
 				// Optional parameters
 				direction: 'horizontal',
@@ -662,8 +687,12 @@
 		    top: 0px;
 		}
 		.swal2-popup {
-			background-color: rgba({{ $r }},{{ $g }},{{ $b }},0.8)!important;
+			background-color: rgba({{ $r }},{{ $g }},{{ $b }},1)!important;
 			color: {{ $cliente->color }} !important;
+		}
+		.swal2-confirm {
+			background-color: {{ $cliente->color }} !important;
+			color: {{ $cliente->color_bg }} !important;
 		}
 		.swiper-button-next, .swiper-button-prev {
 			background: linear-gradient(270deg, rgba({{ $r }},{{ $g }},{{ $b }},0.5) 0%, rgba({{ $r }},{{ $g }},{{ $b }},1) 100%);
@@ -674,6 +703,9 @@
 		}
 		.btn-pill {
 			background-color: {{ $cliente->color }} !important;
+		}
+		[type='checkbox'], [type='radio'] {
+			color: {{ $cliente->color }} !important;
 		}
 		select {
 			background-color: {{ $cliente->color_bg }} !important;

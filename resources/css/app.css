@@ -61,6 +61,34 @@ input:checked ~ .dot {
 .swal2-html-container {
 	@apply !overflow-x-hidden;
 }
+.container-draggable::after {
+	display: block;
+	clear: both;
+	content: "";
+}
+
+.examinar-img {
+	display: none;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -63.5px;
+	margin-top: -40px;
+	background-color: #FFF;
+	padding: 10px;
+}
+.dataTables_length label {
+	@apply !flex !flex-row !items-center !text-sm;
+}
+.dataTables_info, .dataTables_filter, .dataTables_paginate {
+	@apply !text-sm;
+}
+.paginate_button {
+	@apply !text-sm !py-1 !px-3;
+}
+.dataTables_wrapper .dataTables_length select {
+	@apply !text-black !mx-3 min-w-[100px];
+}
 select:not(.input-underline) {
 	@apply bg-gray-50 border uppercase border-gray-300 text-gray-900 text-sm rounded-xl px-5 py-3 focus:ring-transparent focus:border-transparent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-transparent dark:focus:border-transparent;
 }
@@ -76,6 +104,10 @@ select:not(.input-underline) {
 	content: ''!important;
 }
 
+.range-slider {
+	@apply w-full shadow-inner accent-pink-600 h-3 bg-gray-300 rounded-lg appearance-none cursor-pointer	[&::-webkit-slider-thumb]:appearance-none	[&::-webkit-slider-thumb]:h-6	[&::-webkit-slider-thumb]:w-6	[&::-webkit-slider-thumb]:rounded-full	[&::-webkit-slider-thumb]:bg-white	[&::-webkit-slider-thumb]:shadow	[&::-webkit-slider-thumb]:focus-visible:ring	[&::-webkit-slider-thumb]:focus-visible:ring-indigo-300	[&::-moz-range-thumb]:h-6	[&::-moz-range-thumb]:w-6	[&::-moz-range-thumb]:rounded-full	[&::-moz-range-thumb]:bg-white	[&::-moz-range-thumb]:border-none	[&::-moz-range-thumb]:shadow	[&::-moz-range-thumb]:focus-visible:ring	[&::-moz-range-thumb]:focus-visible:ring-indigo-300;
+}
+
 .btn-pill {
 	@apply rounded-full bg-pink-600 text-white px-5 py-2 inline-block lg:text-xl lg:py-2 lg:px-8
 }
@@ -89,11 +121,11 @@ select:not(.input-underline) {
 }
 
 .input-underline {
-	@apply appearance-none border-0 border-b border-gray-300 w-full py-1 px-1 text-gray-700 focus:border-gray-300 focus:ring-0 focus:outline-hidden
+	@apply appearance-none border-0 border-b border-gray-300 w-full py-1 px-1 text-gray-700 focus:border-gray-300 focus:ring-0
 }
 
 .input-border {
-	@apply appearance-none border border-gray-300 w-full py-1 px-1 text-gray-700 focus:border-gray-300 focus:ring-0 focus:outline-hidden
+	@apply appearance-none border border-gray-300 w-full py-1 px-1 text-gray-700 focus:border-gray-300 focus:ring-0
 }
 
 .center-website {

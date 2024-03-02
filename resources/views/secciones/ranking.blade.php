@@ -45,7 +45,6 @@ if (auth()->check()) {
 		`;
 	@endif
 	window.addEventListener('load', function() {
-		console.log(`ranking load`);
 		$('a#load-ranking').click(function(e){
 			e.preventDefault();
 			if (!hasMorePages || rakingLoading) {
@@ -54,11 +53,9 @@ if (auth()->check()) {
 			currentPage++;
 			rakingLoading = true;
 			$.get(`${ranking_url}?page=${currentPage}`, function(data){
-				console.log(data);
 				rankingFrom = data.from;
 				$('.tu-ranking-box').hide();
 				data.data.forEach((item) => {
-					console.log(item)
 					let style = (rankingFrom === 1) ? ` style="background-color: {{ $cliente->color_base }}; color: {{ $cliente->color_bg }};"` : ``;
 					if (rankingUID === item.user.id) {
 						style = ` style="background-color: {{ $cliente->color }}; color: {{ $cliente->color_bg }};"`;

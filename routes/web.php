@@ -90,7 +90,14 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('votaciones', VotacionesController::class, [
 			'except' => ['update']
 		]);
-		Route::resource('cliente.quiz', QuizController::class);
+		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
+		Route::prefix('cliente')->group(function () {
+			Route::prefix('{cliente}')->group(function () {
+				Route::prefix('quiz/{quiz}')->group(function () {
+					Route::post('/atributo', [QuizController::class, 'updatea'])->name('cliente.quiz.updatea')->where('quiz', '[0-9]+')->where('cliente', '[0-9]+');
+				});
+			});
+		});
 		Route::prefix('votaciones')->group(function () {
 			Route::post('/{votacione}/atributo', [VotacionesController::class, 'updatea'])->name('votaciones.updatea');
 			Route::prefix('categorias')->group(function () {
@@ -142,6 +149,7 @@ Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cli
 
 Route::middleware('auth')->group(function () {
 	Route::post('/{slug}/save-game/{claveJuego}', [HomeController::class, 'saveGame'])->name('cliente.save-game');
+	Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name('cliente.quiz.respuesta');
 });
 
 

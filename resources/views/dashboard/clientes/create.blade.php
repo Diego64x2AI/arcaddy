@@ -4,27 +4,6 @@
 			{{ ($cliente->id !== NULL) ? 'Editar' : 'Agregar' }} cliente
 		</h2>
 	</x-slot>
-	<style>
-		.container-draggable::after {
-			display: block;
-			clear: both;
-			content: "";
-		}
-
-		.examinar-img {
-			display: none;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			margin-left: -63.5px;
-			margin-top: -40px;
-			background-color: #FFF;
-			padding: 10px;
-		}
-
-
-
-	</style>
 	<div class="py-6">
 		<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 			<div class="bg-white">
