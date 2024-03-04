@@ -1,7 +1,9 @@
 <div class="flex flex-col gap-3">
+	@if($pregunta->archivo !== NULL)
 	<div>
 		<img src="{{ asset('storage/'.$pregunta->archivo) }}" alt="{{ $pregunta->pregunta }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
 	</div>
+	@endif
 	<div>
 		<input id="steps-range" type="range" min="0" max="10" value="5" step="1" data-respuesta="{{ $pregunta->respuestas->where('tipo', 'high')->first()?->id }}" class="range-slider">
 	</div>
