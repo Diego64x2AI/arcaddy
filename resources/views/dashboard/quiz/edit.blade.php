@@ -444,10 +444,10 @@
 							</div>
 							<div class="grid grid-cols-2 gap-5 mt-2">
 								<div>
-									<input type="text" name="level-low[${currentQuestions}]" placeholder="Pésimo" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
+									<input type="text" name="level-low[${currentQuestions}]" placeholder="Pésimo" value="Pésimo" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
 								</div>
 								<div>
-									<input type="text" name="level-high[${currentQuestions}]" placeholder="Excelente" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
+									<input type="text" name="level-high[${currentQuestions}]" placeholder="Excelente" value="Excelente" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
 								</div>
 							</div>
 						</div>

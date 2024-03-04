@@ -193,9 +193,28 @@ class QuizController extends Controller
 			$archivov1 = NULL;
 			$archivov2 = NULL;
 			// validate the file if the question is like or level
-			if (in_array($tipo, ['like', 'level'])) {
+			if ($tipo === 'like') {
 				$request->validate([
 					'archivo_img.'.$key => 'required_without:archivo_old.'.$key.'|file|mimes:jpeg,png,jpg,gif',
+				], [
+					'archivo_img.'.$key.'.required_without' => 'La imagen es requerida.',
+					'archivo_img.'.$key.'.file' => 'La imagen no es válida.',
+					'archivo_img.'.$key.'.mimes' => 'La imagen no es válida.',
+				]);
+				// archivo viejo
+				if ($request->filled('archivo_old.' . $key)) {
+					$archivo = $request->input('archivo_old.' . $key);
+				}
+				if ($request->hasFile('archivo_img.' . $key) && $request->file('archivo_img.' . $key)->isValid()) {
+					// delete the old file
+					if ($archivo !== NULL && Storage::exists($archivo)) {
+						Storage::delete($archivo);
+					}
+					$archivo = $request->file('archivo_img.' . $key)->store('quiz', 'public');
+				}
+			} elseif ($tipo === 'level') {
+				$request->validate([
+					'archivo_img.'.$key => 'nullable|sometimes|image',
 				], [
 					'archivo_img.'.$key.'.required_without' => 'La imagen es requerida.',
 					'archivo_img.'.$key.'.file' => 'La imagen no es válida.',
