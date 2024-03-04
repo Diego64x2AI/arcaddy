@@ -278,7 +278,7 @@ class QuizController extends Controller
 						$respuesta = new ClienteQuizRespuesta;
 					}
 					$respuesta->fill([
-						'pregunta_id' => $pregunta->pregunta->id,
+						'pregunta_id' => $pregunta->id,
 						'respuesta' => $v,
 						'correcta' => intval($data['correcta'][$key]) === $k,
 						'tipo' => $tipo,
@@ -289,7 +289,7 @@ class QuizController extends Controller
 				}
 			} elseif ($tipo == 'open') {
 				ClienteQuizRespuesta::updateOrCreate([
-					'pregunta_id' => $pregunta->pregunta->id,
+					'pregunta_id' => $pregunta->id,
 					'respuesta' => 'Respuesta abierta',
 					'tipo' => $tipo,
 				], [
@@ -306,7 +306,7 @@ class QuizController extends Controller
 						$respuesta = new ClienteQuizRespuesta;
 					}
 					$respuesta->fill([
-						'pregunta_id' => $pregunta->pregunta->id,
+						'pregunta_id' => $pregunta->id,
 						'respuesta' => $v,
 						'correcta' => in_array($k, array_map('intval', $data['correcta2'][$key])),
 						'tipo' => $tipo,
@@ -317,14 +317,14 @@ class QuizController extends Controller
 				}
 			} elseif ($tipo == 'like') {
 				ClienteQuizRespuesta::updateOrCreate([
-					'pregunta_id' => $pregunta->pregunta->id,
+					'pregunta_id' => $pregunta->id,
 					'tipo' => 'like',
 				], [
 					'respuesta' => $request->input('like-text.'.$key),
 					'correcta' => intval($request->input('like-correcta.'.$key)) === 1,
 				]);
 				ClienteQuizRespuesta::updateOrCreate([
-					'pregunta_id' => $pregunta->pregunta->id,
+					'pregunta_id' => $pregunta->id,
 					'tipo' => 'dislike',
 				], [
 					'respuesta' => $request->input('dislike-text.'.$key),
@@ -332,14 +332,14 @@ class QuizController extends Controller
 				]);
 			} elseif ($tipo == 'level') {
 				ClienteQuizRespuesta::updateOrCreate([
-					'pregunta_id' => $pregunta->pregunta->id,
+					'pregunta_id' => $pregunta->id,
 					'tipo' => 'low',
 				], [
 					'respuesta' => $request->input('level-low.'.$key),
 					'correcta' => false,
 				]);
 				ClienteQuizRespuesta::updateOrCreate([
-					'pregunta_id' => $pregunta->pregunta->id,
+					'pregunta_id' => $pregunta->id,
 					'tipo' => 'high',
 				], [
 					'respuesta' => $request->input('level-high.'.$key),
@@ -347,7 +347,7 @@ class QuizController extends Controller
 				]);
 			} elseif ($tipo == 'versus') {
 				ClienteQuizRespuesta::updateOrCreate([
-					'pregunta_id' => $pregunta->pregunta->id,
+					'pregunta_id' => $pregunta->id,
 					'tipo' => 'versus1',
 				], [
 					'respuesta' => $request->input('versus1-text.'.$key),
@@ -355,7 +355,7 @@ class QuizController extends Controller
 					'archivo' => $archivov1,
 				]);
 				ClienteQuizRespuesta::updateOrCreate([
-					'pregunta_id' => $pregunta->pregunta->id,
+					'pregunta_id' => $pregunta->id,
 					'tipo' => 'versus2',
 				], [
 					'respuesta' => $request->input('versus2-text.'.$key),
