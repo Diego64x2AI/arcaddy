@@ -140,7 +140,7 @@
 									</div>
 								</dib>
 							</div>
-							@elseif ($respuesta['pregunta']->tipo == 'option')
+							@elseif ($respuesta['pregunta']->tipo == 'option' || $respuesta['pregunta']->tipo == 'multi')
 							<div class="">
 								<div class="flex flex-row items-center gap-5 font-bold">
 									<div class="grow">&nbsp;</div>
@@ -157,7 +157,7 @@
 										{{ $item['total'] }}
 									</div>
 									<div class="w-[60px] text-center font-bold py-2">
-										{{ $item['porcentaje'] }}%
+										{{ round($item['porcentaje'], 2) }}%
 									</div>
 								</div>
 								@endforeach

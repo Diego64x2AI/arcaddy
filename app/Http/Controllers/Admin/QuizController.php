@@ -62,7 +62,7 @@ class QuizController extends Controller
 				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
 					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
 				}
-			} elseif ($pregunta->tipo === 'option') {
+			} elseif ($pregunta->tipo === 'option' || $pregunta->tipo === 'multi') {
 				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
 				// calculate percentage of each answer
 				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
@@ -73,13 +73,6 @@ class QuizController extends Controller
 					'labels' => $respuestas[$pregunta->pregunta->id]['respuestas']->pluck('respuesta')->toArray(),
 					'data' => $respuestas[$pregunta->pregunta->id]['respuestas']->pluck('total')->toArray(),
 				];
-			} elseif ($pregunta->tipo === 'multi') {
-				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
-				// calculate percentage of each answer
-				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
-				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
-					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
-				}
 			}
 		}
 		// dd($respuestas[6]);
