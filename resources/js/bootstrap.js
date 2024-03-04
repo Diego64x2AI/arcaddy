@@ -65,6 +65,14 @@ withSelectType()
 
 window.Flyter = flyter
 
+// import noUiSlider from 'nouislider';
+import * as noUiSlider from 'nouislider';
+import 'nouislider/dist/nouislider.css';
+window.noUiSlider = noUiSlider;
+
+import Chart from 'chart.js/auto';
+window.Chart = Chart;
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

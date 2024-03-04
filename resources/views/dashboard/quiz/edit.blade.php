@@ -42,16 +42,17 @@
 								if ($pregunta->archivo !== NULL && $pregunta->archivo !== '') {
 									$img = asset('storage/'.$pregunta->archivo);
 								}
-								if ($pregunta->respuestas->where('tipo', 'versus')->count() > 0) {
-									$versus1 = asset('storage/'.$pregunta->respuestas->where('tipo', 'versus')->first()->archivo);
-									$versus2 = asset('storage/'.$pregunta->respuestas->where('tipo', 'versus')->last()->archivo);
+								if ($pregunta->respuestas()->where('tipo', 'like', 'versus%')->count() > 0) {
+									$versus1 = asset('storage/'.$pregunta->respuestas->where('tipo', 'versus1')->first()->archivo);
+									$versus2 = asset('storage/'.$pregunta->respuestas->where('tipo', 'versus2')->first()->archivo);
 								}
 							@endphp
 							<div class="w-2/4 md:w-1/3 float-left bg-white hover:bg-gray-100 hover:shadow pregunta-box h-fit group">
 								<div class="p-3 flex flex-col h-full">
 									<div class="flex flex-row items-center mb-3">
-										<div class="font-bold text-2xl">Tipo </div>
+										<div class="font-bold text-2xl">Tipo</div>
 										<div class="mx-auto">
+											<input type="hidden" name="pregunta_id[{{ $key }}]" value="{{ $pregunta->id }}">
 											<select name="tipo[{{ $key }}]" class="question-type input-underline !border !shadow !rounded-3xl !px-4 !min-w-[130px]" required>
 												<option value="open" @if(old('tipo.'.$key, $pregunta->tipo) === 'open') selected @endif>Abierta</option>
 												<option value="option" @if(old('tipo.'.$key, $pregunta->tipo) === 'option') selected @endif>Opción</option>
@@ -81,6 +82,7 @@
 												<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 												<div class="ml-3 grow">
 													<input type="text" name="respuesta[{{ $key }}][]" value="{{ old('respuesta.'.$key.'.'.$index, $respuesta->respuesta) }}" class="input-underline w-full" placeholder="Respuesta" @if($respuesta->respuesta === 'Otra...') disabled @endif required>
+													<input type="hidden" name="respuesta_id[{{ $key }}][]" value="{{ $respuesta->id }}" class="input-underline w-full">
 												</div>
 												<div class="ml-3">
 													<input type="radio" name="correcta[{{ $key }}]" class="accent-green-500 appearance-none" value="{{ $index }}" @if($respuesta->correcta) checked @endif>
@@ -110,6 +112,7 @@
 												<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 												<div class="ml-3 grow">
 													<input type="text" name="respuesta2[{{ $key }}][]" value="{{ old('respuesta.'.$key.'.'.$index, $respuesta->respuesta) }}" class="input-underline w-full" placeholder="Respuesta" @if($respuesta->respuesta === 'Otra...') disabled @endif required>
+													<input type="hidden" name="respuesta2_id[{{ $key }}][]" value="{{ $respuesta->id }}" class="input-underline w-full">
 												</div>
 												<div class="ml-3">
 													<input type="checkbox" name="correcta2[{{ $key }}][]" class="accent-green-500 appearance-none" value="{{ $index }}" @if($respuesta->correcta) checked @endif>
@@ -158,7 +161,7 @@
 														<div class="flex flex-row justify-center">
 															<button type="button" class="examinar-btn rounded-full bg-pink-600 text-white px-2 py-1 text-xs inline-block">Examinar...</button>
 														</div>
-														<input type="hidden" name="versus1_old[{{ $key }}]" value="{{ $pregunta->respuestas->where('tipo', 'versus')->first()?->archivo }}" />
+														<input type="hidden" name="versus1_old[{{ $key }}]" value="{{ $pregunta->respuestas->where('tipo', 'versus1')->first()?->archivo }}" />
 														<input type="file" name="versus1_img[{{ $key }}]" class="file-general" accept="image/*" style="display:none" />
 													</div>
 												</div>
@@ -170,22 +173,22 @@
 														<div class="flex flex-row justify-center">
 															<button type="button" class="examinar-btn rounded-full bg-pink-600 text-white px-2 py-1 text-xs inline-block">Examinar...</button>
 														</div>
-														<input type="hidden" name="versus2_old[{{ $key }}]" value="{{ $pregunta->respuestas->where('tipo', 'versus')->last()?->archivo }}" />
+														<input type="hidden" name="versus2_old[{{ $key }}]" value="{{ $pregunta->respuestas->where('tipo', 'versus2')->first()?->archivo }}" />
 														<input type="file" name="versus2_img[{{ $key }}]" class="file-general" accept="image/*" style="display:none" />
 													</div>
 												</div>
 											</div>
 											<div class="flex flex-row justify-center">
-												<input type="text" name="versus1-text[{{ $key }}]" value="{{ old('versus1-text.'.$key, $pregunta->respuestas->where('tipo', 'versus')->first()?->respuesta) }}" placeholder="Descripción" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
+												<input type="text" name="versus1-text[{{ $key }}]" value="{{ old('versus1-text.'.$key, $pregunta->respuestas->where('tipo', 'versus1')->first()?->respuesta) }}" placeholder="Descripción" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
 											</div>
 											<div class="flex flex-row justify-center">
-												<input type="text" name="versus2-text[{{ $key }}]" value="{{ old('versus2-text.'.$key, $pregunta->respuestas->where('tipo', 'versus')->last()?->respuesta) }}" placeholder="Descripción" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
+												<input type="text" name="versus2-text[{{ $key }}]" value="{{ old('versus2-text.'.$key, $pregunta->respuestas->where('tipo', 'versus2')->first()?->respuesta) }}" placeholder="Descripción" class="input-underline !border !shadow !rounded-3xl !px-4 text-center">
 											</div>
 											<div class="flex flex-row justify-center">
-												<input type="radio" name="versus-correcta[{{ $key }}]" value="1" @if($pregunta->respuestas->where('tipo', 'versus')->first()?->correcta)  checked @endif>
+												<input type="radio" name="versus-correcta[{{ $key }}]" value="1" @if($pregunta->respuestas->where('tipo', 'versus1')->first()?->correcta)  checked @endif>
 											</div>
 											<div class="flex flex-row justify-center">
-												<input type="radio" name="versus-correcta[{{ $key }}]" value="2" @if($pregunta->respuestas->where('tipo', 'versus')->last()?->correcta)  checked @endif>
+												<input type="radio" name="versus-correcta[{{ $key }}]" value="2" @if($pregunta->respuestas->where('tipo', 'versus2')->first()?->correcta)  checked @endif>
 											</div>
 										</dib>
 									</div>
@@ -297,7 +300,8 @@
 					<div class="flex flex-row items-center">
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
-							<input type="text" name="respuesta[${index}][]" class="input-underline w-full" placeholder="Respuesta" required>
+							<input type="text" name="respuesta[${index}][]" class="input-underline w-full" placeholder="Respuesta">
+							<input type="hidden" name="respuesta_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
 							<input type="radio" name="correcta[${index}]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
@@ -319,6 +323,7 @@
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
 							<input type="text" name="respuesta[${index}][]" disabled class="input-underline w-full" value="Otra...">
+							<input type="hidden" name="respuesta_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
 							<input type="radio" name="correcta[${index}]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
@@ -336,6 +341,7 @@
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
 							<input type="text" name="respuesta2[${index}][]" class="input-underline w-full" placeholder="Respuesta" required>
+							<input type="hidden" name="respuesta2_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
 							<input type="checkbox" name="correcta2[${index}][]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
@@ -357,6 +363,7 @@
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
 							<input type="text" name="respuesta2[${index}][]" disabled class="input-underline w-full" value="Otra...">
+							<input type="hidden" name="respuesta2_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
 							<input type="checkbox" name="correcta2[${index}][]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
@@ -374,6 +381,7 @@
 						<div class="flex flex-row items-center mb-3">
 							<div class="font-bold text-2xl">Tipo</div>
 							<div class="mx-auto">
+								<input type="hidden" name="pregunta_id[${currentQuestions}]" value="0">
 								<select name="tipo[${currentQuestions}]" class="question-type input-underline !border !shadow !rounded-3xl !px-4 !min-w-[130px]" required>
 									<option value="open" selected>Abierta</option>
 									<option value="option">Opción</option>
@@ -384,7 +392,7 @@
 								</select>
 							</div>
 							<div>
-								<input type="text" name="valor[${currentQuestions}]" class="input-underline !border !shadow !rounded-3xl !px-4 !w-[80px] text-center" placeholder="Valor" required>
+								<input type="text" name="valor[${currentQuestions}]" class="input-underline !border !shadow !rounded-3xl !px-4 !w-[80px] text-center" placeholder="Valor" value="0" required>
 							</div>
 						</div>
 						<div class="mb-8">
@@ -599,6 +607,13 @@
 				console.log(value, $parent);
 				$parent.find('.question-section').addClass('hidden');
 				$parent.find(`.${value}-section`).removeClass('hidden');
+				$('.pregunta-box').matchHeight({
+					byRow: false,
+					property: 'height',
+					target: null,
+					remove: false
+				});
+				$.fn.matchHeight._update()
 			});
 			// trigger the change event for each question type
 			$('.question-type').each(function (index, item) {

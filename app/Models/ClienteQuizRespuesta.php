@@ -16,7 +16,8 @@ class ClienteQuizRespuesta extends Model
 		'respuesta',
 		'tipo',
 		'archivo',
-		'correcta'
+		'correcta',
+		'orden',
 	];
 
 	/**

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Cliente;
 use App\Models\ClienteQuiz;
 use Illuminate\Http\Request;
+use App\Models\QuizRespuestas;
+use Illuminate\Support\Facades\DB;
 use App\Models\ClienteQuizPregunta;
 use App\Http\Controllers\Controller;
 use App\Models\ClienteQuizRespuesta;
@@ -25,6 +27,66 @@ class QuizController extends Controller
 	}
 
 	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function stats(Cliente $cliente, ClienteQuiz $quiz)
+	{
+		$totales = 0;
+		if ($quiz->preguntas->first() !== NULL) {
+			$totales = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $quiz->preguntas->first()->id)->count();
+		}
+		$respuestas = [];
+		$preguntas = QuizRespuestas::where('quiz_id', $quiz->id)->groupBy('pregunta_id')->select('id', 'user_id', 'pregunta_id', 'tipo', 'respuesta_id')->get();
+		foreach ($preguntas as $pregunta) {
+			$respuestas[$pregunta->pregunta->id]['pregunta'] = $pregunta->pregunta;
+			$respuestas[$pregunta->pregunta->id]['respuesta'] = $pregunta->respuesta;
+			if ($pregunta->tipo === 'open') {
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta')->get();
+			} elseif ($pregunta->tipo === 'level') {
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta')->get();
+				// calculate average
+				$respuestas[$pregunta->pregunta->id]['promedio'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->avg('puntos');
+			} elseif ($pregunta->tipo === 'like') {
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::with([])->where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
+				// calculate percentage of each answer
+				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
+				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
+					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
+				}
+			} elseif ($pregunta->tipo === 'versus') {
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::with([])->where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
+				// calculate percentage of each answer
+				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
+				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
+					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
+				}
+			} elseif ($pregunta->tipo === 'option') {
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
+				// calculate percentage of each answer
+				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
+				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
+					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
+				}
+				$respuestas[$pregunta->pregunta->id]['dataset'] = [
+					'labels' => $respuestas[$pregunta->pregunta->id]['respuestas']->pluck('respuesta')->toArray(),
+					'data' => $respuestas[$pregunta->pregunta->id]['respuestas']->pluck('total')->toArray(),
+				];
+			} elseif ($pregunta->tipo === 'multi') {
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
+				// calculate percentage of each answer
+				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
+				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
+					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
+				}
+			}
+		}
+		// dd($respuestas[6]);
+		return view('dashboard.quiz.stats', compact('cliente', 'respuestas', 'totales'));
+	}
+
+	/**
 	 * Show the form for creating a new resource.
 	 *
 	 * @return \Illuminate\Http\Response
@@ -42,12 +104,16 @@ class QuizController extends Controller
 	 */
 	public function store(Cliente $cliente, StoreClienteQuizRequest $request)
 	{
-		$campos = $request->validated();
+		$campos = $request->safe()->except(['imagen']);
 		// $campos['cliente_id'] = $cliente->id;
 		$campos['activa'] = $request->boolean('activa');
 		$campos['score'] = $request->boolean('score');
 		$campos['random'] = $request->boolean('random');
 		$campos['calificacion'] = $request->boolean('calificacion');
+		$campos['login'] = $request->boolean('login');
+		if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
+			$campos['imagen'] = $request->file('imagen')->store('quiz', 'public');
+		}
 		// if is active, deactivate the others
 		if ($campos['activa']) {
 			$cliente->quiz()->update(['activa' => false]);
@@ -97,6 +163,9 @@ class QuizController extends Controller
 		if ($request->filled('calificacion')) {
 			$quiz->update(['calificacion' => $request->boolean('calificacion')]);
 		}
+		if ($request->filled('login')) {
+			$quiz->update(['login' => $request->boolean('login')]);
+		}
 		if ($request->filled('activa')) {
 			// if is active, deactivate the others
 			if ($request->boolean('activa')) {
@@ -122,12 +191,11 @@ class QuizController extends Controller
 	public function update(Cliente $cliente, UpdateClienteQuizRequest $request, ClienteQuiz $quiz)
 	{
 		$data = $request->safe()->except(['archivo_img']);
-		// dd($data);
-		// delete the questions
-		$quiz->preguntas()->delete();
 		// store the questions
+		$orden = 0;
 		foreach ($data['pregunta'] as $key => $value) {
 			$tipo = $data['tipo'][$key];
+			$id = (int) $data['pregunta_id'][$key];
 			$archivo = NULL;
 			$archivov1 = NULL;
 			$archivov2 = NULL;
@@ -189,71 +257,116 @@ class QuizController extends Controller
 					$archivov2 = $request->file('versus2_img.' . $key)->store('quiz', 'public');
 				}
 			}
-			$pregunta = ClienteQuizPregunta::create([
+			if ($id > 0) {
+				$pregunta = ClienteQuizPregunta::findOrFail($id);
+			} else {
+				$pregunta = new ClienteQuizPregunta;
+			}
+			$pregunta->fill([
 				'quiz_id' => $quiz->id,
 				'pregunta' => $value,
 				'tipo' => $tipo,
+				'orden' => $orden,
 				'valor' => (double) $data['valor'][$key] ?? 0,
 				'archivo' => $archivo,
 				'iconos' => $request->boolean('iconos.'.$key),
 			]);
+			$pregunta->save();
+			$orden++;
 			// store the answers
 			if ($tipo == 'option') {
+				$orden2 = 0;
+				// dd($data['respuesta'], $data['respuesta_id']);
 				foreach($data['respuesta'][$key] as $k => $v) {
-					$pregunta->respuestas()->create([
+					$id = (int) $data['respuesta_id'][$key][$k];
+					if ($id > 0) {
+						$respuesta = ClienteQuizRespuesta::findOrFail($id);
+					} else {
+						$respuesta = new ClienteQuizRespuesta;
+					}
+					$respuesta->fill([
+						'pregunta_id' => $pregunta->pregunta->id,
 						'respuesta' => $v,
 						'correcta' => intval($data['correcta'][$key]) === $k,
 						'tipo' => $tipo,
+						'orden' => $orden2,
 					]);
+					$respuesta->save();
+					$orden2++;
 				}
 			} elseif ($tipo == 'open') {
-				$pregunta->respuestas()->create([
+				ClienteQuizRespuesta::updateOrCreate([
+					'pregunta_id' => $pregunta->pregunta->id,
 					'respuesta' => 'Respuesta abierta',
-					'correcta' => true,
 					'tipo' => $tipo,
+				], [
+					'correcta' => true,
 				]);
 			} elseif ($tipo == 'multi') {
-				// dd(array_map('intval', $data['correcta2'][$key]));
+				$orden2 = 0;
+				// dd($data['respuesta'], $data['respuesta_id']);
 				foreach($data['respuesta2'][$key] as $k => $v) {
-					$pregunta->respuestas()->create([
+					$id = (int) $data['respuesta2_id'][$key][$k];
+					if ($id > 0) {
+						$respuesta = ClienteQuizRespuesta::findOrFail($id);
+					} else {
+						$respuesta = new ClienteQuizRespuesta;
+					}
+					$respuesta->fill([
+						'pregunta_id' => $pregunta->pregunta->id,
 						'respuesta' => $v,
 						'correcta' => in_array($k, array_map('intval', $data['correcta2'][$key])),
 						'tipo' => $tipo,
+						'orden' => $orden2,
 					]);
+					$respuesta->save();
+					$orden2++;
 				}
 			} elseif ($tipo == 'like') {
-				$pregunta->respuestas()->create([
+				ClienteQuizRespuesta::updateOrCreate([
+					'pregunta_id' => $pregunta->pregunta->id,
+					'tipo' => 'like',
+				], [
 					'respuesta' => $request->input('like-text.'.$key),
 					'correcta' => intval($request->input('like-correcta.'.$key)) === 1,
-					'tipo' => 'like',
 				]);
-				$pregunta->respuestas()->create([
+				ClienteQuizRespuesta::updateOrCreate([
+					'pregunta_id' => $pregunta->pregunta->id,
+					'tipo' => 'dislike',
+				], [
 					'respuesta' => $request->input('dislike-text.'.$key),
 					'correcta' => intval($request->input('like-correcta.'.$key)) === 2,
-					'tipo' => 'dislike',
 				]);
 			} elseif ($tipo == 'level') {
-				$pregunta->respuestas()->create([
+				ClienteQuizRespuesta::updateOrCreate([
+					'pregunta_id' => $pregunta->pregunta->id,
+					'tipo' => 'low',
+				], [
 					'respuesta' => $request->input('level-low.'.$key),
 					'correcta' => false,
-					'tipo' => 'low',
 				]);
-				$pregunta->respuestas()->create([
-					'respuesta' => $request->input('level-high.'.$key),
-					'correcta' => true,
+				ClienteQuizRespuesta::updateOrCreate([
+					'pregunta_id' => $pregunta->pregunta->id,
 					'tipo' => 'high',
+				], [
+					'respuesta' => $request->input('level-high.'.$key),
+					'correcta' => false,
 				]);
 			} elseif ($tipo == 'versus') {
-				$pregunta->respuestas()->create([
+				ClienteQuizRespuesta::updateOrCreate([
+					'pregunta_id' => $pregunta->pregunta->id,
+					'tipo' => 'versus1',
+				], [
 					'respuesta' => $request->input('versus1-text.'.$key),
 					'correcta' => intval($request->input('versus-correcta.'.$key)) === 1,
-					'tipo' => 'versus',
 					'archivo' => $archivov1,
 				]);
-				$pregunta->respuestas()->create([
+				ClienteQuizRespuesta::updateOrCreate([
+					'pregunta_id' => $pregunta->pregunta->id,
+					'tipo' => 'versus2',
+				], [
 					'respuesta' => $request->input('versus2-text.'.$key),
 					'correcta' => intval($request->input('versus-correcta.'.$key)) === 2,
-					'tipo' => 'versus',
 					'archivo' => $archivov2,
 				]);
 			}

@@ -18,6 +18,7 @@ class ClienteQuizPregunta extends Model
 		'valor',
 		'iconos',
 		'archivo',
+		'orden',
 	];
 
 	/**
@@ -36,6 +37,6 @@ class ClienteQuizPregunta extends Model
 
 	public function respuestas()
 	{
-		return $this->hasMany(ClienteQuizRespuesta::class, 'pregunta_id', 'id');
+		return $this->hasMany(ClienteQuizRespuesta::class, 'pregunta_id', 'id')->orderBy('orden');
 	}
 }

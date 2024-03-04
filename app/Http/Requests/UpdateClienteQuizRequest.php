@@ -24,6 +24,7 @@ class UpdateClienteQuizRequest extends FormRequest
 	public function rules()
 	{
 		return [
+			'pregunta_id.*' => 'required|numeric|min:0',
 			'tipo.*' => 'required|string|in:multi,like,open,option,level,versus',
 			'pregunta.*' => 'required|string',
 			'valor.*' => 'required|numeric',
@@ -38,8 +39,10 @@ class UpdateClienteQuizRequest extends FormRequest
 			'versus-correcta.*' => 'required_if:tipo.*,versus|in:1,2|numeric',
 			'correcta.*' => 'required_if:tipo.*,option|numeric',
 			'respuesta.*.*' => 'required_if:tipo.*,option',
+			'respuesta_id.*.*' => 'required_if:tipo.*,option',
 			'correcta2.*' => 'required_if:tipo.*,multi|array',
 			'respuesta2.*.*' => 'required_if:tipo.*,multi',
+			'respuesta2_id.*.*' => 'required_if:tipo.*,multi',
 		];
 	}
 

@@ -18,6 +18,8 @@ class ClienteQuiz extends Model
 		'score',
 		'random',
 		'calificacion',
+		'login',
+		'imagen',
 	];
 
 	/**
@@ -30,13 +32,14 @@ class ClienteQuiz extends Model
 		'random' => 'boolean',
 		'calificacion' => 'boolean',
 		'score' => 'boolean',
+		'login' => 'boolean',
 	];
 
 	protected $with = ['preguntas', 'preguntas.respuestas'];
 
 	public function preguntas()
 	{
-		return $this->hasMany(ClienteQuizPregunta::class, 'quiz_id', 'id');
+		return $this->hasMany(ClienteQuizPregunta::class, 'quiz_id', 'id')->orderBy('orden');
 	}
 
 	public function cliente()

@@ -12,14 +12,12 @@ class QuizRespuestas extends Model
 	protected $fillable = [
 		'user_id',
 		'quiz_id',
-		'pregunta',
+		'pregunta_id',
 		'respuesta_id',
 		'puntos',
 		'respuesta',
 		'tipo',
-		'archivo',
-		'archivo_respuesta',
-		'correcta'
+		'correcta',
 	];
 
 	protected $casts = [
@@ -27,7 +25,7 @@ class QuizRespuestas extends Model
 		'puntos' => 'decimal:2',
 	];
 
-	protected $with = ['quiz', 'user'];
+	protected $with = ['quiz', 'user', 'pregunta', 'respuesta'];
 
 	public function user()
 	{
@@ -37,5 +35,15 @@ class QuizRespuestas extends Model
 	public function quiz()
 	{
 		return $this->belongsTo(ClienteQuiz::class, 'quiz_id');
+	}
+
+	public function pregunta()
+	{
+		return $this->belongsTo(ClienteQuizPregunta::class, 'pregunta_id');
+	}
+
+	public function respuesta()
+	{
+		return $this->belongsTo(ClienteQuizRespuesta::class, 'respuesta_id');
 	}
 }

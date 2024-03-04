@@ -410,6 +410,13 @@ END:VCALENDAR";
 				'message' => 'El quiz no está activo.',
 			]);
 		}
+		// check if the user is logged and the quiz requires login
+		if (!Auth::check() && $quiz->login) {
+			return response()->json([
+				'status' => false,
+				'message' => 'Debes iniciar sesión para continuar.',
+			]);
+		}
 		// revisar si es una respuesta abierta
 		if (($respuesta->tipo === 'open' || ($respuesta->tipo === 'option' && $respuesta->respuesta === 'Otra...') || ($respuesta->tipo === 'multi' && $respuesta->respuesta === 'Otra...')) && ($data['otra'] === null || $data['otra'] === '')) {
 			return response()->json([
@@ -432,11 +439,6 @@ END:VCALENDAR";
 			}
 			$puntos = $range;
 		}
-		// delete previous answer
-		QuizRespuestas::where('user_id', $request->user()->id)
-			->where('quiz_id', $quiz->id)
-			->where('pregunta', $pregunta->pregunta)
-			->delete();
 		if ($pregunta->tipo === 'multi') {
 			$data = $request->validate([
 				'quiz' => 'required|numeric|min:1|exists:\App\Models\ClienteQuiz,id',
@@ -451,41 +453,63 @@ END:VCALENDAR";
 				if (($quiz->score || $quiz->calificacion) && $respuesta->correcta) {
 					$puntos = $pregunta->valor;
 				}
-				QuizRespuestas::updateOrCreate([
-					'user_id' => $request->user()->id,
-					'quiz_id' => $quiz->id,
-					'respuesta_id' => $respuesta->id,
-				],
-				[
-					'pregunta' => $pregunta->pregunta,
-					'puntos' => $puntos,
-					'respuesta' => (($respuesta->tipo === 'multi' && $respuesta->respuesta === 'Otra...')) ? $data['otra'] : $respuesta->respuesta,
-					'tipo' => $respuesta->tipo,
-					'archivo' => $pregunta->archivo,
-					'archivo_respuesta' => $respuesta->archivo,
-					'correcta' => $respuesta->correcta,
-				]);
+				// check if the user is logged
+				if (!Auth::check()) {
+					QuizRespuestas::create([
+						'quiz_id' => $quiz->id,
+						'pregunta_id' => $pregunta->id,
+						'respuesta_id' => $respuesta->id,
+						'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
+						'tipo' => $pregunta->tipo,
+						'correcta' => $respuesta->correcta,
+						'puntos' => $puntos,
+					]);
+				} else {
+					QuizRespuestas::updateOrCreate([
+						'user_id' => $request->user()->id,
+						'quiz_id' => $quiz->id,
+						'pregunta_id' => $pregunta->id,
+						'respuesta_id' => $respuesta->id,
+					],
+					[
+						'puntos' => $puntos,
+						'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
+						'tipo' => $pregunta->tipo,
+						'correcta' => $respuesta->correcta,
+					]);
+				}
 			}
 			return response()->json([
 				'status' => true,
 				'message' => 'Siguiente pregunta.',
 			]);
 		}
-		QuizRespuestas::updateOrCreate([
-			'user_id' => $request->user()->id,
-			'quiz_id' => $quiz->id,
-			'respuesta_id' => $respuesta->id,
-		],
-		[
-			'pregunta' => $pregunta->pregunta,
-			'puntos' => $puntos,
-			'respuesta' => ($respuesta->tipo === 'open' || ($respuesta->tipo === 'option' && $respuesta->respuesta === 'Otra...')) ? $data['otra'] : $respuesta->respuesta,
-			'tipo' => ($respuesta->tipo === 'high') ? 'level' : $respuesta->tipo,
-			'archivo' => $pregunta->archivo,
-			'archivo_respuesta' => $respuesta->archivo,
-			'correcta' => $respuesta->correcta,
+		// check if the user is logged
+		if (!Auth::check()) {
+			QuizRespuestas::create([
+				'quiz_id' => $quiz->id,
+				'pregunta_id' => $pregunta->id,
+				'respuesta_id' => $respuesta->id,
+				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? $data['otra'] : $respuesta->respuesta,
+				'tipo' => $pregunta->tipo,
+				'correcta' => $respuesta->correcta,
+				'puntos' => $puntos,
+			]);
+		} else {
+			QuizRespuestas::updateOrCreate([
+				'user_id' => $request->user()?->id,
+				'quiz_id' => $quiz->id,
+				'pregunta_id' => $pregunta->id,
+				'respuesta_id' => $respuesta->id,
+			],
+			[
+				'puntos' => $puntos,
+				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? $data['otra'] : $respuesta->respuesta,
+				'tipo' => $pregunta->tipo,
+				'correcta' => $respuesta->correcta,
 
-		]);
+			]);
+		}
 		return response()->json([
 			'status' => true,
 			'message' => 'Siguiente pregunta.',

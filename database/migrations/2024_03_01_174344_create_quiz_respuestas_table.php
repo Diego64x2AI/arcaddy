@@ -15,20 +15,20 @@ return new class extends Migration
 	{
 		Schema::create('quiz_respuestas', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedBigInteger('user_id');
+			$table->unsignedBigInteger('user_id')->nullable();
 			$table->unsignedBigInteger('quiz_id');
+			$table->unsignedBigInteger('pregunta_id');
 			$table->unsignedBigInteger('respuesta_id');
-			$table->text('pregunta');
 			$table->decimal('puntos', 12, 2)->default(0);
 			$table->text('respuesta');
 			$table->string('tipo');
-			$table->string('archivo')->nullable();
-			$table->string('archivo_respuesta')->nullable();
 			$table->boolean('correcta')->default(false);
 			$table->timestamps();
 
-			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
 			$table->foreign('quiz_id')->references('id')->on('cliente_quizzes')->onDelete('cascade');
+			$table->foreign('pregunta_id')->references('id')->on('cliente_quiz_preguntas')->onDelete('cascade');
+			$table->foreign('respuesta_id')->references('id')->on('cliente_quiz_respuestas')->onDelete('cascade');
 		});
 	}
 

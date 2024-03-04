@@ -30,6 +30,8 @@ class StoreClienteQuizRequest extends FormRequest
 			'score' => 'sometimes',
 			'random' => 'sometimes',
 			'calificacion' => 'sometimes',
+			'login' => 'sometimes',
+			'imagen' => 'sometimes|image',
 		];
 	}
 }

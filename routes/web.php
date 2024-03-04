@@ -94,6 +94,7 @@ Route::middleware('role:admin')->group(function () {
 		Route::prefix('cliente')->group(function () {
 			Route::prefix('{cliente}')->group(function () {
 				Route::prefix('quiz/{quiz}')->group(function () {
+					Route::get('/stats', [QuizController::class, 'stats'])->name('clientes.quiz.stats');
 					Route::post('/atributo', [QuizController::class, 'updatea'])->name('cliente.quiz.updatea')->where('quiz', '[0-9]+')->where('cliente', '[0-9]+');
 				});
 			});
@@ -149,11 +150,6 @@ Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cli
 
 Route::middleware('auth')->group(function () {
 	Route::post('/{slug}/save-game/{claveJuego}', [HomeController::class, 'saveGame'])->name('cliente.save-game');
-	Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name('cliente.quiz.respuesta');
 });
 
-
-
-
-
-
+Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name('cliente.quiz.respuesta');

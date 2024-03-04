@@ -35,11 +35,13 @@
 						<thead class="text-white">
 							<tr class="bg-teal-400">
 								<th class="p-3 !text-center">ID</th>
+								<th class="p-3 !text-center">Imagen</th>
 								<th class="p-3 !text-center">Nombre</th>
 								<th class="p-3 !text-center">Activa</th>
 								<th class="p-3 !text-center">Score</th>
 								<th class="p-3 !text-center">Random</th>
 								<th class="p-3 !text-center">Calificación</th>
+								<th class="p-3 !text-center">Login</th>
 								<th class="p-3 !text-center" style="min-width: 100px">Opciones</th>
 							</tr>
 						</thead>
@@ -47,6 +49,11 @@
 							@foreach ($cliente->quiz as $quiz)
 							<tr>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $quiz->id }}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									@if($quiz->imagen !== NULL)
+									<img src="{{ asset('storage/'.$quiz->imagen) }}" alt="{{ $quiz->nombre }}" class="w-20 h-auto object-cover inline-block">
+									@endif
+								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<div class="edit-inline-text" data-id="{{ $quiz->id }}" data-campo="nombre">{{ $quiz->nombre }}</div>
 								</td>
@@ -95,6 +102,18 @@
 									</div>
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									<div class="flex items-center justify-center w-full mb-2">
+										<label for="login_{{ $quiz->id }}" class="flex items-center cursor-pointer">
+											<div class="relative">
+												<input id="login_{{ $quiz->id }}" name="login_{{ $quiz->id }}" data-id="{{ $quiz->id }}" data-campo="login" type="checkbox" class="update-quiz sr-only" @if($quiz->login) checked @endif />
+												<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+												<div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
+											</div>
+										</label>
+									</div>
+								</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									<a href="{{ route('clientes.quiz.stats', ['cliente' => $cliente->id, 'quiz' => $quiz->id]) }}" class="text-black"><i class="fas fa-chart-pie"></i></a>
 									<a href="{{ route('cliente.quiz.edit', ['cliente' => $cliente->id, 'quiz' => $quiz->id]) }}" class="text-black"><i class="fas fa-edit"></i></a>
 									<form action="{{ route('cliente.quiz.destroy', ['cliente' => $cliente->id, 'quiz' => $quiz->id]) }}" method="POST" class="inline delete-form">
 										@csrf
@@ -133,6 +152,9 @@
 						<input class="shadow appearance-none border border-blue-500 w-full py-2 px-3 text-gray-700" name="nombre" id="nombre" type="text" placeholder="Nombre del quiz" required>
 					</div>
 					<div class="mt-4">
+						<input name="imagen" id="imagen" type="file" accept="image/*">
+					</div>
+					<div class="mt-4">
 						<div>
 							<input type="checkbox" name="activa" id="activa" class="accent-pink-600 appearance-none" value="on">
 							<label for="activa" class="inline-block">Activa</label>
@@ -148,6 +170,10 @@
 						<div class="mt-1">
 							<input type="checkbox" name="calificacion" id="calificacion" value="on">
 							<label for="calificacion" class="inline-block">Calificación</label>
+						</div>
+						<div class="mt-1">
+							<input type="checkbox" name="login" id="login" value="on">
+							<label for="login" class="inline-block">Requiere login</label>
 						</div>
 					</div>
 					<!--Footer-->
@@ -238,6 +264,7 @@
 					contentType: false
 				}).done(function(data) {
 					console.log(data);
+					window.location.reload();
 				}).fail(function() {
 					Swal.fire( "error" );
 				});
