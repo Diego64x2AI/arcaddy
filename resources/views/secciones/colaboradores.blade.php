@@ -3,7 +3,7 @@
 	@if ($cliente->secciones()->where('seccion', 'colaboradores')->first()->mostrar_titulo)
 	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'colaboradores')->first()->titulo }}</div>
 	@endif
-	<div id="colaboradores-swiper" class="swiper swiper-3">
+	<div id="colaboradores-swiper" class="swiper">
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper pb-14">
 			@foreach($cliente->colaboradores as $colaborador)
@@ -16,7 +16,7 @@
 					<div class="swiper-paginationfsdsdf"></div>
 				</div>
 				@if ($colaborador->nombre !== NULL && $colaborador->nombre !== '')
-				<div class="color text-center font-extrabold text-4xl mt-3">{{ $colaborador->nombre }}</div>
+				<div class="color text-center font-extrabold text-xl mt-3">{{ $colaborador->nombre }}</div>
 				@endif
 				@if ($colaborador->descripcion !== NULL && $colaborador->descripcion !== '')
 				<p class="text-center text-base px-8 mt-5">{!! nl2br($colaborador->descripcion) !!}</p>

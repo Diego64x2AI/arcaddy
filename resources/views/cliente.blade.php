@@ -450,6 +450,41 @@
 				noSwiping: true,
 				noSwipingClass: 'swiper-slide',
 			});
+			new Swiper('#colaboradores-swiper', {
+				// Optional parameters
+				direction: 'horizontal',
+				slidesPerView: 1,
+				spaceBetween: 0,
+				centerInsufficientSlides: true,
+				autoHeight: false,
+				autoplay: {
+					delay: 3000,
+					disableOnInteraction: true,
+				},
+				breakpoints: {
+					1024: {
+						slidesPerView: 3,
+						spaceBetween: 0,
+					},
+					1280: {
+						slidesPerView: 3,
+						spaceBetween: 0,
+					},
+					1366: {
+						slidesPerView: 4,
+						spaceBetween: 0,
+					},
+					1600: {
+						slidesPerView: 5,
+						spaceBetween: 0,
+					},
+				},
+				loop: false,
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+      	},
+			});
 			new Swiper('.swiper-3', {
 				// Optional parameters
 				direction: 'horizontal',
