@@ -194,8 +194,8 @@ if ($quiz->random) {
 				formData.append('respuesta', $(`#open-answer-${preguntaId}`).data('respuesta'));
 				formData.append('otra', $(`#open-answer-${preguntaId}`).val());
 			} else if (tipo === 'level') {
-				formData.append('range', $('#steps-range').val());
-				formData.append('respuesta', $('#steps-range').data('respuesta'));
+				formData.append('range', $(`#steps-range-${preguntaId}`).val());
+				formData.append('respuesta', $(`#steps-range-${preguntaId}`).data('respuesta'));
 			}
 			formData.append('quiz', quizId);
 			formData.append('pregunta', preguntaId);

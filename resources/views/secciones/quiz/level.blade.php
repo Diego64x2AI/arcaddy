@@ -5,7 +5,7 @@
 	</div>
 	@endif
 	<div>
-		<input id="steps-range" type="range" min="0" max="10" value="5" step="1" data-respuesta="{{ $pregunta->respuestas->where('tipo', 'high')->first()?->id }}" class="range-slider">
+		<input id="steps-range-{{ $pregunta->id }}" type="range" min="0" max="10" value="5" step="1" data-respuesta="{{ $pregunta->respuestas->where('tipo', 'high')->first()?->id }}" class="range-slider">
 	</div>
 	<dib class="grid grid-cols-2 items-center gap-1 mt-3 font-semibold">
 		<div class="text-start">
