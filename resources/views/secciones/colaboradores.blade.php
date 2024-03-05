@@ -12,11 +12,11 @@
 					<img src="{{ asset('storage/'.$colaborador->archivo) }}" class="object-fill w-full h-auto">
 					<div class="swiper-paginationfsdsdf"></div>
 				</div>
-				@if ($colaborador->talento !== NULL && $colaborador->talento !== '')
-				<div class="text-center text-2xl font-extrabold ">{{ $colaborador->talento }}</div>
-				@endif
 				@if ($colaborador->nombre !== NULL && $colaborador->nombre !== '')
-				<div class="color text-center font-extrabold text-xl mt-3">{{ $colaborador->nombre }}</div>
+				<div class="text-center text-2xl font-extrabold ">{{ $colaborador->nombre }}</div>
+				@endif
+				@if ($colaborador->talento !== NULL && $colaborador->talento !== '')
+				<div class="color text-center font-extrabold text-xl mt-3">{{ $colaborador->talento }}</div>
 				@endif
 				@if ($colaborador->descripcion !== NULL && $colaborador->descripcion !== '')
 				<p class="text-center text-base px-8 mt-5">{!! nl2br($colaborador->descripcion) !!}</p>
