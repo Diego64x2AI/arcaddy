@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			@auth
-			<div class="font-bold truncate w-3/5 text-center">
+			<div class="font-bold truncate w-2/5 text-center">
 				{{ auth()->user()->name }} martinez quintero carlos francisco probando un nombre largo
 			</div>
 			<div class="ml-auto">
