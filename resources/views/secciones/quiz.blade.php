@@ -9,7 +9,7 @@ if ($quiz->random) {
 @endphp
 @if ($quiz !== NULL)
 <section id="quiz" class="container mx-auto py-10 max-w-xl">
-	<div class="text-center px-5 py-5 text-2xl font-extrabold lg:text-4xl">{{ $quiz->nombre }}</div>
+	<div class="titulo-modulo">{{ $quiz->nombre }}</div>
 	@if($quiz->imagen !== NULL)
 	<div class="text-center py-10">
 		<img src="{{ asset('storage/'.$quiz->imagen) }}" alt="{{ $quiz->nombre }}" class="w-100 h-auto object-cover inline-block">

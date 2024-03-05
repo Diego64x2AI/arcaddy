@@ -1,7 +1,7 @@
 @if($cliente->blog->count() > 0)
 <section id="blog" class="mt-5 py-5 text-center lg:mt-10">
 	@if ($cliente->secciones()->where('seccion', 'blog')->first()->mostrar_titulo)
-	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'blog')->first()->titulo }}</div>
+	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'blog')->first()->titulo }}</div>
 	@endif
 	<div id="blog-swiper" class="swiper swiper-3 mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->

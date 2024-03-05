@@ -1,7 +1,7 @@
 @if($cliente->menu->count() > 0)
 <section id="menu" class="py-10 px-5">
 	@if ($cliente->secciones()->where('seccion', 'menu')->first()->mostrar_titulo)
-	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'menu')->first()->titulo }}</div>
+	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'menu')->first()->titulo }}</div>
 	@endif
 	@if ($cliente->menu()->groupBy('categoria')->pluck('categoria')->count() > 3)
 	<div class="mb-5">

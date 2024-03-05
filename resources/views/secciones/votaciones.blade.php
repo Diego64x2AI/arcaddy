@@ -2,7 +2,7 @@
 <section id="votaciones" class="py-10 px-5">
 	@foreach ($cliente->votaciones as $votacion)
 		{{--<div class="text-center px-5 color text-4xl font-extrabold lg:text-8xl">Votaci√≥n</div> --}}
-		<div class="text-center px-5 text-4xl font-light lg:text-8xl">{{ $votacion->nombre }}</div>
+		<div class="titulo-modulo">{{ $votacion->nombre }}</div>
 		<div class="flex flex-row justify-evenly py-5 filter-button-group">
 			@foreach ($votacion->categorias as $categoria)
 				<button class="btn-pill2 @if($loop->index === 0) current-cat @endif" data-filter=".cat-{{ $categoria->id }}"">{{ $categoria->nombre }}</button>
@@ -17,48 +17,48 @@
 				$plataforma = '';
 				$plataforma_user = '';
 				$video_id = '';
-				
+
 				$link = $participante->link;
-				
+
 				if($participante->link == ''){
-				
-				   
+
+
 					$plataforma = 'imagen';
-				    
+
 				}
 				else{ /*INICIO CON con LINK*/
 				@preg_match('~/d/\K[^/]+(?=/)~', $participante->link, $result);
 				if (!empty($result)) {
 					$video_id = $result[0];
 					$plataforma = 'google';
-				} 
+				}
 				else {
 				        $host = parse_url($link, PHP_URL_HOST);
-				        
+
                         if ($host === "youtube.com" || $host === "www.youtube.com") {
-                        
-                        	// Obtener los par®¢metros de la URL
+
+                        	// Obtener los parÔøΩÔøΩmetros de la URL
                         	$queryParams = parse_url($link, PHP_URL_QUERY);
-                        
-                        	// Parsear los par®¢metros en un array
+
+                        	// Parsear los parÔøΩÔøΩmetros en un array
                         	parse_str($queryParams, $params);
-                        
+
                         	// Obtener el valor de la variable 'v'
                         	$vValue = $params['v'];
-                        	
+
                         	$video_id = $vValue;
             				$plataforma = 'youtube';
-                            
-                        } 
-                        else {  
-                        
+
+                        }
+                        else {
+
                             	$response = json_decode(@file_get_contents("https://vimeo.com/api/oembed.json?url=".$participante->link));
-              			
+
             					$video_id = $response->video_id;
             					$plataforma = 'vimeo';
-                           
+
                         }
-				
+
 				}
 				}/*FIn con LINK*/
 				@endphp
@@ -71,7 +71,7 @@
 					data-nombre="{{ $participante->user->name }}"
 					data-votos="{{ $participante->votos }}"
 					data-id="{{ $participante->id }}"
-					data-votaciones="{{ $votacion->votar ? 'Y' : 'N' }}" 
+					data-votaciones="{{ $votacion->votar ? 'Y' : 'N' }}"
 					data-imagen="{{ asset('storage/'.$participante->imagen) }}"
 				>
 					<div>

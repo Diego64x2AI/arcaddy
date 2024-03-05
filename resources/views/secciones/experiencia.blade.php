@@ -1,7 +1,7 @@
 @if($cliente->experiencias->count() > 0)
 <section id="experiencia" class="mt-5 py-5 text-center lg:mt-10">
 	@if ($cliente->secciones()->where('seccion', 'experiencia')->first()->mostrar_titulo)
-	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'experiencia')->first()->titulo }}</div>
+	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'experiencia')->first()->titulo }}</div>
 	@endif
 	<div id="experiencia-swiper" class="swiper swiper-experiencia mt-5 lg:mt-10">
 		<!-- Additional required wrapper -->

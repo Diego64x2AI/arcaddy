@@ -9,7 +9,7 @@ if (auth()->check()) {
 @if($scores->total() > 0)
 <section id="ranking" class="mt-5 py-5 text-center lg:mt-10 mx-auto w-full max-w-xl">
 	<div class="flex flex-row items-center justify-center">
-		<div class="text-4xl font-extrabold lg:text-8xl">Ranking</div>
+		<div class="titulo-modulo">Ranking</div>
 		<div class="color text-2xl font-extrabold lg:text-4xl ml-3 mt-1">Usuarios</div>
 	</div>
 	<div id="ranking-leaderboard" class="mt-5 lg:mt-10 px-5">
