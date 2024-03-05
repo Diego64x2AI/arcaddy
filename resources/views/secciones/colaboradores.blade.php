@@ -5,7 +5,7 @@
 	@endif
 	<div id="colaboradores-swiper" class="swiper">
 		<!-- Additional required wrapper -->
-		<div class="swiper-wrapper pb-14">
+		<div class="swiper-wrapper pb-5">
 			@foreach($cliente->colaboradores as $colaborador)
 			<div class="swiper-slide">
 				<div class="mb-5 relative">
