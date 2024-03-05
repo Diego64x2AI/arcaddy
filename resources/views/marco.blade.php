@@ -28,13 +28,11 @@
 
 <body class="font-sans antialiased overflow-x-hidden">
 	@includeIf('componentes.header')
-	<div class="text-center px-5 py-5 text-3xl mt-5 font-extrabold lg:text-8xl">Crea tu foto y participa:</div>
+	@if ($cliente->secciones()->where('seccion', 'marco')->first()->mostrar_titulo)
+	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'marco')->first()->titulo }}</div>
+	@endif
 	<main style="padding: 0 15px;" class="relative max-w-[500px] mx-auto pt-5 pb-20">
-		<canvas id="c" width="400" height="400"></canvas>
-		<button id="uploadButton" class="absolute top-1/2 left-1/2 btn-pill2 !py-4 !px-8 !text-sm uppercase -translate-x-[85px] -translate-y-[35px]">Selecciona<br>tu foto</button>
-		<input type="file" id="upload" accept="image/*" style="display: none;" />
-		<div id="info" style="display:none;"></div>
-		<div id="buttonsContainer" style="display: none;" class="flex flex-row gap-5 mt-5 items-center justify-evenly">
+		<div id="buttonsContainer" style="display: none;" class="flex flex-row gap-5 mb-5 items-center justify-evenly">
 			<div>
 				<button id="selectAnother" class="btn-pill2 !py-4 !px-8 !text-sm uppercase">Seleccionar<br>otra imagen</button>
 			</div>
@@ -42,20 +40,38 @@
 				<button id="finishEditing" class="btn-pill !py-4 !px-8 !text-2xl !font-bold uppercase">Descarga</button>
 			</div>
 		</div>
+		<div class="relative">
+			<canvas id="c" width="400" height="400"></canvas>
+			<button id="uploadButton" class="absolute top-1/2 left-1/2 btn-pill2 !py-4 !px-8 !text-sm uppercase -translate-x-[85px] -translate-y-[35px]">Selecciona<br>tu foto</button>
+		</div>
+		<input type="file" id="upload" accept="image/*" style="display: none;" />
+		<div id="info" style="display:none;"></div>
+		<div class="flex flex-row items-center justify-center gap-5 mt-5">
+			@foreach ($cliente->marco as $marco)
+				<div>
+					<div>
+						<a href="javascript:void(0);" class="change-marco"><img src="{{ asset('storage/'.$marco->archivo) }}" alt="{{ $marco->titulo }}" class="w-full h-auto object-cover"></a>
+					</div>
+					<div class="text-center">
+						{{ $marco->titulo }}
+					</div>
+				</div>
+			@endforeach
+		</div>
 	</main>
 	@includeIf('componentes.footer')
 	<script>
-		let canvas, frame, userImage, uploadButton;
+		let canvas, frame, userImage, uploadButton, bg_img;
 		function resizeCanvas() {
 			var maxWidth = 500; // Máximo ancho para escritorio
 			var width = window.innerWidth > maxWidth ? maxWidth : window.innerWidth;
-			console.log(width, window.innerWidth, maxWidth);
+			// console.log(width, window.innerWidth, maxWidth);
 			width -= 30;
 			canvas.setWidth(width);
 			canvas.setHeight(width);
 			if (frame) {
 				var scaleFactor = width / frame.width;
-				console.log(scaleFactor, frame.width, frame.height)
+				// console.log(scaleFactor, frame.width, frame.height)
 				frame.scale(scaleFactor).setCoords();
 				canvas.renderAll();
 			}
@@ -102,19 +118,41 @@
 					info.insertBefore(text, info.firstChild);
 				}
 			});
-			fabric.Image.fromURL('{{ asset("images/marco.png") }}', function(img) {
+			bg_img = new fabric.Image();
+			bg_img.setSrc('{{ asset('storage/'.$cliente->marco[0]->archivo) }}', function(img) {
 				frame = img;
 				frame.set({
 					selectable: false,
 					evented: false,
 				});
-				// frame.set("clipPath", roundedCorners(frame, 80))
 				canvas.add(frame);
 				canvas.sendToBack(frame);
 				resizeCanvas();
 			});
-
+			console.log(bg_img);
 			window.addEventListener('resize', resizeCanvas);
+			$('body').on('click', '.change-marco', function(e){
+				e.preventDefault();
+				var src = $(this).find('img').attr('src');
+				console.log(bg_img, src);
+				bg_img.setSrc(src, function(img) {
+					canvas.renderAll()
+					resizeCanvas();
+				});
+				/*
+				fabric.Image.fromURL(src, function(img) {
+					canvas.remove(frame);
+					frame = img;
+					frame.set({
+						selectable: false,
+						evented: false,
+					});
+					canvas.add(frame);
+					canvas.sendToBack(frame);
+					resizeCanvas();
+				});
+				*/
+			});
 			uploadButton.onclick = function() {
 				document.getElementById('upload').click();
 			};
@@ -147,7 +185,7 @@
 				var dataURL = canvas.toDataURL();
 				// var blob = dataURLtoBlob(dataURL);
 				const blob = await (await fetch(dataURL)).blob()
-				console.log(blob)
+				// console.log(blob)
 				if (navigator.share) {
 					const filesArray = [
 						new File(

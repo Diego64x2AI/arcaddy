@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			@auth
-			<div class="font-bold truncate w-2/5 text-center">
+			<div class="font-bold truncate w-2/5 md:grow text-center">
 				{{ auth()->user()->name }}
 			</div>
 			<div class="ml-auto">

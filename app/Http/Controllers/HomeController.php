@@ -143,6 +143,11 @@ END:VCALENDAR";
 	public function cliente_marco($slug = '')
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$seccion = $cliente->secciones()->where('seccion', 'marco')->firstOrFail();
+		// if is not active redirect to the client page
+		if (!$seccion->activa) {
+			return redirect()->route('cliente', $cliente->slug);
+		}
 		return view('marco', [
 			'cliente' => $cliente,
 		]);

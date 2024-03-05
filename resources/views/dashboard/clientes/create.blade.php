@@ -573,6 +573,11 @@
 					animation: 150,
 					direction: 'horizontal',
 				});
+				new Sortable(document.getElementById('marco-container'), {
+					handle: '.handler', // handle's class
+					animation: 150,
+					direction: 'horizontal',
+				});
 				new Sortable(document.getElementById('secciones-container'), {
 					handle: '.handler2', // handle's class
 					animation: 150,
@@ -717,6 +722,39 @@
 						</div>
 					</div>`;
 					$('#banners-container').append(html);
+				});
+				// agregar marco
+				$('a#add_marco').on('click', function (e) {
+					e.preventDefault();
+					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+						<div class="p-3">
+							<div class="mb-2 relative">
+								<img src="https://placehold.co/400x400/FFFFFF/acacac/png?text=Cargar%20imagen"
+									class="img-general object-cover w-100 border border-secondary">
+								<div class="examinar-img group-hover:block">
+									<div><button type="button"
+											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+									</div>
+									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+									<input type="hidden" name="marco_id[]" value="0" />
+									<input type="hidden" name="marco_old[]" value="" />
+									<input type="file" name="marco_img[]" class="file-general" accept="image/*" style="display:none" />
+								</div>
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									Título:
+								</label>
+								<input class="input-underline" name="marco_titulo[]" type="text">
+							</div>
+							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+								<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+											class="fas fa-trash-alt"></i></a></div>
+							</div>
+						</div>
+					</div>`;
+					$('#marco-container').append(html);
 				});
 				// agregar banner 2
 				$('a#add_banner2').on('click', function (e) {

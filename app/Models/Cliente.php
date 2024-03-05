@@ -69,7 +69,13 @@ class Cliente extends Model
 		'menu',
 		'juegos',
 		'quiz',
+		'marco',
 	];
+
+	public function marco()
+	{
+		return $this->hasMany(ClienteMarco::class, 'cliente_id', 'id');
+	}
 
 	public function quiz()
 	{

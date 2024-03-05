@@ -27,7 +27,7 @@ class StoreClienteRequest extends FormRequest
 	public function rules()
 	{
 		return [
-		    'idioma' => 'required',
+		  'idioma' => 'required',
 			'cliente' => 'required|string|max:255',
 			'slug' => 'required|string|max:100|unique:clientes,slug',
 			'color' => 'required|string|max:55',
@@ -66,6 +66,9 @@ class StoreClienteRequest extends FormRequest
 			'banners_titulo.*' => 'nullable|string|max:255',
 			'banners_link.*' => 'nullable|string',
 			'banners_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
+			'marco_titulo.*' => 'nullable|string|max:255',
+			'marco_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
+			'marco_id.*' => 'required|numeric|min:0',
 			'banners2_titulo.*' => 'nullable|string|max:255',
 			'banners2_link.*' => 'nullable|string',
 			'banners2_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
