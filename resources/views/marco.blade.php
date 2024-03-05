@@ -46,7 +46,7 @@
 		</div>
 		<input type="file" id="upload" accept="image/*" style="display: none;" />
 		<div id="info" style="display:none;"></div>
-		<div class="flex flex-row items-center justify-center gap-5 mt-5">
+		<div class="flex flex-row items-center justify-evenly md:justify-center gap-5 mt-5">
 			@foreach ($cliente->marco as $marco)
 				<div>
 					<div class="bg-white">
