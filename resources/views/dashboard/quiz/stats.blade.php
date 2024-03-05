@@ -89,9 +89,11 @@
 							</div>
 							@elseif ($respuesta['pregunta']->tipo == 'level')
 							<div class="flex flex-col gap-3">
+								@if($respuesta['pregunta']->archivo !== NULL)
 								<div>
 									<img src="{{ asset('storage/'.$respuesta['pregunta']->archivo) }}" alt="{{ $respuesta['pregunta']->pregunta }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
 								</div>
+								@endif
 								<div>
 									<div data-value="{{ round($respuesta['promedio'], 2) }}" class="mt-5 slider-level"></div>
 								</div>
