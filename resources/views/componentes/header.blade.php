@@ -11,7 +11,7 @@
 			</div>
 			@auth
 			<div class="font-bold truncate w-2/5 text-center">
-				{{ auth()->user()->name }} martinez quintero carlos francisco probando un nombre largo
+				{{ auth()->user()->name }}
 			</div>
 			<div class="ml-auto">
 				@role('admin')
