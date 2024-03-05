@@ -40,7 +40,7 @@
 				<button id="finishEditing" class="btn-pill !py-4 !px-8 !text-2xl !font-bold uppercase">Descarga</button>
 			</div>
 		</div>
-		<div class="relative">
+		<div class="relative bg-white">
 			<canvas id="c" width="400" height="400"></canvas>
 			<button id="uploadButton" class="absolute top-1/2 left-1/2 btn-pill2 !py-4 !px-8 !text-sm uppercase -translate-x-[85px] -translate-y-[35px]">Selecciona<br>tu foto</button>
 		</div>
@@ -49,10 +49,10 @@
 		<div class="flex flex-row items-center justify-center gap-5 mt-5">
 			@foreach ($cliente->marco as $marco)
 				<div>
-					<div>
+					<div class="bg-white">
 						<a href="javascript:void(0);" class="change-marco"><img src="{{ asset('storage/'.$marco->archivo) }}" alt="{{ $marco->titulo }}" class="w-full h-auto object-cover"></a>
 					</div>
-					<div class="text-center">
+					<div class="text-center mt-1">
 						{{ $marco->titulo }}
 					</div>
 				</div>
