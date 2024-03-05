@@ -24,6 +24,7 @@
 		gtag('config', 'G-40ZEQ4JZ0Y');
 	</script>
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
+	<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 	<style>
 	.alx-btn-add-calendario{
 	    padding: 0px 10px;

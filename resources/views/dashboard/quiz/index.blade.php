@@ -37,6 +37,7 @@
 								<th class="p-3 !text-center">ID</th>
 								<th class="p-3 !text-center">Imagen</th>
 								<th class="p-3 !text-center">Nombre</th>
+								<th class="p-3 !text-center">Texto</th>
 								<th class="p-3 !text-center">Activa</th>
 								<th class="p-3 !text-center">Score</th>
 								<th class="p-3 !text-center">Random</th>
@@ -56,6 +57,9 @@
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<div class="edit-inline-text" data-id="{{ $quiz->id }}" data-campo="nombre">{{ $quiz->nombre }}</div>
+								</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									<div class="edit-inline-text" data-id="{{ $quiz->id }}" data-campo="felicidades_text">{{ $quiz->felicidades_text }}</div>
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<div class="flex items-center justify-center w-full mb-2">

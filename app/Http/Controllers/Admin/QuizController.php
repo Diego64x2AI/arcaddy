@@ -169,6 +169,9 @@ class QuizController extends Controller
 		if ($request->filled('nombre')) {
 			$quiz->update(['nombre' => $request->nombre]);
 		}
+		if ($request->filled('felicidades_text')) {
+			$quiz->update(['felicidades_text' => $request->felicidades_text]);
+		}
 		return response()->json([
 			'result' => true,
 		]);

@@ -17,11 +17,14 @@ if ($quiz->random) {
 	@endif
 	<div id="quiz-congratulations" class="px-5" style="display:none;">
 		<div class="text-center flex flex-row justify-center items-center">
-			<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
-			<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
+			<dotlottie-player src="https://lottie.host/c0b45a5c-d12c-48b4-9587-943a4565c74f/ZkF7i1SCUK.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
 		</div>
-		<div class="text-center mt-1 font-bold text-3xl">¡Felicidades!</div>
-		<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->check() ? auth()->user()->name : '' }}</div>
+		@if($quiz->felicidades_text !== NULL && trim($quiz->felicidades_text) !== '')
+		<div class="text-center mt-1 font-bold text-3xl">{{ $quiz->felicidades_text }}</div>
+		@endif
+		@auth
+		<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
+		@endauth
 		<div class="text-center flex flex-row justify-center items-center mt-5">
 			<a href="javascript:void(0);" class="btn-pill quiz-again">Volver a jugar</a>
 		</div>

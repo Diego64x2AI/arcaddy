@@ -490,7 +490,7 @@ END:VCALENDAR";
 				'quiz_id' => $quiz->id,
 				'pregunta_id' => $pregunta->id,
 				'respuesta_id' => $respuesta->id,
-				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? $data['otra'] : $respuesta->respuesta,
+				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
 				'tipo' => $pregunta->tipo,
 				'correcta' => $respuesta->correcta,
 				'puntos' => $puntos,
@@ -504,7 +504,7 @@ END:VCALENDAR";
 			],
 			[
 				'puntos' => $puntos,
-				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? $data['otra'] : $respuesta->respuesta,
+				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
 				'tipo' => $pregunta->tipo,
 				'correcta' => $respuesta->correcta,
 

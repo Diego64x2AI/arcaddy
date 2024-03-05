@@ -20,6 +20,7 @@ class ClienteQuiz extends Model
 		'calificacion',
 		'login',
 		'imagen',
+		'felicidades_text',
 	];
 
 	/**
