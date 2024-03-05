@@ -6,7 +6,7 @@
 			<input class="shadow appearance-none border w-full py-2 px-3 text-gray-700" name="titulos[quiz]" type="hidden"
 			value="{{ ($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'quiz')->first()->titulo !== NULL) ? $cliente->secciones()->where('seccion', 'quiz')->first()->titulo : 'Quiz' }}">
 		</div>
-		<div class="ml-auto hidden">
+		<div class="ml-auto">
 			<span class="hidden md:inline-block">Mostrar título </span><input type="checkbox" name="quiz-activo2" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'quiz')->first()->mostrar_titulo) checked @endif>
 		</div>
 		<div class="ml-5">

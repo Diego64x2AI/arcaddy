@@ -146,7 +146,7 @@ select:not(.input-underline) {
 }
 
 .titulo-modulo {
-	@apply text-center px-5 py-5 text-[1.75rem] leading-[1.75rem] font-extrabold lg:text-[2rem] lg:leading-[2rem];
+	@apply text-center px-1 py-5 text-[1.75rem] leading-[1.75rem] font-extrabold lg:text-[2rem] lg:leading-[2rem] lg:px-5;
 }
 
 .rcrop-wrapper {

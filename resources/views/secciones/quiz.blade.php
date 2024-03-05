@@ -8,45 +8,49 @@ if ($quiz->random) {
 }
 @endphp
 @if ($quiz !== NULL)
-<section id="quiz" class="container mx-auto py-10 max-w-xl">
-	<div class="titulo-modulo">{{ $quiz->nombre }}</div>
-	@if($quiz->imagen !== NULL)
-	<div class="text-center py-10">
-		<img src="{{ asset('storage/'.$quiz->imagen) }}" alt="{{ $quiz->nombre }}" class="w-100 h-auto object-cover inline-block">
-	</div>
+<section id="quiz" class="container mx-auto py-10 px-5 max-w-xl">
+	@if ($cliente->secciones()->where('seccion', 'quiz')->first()->mostrar_titulo)
+	<div class="titulo-modulo color">{{ $quiz->nombre }}</div>
 	@endif
-	<div id="quiz-congratulations" class="px-5" style="display:none;">
-		<div class="text-center flex flex-row justify-center items-center">
-			<dotlottie-player src="https://lottie.host/c0b45a5c-d12c-48b4-9587-943a4565c74f/ZkF7i1SCUK.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
+	<div class="border-2 borde py-10 rounded-3xl">
+		@if($quiz->imagen !== NULL)
+		<div class="text-center mb-10">
+			<img src="{{ asset('storage/'.$quiz->imagen) }}" alt="{{ $quiz->nombre }}" class="w-100 h-auto object-cover inline-block">
 		</div>
-		@if($quiz->felicidades_text !== NULL && trim($quiz->felicidades_text) !== '')
-		<div class="text-center mt-1 font-bold text-3xl">{{ $quiz->felicidades_text }}</div>
 		@endif
-		@auth
-		<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
-		@endauth
-		<div class="text-center flex flex-row justify-center items-center mt-5">
-			<a href="javascript:void(0);" class="btn-pill quiz-again">Volver a jugar</a>
-		</div>
-	</div>
-	<!-- Slider main container -->
-	<div id="quiz-slider" class="swiper swiper-quiz">
-		<!-- Additional required wrapper -->
-		<div class="swiper-wrapper">
-			@foreach($preguntas as $pregunta)
-			<div class="swiper-slide px-5 py-5" data-tipo="{{ $pregunta->tipo }}" data-quiz="{{ $quiz->id }}" data-pregunta="{{ $pregunta->id }}">
-				<div class="py-5 text-xl font-extrabold color">{{ $loop->iteration }}.- {{ $pregunta->pregunta }}</div>
-				@includeIf('secciones.quiz.'.$pregunta->tipo)
+		<div id="quiz-congratulations" class="px-5" style="display:none;">
+			<div class="text-center flex flex-row justify-center items-center">
+				<dotlottie-player src="https://lottie.host/c0b45a5c-d12c-48b4-9587-943a4565c74f/ZkF7i1SCUK.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
 			</div>
-			@endforeach
+			@if($quiz->felicidades_text !== NULL && trim($quiz->felicidades_text) !== '')
+			<div class="text-center mt-1 font-bold text-3xl">{{ $quiz->felicidades_text }}</div>
+			@endif
+			@auth
+			<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
+			@endauth
+			<div class="text-center flex flex-row justify-center items-center mt-5">
+				<a href="javascript:void(0);" class="btn-pill quiz-again">Volver a jugar</a>
+			</div>
 		</div>
-	</div>
-	<div id="quiz-controls" class="grid grid-cols-2 items-center mt-5">
-		<div class="font-bold text-center">
-			<span id="current-quiz-question">1</span> de <span id="total-quiz-question">{{ $preguntas->count() }}</span> preguntas
+		<!-- Slider main container -->
+		<div id="quiz-slider" class="swiper swiper-quiz">
+			<!-- Additional required wrapper -->
+			<div class="swiper-wrapper">
+				@foreach($preguntas as $pregunta)
+				<div class="swiper-slide px-5" data-tipo="{{ $pregunta->tipo }}" data-quiz="{{ $quiz->id }}" data-pregunta="{{ $pregunta->id }}">
+					<div class="mb-5 text-xl font-extrabold">{{ $loop->iteration }}.- {{ $pregunta->pregunta }}</div>
+					@includeIf('secciones.quiz.'.$pregunta->tipo)
+				</div>
+				@endforeach
+			</div>
 		</div>
-		<div class="flex flex-row justify-center">
-			<a href="javascript:void(0);" class="btn-pill quiz-next">Siguiente</a>
+		<div id="quiz-controls" class="grid grid-cols-2 items-center mt-5">
+			<div class="font-bold text-center">
+				<span id="current-quiz-question">1</span> de <span id="total-quiz-question">{{ $preguntas->count() }}</span> preguntas
+			</div>
+			<div class="flex flex-row justify-center">
+				<a href="javascript:void(0);" class="btn-pill quiz-next">Siguiente</a>
+			</div>
 		</div>
 	</div>
 </section>

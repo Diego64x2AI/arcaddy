@@ -55,8 +55,12 @@
 		    top: 0px;
 		}
 		.swal2-popup {
-			background-color: rgba({{ $r }},{{ $g }},{{ $b }},0.8)!important;
+			background-color: rgba({{ $r }},{{ $g }},{{ $b }},1)!important;
 			color: {{ $cliente->color }} !important;
+		}
+		.swal2-confirm {
+			background-color: {{ $cliente->color }} !important;
+			color: {{ $cliente->color_bg }} !important;
 		}
 		.swiper-button-next, .swiper-button-prev {
 			background: linear-gradient(270deg, rgba({{ $r }},{{ $g }},{{ $b }},0.5) 0%, rgba({{ $r }},{{ $g }},{{ $b }},1) 100%);
@@ -67,6 +71,9 @@
 		}
 		.btn-pill {
 			background-color: {{ $cliente->color }} !important;
+		}
+		[type='checkbox'], [type='radio'] {
+			color: {{ $cliente->color }} !important;
 		}
 		select {
 			background-color: {{ $cliente->color_bg }} !important;
@@ -91,6 +98,10 @@
 		.color, .swal2-close {
 			color: {{ $cliente->color }} !important;
 			fill: {{ $cliente->color }} !important;
+		}
+
+		.borde {
+			border-color: {{ $cliente->color }} !important;
 		}
 
 		.color2 {
