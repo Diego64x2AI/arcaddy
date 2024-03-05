@@ -8,13 +8,13 @@
 		<div class="swiper-wrapper pb-14">
 			@foreach($cliente->colaboradores as $colaborador)
 			<div class="swiper-slide">
-				@if ($colaborador->talento !== NULL && $colaborador->talento !== '')
-				<div class="text-center text-2xl font-extrabold ">{{ $colaborador->talento }}</div>
-				@endif
-				<div class="mt-5 relative">
+				<div class="mb-5 relative">
 					<img src="{{ asset('storage/'.$colaborador->archivo) }}" class="object-fill w-full h-auto">
 					<div class="swiper-paginationfsdsdf"></div>
 				</div>
+				@if ($colaborador->talento !== NULL && $colaborador->talento !== '')
+				<div class="text-center text-2xl font-extrabold ">{{ $colaborador->talento }}</div>
+				@endif
 				@if ($colaborador->nombre !== NULL && $colaborador->nombre !== '')
 				<div class="color text-center font-extrabold text-xl mt-3">{{ $colaborador->nombre }}</div>
 				@endif
