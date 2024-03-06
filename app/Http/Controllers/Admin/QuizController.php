@@ -67,6 +67,7 @@ class QuizController extends Controller
 				$respuestas[$pregunta->pregunta->id]['respuestas'] = ClienteQuizRespuesta::where('pregunta_id', $pregunta->pregunta->id)->get();
 				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
 				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
+					$value->total = 10;
 					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['total'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->where('respuesta_id', $value->id)->groupBy('respuesta_id')->count();
 					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($respuestas[$pregunta->pregunta->id]['respuestas'][$key]['total'] / $total) * 100;
 				}
