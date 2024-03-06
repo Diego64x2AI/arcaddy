@@ -187,6 +187,15 @@ class QuizController extends Controller
 	public function update(Cliente $cliente, UpdateClienteQuizRequest $request, ClienteQuiz $quiz)
 	{
 		$data = $request->safe()->except(['archivo_img']);
+		// delete questions if not in the list
+		$preguntas = ClienteQuizPregunta::whereNotIn('id', $data['pregunta_id'])->where('quiz_id', $quiz->id)->get();
+		// walk the list and delete local files
+		foreach ($preguntas as $pregunta) {
+			if ($pregunta->archivo !== NULL && Storage::exists($pregunta->archivo)) {
+				Storage::delete($pregunta->archivo);
+			}
+			$pregunta->delete();
+		}
 		// store the questions
 		$orden = 0;
 		foreach ($data['pregunta'] as $key => $value) {
@@ -398,6 +407,11 @@ class QuizController extends Controller
 	 */
 	public function destroy(Cliente $cliente, ClienteQuiz $quiz)
 	{
-		//
+		// delete the image if exists
+		if ($quiz->imagen !== NULL && Storage::exists($quiz->imagen)) {
+			Storage::delete($quiz->imagen);
+		}
+		$quiz->delete();
+		return redirect()->route('cliente.quiz.index', ['cliente' => $cliente->id])->with('success', 'Quiz eliminado correctamente.');
 	}
 }

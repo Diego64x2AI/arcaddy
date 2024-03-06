@@ -296,15 +296,17 @@
 				e.preventDefault();
 				const $container = $(this).parent().parent().parent().find('.respuestas');
 				const index = $(this).parent().parent().parent().parent().parent().index();
+				// mark the first as checked
+				const checked = ($container.find('.option-answer').length === 0) ? ' checked' : '';
 				let html = `
-					<div class="flex flex-row items-center">
+					<div class="flex flex-row items-center option-answer">
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
 							<input type="text" name="respuesta[${index}][]" class="input-underline w-full" placeholder="Respuesta">
 							<input type="hidden" name="respuesta_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
-							<input type="radio" name="correcta[${index}]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
+							<input type="radio" name="correcta[${index}]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}"${checked}>
 						</div>
 					</div>
 				`;
@@ -315,18 +317,19 @@
 				e.preventDefault();
 				// get the question index
 				const index = $(this).parent().parent().parent().parent().parent().index();
-				console.log('index', index);
 				$(this).hide();
 				const $container = $(this).parent().parent().parent().find('.respuestas');
+				// mark the first as checked
+				const checked = ($container.find('.option-answer').length === 0) ? ' checked' : '';
 				let html = `
-					<div class="flex flex-row items-center">
+					<div class="flex flex-row items-center option-answer">
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
 							<input type="text" name="respuesta[${index}][]" disabled class="input-underline w-full" value="Otra...">
 							<input type="hidden" name="respuesta_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
-							<input type="radio" name="correcta[${index}]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
+							<input type="radio" name="correcta[${index}]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}"${checked}>
 						</div>
 					</div>
 				`;
@@ -337,14 +340,14 @@
 				const $container = $(this).parent().parent().parent().find('.respuestas');
 				const index = $(this).parent().parent().parent().parent().parent().index();
 				let html = `
-					<div class="flex flex-row items-center">
+					<div class="flex flex-row items-center option-answer">
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
 							<input type="text" name="respuesta2[${index}][]" class="input-underline w-full" placeholder="Respuesta" required>
 							<input type="hidden" name="respuesta2_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
-							<input type="checkbox" name="correcta2[${index}][]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
+							<input type="checkbox" name="correcta2[${index}][]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}" checked>
 						</div>
 					</div>
 				`;
@@ -359,14 +362,14 @@
 				$(this).hide();
 				const $container = $(this).parent().parent().parent().find('.respuestas');
 				let html = `
-					<div class="flex flex-row items-center">
+					<div class="flex flex-row items-center option-answer">
 						<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
 						<div class="ml-3 grow">
 							<input type="text" name="respuesta2[${index}][]" disabled class="input-underline w-full" value="Otra...">
 							<input type="hidden" name="respuesta2_id[${index}][]" value="0" class="input-underline w-full">
 						</div>
 						<div class="ml-3">
-							<input type="checkbox" name="correcta2[${index}][]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}">
+							<input type="checkbox" name="correcta2[${index}][]" class="accent-green-500 appearance-none" value="${$container.find('.flex').length}" checked>
 						</div>
 					</div>
 				`;
@@ -591,7 +594,7 @@
 						cancelButtonText: 'NO, cancelar'
 					}).then((result) => {
 						if (result.isConfirmed) {
-							esto.parent().parent().parent().remove();
+							esto.parent().parent().parent().parent().remove();
 							// recordatorio();
 							Swal.fire('Eliminado', 'Recuerda guardar tus cambios para que tengan efecto.', 'success')
 						}
