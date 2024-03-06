@@ -165,7 +165,7 @@
 								@endforeach
 								</div>
 								<div>
-									<canvas class="pie-chart" data-json="{{ json_encode($respuesta['dataset']) }}"></canvas>
+									<canvas class="pie-chart" data-json="{{ json_encode($respuesta['dataset'] ?? []) }}"></canvas>
 								</div>
 							</div>
 							@endif
