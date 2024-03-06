@@ -76,7 +76,7 @@ class QuizController extends Controller
 				];
 			}
 		}
-		// dd($respuestas[6]);
+		dd($respuestas[14]);
 		return view('dashboard.quiz.stats', compact('cliente', 'respuestas', 'totales'));
 	}
 
