@@ -42,34 +42,33 @@ class QuizController extends Controller
 		foreach ($preguntas as $pregunta) {
 			$respuestas[$pregunta->pregunta->id]['pregunta'] = $pregunta->pregunta;
 			$respuestas[$pregunta->pregunta->id]['respuesta'] = $pregunta->respuesta;
-			if ($pregunta->tipo === 'open') {
+			if ($pregunta->pregunta->tipo === 'open') {
 				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta')->get();
-			} elseif ($pregunta->tipo === 'level') {
+			} elseif ($pregunta->pregunta->tipo === 'level') {
 				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta')->get();
 				// calculate average
 				$respuestas[$pregunta->pregunta->id]['promedio'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->avg('puntos');
-			} elseif ($pregunta->tipo === 'like') {
+			} elseif ($pregunta->pregunta->tipo === 'like') {
 				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::with([])->where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
 				// calculate percentage of each answer
 				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
 				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
 					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
 				}
-			} elseif ($pregunta->tipo === 'versus') {
+			} elseif ($pregunta->pregunta->tipo === 'versus') {
 				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::with([])->where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
 				// calculate percentage of each answer
 				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
 				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
 					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($value->total / $total) * 100;
 				}
-			} elseif ($pregunta->tipo === 'option' || $pregunta->tipo === 'multi') {
+			} elseif ($pregunta->pregunta->tipo === 'option' || $pregunta->pregunta->tipo === 'multi') {
 				// $respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', DB::raw('count(*) as total'))->get();
 				$respuestas[$pregunta->pregunta->id]['respuestas'] = ClienteQuizRespuesta::where('pregunta_id', $pregunta->pregunta->id)->get();
 				$total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->count();
 				foreach ($respuestas[$pregunta->pregunta->id]['respuestas'] as $key => $value) {
-					$value->total = 10;
-					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['total'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->where('respuesta_id', $value->id)->groupBy('respuesta_id')->count();
-					$respuestas[$pregunta->pregunta->id]['respuestas'][$key]['porcentaje'] = ($respuestas[$pregunta->pregunta->id]['respuestas'][$key]['total'] / $total) * 100;
+					$value->total = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->where('respuesta_id', $value->id)->groupBy('respuesta_id')->count();
+					$value->porcentaje = ($value->total / $total) * 100;
 				}
 				$respuestas[$pregunta->pregunta->id]['dataset'] = [
 					'labels' => $respuestas[$pregunta->pregunta->id]['respuestas']->pluck('respuesta')->toArray(),
@@ -77,7 +76,7 @@ class QuizController extends Controller
 				];
 			}
 		}
-		dd($respuestas[14]['respuestas']);
+		// dd($respuestas[14]);
 		return view('dashboard.quiz.stats', compact('cliente', 'respuestas', 'totales'));
 	}
 
