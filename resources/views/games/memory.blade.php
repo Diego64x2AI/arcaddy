@@ -423,6 +423,12 @@
 		});
 	</script>
 	@include('componentes.estilos')
+	<style>
+		.card .back {
+			background: #000000 url('{{asset('storage/clientes/games/memory/'.trim($imgBack))}}') no-repeat center center;
+			background-size: cover;
+		}
+	</style>
 </body>
 
 </html>
