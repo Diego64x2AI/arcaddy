@@ -30,7 +30,7 @@
 		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->email }}</div>
 		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
 
-			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.svg?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
 
 			<?php /*
 			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
