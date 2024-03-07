@@ -270,49 +270,6 @@
 					},
 				});
 			});
-			$('.isotope-menu-item').click(function(e) {
-				e.preventDefault();
-				const nombre = $(this).data('nombre');
-				const imagen = $(this).data('imagen');
-				const descripcion = $(this).data('descripcion');
-				const canje = $(this).data('canje-texto');
-				const precio = $(this).data('precio');
-				const boton = $(this).data('boton');
-				const link = $(this).data('link');
-				const cantidad = ($(this).data('cantidad') !== null && jQuery.trim($(this).data('cantidad')) !== '') ? $(this).data('cantidad') : '';
-				let media = `<img class="w-full h-auto" src="${imagen}">`;
-				let canjeText = '';
-				let botonHtml = '';
-				if (canje !== '' && canje !== null) {
-					canjeText = `<div class="absolute -bottom-3 right-0 bg-client text-[9px] text-white rounded-3xl px-3 py-2 uppercase font-semibold">${canje}</div>`;
-				}
-				if (boton !== '' && link !== '') {
-					botonHtml = `<a href="${link}" target="_blank" class="btn-pill mt-3">${boton}</a>`;
-				}
-				Swal.fire({
-					title: `<div class="font-bold uppercase text-xs color2">&nbsp;</div>`,
-					icon: null,
-					html: `
-						<div class="relative">${media}${canjeText}</div>
-						<div class="grow text-xl color2 mt-5 text-center w-full">
-							<div class="font-semibold">${nombre}</div>
-							<div class="text-xs">${cantidad}</div>
-						</div>
-						<div class="text-base color font-bold">${precio}</div>
-						<div class="my-3 color2">${descripcion}</div>
-						${botonHtml}
-					`,
-					showCloseButton: true,
-					showCancelButton: false,
-					showConfirmButton: false,
-					focusConfirm: true,
-					buttonsStyling: false,
-					customClass: {
-						popup: 'popup-menu',
-						confirmButton: 'btn-pill',
-					},
-				});
-			});
 			$('.isotope-votaciones-item').click(function(e) {
 				e.preventDefault();
 				const nombre = $(this).data('nombre');
