@@ -30,13 +30,51 @@
 		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->email }}</div>
 		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
 
-			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
-			
+			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.svg?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
+
 			<?php /*
 			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
 			*/?>
 		</div>
-		<div class="my-5 text-center w-full sm:max-w-md mx-auto">
+		<div class="mx-auto w-full max-w-md">
+			@if ($cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->count() > 0)
+			<div class="titulo-modulo">Canjes disponibles</div>
+			<div class="grid grid-cols-1 gap-3">
+				@foreach ($cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->get() as $producto)
+					<div class="flex flex-row items-center gap-5 border-b borde pb-3">
+						<div class="w-16 min-w-16">
+							<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow-xl rounded-full">
+						</div>
+						<div>
+							<div>{{ $producto->nombre }}</div>
+							<div class="text-sm">{{ $producto->descripcion }}</div>
+						</div>
+					</div>
+				@endforeach
+			</div>
+			@endif
+			@if ($cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados)->count() > 0)
+			<div class="titulo-modulo mt-10">Canjes realizados</div>
+			<div class="grid grid-cols-1 gap-3">
+				@foreach ($cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados)->get() as $producto)
+					<div class="flex flex-row items-center gap-5 border-b borde pb-3 relative">
+						<div class="w-16 min-w-16">
+							<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow-xl rounded-full">
+						</div>
+						<div>
+							<div>{{ $producto->nombre }}</div>
+							<div class="text-sm">{{ $producto->descripcion }}</div>
+						</div>
+						<div class="absolute top-0 left-0 w-full h-full flex flex-row items-center justify-center">
+							<div class="bg-semitransparent w-full h-full top-0 left-0 absolute z-0"></div>
+							<div class="btn-pill2 uppercase font-bold z-50">Canjeado</div>
+						</div>
+					</div>
+				@endforeach
+			</div>
+			@endif
+		</div>
+		<div class="my-10 text-center w-full sm:max-w-md mx-auto">
 			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
 		</div>
 	</main>
@@ -52,36 +90,7 @@
 
 		});
 	</script>
-	<style>
-		.swiper {
-			width: 100%;
-			height: auto;
-			overflow: hidden;
-		}
-
-		.swiper-pagination-bullet {
-			width: 16px !important;
-			height: 16px !important;
-			background: #E6E6E6 !important;
-			opacity: 1 !important;
-		}
-
-		.btn-pill {
-			background-color: {{ $cliente->color }} !important;
-		}
-
-		.color {
-			color: {{ $cliente->color }} !important;
-		}
-
-		.bg-client {
-			background-color: {{ $cliente->color }} !important;
-		}
-
-		.swiper-pagination-bullet-active {
-			background: {{ $cliente->color }} !important;
-		}
-	</style>
+	@include('componentes.estilos')
 </body>
 
 </html>

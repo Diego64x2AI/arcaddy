@@ -91,16 +91,15 @@ class RegisteredUserController extends Controller
 
 		/*@Alex: Agregue &&  Storage::disk('local')->exists("registro/{$request->cliente_id}.xlsx") para que solo en ese caso entre a validar cuando el cliente tenga excel en ese caso verifique que no exita ya el registro*/
 		if (ClienteUserField::where('cliente_id', $request->cliente_id)->where('campo_id', 3)->where('activo', 1)->exists()  &&  Storage::disk('local')->exists("registro/{$request->cliente_id}.xlsx")) {
-			
+
 			$idsUsuarios = User::where('cliente_id', $request->cliente_id)->select('id', 'cliente_id')->pluck('id');
 
 
 			$identificadores = array_map('intval', ClienteUserFieldValue::where('campo_id', 3)->whereIn('user_id', $idsUsuarios)->pluck('valor')->toArray());
-			
+
 			if (in_array(intval($campos['campos'][3]), $identificadores)) {
 				return redirect()->back()->withInput()->withErrors(['Ya existe un registro con este identificador.']);
 			}
-
 		}
 		// validar si existe base de datos de validacion y realizar comprobaciones necesarias
 		if (Storage::disk('local')->exists("registro/{$request->cliente_id}.xlsx")) {

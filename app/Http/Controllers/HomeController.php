@@ -9,11 +9,12 @@ use App\Models\ClienteQuiz;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
+use App\Models\QuizRespuestas;
+use App\Models\ProductoCanjeado;
 use App\Models\ClienteQuizPregunta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\ClienteProductoDigital;
-use App\Models\QuizRespuestas;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\VotacionesParticipantes;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -275,9 +276,7 @@ END:VCALENDAR";
 			File::makeDirectory(storage_path('app/public/qrcodesr'));
 		}*/
 		// dd(storage_path('app/public/'.$cliente->logo)); '/storage/app/public/'.$cliente->logo
-
 		/*QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/'.$cliente->slug.'?user='.Auth::user()->id, storage_path('app/public/qrcodesr/' . Auth::user()->id . '.png'));*/
-
 		/*$userQr = UserQr::create([
 				'cliente_id' => $cliente->id,
 				'user_id' => $user->id,
@@ -285,27 +284,24 @@ END:VCALENDAR";
 				'codigo' => $elCodigo,
 				'usado'  => 0,
 			]);*/
-
 		$ver = 0;
 		if (isset($_GET['ver']) && $_GET['ver'] == 1) {
 			$ver = 1;
 		}
-
 		$userQr = UserQr::where('user_id', Auth::user()->id)
 			->where('cliente_id', $cliente->id)
 			->first();
-
 		if ($userQr === null) {
 			return redirect()->route('cliente', $cliente->slug);
 		}
-
-
-
-
+		// where('user_id', Auth::user()->id)
+		$canjeados = ProductoCanjeado::where('cliente_id', $cliente->id)->groupBy('producto_id')->pluck('producto_id')->toArray();
+		// dd($canjeados);
 		return view('registro', [
 			'cliente' => $cliente,
 			'userQr' => $userQr,
-			'ver' => $ver
+			'ver' => $ver,
+			'canjeados' => $canjeados,
 		]);
 	}
 

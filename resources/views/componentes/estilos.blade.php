@@ -95,6 +95,10 @@
 			background-color: {{ $cliente->color_bg }};
 			border: 1px solid rgba({{ $r2 }},{{ $g2 }},{{ $b2 }},0.5);
 		}
+		.bg-semitransparent {
+			background-color: rgba({{ $r }},{{ $g }},{{ $b }},0.7);
+			backdrop-filter: blur(1px);
+		}
 		.color, .swal2-close {
 			color: {{ $cliente->color }} !important;
 			fill: {{ $cliente->color }} !important;
