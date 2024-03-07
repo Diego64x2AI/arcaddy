@@ -34,10 +34,10 @@
 	<main style="padding: 0 15px;" class="relative max-w-[500px] mx-auto pt-5 pb-20">
 		<div id="buttonsContainer" style="display: none;" class="flex flex-row gap-5 mb-5 items-center justify-evenly">
 			<div>
-				<button id="selectAnother" class="btn-pill2 !py-4 !px-8 !text-sm uppercase">Seleccionar<br>otra imagen</button>
+				<button id="selectAnother" class="btn-pill2 !py-2 !px-8 !text-sm uppercase">Seleccionar<br>otra imagen</button>
 			</div>
 			<div>
-				<button id="finishEditing" class="btn-pill !py-4 !px-8 !text-2xl !font-bold uppercase">Descarga</button>
+				<button id="finishEditing" class="btn-pill !py-2 !px-8 !font-bold uppercase">Descarga</button>
 			</div>
 		</div>
 		<div class="relative bg-white">
@@ -46,7 +46,9 @@
 		</div>
 		<input type="file" id="upload" accept="image/*" style="display: none;" />
 		<div id="info" style="display:none;"></div>
-		<div class="flex flex-row items-center justify-evenly md:justify-center gap-5 mt-5">
+		@if($cliente->marco->count() > 1)
+		<div class="font-bold mt-3 text-center text-xl">Cambia el diseño:</div>
+		<div class="flex flex-row items-center justify-evenly md:justify-center gap-5 mt-3">
 			@foreach ($cliente->marco as $marco)
 				<div>
 					<div class="bg-white">
@@ -58,6 +60,7 @@
 				</div>
 			@endforeach
 		</div>
+		@endif
 	</main>
 	@includeIf('componentes.footer')
 	<script>

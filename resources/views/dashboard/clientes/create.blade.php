@@ -663,7 +663,7 @@
 								<input class="input-underline" name="menu_item_boton_link[${index}][]" type="url" placeholder="Link">
 							</div>
 							<div>
-								<input class="input-underline" name="menu_item_canje_texto[${index}][]" type="text" placeholder="Titulo canje gratis">
+								<input class="input-underline" name="menu_item_canje_texto[${index}][]" type="text" placeholder="Etiqueta">
 							</div>
 							<div class="mb-2 col-span-2">
 								<textarea class="input-border" name="menu_item_descripcion[${index}][]" rows="2" placeholder="Descripción"></textarea>

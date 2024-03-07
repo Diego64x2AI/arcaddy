@@ -45,6 +45,7 @@
 							</tr>
 						</thead>
 						<tbody>
+							{{--
 							@foreach ($usuarios as $usuario)
 							<tr>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->id }}</td>
@@ -52,19 +53,11 @@
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->email }}</td>
 								@foreach ($fields as $field)
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
-								    
 								    @if($field->campo_id != 4)
-								   
-								    
 								    {{ ($usuario->campos()->where('campo_id', $field->campo_id)->first() !== null) ? $usuario->campos()->where('campo_id', $field->campo_id)->first()->valor : '' }}
-
 								    @else
 								    	{{ $usuario->nacimiento }}
 								    @endif
-
-
-
-
 								</td>
 								@endforeach
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $usuario->created_at }}</td>
@@ -74,6 +67,7 @@
 								</td>
 							</tr>
 							@endforeach
+							--}}
 						</tbody>
 					</table>
 				</div>
@@ -92,6 +86,10 @@
 			}
 		}
 
+		td {
+			text-align: center;
+		}
+
 		td:not(:last-child) {
 			border-bottom: 0;
 		}
@@ -102,32 +100,52 @@
 	</style>
 	<script>
 		window.addEventListener('load', function() {
-			$('table#usuarios').DataTable({
+			const table = $('table#usuarios').DataTable({
+				processing: true,
+				serverSide: true,
+				responsive: true,
+				ajax: "{{ route('usuarios.ajax', ['cliente' => $cliente->id]) }}",
+				columns: [
+					{data: 'id', name: 'id'},
+					{data: 'name', name: 'name', orderable: true, searchable: true},
+					{data: 'email', name: 'email', orderable: true, searchable: true},
+					@foreach ($fields as $field)
+					{data: 'campo_{{ $field->campo_id }}', name: 'campo_{{ $field->campo_id }}', orderable: true, searchable: true},
+					@endforeach
+					{data: 'created_at', name: 'created_at', orderable: false, searchable: false, orderable: true, searchable: true},
+					{data: 'action', name: 'action', orderable: false, searchable: false},
+				],
 				paging: true,
 				searching: true,
 				ordering:  true,
-				pageLength: 25,
+				pageLength: 10,
 				language: {
-					url: '//cdn.datatables.net/plug-ins/1.13.1/i18n/es-ES.json'
-				}
+					url: '{{ asset("es-ES.json") }}'
+				},
+				search: {
+        	"regex": true
+      	}
 			});
-			$('a.delete-form').on('click', function(e) {
+			$('.dataTables_filter input')
+       .off()
+       .on('keyup', function() {
+          table.draw();
+       });
+			 $('body').on('click', '.delete-item', function(e) {
 				e.preventDefault();
-				console.log('delete?')
-				const $a = $(this);
+				var form = $(this).parents('form');
 				Swal.fire({
 					title: '¿Estás seguro?',
-					text: "Una ves que elimines el usuario no podrás recuperar la información.",
-					icon: null,
+					text: "¡No podrás revertir esto!",
+					icon: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',
 					cancelButtonColor: '#d33',
-					confirmButtonText: 'SI, eliminarlo',
-					cancelButtonText: 'Cancelar',
-					allowOutsideClick: false,
+					confirmButtonText: '¡Sí, eliminar!',
+					cancelButtonText: 'Cancelar'
 				}).then((result) => {
 					if (result.isConfirmed) {
-						// window.top.location.href = $a.attr('href');
+						form.submit();
 					}
 				})
 			});

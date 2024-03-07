@@ -189,6 +189,7 @@ return [
 				Darryldecode\Cart\CartServiceProvider::class,
 				Laraveles\Spanish\SpanishServiceProvider::class,
 				Maatwebsite\Excel\ExcelServiceProvider::class,
+				Yajra\DataTables\DataTablesServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -55,7 +55,7 @@
 									<input class="input-underline" name="menu_item_boton_link[{{ $key }}][]" value="{{$menu->boton_link}}" type="url" placeholder="Link">
 								</div>
 								<div>
-									<input class="input-underline" name="menu_item_canje_texto[{{ $key }}][]" value="{{$menu->canje_texto}}" type="text" placeholder="Titulo canje gratis">
+									<input class="input-underline" name="menu_item_canje_texto[{{ $key }}][]" value="{{$menu->canje_texto}}" type="text" placeholder="Etiqueta">
 								</div>
 								<div class="mb-2 col-span-2">
 									<textarea class="input-border" name="menu_item_descripcion[{{ $key }}][]" rows="2" placeholder="Descripción">{{$menu->descripcion}}</textarea>

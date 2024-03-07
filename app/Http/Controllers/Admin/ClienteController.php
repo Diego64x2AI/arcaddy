@@ -410,8 +410,6 @@ class ClienteController extends Controller
 		if (isset($campos['campos']) && count($campos['campos']) > 0) {
 			foreach ($campos['campos'] as $key => $nombre) {
 				// echo $key."-".$nombre."-".$request->boolean('campos_activo.'.$key);
-
-
 				ClienteUserField::updateOrCreate([
 					'cliente_id' => $cliente->id,
 					'campo_id' => $key,
@@ -504,9 +502,11 @@ class ClienteController extends Controller
 		}
 		// banners
 		if (isset($campos['banners_titulo']) && count($campos['banners_titulo']) > 0) {
+			/*
 			foreach ($cliente->banners as $banner) {
 				Storage::delete($banner->archivo);
 			}
+			*/
 			ClienteBanner::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['banners_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -526,9 +526,11 @@ class ClienteController extends Controller
 		}
 		// banners 2
 		if (isset($campos['banners2_titulo']) && count($campos['banners2_titulo']) > 0) {
+			/*
 			foreach ($cliente->banners2 as $banner) {
 				Storage::delete($banner->archivo);
 			}
+			*/
 			ClienteBanner2::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['banners2_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -548,9 +550,11 @@ class ClienteController extends Controller
 		}
 		// colaboradores
 		if (isset($campos['colaboradores_titulo']) && count($campos['colaboradores_titulo']) > 0) {
+			/*
 			foreach ($cliente->colaboradores as $colaborador) {
 				Storage::delete($colaborador->archivo);
 			}
+			*/
 			ClienteColaboradores::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['colaboradores_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -571,9 +575,11 @@ class ClienteController extends Controller
 		}
 		// patrocinadores
 		if (isset($campos['patrocinadores_titulo']) && count($campos['patrocinadores_titulo']) > 0) {
+			/*
 			foreach ($cliente->patrocinadores as $patrocinador) {
 				Storage::delete($patrocinador->archivo);
 			}
+			*/
 			ClientePatrocinadores::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['patrocinadores_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -593,9 +599,11 @@ class ClienteController extends Controller
 		}
 		// galeria
 		if (isset($campos['galeria_titulo']) && count($campos['galeria_titulo']) > 0) {
+			/*
 			foreach ($cliente->galeria as $galeria) {
 				Storage::delete($galeria->archivo);
 			}
+			*/
 			ClienteGaleria::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['galeria_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -614,9 +622,11 @@ class ClienteController extends Controller
 		}
 		// libres
 		if (isset($campos['libres_titulo']) && count($campos['libres_titulo']) > 0) {
+			/*
 			foreach ($cliente->libres as $libre) {
 				Storage::delete($libre->archivo);
 			}
+			*/
 			ClienteLibres::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['libres_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -636,9 +646,11 @@ class ClienteController extends Controller
 		}
 		// blog
 		if (isset($campos['blog_titulo']) && count($campos['blog_titulo']) > 0) {
+			/*
 			foreach ($cliente->blog as $blog) {
 				Storage::delete($blog->archivo);
 			}
+			*/
 			ClienteBlog::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['blog_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -659,9 +671,11 @@ class ClienteController extends Controller
 		}
 		// playlist
 		if (isset($campos['playlist_plataforma']) && count($campos['playlist_plataforma']) > 0) {
+			/*
 			foreach ($cliente->playlist as $playlist) {
 				Storage::delete($playlist->archivo);
 			}
+			*/
 			ClientePlaylist::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['playlist_plataforma'] as $key => $plataforma) {
 				// archivo viejo
@@ -681,9 +695,11 @@ class ClienteController extends Controller
 		}
 		// experiencia
 		if (isset($campos['experiencia_titulo']) && count($campos['experiencia_titulo']) > 0) {
+			/*
 			foreach ($cliente->experiencias as $experiencia) {
 				Storage::delete($experiencia->archivo);
 			}
+			*/
 			ClienteExperiencia::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['experiencia_titulo'] as $key => $titulo) {
 				// archivo viejo
