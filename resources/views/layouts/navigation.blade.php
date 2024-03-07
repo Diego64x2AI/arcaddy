@@ -86,6 +86,21 @@
 			<x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
 				{{ __('Dashboard') }}
 			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('cupones.index')" :active="request()->routeIs('cupones.index')">
+				{{ __('Cupones') }}
+			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('pedidos.index')" :active="request()->routeIs('pedidos.index')">
+				{{ __('Pedidos') }}
+			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('votaciones.index')" :active="request()->routeIs('votaciones.index')">
+				{{ __('Votaciones') }}
+			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('usuarios-cliente.index')" :active="request()->routeIs('usuarios-cliente.index')">
+				{{ __('Administrador cliente') }}
+			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
+				{{ __('Games') }}
+			</x-responsive-nav-link>
 		</div>
 
 		<!-- Responsive Settings Options -->
