@@ -163,7 +163,7 @@ class MyAppClientController extends Controller
 
     public function productoRedencion($producto_id){
         $clientedatos = Cliente::find(auth()->user()->cliente_id);
-        return view('my-app-client.producto-redencion', compact('clientedatos','producto_id'));
+        return view('my-app-client.producto-redencion2', compact('clientedatos','producto_id'));
     }
 
     public function productoRedencionValidar($codigo, $producto_id, $usuario_id){
