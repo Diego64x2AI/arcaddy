@@ -34,6 +34,9 @@ import Swiper from 'swiper/bundle'
 import 'swiper/css/bundle'
 window.Swiper = Swiper
 
+// jquery-match-height
+import 'jquery-match-height';
+
 // cropperjs
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
@@ -61,6 +64,14 @@ withSelectType()
 // withInlineRenderer()
 
 window.Flyter = flyter
+
+// import noUiSlider from 'nouislider';
+import * as noUiSlider from 'nouislider';
+import 'nouislider/dist/nouislider.css';
+window.noUiSlider = noUiSlider;
+
+import Chart from 'chart.js/auto';
+window.Chart = Chart;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

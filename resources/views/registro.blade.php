@@ -7,21 +7,30 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>{{ config('app.name', 'Laravel') }}</title>
 	<!-- Fonts -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 	<!-- Font Awesome Icons -->
 	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-40ZEQ4JZ0Y"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-40ZEQ4JZ0Y');
+	</script>
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased overflow-x-hidden">
+	@includeIf('componentes.header')
 	<main class="px-5 pb-20">
-		<div class="flex items-center justify-center py-5">
-			<img src="{{ asset('storage/'.$cliente->logo) }}" style="height: 40px; width:auto" alt="{{ $cliente->cliente }}">
-		</div>
 		@if($cliente->registro_img !== NULL)
-			<div class="mt-3 w-full sm:max-w-md mx-auto">
-				<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="img-general shadow object-cover w-100 border border-secondary" style="border-radius:50px">
+			<div class="mt-3 w-full sm:max-w-md mx-auto text-center">
+				<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="inline-block shadow object-cover w-100 h-auto max-w-[200px] border border-secondary rounded-2xl">
 			</div>
 		@endif
 		<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md mx-auto">{{($ver == 0)?'¡Registro exitoso!':'Mi QR'}}</h1>
@@ -31,12 +40,50 @@
 		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
 
 			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
-			
+
 			<?php /*
 			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
 			*/?>
 		</div>
-		<div class="my-5 text-center w-full sm:max-w-md mx-auto">
+		<div class="mx-auto w-full max-w-md">
+			@if ($cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->count() > 0)
+			<div class="titulo-modulo">Canjes disponibles</div>
+			<div class="grid grid-cols-1 gap-3">
+				@foreach ($cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->get() as $producto)
+					<div class="flex flex-row items-center gap-5 border borde rounded-3xl px-3 pb-3">
+						<div class="w-16 min-w-16">
+							<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow-xl rounded-full">
+						</div>
+						<div>
+							<div>{{ $producto->nombre }}</div>
+							<div class="text-sm">{{ $producto->descripcion }}</div>
+						</div>
+					</div>
+				@endforeach
+			</div>
+			@endif
+			@if ($cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados)->count() > 0)
+			<div class="titulo-modulo mt-10">Canjes realizados</div>
+			<div class="grid grid-cols-1 gap-3">
+				@foreach ($cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados)->get() as $producto)
+					<div class="flex flex-row items-center gap-5 border borde rounded-3xl px-3 pb-3 relative">
+						<div class="w-16 min-w-16">
+							<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow-xl rounded-full">
+						</div>
+						<div>
+							<div>{{ $producto->nombre }}</div>
+							<div class="text-sm">{{ $producto->descripcion }}</div>
+						</div>
+						<div class="absolute w-full h-full flex flex-row items-center justify-center" style="top: -1px; left: -1px; width: calc(100% + 2px); height: calc(100% + 2px);">
+							<div class="bg-semitransparent w-full h-full top-0 left-0 absolute z-0"></div>
+							<div class="btn-pill2 uppercase font-bold z-50">Canjeado</div>
+						</div>
+					</div>
+				@endforeach
+			</div>
+			@endif
+		</div>
+		<div class="my-10 text-center w-full sm:max-w-md mx-auto">
 			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
 		</div>
 	</main>
@@ -47,41 +94,13 @@
 		</div>
 	</div>
 	@endif
+	@includeIf('componentes.footer')
 	<script>
 		window.addEventListener('load', function() {
-
+			$('body').css('paddingTop', $('#header').innerHeight());
 		});
 	</script>
-	<style>
-		.swiper {
-			width: 100%;
-			height: auto;
-			overflow: hidden;
-		}
-
-		.swiper-pagination-bullet {
-			width: 16px !important;
-			height: 16px !important;
-			background: #E6E6E6 !important;
-			opacity: 1 !important;
-		}
-
-		.btn-pill {
-			background-color: {{ $cliente->color }} !important;
-		}
-
-		.color {
-			color: {{ $cliente->color }} !important;
-		}
-
-		.bg-client {
-			background-color: {{ $cliente->color }} !important;
-		}
-
-		.swiper-pagination-bullet-active {
-			background: {{ $cliente->color }} !important;
-		}
-	</style>
+	@include('componentes.estilos')
 </body>
 
 </html>

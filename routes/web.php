@@ -90,7 +90,15 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('votaciones', VotacionesController::class, [
 			'except' => ['update']
 		]);
-		Route::resource('cliente.quiz', QuizController::class);
+		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
+		Route::prefix('cliente')->group(function () {
+			Route::prefix('{cliente}')->group(function () {
+				Route::prefix('quiz/{quiz}')->group(function () {
+					Route::get('/stats', [QuizController::class, 'stats'])->name('clientes.quiz.stats');
+					Route::post('/atributo', [QuizController::class, 'updatea'])->name('cliente.quiz.updatea')->where('quiz', '[0-9]+')->where('cliente', '[0-9]+');
+				});
+			});
+		});
 		Route::prefix('votaciones')->group(function () {
 			Route::post('/{votacione}/atributo', [VotacionesController::class, 'updatea'])->name('votaciones.updatea');
 			Route::prefix('categorias')->group(function () {
@@ -109,6 +117,8 @@ Route::middleware('role:admin')->group(function () {
 		});
 		Route::prefix('usuarios')->group(function () {
 			Route::get('/{cliente}', [UsuariosController::class, 'index'])->name('usuarios.index');
+			Route::get('/{cliente}/ajax', [UsuariosController::class, 'ajax'])->name('usuarios.ajax');
+			Route::post('/{cliente}/{user}/delete', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
 			Route::get('/{cliente}/exportar', [UsuariosController::class, 'export'])->name('usuarios.export');
 		});
 		Route::prefix('cupones')->group(function () {
@@ -144,8 +154,4 @@ Route::middleware('auth')->group(function () {
 	Route::post('/{slug}/save-game/{claveJuego}', [HomeController::class, 'saveGame'])->name('cliente.save-game');
 });
 
-
-
-
-
-
+Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name('cliente.quiz.respuesta');

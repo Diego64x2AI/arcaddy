@@ -33,6 +33,8 @@ class FillModulos extends Seeder
 			'banners2',
 			'menu',
 			'ranking',
+			'quiz',
+			'marco',
 		];
 		$titulos = [
 			'banners' => 'Banners',
@@ -50,10 +52,12 @@ class FillModulos extends Seeder
 			'banners2' => 'Banners 2',
 			'menu' => 'Menú / Catálogo / Producto o servicio',
 			'ranking' => 'Ranking',
+			'quiz' => 'Quiz',
+			'marco' => 'Marco / Photoop',
 		];
 		foreach ($clientes as $cliente) {
 			foreach ($secciones as $seccion) {
-				if (ClienteSecciones::where('cliente_id', $cliente->id)->where('seccion', $seccion)->count() == 0) {
+				if (ClienteSecciones::where('cliente_id', $cliente->id)->where('seccion', $seccion)->count() === 0) {
 					$cliente->secciones()->create([
 						'cliente_id' => $cliente->id,
 						'seccion' => $seccion,

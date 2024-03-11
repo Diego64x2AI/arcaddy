@@ -1,7 +1,7 @@
 @if($cliente->galeria->count() > 0)
 <section id="galeria" class="mt-5 text-center lg:mt-10">
 	@if ($cliente->secciones()->where('seccion', 'galeria')->first()->mostrar_titulo)
-	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'galeria')->first()->titulo }}</div>
+	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'galeria')->first()->titulo }}</div>
 	@endif
 	<div class="isotope-galeria grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
 		@foreach($cliente->galeria as $banner)

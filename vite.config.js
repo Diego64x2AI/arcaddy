@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-// import basicSsl from '@vitejs/plugin-basic-ssl'
-import fs from 'fs'
+import fs from 'fs';
 
-const host = 'arcaddy.dev'
+const host = 'arcaddy.dev';
 
 export default defineConfig({
 	server: {
@@ -11,23 +10,22 @@ export default defineConfig({
 		host,
 		https: {
       key: fs.readFileSync('C:/laragon/etc/ssl/laragon.key'),
-      cert: fs.readFileSync('C:/laragon/etc/ssl/laragon.crt'),
-    },
+      cert: fs.readFileSync('C:/laragon/etc/ssl/laragon.crt')
+    }
 	},
 	plugins: [
-		// basicSsl(),
 		laravel({
 			input: [
 				'resources/css/app.css',
-				'resources/js/app.js',
+				'resources/js/app.js'
 			],
-			refresh: true,
-		}),
+			refresh: true
+		})
 	],
 	resolve: {
 		alias: {
 			'@': '/resources/js',
-			'@assets': '/public',
-		},
-	},
+			'@assets': '/public'
+		}
+	}
 });

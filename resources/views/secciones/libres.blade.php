@@ -1,7 +1,7 @@
 @if($cliente->libres->count() > 0)
 <section id="libres" class="text-center"><!-- mt-5 lg:mt-10-->
 	@if ($cliente->secciones()->where('seccion', 'libres')->first()->mostrar_titulo)
-	<div class="text-center px-5 py-5 text-4xl font-extrabold lg:text-8xl">{{ $cliente->secciones()->where('seccion', 'libres')->first()->titulo }}</div>
+	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'libres')->first()->titulo }}</div>
 	@endif
 	<div id="libres-swiper" class="swiper swiper-1 "><!-- mt-5 lg:mt-10-->
 		<!-- Additional required wrapper -->

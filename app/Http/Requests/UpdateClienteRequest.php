@@ -25,9 +25,9 @@ class UpdateClienteRequest extends FormRequest
 	public function rules()
 	{
 		return [
-		  'idioma' => 'required',
+			'idioma' => 'required',
 			'cliente' => 'required|string|max:255',
-			'slug' => 'required|string|max:100|unique:clientes,slug,'.$this->route('cliente')->id,
+			'slug' => 'required|string|max:100|unique:clientes,slug,' . $this->route('cliente')->id,
 			'color' => 'required|string|max:55',
 			'color_bg' => 'required|string|max:55',
 			'color_base' => 'required|string|max:55',
@@ -71,6 +71,9 @@ class UpdateClienteRequest extends FormRequest
 			'banners_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
 			'banners_titulo.*' => 'nullable|string|max:255',
 			'banners_link.*' => 'nullable|string',
+			'marco_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
+			'marco_titulo.*' => 'nullable|string|max:255',
+			'marco_id.*' => 'required|numeric|min:0',
 			'banners2_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
 			'banners2_titulo.*' => 'nullable|string|max:255',
 			'banners2_link.*' => 'nullable|string',

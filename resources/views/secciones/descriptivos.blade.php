@@ -1,6 +1,6 @@
 <section id="informacion" class="p-5 mt-5 max-w-5xl mx-auto lg:px-8 lg:mt-10">
 	@if ($cliente->titulo !== NULL && $cliente->titulo !== '')
-	<h1 class="color text-center font-extrabold text-4xl lg:text-8xl">{{ $cliente->titulo }}</h1>
+	<h1 class="titulo-modulo">{{ $cliente->titulo }}</h1>
 	@endif
 	@if ($cliente->subtitulo !== NULL && $cliente->subtitulo !== '')
 	<h2 class="text-center font-extrabold text-2xl px-8 lg:text-4xl">{{ $cliente->subtitulo }}</h2>

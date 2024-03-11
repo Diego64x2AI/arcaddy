@@ -222,7 +222,7 @@
 					{ responsivePriority: 3, targets: 2 }
         ],
 				language: {
-					url: '//cdn.datatables.net/plug-ins/1.13.1/i18n/es-ES.json'
+					url: '{{ asset("es-ES.json") }}'
 				}
 			});
 			$('.update-votacion').change(function(){

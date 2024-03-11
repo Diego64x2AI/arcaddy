@@ -68,7 +68,19 @@ class Cliente extends Model
 		'flotantes',
 		'menu',
 		'juegos',
+		'quiz',
+		'marco',
 	];
+
+	public function marco()
+	{
+		return $this->hasMany(ClienteMarco::class, 'cliente_id', 'id');
+	}
+
+	public function quiz()
+	{
+		return $this->hasMany(ClienteQuiz::class, 'cliente_id', 'id');
+	}
 
 	public function menu()
 	{

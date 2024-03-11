@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="https://unpkg.com/@popperjs/core@2"></script>
 	<!-- Scripts -->
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
+	<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </head>
 
 <body class="font-sans antialiased">

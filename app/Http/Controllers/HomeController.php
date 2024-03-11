@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
-use App\Models\UserQr;
 use App\Models\Juego;
+use App\Models\UserQr;
+use App\Models\Cliente;
+use App\Models\ClienteQuiz;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Models\JuegoResultado;
+use App\Models\QuizRespuestas;
+use App\Models\ProductoCanjeado;
+use App\Models\ClienteQuizPregunta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\ClienteProductoDigital;
-use App\Models\JuegoResultado;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\VotacionesParticipantes;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
-use Illuminate\Http\Response;
 
 class HomeController extends Controller
 {
@@ -141,6 +144,11 @@ END:VCALENDAR";
 	public function cliente_marco($slug = '')
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$seccion = $cliente->secciones()->where('seccion', 'marco')->firstOrFail();
+		// if is not active redirect to the client page
+		if (!$seccion->activa) {
+			return redirect()->route('cliente', $cliente->slug);
+		}
 		return view('marco', [
 			'cliente' => $cliente,
 		]);
@@ -268,9 +276,7 @@ END:VCALENDAR";
 			File::makeDirectory(storage_path('app/public/qrcodesr'));
 		}*/
 		// dd(storage_path('app/public/'.$cliente->logo)); '/storage/app/public/'.$cliente->logo
-
 		/*QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/'.$cliente->slug.'?user='.Auth::user()->id, storage_path('app/public/qrcodesr/' . Auth::user()->id . '.png'));*/
-
 		/*$userQr = UserQr::create([
 				'cliente_id' => $cliente->id,
 				'user_id' => $user->id,
@@ -278,27 +284,24 @@ END:VCALENDAR";
 				'codigo' => $elCodigo,
 				'usado'  => 0,
 			]);*/
-
 		$ver = 0;
 		if (isset($_GET['ver']) && $_GET['ver'] == 1) {
 			$ver = 1;
 		}
-
 		$userQr = UserQr::where('user_id', Auth::user()->id)
 			->where('cliente_id', $cliente->id)
 			->first();
-
 		if ($userQr === null) {
 			return redirect()->route('cliente', $cliente->slug);
 		}
-
-
-
-
+		// where('user_id', Auth::user()->id)
+		$canjeados = ProductoCanjeado::where('cliente_id', $cliente->id)->groupBy('producto_id')->pluck('producto_id')->toArray();
+		// dd($canjeados);
 		return view('registro', [
 			'cliente' => $cliente,
 			'userQr' => $userQr,
-			'ver' => $ver
+			'ver' => $ver,
+			'canjeados' => $canjeados,
 		]);
 	}
 
@@ -388,5 +391,129 @@ END:VCALENDAR";
 				'message' => 'El juego no existe.',
 			]);
 		}
+	}
+
+	public function quiz_respuesta(Cliente $cliente, Request $request)
+	{
+		$data = $request->validate([
+			'quiz' => 'required|numeric|min:1|exists:\App\Models\ClienteQuiz,id',
+			'pregunta' => 'required|numeric|min:1|exists:\App\Models\ClienteQuizPregunta,id',
+			'respuesta' => 'required|numeric|min:1|exists:\App\Models\ClienteQuizRespuesta,id',
+			'otra' => 'nullable|sometimes|string',
+		]);
+		$quiz = $cliente->quiz()->where('id', $data['quiz'])->firstOrFail();
+		$pregunta = $quiz->preguntas()->where('id', $data['pregunta'])->firstOrFail();
+		$respuesta = $pregunta->respuestas()->where('id', $data['respuesta'])->firstOrFail();
+		// if the quiz is not active
+		if (!$quiz->activa) {
+			return response()->json([
+				'status' => false,
+				'message' => 'El quiz no está activo.',
+			]);
+		}
+		// check if the user is logged and the quiz requires login
+		if (!Auth::check() && $quiz->login) {
+			return response()->json([
+				'status' => false,
+				'message' => 'Debes iniciar sesión para continuar.',
+			]);
+		}
+		// revisar si es una respuesta abierta
+		if (($respuesta->tipo === 'open' || ($respuesta->tipo === 'option' && $respuesta->respuesta === 'Otra...') || ($respuesta->tipo === 'multi' && $respuesta->respuesta === 'Otra...')) && ($data['otra'] === null || $data['otra'] === '')) {
+			return response()->json([
+				'status' => false,
+				'message' => 'No llenaste el texto de campo.',
+			]);
+		}
+		// dd($respuesta);
+		$puntos = 0;
+		if (($quiz->score || $quiz->calificacion) && $respuesta->correcta) {
+			$puntos = $pregunta->valor;
+		}
+		if ($pregunta->tipo === 'level') {
+			$range = (int) $request->input('range', 0);
+			if ($range < 0 || $range > 10) {
+				return response()->json([
+					'status' => false,
+					'message' => 'El rango no es válido.',
+				]);
+			}
+			$puntos = $range;
+		}
+		if ($pregunta->tipo === 'multi') {
+			$data = $request->validate([
+				'quiz' => 'required|numeric|min:1|exists:\App\Models\ClienteQuiz,id',
+				'pregunta' => 'required|numeric|min:1|exists:\App\Models\ClienteQuizPregunta,id',
+				'respuesta' => 'required|numeric|min:1|exists:\App\Models\ClienteQuizRespuesta,id',
+				'otra' => 'nullable|sometimes|string',
+				'multi' => 'required|array|min:1',
+			]);
+			foreach ($data['multi'] as $value) {
+				$respuesta = $pregunta->respuestas()->where('id', $value)->firstOrFail();
+				$puntos = 0;
+				if (($quiz->score || $quiz->calificacion) && $respuesta->correcta) {
+					$puntos = $pregunta->valor;
+				}
+				// check if the user is logged
+				if (!Auth::check()) {
+					QuizRespuestas::create([
+						'quiz_id' => $quiz->id,
+						'pregunta_id' => $pregunta->id,
+						'respuesta_id' => $respuesta->id,
+						'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
+						'tipo' => $pregunta->tipo,
+						'correcta' => $respuesta->correcta,
+						'puntos' => $puntos,
+					]);
+				} else {
+					QuizRespuestas::updateOrCreate([
+						'user_id' => $request->user()->id,
+						'quiz_id' => $quiz->id,
+						'pregunta_id' => $pregunta->id,
+						'respuesta_id' => $respuesta->id,
+					],
+					[
+						'puntos' => $puntos,
+						'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
+						'tipo' => $pregunta->tipo,
+						'correcta' => $respuesta->correcta,
+					]);
+				}
+			}
+			return response()->json([
+				'status' => true,
+				'message' => 'Siguiente pregunta.',
+			]);
+		}
+		// check if the user is logged
+		if (!Auth::check()) {
+			QuizRespuestas::create([
+				'quiz_id' => $quiz->id,
+				'pregunta_id' => $pregunta->id,
+				'respuesta_id' => $respuesta->id,
+				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
+				'tipo' => $pregunta->tipo,
+				'correcta' => $respuesta->correcta,
+				'puntos' => $puntos,
+			]);
+		} else {
+			QuizRespuestas::updateOrCreate([
+				'user_id' => $request->user()?->id,
+				'quiz_id' => $quiz->id,
+				'pregunta_id' => $pregunta->id,
+				'respuesta_id' => $respuesta->id,
+			],
+			[
+				'puntos' => $puntos,
+				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
+				'tipo' => $pregunta->tipo,
+				'correcta' => $respuesta->correcta,
+
+			]);
+		}
+		return response()->json([
+			'status' => true,
+			'message' => 'Siguiente pregunta.',
+		]);
 	}
 }
