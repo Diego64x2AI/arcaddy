@@ -139,16 +139,11 @@ class MyAppClientController extends Controller
 		} else {
 
 			$parametros['buscar'] = $_GET['buscar'];
-
 			$productos = ClienteProducto::where('cliente_id', auth()->user()->cliente_id)
 				->where('regalado', 1)
 				->where('nombre', 'like', '%' . $_GET['buscar'] . '%')
 				->get();
 		}
-
-
-
-
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
 		return view('my-app-client.reporte-redenciones', compact('productos', 'parametros', 'clientedatos'));
 	}
