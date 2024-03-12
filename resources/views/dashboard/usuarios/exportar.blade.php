@@ -17,7 +17,7 @@
 			<td style="text-align: center;">{{ $usuario->id }}</td>
 			<td style="text-align: center; width: 250px;">{{ $usuario->name }}</td>
 			<td style="text-align: center; width: 250px;">{{ $usuario->email }}</td>
-			<td style="text-align: center; width: 250px;">{{ asset('storage/'.$usuario->qr->codigo) }}</td>
+			<td style="text-align: center; width: 250px;">{{ asset('storage/'.$usuario->qr?->codigo) }}</td>
 			@foreach ($fields as $field)
 
 			<td style="text-align: center; width: 250px;">
