@@ -63,6 +63,6 @@ class CumbresImport implements ToModel, WithHeadingRow, WithBatchInserts
 
 	public function batchSize(): int
 	{
-		return 100;
+		return 1;
 	}
 }
