@@ -11,6 +11,13 @@
 					Exportar
 				</a>
 			</div>
+			@if ($cliente->id !== NULL && $cliente->id === 99)
+			<div class="ml-3">
+				<a href="{{ route('usuarios.import', ['cliente' => $cliente->id]) }}" class="rounded-full bg-pink-600 text-white px-5 py-2 block">
+					Importar
+				</a>
+			</div>
+			@endif
 		</div>
 	</x-slot>
 
