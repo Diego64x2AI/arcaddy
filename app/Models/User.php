@@ -51,6 +51,11 @@ class User extends Authenticatable
 		return $this->hasMany(ClienteUserFieldValue::class,  'user_id', 'id');
 	}
 
+	// user qr
+	public function qr() {
+		return $this->hasOne(UserQr::class, 'user_id', 'id');
+	}
+
 	/**
 	 * The "booted" method of the model.
 	 *
