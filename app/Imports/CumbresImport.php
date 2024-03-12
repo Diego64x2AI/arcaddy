@@ -9,8 +9,9 @@ use App\Models\ClienteUserFieldValue;
 use Maatwebsite\Excel\Concerns\ToModel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class CumbresImport implements ToModel, WithHeadingRow
+class CumbresImport implements ToModel, WithHeadingRow, WithBatchInserts
 {
 
 	private $cliente = null;
@@ -58,5 +59,10 @@ class CumbresImport implements ToModel, WithHeadingRow
 			'valor' => $row['telefono'],
 		]);
 		return $user;
+	}
+
+	public function batchSize(): int
+	{
+		return 100;
 	}
 }
