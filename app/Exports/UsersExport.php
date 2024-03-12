@@ -22,7 +22,7 @@ class UsersExport implements FromView
 		return view('dashboard.usuarios.exportar', [
 			'cliente' => $this->cliente,
 			'fields' => ClienteUserField::where('cliente_id', $this->cliente->id)->where('activo', 1)->get(),
-			'usuarios' => User::where('cliente_id', $this->cliente->id)->get(),
+			'usuarios' => User::with(['qr'])->where('cliente_id', $this->cliente->id)->get(),
 		]);
 	}
 }

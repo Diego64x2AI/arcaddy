@@ -8,6 +8,7 @@ use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Models\ClienteUserField;
 use App\Http\Controllers\Controller;
+use App\Imports\CumbresImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Datatables;
 
@@ -94,5 +95,11 @@ class UsuariosController extends Controller
 	{
 		// dd($cliente);
 		return Excel::download(new UsersExport($cliente), 'usuarios.xlsx');
+	}
+
+	public function import(Cliente $cliente)
+	{
+		// dd($cliente);
+		Excel::import(new CumbresImport($cliente), base_path('cumbres.xlsx'));
 	}
 }

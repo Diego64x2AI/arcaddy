@@ -120,6 +120,7 @@ Route::middleware('role:admin')->group(function () {
 			Route::get('/{cliente}/ajax', [UsuariosController::class, 'ajax'])->name('usuarios.ajax');
 			Route::post('/{cliente}/{user}/delete', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
 			Route::get('/{cliente}/exportar', [UsuariosController::class, 'export'])->name('usuarios.export');
+			Route::get('/{cliente}/importar', [UsuariosController::class, 'import'])->name('usuarios.import');
 		});
 		Route::prefix('cupones')->group(function () {
 			Route::get('/', [CuponesController::class, 'index'])->name('cupones.index');

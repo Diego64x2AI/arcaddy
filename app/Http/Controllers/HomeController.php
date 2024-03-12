@@ -295,7 +295,7 @@ END:VCALENDAR";
 			return redirect()->route('cliente', $cliente->slug);
 		}
 		// where('user_id', Auth::user()->id)
-		$canjeados = ProductoCanjeado::where('cliente_id', $cliente->id)->groupBy('producto_id')->pluck('producto_id')->toArray();
+		$canjeados = ProductoCanjeado::where('cliente_id', $cliente->id)->where('user_id', Auth::user()->id)->groupBy('producto_id')->pluck('producto_id')->toArray();
 		// dd($canjeados);
 		return view('registro', [
 			'cliente' => $cliente,

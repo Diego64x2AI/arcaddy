@@ -4,6 +4,7 @@
 			<th style="font-weight: bold; text-align: center;">ID</th>
 			<th style="font-weight: bold; text-align: center;">Nombre</th>
 			<th style="font-weight: bold; text-align: center;">Email</th>
+			<th style="font-weight: bold; text-align: center;">QR</th>
 			@foreach ($fields as $field)
 			<th style="font-weight: bold; text-align: center;">{{ $field->nombre }}</th>
 			@endforeach
@@ -16,6 +17,7 @@
 			<td style="text-align: center;">{{ $usuario->id }}</td>
 			<td style="text-align: center; width: 250px;">{{ $usuario->name }}</td>
 			<td style="text-align: center; width: 250px;">{{ $usuario->email }}</td>
+			<td style="text-align: center; width: 250px;">{{ asset('storage/qrregister/'.$usuario->qr?->codigo.'.png') }}</td>
 			@foreach ($fields as $field)
 
 			<td style="text-align: center; width: 250px;">
