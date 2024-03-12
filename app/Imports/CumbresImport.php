@@ -28,9 +28,14 @@ class CumbresImport implements ToModel, WithHeadingRow, WithBatchInserts
 	 */
 	public function model(array $row)
 	{
+		$nombre = trim($row['nombre']);
+		$email = trim($row['email']);
+		if (empty($nombre) || empty($email)) {
+			return null;
+		}
 		$user = User::create([
-			'name' => $row['nombre'],
-			'email' => $row['email'],
+			'name' => $nombre,
+			'email' => $email,
 			'cliente_id' => $this->cliente->id,
 			'password' => Hash::make("cumbre200"),
 		]);
