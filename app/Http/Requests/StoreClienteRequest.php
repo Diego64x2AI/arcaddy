@@ -112,6 +112,7 @@ class StoreClienteRequest extends FormRequest
 			'cartelera_item_fecha.*.*' => 'nullable',
 			'cartelera_item_lugar.*.*' => 'nullable',
 			'cartelera_item_descripcion.*.*' => 'nullable',
+			'cartelera_item_inter.*.*' => 'nullable|sometimes',
 		];
 	}
 }

@@ -55,7 +55,7 @@
 									<input class="input-underline" name="cartelera_item_lugar[{{ $key }}][]" type="text" value="{{$cartelera->lugar}}" placeholder="Lugar / Escenario">
 								</div>
 								<div>
-									<input name="cartelera_item_inter[{{ $key }}][]" type="checkbox" value="on" @if($cartelera->inter) checked @endif> break
+									<input name="cartelera_item_inter[{{ $key }}][{{ $loop->index }}]" type="checkbox" value="on" @if($cartelera->inter) checked @endif> break
 								</div>
 								<div class="mb-2 col-span-2">
 									<textarea class="input-border" name="cartelera_item_descripcion[{{ $key }}][]" rows="2" placeholder="Descripción">{{$cartelera->descripcion}}</textarea>

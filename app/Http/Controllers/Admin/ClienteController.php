@@ -500,7 +500,6 @@ class ClienteController extends Controller
 		}
 		// cartelera
 		if (isset($campos['cartelera_cat_nombre']) && count($campos['cartelera_cat_nombre']) > 0) {
-			// ClienteBanner::where('cliente_id', $cliente->id)->delete();
 			ClienteCartelera::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['cartelera_cat_nombre'] as $key => $categoria_nombre) {
 				$categoria_nombre = strtolower($categoria_nombre);
