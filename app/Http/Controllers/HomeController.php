@@ -188,6 +188,9 @@ END:VCALENDAR";
 		if (strpos($_SERVER['HTTP_HOST'], 'oce-geli-ra.mx') !== false && $slug !== 'gelicart') {
 			header("Location: https://oce-geli-ra.mx/gelicart");
 			exit();
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'cumbre200.mundoejecutivo.com.mx') !== false && $slug !== 'cumbre200') {
+			header("Location: https://cumbre200.mundoejecutivo.com.mx/cumbre200");
+			exit();
 		} elseif (strpos($_SERVER['HTTP_HOST'], 'oce-eg-ra.mx') !== false && $slug !== 'enterogermina') {
 			header("Location: https://oce-eg-ra.mx/enterogermina");
 			exit();
