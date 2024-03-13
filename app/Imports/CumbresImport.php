@@ -57,12 +57,14 @@ class CumbresImport implements ToModel, WithHeadingRow, WithBatchInserts
 			'codigo' => $elCodigo,
 			'usado'  => 0,
 		]);
-		ClienteUserFieldValue::updateOrCreate([
-			'user_id' => $user->id,
-			'campo_id' => 2,
-		], [
-			'valor' => $row['telefono'],
-		]);
+		if (trim($row['telefono']) !== '') {
+			ClienteUserFieldValue::updateOrCreate([
+				'user_id' => $user->id,
+				'campo_id' => 2,
+			], [
+				'valor' => $row['telefono'],
+			]);
+		}
 		return $user;
 	}
 
