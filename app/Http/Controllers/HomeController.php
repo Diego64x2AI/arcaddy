@@ -2,23 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use DateInterval;
 use App\Models\Juego;
 use App\Models\UserQr;
+use DateTimeImmutable;
 use App\Models\Cliente;
-use App\Models\ClienteCartelera;
 use App\Models\ClienteQuiz;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
 use App\Models\QuizRespuestas;
+use App\Models\ClienteCartelera;
 use App\Models\ProductoCanjeado;
 use App\Models\ClienteQuizPregunta;
+use Eluceo\iCal\Domain\Entity\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\ClienteProductoDigital;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\VotacionesParticipantes;
+use Eluceo\iCal\Domain\Entity\Calendar;
+use Eluceo\iCal\Domain\ValueObject\Uri;
+use Eluceo\iCal\Domain\ValueObject\Alarm;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Eluceo\iCal\Domain\ValueObject\DateTime;
+use Eluceo\iCal\Domain\ValueObject\Location;
+use Eluceo\iCal\Domain\ValueObject\TimeSpan;
+use Eluceo\iCal\Domain\ValueObject\Organizer;
+use Eluceo\iCal\Domain\ValueObject\Attachment;
+use Eluceo\iCal\Domain\ValueObject\EmailAddress;
+use Eluceo\iCal\Presentation\Factory\CalendarFactory;
+use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
 
 class HomeController extends Controller
 {
@@ -93,31 +107,35 @@ END:VCALENDAR";
 
 	public function cliente_evento($slug, ClienteCartelera $ClienteCartelera)
 	{
-		$cliente = Cliente::where('slug', $slug)->firstOrFail();
-		$titulo = $ClienteCartelera->titulo;
-		$archivo = "evento-arcaddy-{$ClienteCartelera->id}";
-		$descripcion = $ClienteCartelera->descripcion;
-		$inicio = date('Ymd\THis', strtotime("{$ClienteCartelera->fecha} {$ClienteCartelera->hora}"));
-		$fin = date('Ymd\THis', strtotime("+1 hour", strtotime("{$ClienteCartelera->fecha} {$ClienteCartelera->hora}")));
-		$contenido_ics = "BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//ARCADDY//".$cliente->nombre."//ES
-BEGIN:VEVENT
-UID:unique-id-" . $ClienteCartelera->id . "
-DTSTAMP:" . date('Ymd\THis') . "Z
-DTSTART:" . $inicio . "
-DTEND:" . $fin . "
-SUMMARY:" . $titulo . "
-DESCRIPTION:" . $descripcion . "
-LOCATION:".$ClienteCartelera->lugar."
-END:VEVENT
-END:VCALENDAR";
-		// Crear una respuesta HTTP
-		$response = new Response($contenido_ics);
-		// Configurar encabezados para que el navegador reconozca el archivo .ics
-		$response->header('Content-type', 'text/calendar; charset=utf-8');
-		$response->header('Content-Disposition', 'attachment; filename=' . $archivo . '.ics');
-		return $response;
+		// 1. Create Event domain entity.
+		$event = new Event();
+		$event
+			->setSummary($ClienteCartelera->titulo)
+			->setDescription($ClienteCartelera->descripcion)
+			->setLocation(
+				(new Location($ClienteCartelera->lugar)) //->withGeographicPosition(new GeographicPosition(47.557579, 10.749704))
+			)
+			->setOccurrence(
+				new TimeSpan(
+					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} ".\Carbon\Carbon::parse($ClienteCartelera->hora)->format('H:i:s')), true),
+					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} ".\Carbon\Carbon::parse($ClienteCartelera->hora)->addHour()->format('H:i:s')), true)
+				)
+			)
+			->addAlarm(
+				new Alarm(
+					new Alarm\DisplayAction('Evento en 15 minutos'),
+					(new Alarm\RelativeTrigger(DateInterval::createFromDateString('-15 minutes')))->withRelationToEnd()
+				)
+			)
+		;
+		// 2. Create Calendar domain entity.
+		$calendar = new Calendar([$event]);
+		// 3. Transform domain entity into an iCalendar component
+		$componentFactory = new CalendarFactory();
+		$calendarComponent = $componentFactory->createCalendar($calendar);
+		header('Content-Type: text/calendar; charset=utf-8');
+		header('Content-Disposition: attachment; filename="evento-arcaddy-' . $ClienteCartelera->id . '.ics"');
+		echo $calendarComponent;
 	}
 
 	/**
@@ -210,12 +228,10 @@ END:VCALENDAR";
 		} elseif (strpos($_SERVER['HTTP_HOST'], 'pananews.panama.com.mx') !== false && $slug !== 'panama') {
 			header("Location: https://pananews.panama.com.mx/panama");
 			exit();
-		}
-		elseif (strpos($_SERVER['HTTP_HOST'], 'stitch.betterware.com.mx') !== false && $slug !== 'stitch') {
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'stitch.betterware.com.mx') !== false && $slug !== 'stitch') {
 			header("Location: https://stitch.betterware.com.mx/stitch");
 			exit();
-		}
-		elseif (strpos($_SERVER['HTTP_HOST'], 'chandrany.com') !== false && $slug !== 'chandrany') {
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'chandrany.com') !== false && $slug !== 'chandrany') {
 			header("Location: https://chandrany.com/chandrany");
 			exit();
 		}
@@ -493,18 +509,20 @@ END:VCALENDAR";
 						'puntos' => $puntos,
 					]);
 				} else {
-					QuizRespuestas::updateOrCreate([
-						'user_id' => $request->user()->id,
-						'quiz_id' => $quiz->id,
-						'pregunta_id' => $pregunta->id,
-						'respuesta_id' => $respuesta->id,
-					],
-					[
-						'puntos' => $puntos,
-						'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
-						'tipo' => $pregunta->tipo,
-						'correcta' => $respuesta->correcta,
-					]);
+					QuizRespuestas::updateOrCreate(
+						[
+							'user_id' => $request->user()->id,
+							'quiz_id' => $quiz->id,
+							'pregunta_id' => $pregunta->id,
+							'respuesta_id' => $respuesta->id,
+						],
+						[
+							'puntos' => $puntos,
+							'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
+							'tipo' => $pregunta->tipo,
+							'correcta' => $respuesta->correcta,
+						]
+					);
 				}
 			}
 			return response()->json([
@@ -524,19 +542,21 @@ END:VCALENDAR";
 				'puntos' => $puntos,
 			]);
 		} else {
-			QuizRespuestas::updateOrCreate([
-				'user_id' => $request->user()?->id,
-				'quiz_id' => $quiz->id,
-				'pregunta_id' => $pregunta->id,
-				'respuesta_id' => $respuesta->id,
-			],
-			[
-				'puntos' => $puntos,
-				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
-				'tipo' => $pregunta->tipo,
-				'correcta' => $respuesta->correcta,
+			QuizRespuestas::updateOrCreate(
+				[
+					'user_id' => $request->user()?->id,
+					'quiz_id' => $quiz->id,
+					'pregunta_id' => $pregunta->id,
+					'respuesta_id' => $respuesta->id,
+				],
+				[
+					'puntos' => $puntos,
+					'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
+					'tipo' => $pregunta->tipo,
+					'correcta' => $respuesta->correcta,
 
-			]);
+				]
+			);
 		}
 		return response()->json([
 			'status' => true,
