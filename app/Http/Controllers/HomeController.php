@@ -101,6 +101,7 @@ END:VCALENDAR";
 		$fin = date('Ymd\THis', strtotime("+1 hour", strtotime("{$ClienteCartelera->fecha} {$ClienteCartelera->hora}")));
 		$contenido_ics = "BEGIN:VCALENDAR
 VERSION:2.0
+PRODID:-//ARCADDY//".$cliente->nombre."//ES
 BEGIN:VEVENT
 UID:unique-id-" . $ClienteCartelera->id . "
 DTSTAMP:" . date('Ymd\THis') . "Z
