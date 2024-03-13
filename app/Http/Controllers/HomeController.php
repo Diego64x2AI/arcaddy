@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Juego;
 use App\Models\UserQr;
 use App\Models\Cliente;
+use App\Models\ClienteCartelera;
 use App\Models\ClienteQuiz;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,13 +25,7 @@ class HomeController extends Controller
 
 	public function guardarEnCalendario($clienteid, $eventoid)
 	{
-
 		date_default_timezone_set('America/Mexico_City');
-
-
-
-
-
 		switch ($eventoid) {
 			case 1:
 				$titulo = "Humanos vs Máquinas";
@@ -93,6 +88,34 @@ END:VCALENDAR";
 		$response->header('Content-type', 'text/calendar; charset=utf-8');
 		$response->header('Content-Disposition', 'attachment; filename=' . $archivo . '.ics');
 
+		return $response;
+	}
+
+	public function cliente_evento($slug, ClienteCartelera $ClienteCartelera)
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$titulo = $ClienteCartelera->titulo;
+		$archivo = "evento-arcaddy-{$ClienteCartelera->id}";
+		$descripcion = $ClienteCartelera->descripcion;
+		$inicio = date('Ymd\THis', strtotime("{$ClienteCartelera->fecha} {$ClienteCartelera->hora}"));
+		$fin = date('Ymd\THis', strtotime("+1 hour", strtotime("{$ClienteCartelera->fecha} {$ClienteCartelera->hora}")));
+		$contenido_ics = "BEGIN:VCALENDAR
+		VERSION:2.0
+		BEGIN:VEVENT
+		UID:unique-id-" . $ClienteCartelera->id . "
+		DTSTAMP:" . date('Ymd\THis') . "Z
+		DTSTART:" . $inicio . "
+		DTEND:" . $fin . "
+		SUMMARY:" . $titulo . "
+		DESCRIPTION:" . $descripcion . "
+		LOCATION:".$ClienteCartelera->lugar."
+		END:VEVENT
+		END:VCALENDAR";
+		// Crear una respuesta HTTP
+		$response = new Response($contenido_ics);
+		// Configurar encabezados para que el navegador reconozca el archivo .ics
+		$response->header('Content-type', 'text/calendar; charset=utf-8');
+		$response->header('Content-Disposition', 'attachment; filename=' . $archivo . '.ics');
 		return $response;
 	}
 

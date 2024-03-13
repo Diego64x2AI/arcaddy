@@ -50,13 +50,6 @@
 @endif
 <script>
 	window.addEventListener('load', function() {
-		$('.accordeon-link').click(function(){
-			// close other accordions
-			$('.accordeon-link').not(this).removeClass('open').find('i').removeClass('fa-minus').addClass('fa-plus');
-			$('.accordeon-link').not(this).next().slideUp();
-			$(this).next().slideToggle();
-			$(this).toggleClass('open').find('i').toggleClass('fa-plus fa-minus');
-		});
 		$('.menu-item-link').click(function(e) {
 			e.preventDefault();
 			const nombre = $(this).data('nombre');

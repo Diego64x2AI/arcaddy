@@ -170,7 +170,14 @@
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			});
-			$('body').css('paddingTop', $('#header').innerHeight())
+			$('body').css('paddingTop', $('#header').innerHeight());
+			$('.accordeon-link').click(function(){
+				// close other accordions
+				$('.accordeon-link').not(this).removeClass('open').find('i').removeClass('fa-minus').addClass('fa-plus');
+				$('.accordeon-link').not(this).next().slideUp();
+				$(this).next().slideToggle();
+				$(this).toggleClass('open').find('i').toggleClass('fa-plus fa-minus');
+			});
 			if ($('.isotope-votaciones').length > 0) {
 				const iso = new Isotope( '.isotope-votaciones', {
 					itemSelector: '.isotope-votaciones-item',

@@ -1,10 +1,5 @@
 <?php
 
-use App\Models\User;
-use App\Models\Pedido;
-use App\Models\Cliente;
-use App\Notifications\PedidoCreado;
-use App\Notifications\RegistroCodigo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CarritoController;
@@ -150,6 +145,7 @@ Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('re
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
 Route::get('/{slug}/start-game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
 Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cliente.marco');
+Route::get('/{slug}/evento/{ClienteCartelera}', [HomeController::class, 'cliente_evento'])->name('cliente.download.event');
 
 Route::middleware('auth')->group(function () {
 	Route::post('/{slug}/save-game/{claveJuego}', [HomeController::class, 'saveGame'])->name('cliente.save-game');
