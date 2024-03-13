@@ -100,17 +100,17 @@ END:VCALENDAR";
 		$inicio = date('Ymd\THis', strtotime("{$ClienteCartelera->fecha} {$ClienteCartelera->hora}"));
 		$fin = date('Ymd\THis', strtotime("+1 hour", strtotime("{$ClienteCartelera->fecha} {$ClienteCartelera->hora}")));
 		$contenido_ics = "BEGIN:VCALENDAR
-		VERSION:2.0
-		BEGIN:VEVENT
-		UID:unique-id-" . $ClienteCartelera->id . "
-		DTSTAMP:" . date('Ymd\THis') . "Z
-		DTSTART:" . $inicio . "
-		DTEND:" . $fin . "
-		SUMMARY:" . $titulo . "
-		DESCRIPTION:" . $descripcion . "
-		LOCATION:".$ClienteCartelera->lugar."
-		END:VEVENT
-		END:VCALENDAR";
+VERSION:2.0
+BEGIN:VEVENT
+UID:unique-id-" . $ClienteCartelera->id . "
+DTSTAMP:" . date('Ymd\THis') . "Z
+DTSTART:" . $inicio . "
+DTEND:" . $fin . "
+SUMMARY:" . $titulo . "
+DESCRIPTION:" . $descripcion . "
+LOCATION:".$ClienteCartelera->lugar."
+END:VEVENT
+END:VCALENDAR";
 		// Crear una respuesta HTTP
 		$response = new Response($contenido_ics);
 		// Configurar encabezados para que el navegador reconozca el archivo .ics
