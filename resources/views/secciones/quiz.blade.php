@@ -29,7 +29,7 @@ if ($quiz->random) {
 			<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
 			@endauth
 			<div class="text-center flex flex-row justify-center items-center mt-5">
-				<a href="javascript:void(0);" class="btn-pill quiz-again">Volver a jugar</a>
+				<a href="javascript:void(0);" class="btn-pill quiz-again">{{ $quiz->boton_text }}</a>
 			</div>
 		</div>
 		<!-- Slider main container -->

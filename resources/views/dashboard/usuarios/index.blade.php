@@ -87,20 +87,16 @@
 			table {
 				display: inline-table !important;
 			}
-
 			thead tr:not(:first-child) {
 				display: none;
 			}
 		}
-
 		td {
 			text-align: center;
 		}
-
 		td:not(:last-child) {
 			border-bottom: 0;
 		}
-
 		th:not(:last-child) {
 			border-bottom: 2px solid rgba(0, 0, 0, .1);
 		}

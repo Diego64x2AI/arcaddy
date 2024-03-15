@@ -21,6 +21,7 @@ class ClienteQuiz extends Model
 		'login',
 		'imagen',
 		'felicidades_text',
+		'boton_text',
 	];
 
 	/**

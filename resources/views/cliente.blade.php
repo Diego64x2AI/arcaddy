@@ -257,26 +257,6 @@
 					toast.addEventListener('mouseleave', Swal.resumeTimer)
 				}
 			});
-			$('.isotope-galeria-item').click(function(e) {
-				e.preventDefault();
-				const nombre = $(this).data('titulo');
-				const imagen = $(this).data('imagen');
-				let media = `<img class="w-full h-auto" src="${imagen}">`;
-				console.log('abrir', nombre, imagen);
-				Swal.fire({
-					title: `<div class="font-bold uppercase mt-5 text-base color">${nombre}</div>`,
-					icon: null,
-					html: `<div>${media}</div>`,
-					showCloseButton: true,
-					showCancelButton: false,
-					showConfirmButton: false,
-					focusConfirm: true,
-					buttonsStyling: false,
-					customClass: {
-						confirmButton: 'btn-pill',
-					},
-				});
-			});
 			$('.isotope-votaciones-item').click(function(e) {
 				e.preventDefault();
 				const nombre = $(this).data('nombre');

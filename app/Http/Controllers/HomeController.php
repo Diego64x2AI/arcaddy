@@ -393,12 +393,10 @@ END:VCALENDAR";
 
 	public function startGame($slug, $claveJuego)
 	{
-		$juego = Juego::where('clave', $claveJuego)->first();
-		$cliente = Cliente::find($juego->cliente_id);
+		$juego = Juego::with(['categoria'])->where('clave', $claveJuego)->firstOrFail();
+		$cliente = Cliente::findOrFail($juego->cliente_id);
 		if ($juego) {
-			if ($juego->juego_categoria_id === 1) {
-				return view('games.memory', compact('juego', 'cliente', 'slug', 'claveJuego'));
-			}
+			return view('games.'.$juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
 		} else {
 			return redirect()->route('cliente', $slug);
 		}

@@ -113,6 +113,8 @@ Route::middleware('role:admin')->group(function () {
 		Route::prefix('usuarios')->group(function () {
 			Route::get('/{cliente}', [UsuariosController::class, 'index'])->name('usuarios.index');
 			Route::get('/{cliente}/ajax', [UsuariosController::class, 'ajax'])->name('usuarios.ajax');
+			Route::get('/{cliente}/{user}/edit', [UsuariosController::class, 'edit'])->name('usuarios.edit');
+			Route::put('/{cliente}/{user}', [UsuariosController::class, 'update'])->name('usuarios.update');
 			Route::post('/{cliente}/{user}/delete', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
 			Route::get('/{cliente}/exportar', [UsuariosController::class, 'export'])->name('usuarios.export');
 			Route::get('/{cliente}/importar', [UsuariosController::class, 'import'])->name('usuarios.import');
