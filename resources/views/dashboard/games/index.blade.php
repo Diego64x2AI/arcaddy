@@ -76,8 +76,11 @@
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $juego->activo ? 'SI' : 'NO' }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
-								  <a href="{{route('games.edit', $juego->id)}}" class="text-sky-500">
+								  <a href="{{route('games.edit', ['game' => $juego->id])}}" class="text-sky-500">
 										<i class="fa fa-edit" aria-hidden="true"></i>
+									</a>
+									<a href="{{route('games.ranking.delete', ['game' => $juego->id])}}" class="text-purple-500 delete-score">
+										<i class="fa fa-eraser" aria-hidden="true"></i>
 									</a>
 									<form action="{{ route('games.destroy', ['game' => $juego->id]) }}" method="POST" class="inline delete-form">
 										@csrf
@@ -117,6 +120,24 @@
 				language: {
 					url: '{{ asset("es-ES.json") }}'
 				}
+			});
+			$('.delete-score').on('click', function(e) {
+				e.preventDefault();
+				Swal.fire({
+					title: '¿Estás seguro?',
+					text: "Una ves que elimines los registros del ranking no podrás recuperar la información.",
+					icon: null,
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'SI, eliminarlo',
+					cancelButtonText: 'Cancelar',
+					allowOutsideClick: false,
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = $(this).attr('href');
+					}
+				})
 			});
 			$('form.delete-form button').on('click', function(e) {
 				e.preventDefault();

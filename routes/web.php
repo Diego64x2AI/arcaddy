@@ -138,6 +138,7 @@ Route::middleware('role:admin')->group(function () {
 		// Route::resource('/productos', ProductoController::class);
 		Route::resource('/usuarios-cliente', UsuariosClienteController::class);
 		Route::resource('/games', GameController::class);
+		Route::get('/games/ranking/{game}/delete', [GameController::class, 'ranking_delete'])->name('games.ranking.delete');
 		Route::get('/games/borrar/{juegoid}', [GameController::class, 'borrar'])->name('games.borrar');
 	});
 });

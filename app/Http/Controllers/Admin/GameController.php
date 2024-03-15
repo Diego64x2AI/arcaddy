@@ -144,6 +144,12 @@ class GameController extends Controller
 		return view('dashboard.games.editar', compact('juego', 'clientes', 'cartas', 'cartasBack'));
 	}
 
+	public function ranking_delete(Juego $game)
+	{
+		$game->resultados()->delete();
+		return redirect()->route('games.index')->with('success', 'El ranking ha sido reseteado.');
+	}
+
 	public function update(Juego $game, Request $request)
 	{
 		// leer los datos directamente por slug por si el id es diferente en localhost y en el servidor
