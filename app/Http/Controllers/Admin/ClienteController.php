@@ -216,6 +216,7 @@ class ClienteController extends Controller
 			}
 			foreach ($campos['marco_id'] as $key => $id) {
 				$id = (int) $id;
+				$archivo = NULL;
 				// archivo viejo
 				if ($request->filled('marco_old.' . $key)) {
 					$archivo = $request->input('marco_old.' . $key);
@@ -223,18 +224,20 @@ class ClienteController extends Controller
 				if ($request->hasFile('marco_img.' . $key) && $request->file('marco_img.' . $key)->isValid()) {
 					$archivo = $request->file('marco_img.' . $key)->store('clientes/marco', 'public');
 				}
-				if ($id > 0) {
-					$marco = ClienteMarco::findOrFail($id);
-					$marco->update([
-						'archivo' => $archivo,
-						'titulo' => $campos['marco_titulo'][$key],
-					]);
-				} else {
-					ClienteMarco::insert([
-						'cliente_id' => $cliente->id,
-						'archivo' => $archivo,
-						'titulo' => $campos['marco_titulo'][$key],
-					]);
+				if ($archivo !== NULL) {
+					if ($id > 0) {
+						$marco = ClienteMarco::findOrFail($id);
+						$marco->update([
+							'archivo' => $archivo,
+							'titulo' => $campos['marco_titulo'][$key],
+						]);
+					} else {
+						ClienteMarco::insert([
+							'cliente_id' => $cliente->id,
+							'archivo' => $archivo,
+							'titulo' => $campos['marco_titulo'][$key],
+						]);
+					}
 				}
 			}
 		}
