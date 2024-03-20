@@ -161,7 +161,7 @@ class GameController extends Controller
 			'estatus' => 'required|numeric',
 			'dificultad' => 'required_if:categoria_id,'.$suffle_puzzle->id,
 			'images' => 'nullable|sometimes|array',
-			'images.*' => 'nullable|sometimesimage',
+			'images.*' => 'nullable|sometimes|image',
 		], [
 			'dificultad.required_if' => 'La dificultad es requerida para este tipo de juego.',
 			'imagen.required_if' => 'La imagen es requerida para este tipo de juego.',
