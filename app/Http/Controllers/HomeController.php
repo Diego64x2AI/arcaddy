@@ -393,8 +393,8 @@ END:VCALENDAR";
 
 	public function startGame($slug, $claveJuego)
 	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
 		$juego = Juego::with(['categoria'])->where('clave', $claveJuego)->firstOrFail();
-		$cliente = Cliente::findOrFail($juego->cliente_id);
 		if ($juego) {
 			return view('games.'.$juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
 		} else {

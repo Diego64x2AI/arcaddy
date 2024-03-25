@@ -70,7 +70,7 @@
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $juego->categoria->nombre}}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $juego->nombre }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
-									<a href="{{ route('cliente.start-game', [$juego->cliente_id, $juego->clave]) }}" target="_blank">
+									<a href="{{ route('cliente.start-game', [$juego->cliente->slug, $juego->clave]) }}" target="_blank">
 										Visitar
 									</a>
 								</td>
