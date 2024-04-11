@@ -13,6 +13,7 @@ use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
 use App\Models\QuizRespuestas;
 use App\Models\ClienteCartelera;
+use App\Models\ClienteMarcoGaleria;
 use App\Models\ProductoCanjeado;
 use App\Models\ClienteQuizPregunta;
 use Eluceo\iCal\Domain\Entity\Event;
@@ -193,6 +194,33 @@ END:VCALENDAR";
 		}
 		return view('marco', [
 			'cliente' => $cliente,
+		]);
+	}
+
+	public function cliente_marco_store($slug = '', Request $request)
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$seccion = $cliente->secciones()->where('seccion', 'marco')->firstOrFail();
+		// if is not active redirect to the client page
+		if (!$seccion->activa) {
+			abort(404);
+		}
+		$data = $request->validate([
+			'imagen' => 'required|image',
+			'compartir' => 'required|numeric|min:0|max:1',
+		]);
+		$imagen = $data['imagen']->store('clientes/marcos', 'public');
+		ClienteMarcoGaleria::create([
+			'cliente_id' => $cliente->id,
+			'user_id' => $request->user()?->id,
+			'archivo' => $imagen,
+			'aprobada' => false,
+			'compartida' => (bool) $data['compartir'],
+		]);
+		// response json
+		return response()->json([
+			'status' => true,
+			'message' => 'Imagen guardada con éxito.',
 		]);
 	}
 

@@ -71,7 +71,13 @@ class Cliente extends Model
 		'quiz',
 		'marco',
 		'cartelera',
+		'galeriamarcos',
 	];
+
+	public function galeriamarcos()
+	{
+		return $this->hasMany(ClienteMarcoGaleria::class, 'cliente_id', 'id')->where('aprobada', 1)->where('compartida', 0);
+	}
 
 	public function marco()
 	{

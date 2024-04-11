@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\CuponesController;
+use App\Http\Controllers\Admin\MarcoGaleriaController;
 use App\Http\Controllers\Admin\PedidosController;
 use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\UsuariosController;
@@ -86,6 +87,9 @@ Route::middleware('role:admin')->group(function () {
 			'except' => ['update']
 		]);
 		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
+		Route::resource('cliente.galerias', MarcoGaleriaController::class)->except(['create', 'show', 'edit', 'update']);
+		Route::get('/cliente/{cliente}/galerias/ajax', [MarcoGaleriaController::class, 'ajax'])->name('cliente.galerias.ajax');
+		Route::post('/cliente/{cliente}/galerias/{galeria}/atributo', [MarcoGaleriaController::class, 'update'])->name('cliente.galerias.update');
 		Route::prefix('cliente')->group(function () {
 			Route::prefix('{cliente}')->group(function () {
 				Route::prefix('quiz/{quiz}')->group(function () {
@@ -148,6 +152,7 @@ Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('re
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
 Route::get('/{slug}/game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
 Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cliente.marco');
+Route::post('/{slug}/marco', [HomeController::class, 'cliente_marco_store'])->name('cliente.marco.store');
 Route::get('/{slug}/evento/{ClienteCartelera}', [HomeController::class, 'cliente_evento'])->name('cliente.download.event');
 
 Route::middleware('auth')->group(function () {

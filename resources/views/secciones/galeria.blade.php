@@ -6,7 +6,7 @@
 	<div class="isotope-galeria grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
 		@foreach($cliente->galeria as $banner)
 		<div
-			class="isotope-item isotope-galeria-item border-transparent w-1/3 md:w-1/4 lg:w-1/6"
+			class="isotope-item isotope-galeria-item border-transparent w-full"
 			data-imagen="{{ asset('storage/'.$banner->archivo) }}"
 			data-titulo="{{ $banner->titulo }}"
 			data-key="{{ $loop->index }}"

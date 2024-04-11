@@ -26,7 +26,7 @@ class UsuariosController extends Controller
 		return view('dashboard.usuarios.index', [
 			'cliente' => $cliente,
 			'fields' => ClienteUserField::where('cliente_id', $cliente->id)->where('activo', 1)->get(),
-			'usuarios' => User::where('cliente_id', $cliente->id)->get(),
+			// 'usuarios' => User::where('cliente_id', $cliente->id)->get(),
 		]);
 	}
 
