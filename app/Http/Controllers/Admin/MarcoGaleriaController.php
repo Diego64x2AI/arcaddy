@@ -25,6 +25,10 @@ class MarcoGaleriaController extends Controller
 		return view('dashboard.marcos-galerias.index', compact('cliente', 'compartida'));
 	}
 
+	/**
+	 * Create a zip file with all images from a client
+	 * @param  \App\Models\Cliente  $cliente
+	 */
 	public function zip(Cliente $cliente)
 	{
 		$files = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->get();
@@ -40,6 +44,10 @@ class MarcoGaleriaController extends Controller
 		return response()->download($zipFilePath)->deleteFileAfterSend(true);
 	}
 
+	/**
+	 * Delete all images from a client
+	 * @param  \App\Models\Cliente  $cliente
+	 */
 	public function delete_all(Cliente $cliente)
 	{
 		$files = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->get();

@@ -1,10 +1,181 @@
 {
   "resources/js/app.js": {
-    "file": "assets/app.d0d1c53b.js",
+    "file": "assets/app.ff177b8e.js",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "imports": [
+      "_axios.6b484fa5.js",
+      "_jquery.09e1e4f4.js",
+      "_datatables.net.d29a5d95.js",
+      "_datatables.net-responsive.eee2bf44.js",
+      "_sortablejs.eadd31fc.js",
+      "_sweetalert2.32a3399d.js",
+      "_swiper.dc64b523.js",
+      "_jquery-match-height.95122023.js",
+      "_cropperjs.ddaa5768.js",
+      "_@tarekraafat.bc85b370.js",
+      "_isotope-layout.c959e3aa.js",
+      "_flyter.cfbf4ee0.js",
+      "_nouislider.37b943ec.js",
+      "_chart.js.30be5824.js",
+      "_alpinejs.4386c4b3.js",
+      "_ssr-window.10fb1174.js",
+      "_dom7.2ad7f54a.js",
+      "_outlayer.c97f36bf.js",
+      "_ev-emitter.2cbc153c.js",
+      "_get-size.6cee944b.js",
+      "_fizzy-ui-utils.bc673287.js",
+      "_desandro-matches-selector.cd724741.js",
+      "_masonry-layout.4227091c.js",
+      "_deepmerge.56c6c427.js",
+      "_dompurify.d7426dd3.js",
+      "_@kurkle.1fd9dacb.js"
+    ]
+  },
+  "_@kurkle.1fd9dacb.js": {
+    "file": "assets/@kurkle.1fd9dacb.js"
+  },
+  "_@popperjs.ea2b251e.js": {
+    "file": "assets/@popperjs.ea2b251e.js"
+  },
+  "_@tarekraafat.bc85b370.js": {
+    "file": "assets/@tarekraafat.bc85b370.js"
+  },
+  "_alpinejs.4386c4b3.js": {
+    "file": "assets/alpinejs.4386c4b3.js"
+  },
+  "_axios.6b484fa5.js": {
+    "file": "assets/axios.6b484fa5.js"
+  },
+  "_chart.js.30be5824.js": {
+    "file": "assets/chart.js.30be5824.js",
+    "imports": [
+      "_@kurkle.1fd9dacb.js"
+    ]
+  },
+  "_cropperjs.ddaa5768.js": {
+    "file": "assets/cropperjs.ddaa5768.js",
     "css": [
-      "assets/app.dca73c51.css"
+      "assets/cropperjs.af8c064b.css"
+    ]
+  },
+  "_datatables.net.d29a5d95.js": {
+    "file": "assets/datatables.net.d29a5d95.js",
+    "imports": [
+      "_jquery.09e1e4f4.js"
+    ]
+  },
+  "_datatables.net-responsive.eee2bf44.js": {
+    "file": "assets/datatables.net-responsive.eee2bf44.js",
+    "imports": [
+      "_jquery.09e1e4f4.js",
+      "_datatables.net.d29a5d95.js"
+    ]
+  },
+  "_deepmerge.56c6c427.js": {
+    "file": "assets/deepmerge.56c6c427.js"
+  },
+  "_desandro-matches-selector.cd724741.js": {
+    "file": "assets/desandro-matches-selector.cd724741.js"
+  },
+  "_dom7.2ad7f54a.js": {
+    "file": "assets/dom7.2ad7f54a.js",
+    "imports": [
+      "_ssr-window.10fb1174.js"
+    ]
+  },
+  "_dompurify.d7426dd3.js": {
+    "file": "assets/dompurify.d7426dd3.js",
+    "imports": [
+      "_@tarekraafat.bc85b370.js"
+    ]
+  },
+  "_ev-emitter.2cbc153c.js": {
+    "file": "assets/ev-emitter.2cbc153c.js",
+    "imports": [
+      "_@tarekraafat.bc85b370.js"
+    ]
+  },
+  "_fizzy-ui-utils.bc673287.js": {
+    "file": "assets/fizzy-ui-utils.bc673287.js",
+    "imports": [
+      "_desandro-matches-selector.cd724741.js"
+    ]
+  },
+  "_flyter.cfbf4ee0.js": {
+    "file": "assets/flyter.cfbf4ee0.js",
+    "imports": [
+      "_@tarekraafat.bc85b370.js",
+      "_deepmerge.56c6c427.js",
+      "_dompurify.d7426dd3.js"
+    ]
+  },
+  "_get-size.6cee944b.js": {
+    "file": "assets/get-size.6cee944b.js"
+  },
+  "_isotope-layout.c959e3aa.js": {
+    "file": "assets/isotope-layout.c959e3aa.js",
+    "imports": [
+      "_outlayer.c97f36bf.js",
+      "_get-size.6cee944b.js",
+      "_desandro-matches-selector.cd724741.js",
+      "_fizzy-ui-utils.bc673287.js",
+      "_masonry-layout.4227091c.js"
+    ]
+  },
+  "_jquery.09e1e4f4.js": {
+    "file": "assets/jquery.09e1e4f4.js",
+    "imports": [
+      "_@tarekraafat.bc85b370.js"
+    ]
+  },
+  "_jquery-match-height.95122023.js": {
+    "file": "assets/jquery-match-height.95122023.js",
+    "imports": [
+      "_jquery.09e1e4f4.js"
+    ]
+  },
+  "_masonry-layout.4227091c.js": {
+    "file": "assets/masonry-layout.4227091c.js",
+    "imports": [
+      "_outlayer.c97f36bf.js",
+      "_get-size.6cee944b.js"
+    ]
+  },
+  "_nouislider.37b943ec.js": {
+    "file": "assets/nouislider.37b943ec.js",
+    "css": [
+      "assets/nouislider.b53c61bf.css"
+    ]
+  },
+  "_outlayer.c97f36bf.js": {
+    "file": "assets/outlayer.c97f36bf.js",
+    "imports": [
+      "_ev-emitter.2cbc153c.js",
+      "_get-size.6cee944b.js",
+      "_fizzy-ui-utils.bc673287.js"
+    ]
+  },
+  "_sortablejs.eadd31fc.js": {
+    "file": "assets/sortablejs.eadd31fc.js"
+  },
+  "_ssr-window.10fb1174.js": {
+    "file": "assets/ssr-window.10fb1174.js"
+  },
+  "_sweetalert2.32a3399d.js": {
+    "file": "assets/sweetalert2.32a3399d.js",
+    "imports": [
+      "_@tarekraafat.bc85b370.js"
+    ]
+  },
+  "_swiper.dc64b523.js": {
+    "file": "assets/swiper.dc64b523.js",
+    "imports": [
+      "_ssr-window.10fb1174.js",
+      "_dom7.2ad7f54a.js"
+    ],
+    "css": [
+      "assets/swiper.447843e5.css"
     ]
   },
   "resources/css/app.css": {

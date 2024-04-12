@@ -9,9 +9,9 @@ export default defineConfig({
 		hmr: { host },
 		host,
 		https: {
-      key: fs.readFileSync('C:/laragon/etc/ssl/laragon.key'),
-      cert: fs.readFileSync('C:/laragon/etc/ssl/laragon.crt')
-    }
+			key: fs.readFileSync('C:/laragon/etc/ssl/laragon.key'),
+			cert: fs.readFileSync('C:/laragon/etc/ssl/laragon.crt')
+		}
 	},
 	plugins: [
 		laravel({
@@ -26,6 +26,17 @@ export default defineConfig({
 		alias: {
 			'@': '/resources/js',
 			'@assets': '/public'
+		}
+	},
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					if (id.includes('node_modules')) {
+						return id.toString().split('node_modules/')[1].split('/')[0].toString();
+					}
+				}
+			}
 		}
 	}
 });

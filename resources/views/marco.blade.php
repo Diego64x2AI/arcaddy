@@ -59,7 +59,7 @@
 		</div>
 		<input type="file" id="upload" accept="image/*" style="display: none;" />
 		<div id="info" style="display:none;"></div>
-		@if($cliente->marco->count() > 10)
+		@if($cliente->marco->count() > 1)
 		<div class="font-bold mt-3 text-center text-xl">Cambia el diseño:</div>
 		<div class="flex flex-row items-center justify-evenly md:justify-center gap-5 mt-3">
 			@foreach ($cliente->marco as $marco)
