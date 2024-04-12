@@ -39,6 +39,18 @@
 					<div class="text-center mb-5">
 						<img src="{{ asset('storage/'.$cliente->logo) }}" class="img-general inline-block object-cover max-w-xs">
 					</div>
+					<div class="flex flex-col md:flex-row items-center justify-center gap-5 mb-5">
+						<div>
+							<a href="{{ route('cliente.galerias.zip', ['cliente' => $cliente->id]) }}" class="rounded-full bg-sky-600 text-white px-5 py-2 block">
+								<i class="fa fa-download"></i> Descargar todo
+							</a>
+						</div>
+						<div>
+							<a href="{{ route('cliente.galerias.delete-all', ['cliente' => $cliente->id]) }}" class="delete-all rounded-full bg-red-600 text-white px-5 py-2 block">
+								<i class="fa fa-trash"></i> Eliminar todo
+							</a>
+						</div>
+					</div>
 					<table id="usuarios" class="w-full rounded-lg overflow-hidden sm:shadow-lg !my-5">
 						<thead class="text-white">
 							<tr class="bg-teal-400">
@@ -129,6 +141,23 @@
 				}).fail(function() {
 					Swal.fire( "error" );
 				});
+			});
+			$('body').on('click', '.delete-all', function(e) {
+				e.preventDefault();
+				Swal.fire({
+					title: '¿Estás seguro?',
+					text: "¡No podrás revertir esto!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: '¡Sí, eliminar!',
+					cancelButtonText: 'Cancelar'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location = $(this).attr('href');
+					}
+				})
 			});
 			$('body').on('click', '.delete-item', function(e) {
 				e.preventDefault();

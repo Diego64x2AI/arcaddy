@@ -89,6 +89,8 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
 		Route::resource('cliente.galerias', MarcoGaleriaController::class)->except(['create', 'show', 'edit', 'update']);
 		Route::get('/cliente/{cliente}/galerias/ajax', [MarcoGaleriaController::class, 'ajax'])->name('cliente.galerias.ajax');
+		Route::get('/cliente/{cliente}/galerias/zip', [MarcoGaleriaController::class, 'zip'])->name('cliente.galerias.zip');
+		Route::get('/cliente/{cliente}/galerias/delete-all', [MarcoGaleriaController::class, 'delete_all'])->name('cliente.galerias.delete-all');
 		Route::post('/cliente/{cliente}/galerias/{galeria}/atributo', [MarcoGaleriaController::class, 'update'])->name('cliente.galerias.update');
 		Route::prefix('cliente')->group(function () {
 			Route::prefix('{cliente}')->group(function () {

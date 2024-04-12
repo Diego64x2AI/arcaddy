@@ -25,6 +25,31 @@ class MarcoGaleriaController extends Controller
 		return view('dashboard.marcos-galerias.index', compact('cliente', 'compartida'));
 	}
 
+	public function zip(Cliente $cliente)
+	{
+		$files = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->get();
+		$zip = new \ZipArchive();
+		$zipFileName = 'galeria-'.$cliente->slug.'.zip';
+		$zipFilePath = storage_path('app/public/'.$zipFileName);
+		if ($zip->open($zipFilePath, \ZipArchive::CREATE) === TRUE) {
+			foreach ($files as $file) {
+				$zip->addFile(storage_path('app/public/'.$file->archivo), $file->archivo);
+			}
+			$zip->close();
+		}
+		return response()->download($zipFilePath)->deleteFileAfterSend(true);
+	}
+
+	public function delete_all(Cliente $cliente)
+	{
+		$files = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->get();
+		foreach ($files as $file) {
+			Storage::delete($file->archivo);
+			$file->delete();
+		}
+		return redirect()->route('cliente.galerias.index', ['cliente' => $cliente->id])->with('success', 'Imágenes eliminadas correctamente.');
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
