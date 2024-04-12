@@ -3,6 +3,14 @@
 	@if ($cliente->secciones()->where('seccion', 'galeriamarcos')->first()->mostrar_titulo)
 	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->titulo }}</div>
 	@endif
+	<div class="w-full max-w-[190px] mx-auto mb-8">
+		<a href="{{ route('cliente.marco', ['slug' => $cliente->slug]) }}" class="btn-pill !py-2 !px-4 !font-semibold !text-sm uppercase">
+			<div class="flex flex-row items-center">
+				<div class="mr-3"><i class="fa fa-user-circle text-2xl"></i></div>
+				<div>Subir tu foto a la galería</div>
+			</div>
+		</a>
+	</div>
 	<div class="isotope-galeriamarcos grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
 		@foreach($cliente->galeriamarcos as $banner)
 		<div
