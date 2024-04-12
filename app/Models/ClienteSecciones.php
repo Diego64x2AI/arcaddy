@@ -16,6 +16,7 @@ class ClienteSecciones extends Model
 		'mostrar_titulo',
 		'orden',
 		'activa',
+		'login',
 	];
 
 	public $timestamps = false;
@@ -23,6 +24,7 @@ class ClienteSecciones extends Model
 	protected $casts = [
 		'activa' => 'boolean',
 		'mostrar_titulo' => 'boolean',
+		'login' => 'boolean',
 	];
 
 	public function cliente()

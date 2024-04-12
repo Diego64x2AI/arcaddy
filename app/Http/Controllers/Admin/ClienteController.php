@@ -126,6 +126,7 @@ class ClienteController extends Controller
 					[
 						'orden' => $key,
 						'activa' => $request->boolean($seccion . '-activo'),
+						'login' => $request->boolean($seccion . '-login'),
 					]
 				);
 			}
@@ -435,6 +436,7 @@ class ClienteController extends Controller
 						'titulo' => $request->input("titulos.{$seccion}"),
 						'activa' => $request->boolean($seccion . '-activo'),
 						'mostrar_titulo' => $request->boolean($seccion . '-activo2'),
+						'login' => $request->boolean($seccion . '-login'),
 					]
 				);
 			}

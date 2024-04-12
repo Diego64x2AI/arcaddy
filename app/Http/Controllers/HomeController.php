@@ -13,12 +13,13 @@ use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
 use App\Models\QuizRespuestas;
 use App\Models\ClienteCartelera;
-use App\Models\ClienteMarcoGaleria;
 use App\Models\ProductoCanjeado;
+use App\Models\ClienteMarcoGaleria;
 use App\Models\ClienteQuizPregunta;
 use Eluceo\iCal\Domain\Entity\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use App\Models\ClienteProductoDigital;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\VotacionesParticipantes;
@@ -208,7 +209,30 @@ END:VCALENDAR";
 		$data = $request->validate([
 			'imagen' => 'required|image',
 			'compartir' => 'required|numeric|min:0|max:1',
+			'token' => 'required',
 		]);
+		// dd(env('RECAPTCHA_SECRET_KEY'), $data['token']);
+		// validate recaptcha make a http request to google
+		$response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+			'secret' => env('RECAPTCHA_SECRET_KEY'),
+			'response' => $data['token'],
+			'remoteip' => $request->ip(),
+		]);
+		// if the response is not ok
+		if (!$response->ok()) {
+			return response()->json([
+				'status' => false,
+				'message' => 'Error al validar el captcha.',
+			]);
+		}
+		$json = $response->json();
+		// validate the score and success
+		if (!$json['success'] || $json['score'] < 0.7) {
+			return response()->json([
+				'status' => false,
+				'message' => 'Lo sentimos tu IP es posiblemente de un BOT.',
+			]);
+		}
 		$imagen = $data['imagen']->store('clientes/marcos', 'public');
 		ClienteMarcoGaleria::create([
 			'cliente_id' => $cliente->id,
@@ -220,7 +244,7 @@ END:VCALENDAR";
 		// response json
 		return response()->json([
 			'status' => true,
-			'message' => 'Imagen guardada con éxito.',
+			'message' => 'Tu foto ha sido subida correctamente',
 		]);
 	}
 

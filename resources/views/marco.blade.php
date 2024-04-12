@@ -1,6 +1,8 @@
+@php
+	$rlogin = (bool) $cliente->secciones()->where('seccion', 'galeriamarcos')->first()?->login;
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,6 +24,12 @@
 		gtag('js', new Date());
 		gtag('config', 'G-40ZEQ4JZ0Y');
 	</script>
+	{!! htmlScriptTagJsApi([
+		'action' => 'marco',
+		'callback_then' => 'callbackThen',
+    'callback_catch' => 'callbackCatch',
+		'custom_validation' => 'myCustomValidation'
+		]) !!}
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
 </head>
@@ -77,7 +85,8 @@
 	</main>
 	@includeIf('componentes.footer')
 	<script>
-		let canvas, frame, userImage, uploadButton, bg_img;
+		let canvas, frame, userImage, uploadButton, bg_img, captcha;
+		const rlogin = {{ $rlogin ? 'true' : 'false' }};
 		function resizeCanvas() {
 			var maxWidth = 500; // Máximo ancho para escritorio
 			var width = window.innerWidth > maxWidth ? maxWidth : window.innerWidth;
@@ -92,6 +101,22 @@
 				canvas.renderAll();
 			}
 		}
+		function callbackThen(response){
+			// read HTTP status
+				console.log(response.status);
+
+				// read Promise object
+				response.json().then(function(data){
+						console.log(data);
+				});
+		}
+		function callbackCatch(error){
+				console.error('Error:', error)
+		}
+		const myCustomValidation = (response) => {
+			console.log(response);
+			captcha = response;
+		}
 		const uploadImage = async (compartir) => {
 			canvas.discardActiveObject().renderAll();
 			// Convertir el canvas de Fabric.js a data URL y luego a Blob
@@ -102,6 +127,7 @@
 			var formData = new FormData();
 			formData.append('imagen', blob);
 			formData.append('compartir', compartir);
+			formData.append('token', captcha);
 			$.ajax({
 				url: '{{ route('cliente.marco.store', ['slug' => $cliente->slug]) }}',
 				type: 'POST',
@@ -109,11 +135,12 @@
 				processData: false,
 				contentType: false,
 				success: function(response) {
+					console.log(response);
 					if (!compartir) {
 						Swal.fire({
-							title: '¡Listo!',
-							text: 'Tu foto ha sido subida correctamente',
-							icon: 'success',
+							title: response.status ? '¡Listo!' : 'ERROR',
+							text: response.message,
+							icon: response.status ? 'success' : 'error',
 							showConfirmButton: false,
 							timer: 2500
 						});
@@ -239,6 +266,28 @@
 				document.getElementById('upload').click();
 			};
 			document.getElementById('uploadBtn').onclick = function() {
+				// if the login is required
+				if (rlogin) {
+					// show dialog to confirm
+					Swal.fire({
+						title: 'Al parecer aún no eres usuario registrado',
+						html: `
+							<div class="text-center color2">
+								Regístrate para participar en esta y otras increíbles dinámicas
+							</div>
+						`,
+						icon: null,
+						showCloseButton: false,
+						showCancelButton: true,
+						confirmButtonText: 'REGISTRARME',
+						cancelButtonText: 'CANCELAR'
+					}).then(async (result) => {
+						if (result.isConfirmed) {
+							window.location.href = '{{ route('register', ['cliente' => $cliente->id]) }}';
+						}
+					});
+					return;
+				}
 				// show dialog to confirm
 				Swal.fire({
 					title: 'SUBIR TU FOTO A LA GALERÍA',
