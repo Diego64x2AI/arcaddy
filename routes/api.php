@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/rankings/{cliente}', [RankingsController::class, 'rankings'])->name('api.rankings')->where('cliente', '[0-9]+');
+Route::get('/rankings-quiz/{cliente}', [RankingsController::class, 'rankings_quiz'])->name('api.rankings.quiz')->where('cliente', '[0-9]+');

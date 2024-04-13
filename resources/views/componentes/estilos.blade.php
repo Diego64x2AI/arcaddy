@@ -39,6 +39,29 @@
 			@endif
 		}
 
+		.color-text-alternativo{
+			font-weight: 700;
+			margin-bottom: 12px;
+			color: {{ $cliente->color_bg }};
+		}
+		.titulo-alternativo{
+			font-weight: 700;
+			margin-bottom: 12px;
+			text-align: center;
+		}
+		.back-alternativo{
+
+			background-color: {{ $cliente->color_base }};
+
+		}
+		.contenedor-eres-nuevo{
+			text-align: center;
+			margin: 20px auto 0px;
+		}
+		.esq-redondas{
+			border-radius: 20px;
+		}
+
 		#header {
 			/*background-color: {{ $cliente->color_bg }} !important;*/
 			background-color: transparent !important;

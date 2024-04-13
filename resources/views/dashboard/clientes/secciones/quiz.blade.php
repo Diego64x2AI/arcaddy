@@ -15,8 +15,8 @@
 		<div class="ml-5 cursor-move handler2">Mover <i class="fas fa-ellipsis-v"></i></div>
 	</div>
 	<div class="py-20 text-center font-semibold text-2xl">
-		@if ($cliente->quiz->where('activa', true)->first() !== NULL)
-			Quiz activo: {{ $cliente->quiz->where('activa', true)->first()->nombre }}
+		@if ($cliente->quiz()->where('activa', true)->orderBy('id', 'desc')->first() !== NULL)
+			Quiz activo: {{ $cliente->quiz()->where('activa', true)->orderBy('id', 'desc')->first()->nombre }}
 		@else
 			No se encuentra ningun quiz activo
 		@endif

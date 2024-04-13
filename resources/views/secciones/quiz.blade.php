@@ -1,10 +1,19 @@
 @php
-$quiz = $cliente->quiz->where('activa', true)->first();
+$quiz = $cliente->quiz()->where('activa', true)->orderBy('id', 'desc')->first();
 list($r, $g, $b) = sscanf($cliente->color_bg, "#%02x%02x%02x");
 list($r2, $g2, $b2) = sscanf($cliente->color, "#%02x%02x%02x");
 $preguntas = $quiz->preguntas;
 if ($quiz->random) {
 	$preguntas = $preguntas->shuffle();
+}
+// if the quiz exists lets grab the ranking
+if ($quiz !== NULL && $quiz->score) {
+ $scores = \App\Models\QuizRespuestas::select('id', 'user_id', DB::raw('SUM(puntos) as total'))->where('quiz_id', $quiz->id)->whereNotNull('user_id')->orderBy('total', 'desc')->groupBy('user_id')->paginate(10);
+ $scoresAll = \App\Models\QuizRespuestas::select('id', 'user_id', DB::raw('SUM(puntos) as total'))->where('quiz_id', $quiz->id)->whereNotNull('user_id')->orderBy('total', 'desc')->groupBy('user_id')->get();
+ $mPosicion = -1;
+ if (auth()->check()) {
+ 	$mPosicion = (array_search(auth()->user()->id, $scoresAll->pluck('user_id')->toArray()) === false) ? -1 : array_search(auth()->user()->id, $scoresAll->pluck('user_id')->toArray());
+ }
 }
 @endphp
 @if ($quiz !== NULL)
@@ -241,6 +250,85 @@ if ($quiz->random) {
 		});
 	});
 </script>
+@if($quiz !== NULL && $quiz->score && $scores->total() > 0)
+<section id="ranking" class="py-5 text-center mx-auto w-full max-w-xl">
+	<div class="flex flex-row items-center justify-center">
+		<div class="titulo-modulo">Ranking</div>
+		<div class="color text-2xl font-extrabold lg:text-4xl ml-3 mt-1">Usuarios</div>
+	</div>
+	<div id="ranking-quiz-leaderboard" class="mt-5 lg:mt-10 px-5">
+	</div>
+	<div id="hasMorePagesQuiz" class="mt-5">
+		<a id="load-ranking-quiz" href="#" class="btn-pill">Cargar más</a>
+	</div>
+</section>
+<script>
+	let currentPageQuiz = 0;
+	let perPageQuiz = {{ $scores->perPage() }};
+	let hasMorePagesQuiz = true;
+	let lastPageQuiz = {{ $scores->lastPage() }};
+	let rakingLoadingQuiz = false;
+	let rankingFromQuiz = 0;
+	let rankingUIDQuiz = {{ auth()->check() ? auth()->user()->id : '0' }};
+	const ranking_urlQuiz = '{{ route("api.rankings.quiz", ["cliente" => $cliente->id]) }}';
+	let myUserPositionHtmlQuiz = '';
+	const mPosicion = {{ $mPosicion + 1 }};
+	@if ($mPosicion !== -1 && isset($scoresAll[$mPosicion]))
+		myUserPositionHtmlQuiz = `
+		<div class="flex flex-row items-center mb-2 tu-ranking-quiz-box">
+			<div class="color font-bold text-2xl text-center w-5">{{ $mPosicion + 1 }}</div>
+			<div class="flex flex-row grow ml-2 items-center px-3 py-2 rounded-3xl" style="background-color: {{ $cliente->color }}; color: {{ $cliente->color_bg }};">
+				{{--<div><img src="{{ asset('images/Imagen 73.jpg') }}" class="w-10 h-10 rounded-full" alt="Juan Carlos Perez"></div>--}}
+				<div class="grow text-left ml-2 font-semibold text-xs md:text-normal">
+					<div>TÚ</div>
+					<div>{{ $scoresAll[$mPosicion]['user']['name'] }}</div>
+				</div>
+				<div class="ml-auto font-extrabold text-xl">{{ $scoresAll[$mPosicion]['total'] }}</div>
+			</div>
+		</div>
+		`;
+	@endif
+	window.addEventListener('load', function() {
+		$('a#load-ranking-quiz').click(function(e){
+			e.preventDefault();
+			if (!hasMorePagesQuiz || rakingLoadingQuiz) {
+				return
+			}
+			currentPageQuiz++;
+			rakingLoadingQuiz = true;
+			$.get(`${ranking_urlQuiz}?page=${currentPageQuiz}`, function(data){
+				rankingFromQuiz = data.from;
+				$('.tu-ranking-quiz-box').hide();
+				data.data.forEach((item) => {
+					let style = (rankingFromQuiz === 1) ? ` style="background-color: {{ $cliente->color_base }}; color: {{ $cliente->color_bg }};"` : ``;
+					if (rankingUIDQuiz === item.user.id) {
+						style = ` style="background-color: {{ $cliente->color }}; color: {{ $cliente->color_bg }};"`;
+					}
+					$('#ranking-quiz-leaderboard').append(`
+					<div class="flex flex-row items-center mb-2">
+						<div class="color font-bold text-2xl text-center w-5">${rankingFromQuiz}</div>
+						<div class="flex flex-row grow ml-2 items-center px-3 py-2 rounded-3xl"${style}>
+							{{--<div><img src="{{ asset('images/Imagen 73.jpg') }}" class="w-10 h-10 rounded-full" alt="Juan Carlos Perez"></div>--}}
+							<div class="grow text-left ml-2 font-semibold text-xs md:text-normal">${item.user.name}</div>
+							<div class="ml-auto font-extrabold text-xl">${item.total}</div>
+						</div>
+					</div>
+					`);
+					rankingFromQuiz++;
+				});
+				if (mPosicion >= rankingFromQuiz) {
+					$('#ranking-quiz-leaderboard').append(myUserPositionHtmlQuiz);
+				}
+				if (data.next_page_url === null) {
+					hasMorePagesQuiz = false;
+					$('#hasMorePagesQuiz').hide(100);
+				}
+				rakingLoadingQuiz = false;
+			}, 'json');
+		}).trigger('click');
+	});
+</script>
+@endif
 <style>
 	.quiz-swal {
 		background-color: rgba({{ $r }},{{ $g }},{{ $b }},1)!important;
