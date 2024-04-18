@@ -86,7 +86,7 @@
 				</div>
 			@endforeach
 			<div class="flex items-center justify-end mt-4">
-				<a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login', ['cliente' => $cliente->id]) }}">
+				<a class="underline text-sm color" href="{{ route('login', ['cliente' => $cliente->id]) }}">
 					{{ __('Already registered?') }}
 				</a>
 				<x-button class="ml-4 btn-pill">
