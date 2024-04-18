@@ -1,10 +1,20 @@
 <x-app-layout>
 	<x-slot name="header">
-		<div class="flex items-center">
+		<div class="flex flex-row items-center">
 			<div>
 				<h2 class="font-semibold text-xl text-gray-800 leading-tight">
 					Games
 				</h2>
+			</div>
+			<div class="ml-auto">
+				<select id="nuevo-juego" class="input-underline" onchange="redirigir()">
+					<option value="" disabled selected>Nuevo juego</option>
+					@foreach($juegoCategorias as $cat)
+							<option value="{{route('games.create')}}?cat={{$cat->id}}">
+									{{$cat->nombre}}
+							</option>
+					@endforeach
+				</select>
 			</div>
 		</div>
 	</x-slot>
@@ -23,81 +33,60 @@
 						<div class="relative w-full p-4 text-white bg-lime-500 rounded-lg">{{ session('success') }}</div>
 					</div>
 					@endif
-					<div class="text-center mb-5">
-						
-					</div>
-
-					<?php /*<a href="{{route('games.create')}}?c=" class="bg-pink-600 text-white px-5 py-2 rounded-md" style="float: right;">Nuevo Memory</a> */?>
-					
-					
-					<select id="nuevo-juego" style="float: right;" onchange="redirigir()">
-                        <option value="" disabled selected>Nuevo juego</option>
-                        
-                        @foreach($juegoCategorias as $cat)
-                            <option value="{{route('games.create')}}?cat={{$cat->id}}">
-                                {{$cat->nombre}}
-                            </option>
-                        @endforeach
-                    </select>
-                    <div class="separador"></div>
-					
-					
-					
-					
-					
-					
-
-					<form method="GET" action="{{route('games.index')}}">
-						<select name="cliente_id" class="opc-filtro">
-                        <option value="0" >Cliente</option>
-                        @foreach($clientes as $cliente)
-                            <option value="{{$cliente->id}}" 
-                            	{{(isset($parametros['cliente_id']) && $parametros['cliente_id'] == $cliente->id)?'selected':''}}>{{$cliente->cliente}} </option>
-                        @endforeach
-                    	</select>
-                    	
-                    	<select name="categoria_id" class="opc-filtro">
-                        <option value="0" >Categoria</option>
-                        @foreach($juegoCategorias as $cat)
-                            <option value="{{$cat->id}}" 
-                            	{{(isset($parametros['categoria_id']) && $parametros['categoria_id'] == $cat->id)?'selected':''}}>{{$cat->nombre}} </option>
-                        @endforeach
-                    	</select>
-                    	<button type="submit" class="bg-lime-500 text-white px-5 py-2 rounded-md">Filtrar</button>
-                    	<div class="separador"></div>
+					<form method="GET" action="{{route('games.index')}}" class="mb-20">
+						<select name="cliente_id" class="input-underline opc-filtro">
+							<option value="0" >Cliente</option>
+							@foreach($clientes as $cliente)
+									<option value="{{$cliente->id}}"
+										{{(isset($parametros['cliente_id']) && $parametros['cliente_id'] == $cliente->id)?'selected':''}}>{{$cliente->cliente}} </option>
+							@endforeach
+						</select>
+						<select name="categoria_id" class="input-underline opc-filtro">
+							<option value="0" >Categoria</option>
+							@foreach($juegoCategorias as $cat)
+									<option value="{{$cat->id}}"
+										{{(isset($parametros['categoria_id']) && $parametros['categoria_id'] == $cat->id)?'selected':''}}>{{$cat->nombre}} </option>
+							@endforeach
+						</select>
+						<button type="submit" class="bg-lime-500 text-white px-5 py-2 rounded-md">Filtrar</button>
+						<div class="separador"></div>
 					</form>
-
-					
-
-					
-
-					<table id="usuarios" class="w-full rounded-lg overflow-hidden sm:shadow-lg !my-5">
+					<table id="games" class="w-full rounded-lg overflow-hidden sm:shadow-lg !my-5">
 						<thead class="text-white">
 							<tr class="bg-teal-400">
-								<th class="p-3">Cliente</th>
-								<th class="p-2">Categría</th>
-								<th class="p-3">Nombre</th>
-								<th class="p-1">Activo</th>
-								<th class="p-3" width="110px">Opciones
+								<th class="p-3 !text-center">Cliente</th>
+								<th class="p-2 !text-center">Categoría</th>
+								<th class="p-3 !text-center">Nombre</th>
+								<th class="p-3 !text-center">Link</th>
+								<th class="p-3 !text-center">Activo</th>
+								<th class="p-3 !text-center">Opciones
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach ($juegos as $juego)
 							<tr>
-								<td class="border-grey-light border hover:bg-gray-100 p-3">{{ $juego->cliente->cliente }}</td>
-								<td class="border-grey-light border hover:bg-gray-100 p-2">{{ $juego->categoria->nombre}}</td>
-								<td class="border-grey-light border hover:bg-gray-100 p-3">{{ $juego->nombre }}</td>
-								<td class="border-grey-light border hover:bg-gray-100 p-1 text-center">{{ $juego->activo }}</td>
-							
-								
-									
-								<td class="border-grey-light border hover:bg-gray-100 p-3">
-								    	<a href="{{route('games.edit',$juego->id)}}" class="text-sky-500">
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $juego->cliente->cliente }}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $juego->categoria->nombre}}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $juego->nombre }}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									<a href="{{ route('cliente.start-game', [$juego->cliente->slug, $juego->clave]) }}" target="_blank">
+										Visitar
+									</a>
+								</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $juego->activo ? 'SI' : 'NO' }}</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+								  <a href="{{route('games.edit', ['game' => $juego->id])}}" class="text-sky-500">
 										<i class="fa fa-edit" aria-hidden="true"></i>
 									</a>
-									
-									<a href="{{ route('games.borrar',$juego->id) }}" class="text-red-400 hover:text-red-600 delete-form" onclick="return confirm('¿Estás seguro de que deseas eliminar este juego?')"><i class="fa fa-trash"></i></a>
+									<a href="{{route('games.ranking.delete', ['game' => $juego->id])}}" class="text-purple-500 delete-score">
+										<i class="fa fa-eraser" aria-hidden="true"></i>
+									</a>
+									<form action="{{ route('games.destroy', ['game' => $juego->id]) }}" method="POST" class="inline delete-form">
+										@csrf
+										@method('DELETE')
+										<button type="submit" class="text-red-400 hover:text-red-600 delete-form"><i class="fa fa-trash"></i></button>
+									</form>
 								</td>
 							</tr>
 							@endforeach
@@ -109,14 +98,69 @@
 	</div>
 	@section('js')
 	 <script>
-        function redirigir() {
-          var select = document.getElementById("nuevo-juego");
-          var selectedOption = select.options[select.selectedIndex];
-          if (selectedOption.value !== "") {
-            window.location.href = selectedOption.value;
-          }
-        }
-      </script>
+		function redirigir() {
+			var select = document.getElementById("nuevo-juego");
+			var selectedOption = select.options[select.selectedIndex];
+			if (selectedOption.value !== "") {
+				window.location.href = selectedOption.value;
+			}
+		}
+		window.addEventListener('load', function() {
+			$('table#games').DataTable({
+				paging: true,
+				searching: true,
+				ordering:  true,
+				responsive: true,
+				pageLength: 25,
+				columnDefs: [
+					{ responsivePriority: 1, targets: 0 },
+					{ responsivePriority: 2, targets: 1 },
+					{ responsivePriority: 3, targets: 2 }
+        ],
+				language: {
+					url: '{{ asset("es-ES.json") }}'
+				}
+			});
+			$('.delete-score').on('click', function(e) {
+				e.preventDefault();
+				Swal.fire({
+					title: '¿Estás seguro?',
+					text: "Una ves que elimines los registros del ranking no podrás recuperar la información.",
+					icon: null,
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'SI, eliminarlo',
+					cancelButtonText: 'Cancelar',
+					allowOutsideClick: false,
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = $(this).attr('href');
+					}
+				})
+			});
+			$('form.delete-form button').on('click', function(e) {
+				e.preventDefault();
+				console.log('delete?')
+				const $form = $(this).parent();
+				Swal.fire({
+					title: '¿Estás seguro?',
+					text: "Una ves que elimines el juego no podrás recuperar la información.",
+					icon: null,
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'SI, eliminarlo',
+					cancelButtonText: 'Cancelar',
+					allowOutsideClick: false,
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$form.submit();
+					}
+				})
+			});
+		});
+	</script>
 	<style>
 		#nuevo-juego{
 			float: right;
@@ -149,6 +193,6 @@
 			border-bottom: 2px solid rgba(0, 0, 0, .1);
 		}
 	</style>
-	
+
 	@endsection
 </x-app-layout>

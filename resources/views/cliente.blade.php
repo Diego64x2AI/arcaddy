@@ -170,7 +170,14 @@
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			});
-			$('body').css('paddingTop', $('#header').innerHeight())
+			$('body').css('paddingTop', $('#header').innerHeight());
+			$('.accordeon-link').click(function(){
+				// close other accordions
+				$('.accordeon-link').not(this).removeClass('open').find('i').removeClass('fa-minus').addClass('fa-plus');
+				$('.accordeon-link').not(this).next().slideUp();
+				$(this).next().slideToggle();
+				$(this).toggleClass('open').find('i').toggleClass('fa-plus fa-minus');
+			});
 			if ($('.isotope-votaciones').length > 0) {
 				const iso = new Isotope( '.isotope-votaciones', {
 					itemSelector: '.isotope-votaciones-item',
@@ -249,26 +256,6 @@
 					toast.addEventListener('mouseenter', Swal.stopTimer)
 					toast.addEventListener('mouseleave', Swal.resumeTimer)
 				}
-			});
-			$('.isotope-galeria-item').click(function(e) {
-				e.preventDefault();
-				const nombre = $(this).data('titulo');
-				const imagen = $(this).data('imagen');
-				let media = `<img class="w-full h-auto" src="${imagen}">`;
-				console.log('abrir', nombre, imagen);
-				Swal.fire({
-					title: `<div class="font-bold uppercase mt-5 text-base color">${nombre}</div>`,
-					icon: null,
-					html: `<div>${media}</div>`,
-					showCloseButton: true,
-					showCancelButton: false,
-					showConfirmButton: false,
-					focusConfirm: true,
-					buttonsStyling: false,
-					customClass: {
-						confirmButton: 'btn-pill',
-					},
-				});
 			});
 			$('.isotope-votaciones-item').click(function(e) {
 				e.preventDefault();

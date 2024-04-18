@@ -24,8 +24,12 @@ input:checked ~ .dot {
 	flex-direction: row!important;
 }
 
+.swal2-title {
+	line-height: 1em!important;
+}
+
 .swal2-html-container {
-	margin: 1em 0.6em .3em!important;
+	margin: 1em 0.8em .3em!important;
 }
 
 .swal2-popup {

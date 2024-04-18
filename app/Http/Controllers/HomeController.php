@@ -2,35 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use DateInterval;
 use App\Models\Juego;
 use App\Models\UserQr;
+use DateTimeImmutable;
 use App\Models\Cliente;
 use App\Models\ClienteQuiz;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
 use App\Models\QuizRespuestas;
+use App\Models\ClienteCartelera;
 use App\Models\ProductoCanjeado;
+use App\Models\ClienteMarcoGaleria;
 use App\Models\ClienteQuizPregunta;
+use Eluceo\iCal\Domain\Entity\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use App\Models\ClienteProductoDigital;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\VotacionesParticipantes;
+use Eluceo\iCal\Domain\Entity\Calendar;
+use Eluceo\iCal\Domain\ValueObject\Uri;
+use Eluceo\iCal\Domain\ValueObject\Alarm;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Eluceo\iCal\Domain\ValueObject\DateTime;
+use Eluceo\iCal\Domain\ValueObject\Location;
+use Eluceo\iCal\Domain\ValueObject\TimeSpan;
+use Eluceo\iCal\Domain\ValueObject\Organizer;
+use Eluceo\iCal\Domain\ValueObject\Attachment;
+use Eluceo\iCal\Domain\ValueObject\EmailAddress;
+use Eluceo\iCal\Presentation\Factory\CalendarFactory;
+use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
 
 class HomeController extends Controller
 {
 
 	public function guardarEnCalendario($clienteid, $eventoid)
 	{
-
 		date_default_timezone_set('America/Mexico_City');
-
-
-
-
-
 		switch ($eventoid) {
 			case 1:
 				$titulo = "Humanos vs Máquinas";
@@ -96,6 +107,39 @@ END:VCALENDAR";
 		return $response;
 	}
 
+	public function cliente_evento($slug, ClienteCartelera $ClienteCartelera)
+	{
+		// 1. Create Event domain entity.
+		$event = new Event();
+		$event
+			->setSummary($ClienteCartelera->titulo)
+			->setDescription($ClienteCartelera->descripcion)
+			->setLocation(
+				(new Location($ClienteCartelera->lugar)) //->withGeographicPosition(new GeographicPosition(47.557579, 10.749704))
+			)
+			->setOccurrence(
+				new TimeSpan(
+					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} ".\Carbon\Carbon::parse($ClienteCartelera->hora)->format('H:i:s')), true),
+					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} ".\Carbon\Carbon::parse($ClienteCartelera->hora)->addHour()->format('H:i:s')), true)
+				)
+			)
+			->addAlarm(
+				new Alarm(
+					new Alarm\DisplayAction('Evento en 15 minutos'),
+					(new Alarm\RelativeTrigger(DateInterval::createFromDateString('-15 minutes')))->withRelationToEnd()
+				)
+			)
+		;
+		// 2. Create Calendar domain entity.
+		$calendar = new Calendar([$event]);
+		// 3. Transform domain entity into an iCalendar component
+		$componentFactory = new CalendarFactory();
+		$calendarComponent = $componentFactory->createCalendar($calendar);
+		header('Content-Type: text/calendar; charset=utf-8');
+		header('Content-Disposition: attachment; filename="evento-arcaddy-' . $ClienteCartelera->id . '.ics"');
+		echo $calendarComponent;
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -154,6 +198,56 @@ END:VCALENDAR";
 		]);
 	}
 
+	public function cliente_marco_store($slug = '', Request $request)
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$seccion = $cliente->secciones()->where('seccion', 'marco')->firstOrFail();
+		// if is not active redirect to the client page
+		if (!$seccion->activa) {
+			abort(404);
+		}
+		$data = $request->validate([
+			'imagen' => 'required|image',
+			'compartir' => 'required|numeric|min:0|max:1',
+			'token' => 'required',
+		]);
+		// dd(env('RECAPTCHA_SECRET_KEY'), $data['token']);
+		// validate recaptcha make a http request to google
+		$response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+			'secret' => env('RECAPTCHA_SECRET_KEY'),
+			'response' => $data['token'],
+			'remoteip' => $request->ip(),
+		]);
+		// if the response is not ok
+		if (!$response->ok()) {
+			return response()->json([
+				'status' => false,
+				'message' => 'Error al validar el captcha.',
+			]);
+		}
+		$json = $response->json();
+		// validate the score and success
+		if (!$json['success'] || $json['score'] < 0.7) {
+			return response()->json([
+				'status' => false,
+				'message' => 'Lo sentimos tu IP es posiblemente de un BOT.',
+			]);
+		}
+		$imagen = $data['imagen']->store('clientes/marcos', 'public');
+		ClienteMarcoGaleria::create([
+			'cliente_id' => $cliente->id,
+			'user_id' => $request->user()?->id,
+			'archivo' => $imagen,
+			'aprobada' => false,
+			'compartida' => (bool) $data['compartir'],
+		]);
+		// response json
+		return response()->json([
+			'status' => true,
+			'message' => 'Tu foto ha sido subida correctamente',
+		]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -186,12 +280,10 @@ END:VCALENDAR";
 		} elseif (strpos($_SERVER['HTTP_HOST'], 'pananews.panama.com.mx') !== false && $slug !== 'panama') {
 			header("Location: https://pananews.panama.com.mx/panama");
 			exit();
-		}
-		elseif (strpos($_SERVER['HTTP_HOST'], 'stitch.betterware.com.mx') !== false && $slug !== 'stitch') {
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'stitch.betterware.com.mx') !== false && $slug !== 'stitch') {
 			header("Location: https://stitch.betterware.com.mx/stitch");
 			exit();
-		}
-		elseif (strpos($_SERVER['HTTP_HOST'], 'chandrany.com') !== false && $slug !== 'chandrany') {
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'chandrany.com') !== false && $slug !== 'chandrany') {
 			header("Location: https://chandrany.com/chandrany");
 			exit();
 		}
@@ -353,12 +445,10 @@ END:VCALENDAR";
 
 	public function startGame($slug, $claveJuego)
 	{
-		$juego = Juego::where('clave', $claveJuego)->first();
-		$cliente = Cliente::find($juego->cliente_id);
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$juego = Juego::with(['categoria'])->where('clave', $claveJuego)->firstOrFail();
 		if ($juego) {
-			if ($juego->juego_categoria_id === 1) {
-				return view('games.memory', compact('juego', 'cliente', 'slug', 'claveJuego'));
-			}
+			return view('games.'.$juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
 		} else {
 			return redirect()->route('cliente', $slug);
 		}
@@ -469,18 +559,20 @@ END:VCALENDAR";
 						'puntos' => $puntos,
 					]);
 				} else {
-					QuizRespuestas::updateOrCreate([
-						'user_id' => $request->user()->id,
-						'quiz_id' => $quiz->id,
-						'pregunta_id' => $pregunta->id,
-						'respuesta_id' => $respuesta->id,
-					],
-					[
-						'puntos' => $puntos,
-						'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
-						'tipo' => $pregunta->tipo,
-						'correcta' => $respuesta->correcta,
-					]);
+					QuizRespuestas::updateOrCreate(
+						[
+							'user_id' => $request->user()->id,
+							'quiz_id' => $quiz->id,
+							'pregunta_id' => $pregunta->id,
+							'respuesta_id' => $respuesta->id,
+						],
+						[
+							'puntos' => $puntos,
+							'respuesta' => ($respuesta->respuesta === 'Otra...') ? $data['otra'] : $respuesta->respuesta,
+							'tipo' => $pregunta->tipo,
+							'correcta' => $respuesta->correcta,
+						]
+					);
 				}
 			}
 			return response()->json([
@@ -500,19 +592,21 @@ END:VCALENDAR";
 				'puntos' => $puntos,
 			]);
 		} else {
-			QuizRespuestas::updateOrCreate([
-				'user_id' => $request->user()?->id,
-				'quiz_id' => $quiz->id,
-				'pregunta_id' => $pregunta->id,
-				'respuesta_id' => $respuesta->id,
-			],
-			[
-				'puntos' => $puntos,
-				'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
-				'tipo' => $pregunta->tipo,
-				'correcta' => $respuesta->correcta,
+			QuizRespuestas::updateOrCreate(
+				[
+					'user_id' => $request->user()?->id,
+					'quiz_id' => $quiz->id,
+					'pregunta_id' => $pregunta->id,
+					'respuesta_id' => $respuesta->id,
+				],
+				[
+					'puntos' => $puntos,
+					'respuesta' => ($pregunta->tipo === 'open' || ($pregunta->tipo === 'option' && $pregunta->respuesta === 'Otra...')) ? strtolower($data['otra']) : $respuesta->respuesta,
+					'tipo' => $pregunta->tipo,
+					'correcta' => $respuesta->correcta,
 
-			]);
+				]
+			);
 		}
 		return response()->json([
 			'status' => true,

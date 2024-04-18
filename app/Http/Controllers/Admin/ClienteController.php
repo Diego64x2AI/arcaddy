@@ -24,6 +24,7 @@ use App\Models\ClientePatrocinadores;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
+use App\Models\ClienteCartelera;
 use App\Models\ClienteMarco;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -125,6 +126,7 @@ class ClienteController extends Controller
 					[
 						'orden' => $key,
 						'activa' => $request->boolean($seccion . '-activo'),
+						'login' => $request->boolean($seccion . '-login'),
 					]
 				);
 			}
@@ -142,6 +144,36 @@ class ClienteController extends Controller
 					'posicion' => $campos['flotantes_posicion'][$key],
 					'target' => $campos['flotantes_target'][$key],
 				]);
+			}
+		}
+		// cartelera
+		if (isset($campos['cartelera_cat_nombre']) && count($campos['cartelera_cat_nombre']) > 0) {
+			// ClienteBanner::where('cliente_id', $cliente->id)->delete();
+			ClienteCartelera::where('cliente_id', $cliente->id)->delete();
+			foreach ($campos['cartelera_cat_nombre'] as $key => $categoria_nombre) {
+				$categoria_nombre = strtolower($categoria_nombre);
+				foreach ($campos['cartelera_item_titulo'][$key] as $key2 => $nombre) {
+					$archivo = NULL;
+					// archivo viejo
+					if ($request->filled('cartelera_item_old.'.$key.'.'.$key2)) {
+						$archivo = $request->input('cartelera_item_old.'.$key.'.'.$key2);
+					}
+					if ($request->hasFile('cartelera_item_img.'.$key.'.'.$key2) && $request->file('cartelera_item_img.'.$key.'.'.$key2)->isValid()) {
+						$archivo = $request->file('cartelera_item_img.'.$key.'.'.$key2)->store('clientes/cartelera', 'public');
+					}
+					ClienteCartelera::insert([
+						'cliente_id' => $cliente->id,
+						'categoria' => $categoria_nombre,
+						'archivo' => $archivo,
+						'titulo' => $nombre,
+						'expositor' => $campos['cartelera_item_expositor'][$key][$key2],
+						'descripcion' => $campos['cartelera_item_descripcion'][$key][$key2],
+						'hora' => $campos['cartelera_item_hora'][$key][$key2],
+						'fecha' => $campos['cartelera_item_fecha'][$key][$key2],
+						'lugar' => $campos['cartelera_item_lugar'][$key][$key2],
+						'inter' => $request->boolean('cartelera_item_inter.'.$key.'.'.$key2),
+					]);
+				}
 			}
 		}
 		// menu
@@ -185,6 +217,7 @@ class ClienteController extends Controller
 			}
 			foreach ($campos['marco_id'] as $key => $id) {
 				$id = (int) $id;
+				$archivo = NULL;
 				// archivo viejo
 				if ($request->filled('marco_old.' . $key)) {
 					$archivo = $request->input('marco_old.' . $key);
@@ -192,18 +225,20 @@ class ClienteController extends Controller
 				if ($request->hasFile('marco_img.' . $key) && $request->file('marco_img.' . $key)->isValid()) {
 					$archivo = $request->file('marco_img.' . $key)->store('clientes/marco', 'public');
 				}
-				if ($id > 0) {
-					$marco = ClienteMarco::findOrFail($id);
-					$marco->update([
-						'archivo' => $archivo,
-						'titulo' => $campos['marco_titulo'][$key],
-					]);
-				} else {
-					ClienteMarco::insert([
-						'cliente_id' => $cliente->id,
-						'archivo' => $archivo,
-						'titulo' => $campos['marco_titulo'][$key],
-					]);
+				if ($archivo !== NULL) {
+					if ($id > 0) {
+						$marco = ClienteMarco::findOrFail($id);
+						$marco->update([
+							'archivo' => $archivo,
+							'titulo' => $campos['marco_titulo'][$key],
+						]);
+					} else {
+						ClienteMarco::insert([
+							'cliente_id' => $cliente->id,
+							'archivo' => $archivo,
+							'titulo' => $campos['marco_titulo'][$key],
+						]);
+					}
 				}
 			}
 		}
@@ -401,6 +436,7 @@ class ClienteController extends Controller
 						'titulo' => $request->input("titulos.{$seccion}"),
 						'activa' => $request->boolean($seccion . '-activo'),
 						'mostrar_titulo' => $request->boolean($seccion . '-activo2'),
+						'login' => $request->boolean($seccion . '-login'),
 					]
 				);
 			}
@@ -463,6 +499,35 @@ class ClienteController extends Controller
 						'boton_link' => $campos['menu_item_boton_link'][$key][$key2],
 						'canje_texto' => $campos['menu_item_canje_texto'][$key][$key2],
 						'descripcion' => $campos['menu_item_descripcion'][$key][$key2],
+					]);
+				}
+			}
+		}
+		// cartelera
+		if (isset($campos['cartelera_cat_nombre']) && count($campos['cartelera_cat_nombre']) > 0) {
+			ClienteCartelera::where('cliente_id', $cliente->id)->delete();
+			foreach ($campos['cartelera_cat_nombre'] as $key => $categoria_nombre) {
+				$categoria_nombre = strtolower($categoria_nombre);
+				foreach ($campos['cartelera_item_titulo'][$key] as $key2 => $nombre) {
+					$archivo = NULL;
+					// archivo viejo
+					if ($request->filled('cartelera_item_old.'.$key.'.'.$key2)) {
+						$archivo = $request->input('cartelera_item_old.'.$key.'.'.$key2);
+					}
+					if ($request->hasFile('cartelera_item_img.'.$key.'.'.$key2) && $request->file('cartelera_item_img.'.$key.'.'.$key2)->isValid()) {
+						$archivo = $request->file('cartelera_item_img.'.$key.'.'.$key2)->store('clientes/cartelera', 'public');
+					}
+					ClienteCartelera::insert([
+						'cliente_id' => $cliente->id,
+						'categoria' => $categoria_nombre,
+						'archivo' => $archivo,
+						'titulo' => $nombre,
+						'expositor' => $campos['cartelera_item_expositor'][$key][$key2],
+						'descripcion' => $campos['cartelera_item_descripcion'][$key][$key2],
+						'hora' => $campos['cartelera_item_hora'][$key][$key2],
+						'fecha' => $campos['cartelera_item_fecha'][$key][$key2],
+						'lugar' => $campos['cartelera_item_lugar'][$key][$key2],
+						'inter' => $request->boolean('cartelera_item_inter.'.$key.'.'.$key2),
 					]);
 				}
 			}

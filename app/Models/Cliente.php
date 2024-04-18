@@ -70,7 +70,14 @@ class Cliente extends Model
 		'juegos',
 		'quiz',
 		'marco',
+		'cartelera',
+		'galeriamarcos',
 	];
+
+	public function galeriamarcos()
+	{
+		return $this->hasMany(ClienteMarcoGaleria::class, 'cliente_id', 'id')->where('aprobada', 1)->where('compartida', 0);
+	}
 
 	public function marco()
 	{
@@ -85,6 +92,11 @@ class Cliente extends Model
 	public function menu()
 	{
 		return $this->hasMany(ClienteMenu::class, 'cliente_id', 'id');
+	}
+
+	public function cartelera()
+	{
+		return $this->hasMany(ClienteCartelera::class, 'cliente_id', 'id');
 	}
 
 	public function flotantes()

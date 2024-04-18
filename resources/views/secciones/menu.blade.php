@@ -25,6 +25,8 @@
 				data-link="{{ $menu->boton_link }}"
 				data-categoria="{{ $menu->categoria }}"
 				data-canje-texto="{{ $menu->canje_texto }}"
+				data-key="{{ $loop->index }}"
+				data-cat-key="{{ $key }}"
 			>
 				<div class="w-16 min-w-16 lg:min-w-full">
 					<img alt="{{ $menu->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow rounded-xl" src="{{ ($menu->archivo !== NULL && trim($menu->archivo) !== '') ? asset('storage/'.$menu->archivo) : asset('images/blank.png') }}">
@@ -50,12 +52,31 @@
 @endif
 <script>
 	window.addEventListener('load', function() {
-		$('.accordeon-link').click(function(){
-			// close other accordions
-			$('.accordeon-link').not(this).removeClass('open').find('i').removeClass('fa-minus').addClass('fa-plus');
-			$('.accordeon-link').not(this).next().slideUp();
-			$(this).next().slideToggle();
-			$(this).toggleClass('open').find('i').toggleClass('fa-plus fa-minus');
+		$('body').on('click', '.menu-prev', function(e) {
+			e.preventDefault();
+			let current = parseInt($('#current-menu').data('key'));
+			const catKey = parseInt($('#current-menu').data('cat-key'));
+			current--;
+			if (current < 0) {
+				current = $('section#menu .accordeon-link').eq(catKey).parent().find('.menu-item-link').length - 1;
+			}
+			$item = $('section#menu .accordeon-link').eq(catKey).parent().find('.menu-item-link').eq(current);
+			if ($item.length > 0) {
+				$item.click();
+			}
+		});
+		$('body').on('click', '.menu-next', function(e) {
+			e.preventDefault();
+			let current = parseInt($('#current-menu').data('key'));
+			const catKey = parseInt($('#current-menu').data('cat-key'));
+			current++;
+			if (current >= $('section#menu .accordeon-link').eq(catKey).parent().find('.menu-item-link').length) {
+				current = 0;
+			}
+			$item = $('section#menu .accordeon-link').eq(catKey).parent().find('.menu-item-link').eq(current);
+			if ($item.length > 0) {
+				$item.click();
+			}
 		});
 		$('.menu-item-link').click(function(e) {
 			e.preventDefault();
@@ -66,8 +87,10 @@
 			const precio = $(this).data('precio');
 			const boton = $(this).data('boton');
 			const link = $(this).data('link');
+			const key = parseInt($(this).data('key'));
+			const catKey = parseInt($(this).data('cat-key'));
 			const cantidad = ($(this).data('cantidad') !== null && jQuery.trim($(this).data('cantidad')) !== '') ? $(this).data('cantidad') : '';
-			let media = `<img class="w-full h-auto" src="${imagen}">`;
+			let media = `<img class="w-full h-auto z-10" src="${imagen}">`;
 			let canjeText = '';
 			let botonHtml = '';
 			if (canje !== '' && canje !== null) {
@@ -76,11 +99,15 @@
 			if (boton !== '' && link !== '') {
 				botonHtml = `<a href="${link}" target="_blank" class="btn-pill mt-3">${boton}</a>`;
 			}
+			const buttons = `
+			<a href="javascript:void(0);" class="menu-prev absolute z-50 top-1/2 left-3 text-3xl color"><i class="fa fa-chevron-left"></i></a>
+			<a href="javascript:void(0);" class="menu-next absolute z-50 top-1/2 right-3 text-3xl color"><i class="fa fa-chevron-right"></i></a>
+			`;
 			Swal.fire({
 				title: `<div class="font-bold uppercase text-xs color2">&nbsp;</div>`,
 				icon: null,
-				html: `
-					<div class="relative">${media}${canjeText}</div>
+				html: `<div id="current-menu" data-key="${key}" data-cat-key="${catKey}">
+					<div class="relative">${media}${canjeText}${buttons}</div>
 					<div class="grow text-xl color2 mt-5 text-center w-full">
 						<div class="font-semibold">${nombre}</div>
 						<div class="text-xs">${cantidad}</div>
@@ -88,6 +115,7 @@
 					<div class="text-base color font-bold">${precio}</div>
 					<div class="my-3 color2 text-[1rem]">${descripcion}</div>
 					${botonHtml}
+					</div>
 				`,
 				showCloseButton: true,
 				showCancelButton: false,

@@ -2,11 +2,15 @@
 		<div id="header-back"></div>
 		<div class="flex flex-row justify-start items-center gap-5">
 			<div class="flex flex-row flex-nowrap items-center">
-				@if (Route::currentRouteName() !== 'cliente')
+				@if (Route::currentRouteName() !== 'cliente' && $cliente->id !== NULL)
 				<a href="{{route('cliente', $cliente->slug)}}">{!! file_get_contents(public_path('images/back.svg')) !!}</a>
 				@endif
 				<div>
-					<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-[40px]" alt="{{ $cliente->cliente }}">
+				@if ($cliente->id !== NULL)
+				<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-[40px]" alt="{{ $cliente->cliente }}">
+				@else
+				<img src="{{ asset('images/logo@2x.png') }}" class="w-auto h-[40px]" alt="Arcaddy">
+				@endif
 				</div>
 			</div>
 			@auth

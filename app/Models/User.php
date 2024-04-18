@@ -13,7 +13,7 @@ use function Illuminate\Events\queueable;
 
 class User extends Authenticatable
 {
-	use HasApiTokens, HasFactory, Notifiable, HasRoles, Billable;
+	use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -61,6 +61,7 @@ class User extends Authenticatable
 	 *
 	 * @return void
 	 */
+	/*
 	protected static function booted()
 	{
 		static::updated(queueable(function ($customer) {
@@ -69,4 +70,5 @@ class User extends Authenticatable
 			}
 		}));
 	}
+	*/
 }

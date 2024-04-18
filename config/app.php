@@ -190,6 +190,7 @@ return [
 				Laraveles\Spanish\SpanishServiceProvider::class,
 				Maatwebsite\Excel\ExcelServiceProvider::class,
 				Yajra\DataTables\DataTablesServiceProvider::class,
+				Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -217,6 +218,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
 			'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
 			'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+			'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
     ])->toArray(),
 
 ];

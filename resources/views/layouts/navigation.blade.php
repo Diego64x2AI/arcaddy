@@ -25,10 +25,10 @@
 						{{ __('Votaciones') }}
 					</x-nav-link>
     				<x-nav-link :href="route('usuarios-cliente.index')" :active="request()->routeIs('usuarios-cliente.index')">
-    						{{ __('Administrador cliente') }}
+    				{{ __('Administrador cliente') }}
 					</x-nav-link>
-						<x-nav-link :href="route('games.index')" :active="request()->routeIs('usuarios-cliente.index')">
-    						{{ __('Games') }}
+					<x-nav-link :href="route('games.index')" :active="request()->routeIs('usuarios-cliente.index')">
+    				{{ __('Games') }}
 					</x-nav-link>
 				</div>
 			</div>

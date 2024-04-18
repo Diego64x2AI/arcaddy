@@ -1,10 +1,5 @@
 <?php
 
-use App\Models\User;
-use App\Models\Pedido;
-use App\Models\Cliente;
-use App\Notifications\PedidoCreado;
-use App\Notifications\RegistroCodigo;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CarritoController;
@@ -12,6 +7,7 @@ use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\CuponesController;
+use App\Http\Controllers\Admin\MarcoGaleriaController;
 use App\Http\Controllers\Admin\PedidosController;
 use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\UsuariosController;
@@ -91,6 +87,11 @@ Route::middleware('role:admin')->group(function () {
 			'except' => ['update']
 		]);
 		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
+		Route::resource('cliente.galerias', MarcoGaleriaController::class)->except(['create', 'show', 'edit', 'update']);
+		Route::get('/cliente/{cliente}/galerias/ajax', [MarcoGaleriaController::class, 'ajax'])->name('cliente.galerias.ajax');
+		Route::get('/cliente/{cliente}/galerias/zip', [MarcoGaleriaController::class, 'zip'])->name('cliente.galerias.zip');
+		Route::get('/cliente/{cliente}/galerias/delete-all', [MarcoGaleriaController::class, 'delete_all'])->name('cliente.galerias.delete-all');
+		Route::post('/cliente/{cliente}/galerias/{galeria}/atributo', [MarcoGaleriaController::class, 'update'])->name('cliente.galerias.update');
 		Route::prefix('cliente')->group(function () {
 			Route::prefix('{cliente}')->group(function () {
 				Route::prefix('quiz/{quiz}')->group(function () {
@@ -118,6 +119,8 @@ Route::middleware('role:admin')->group(function () {
 		Route::prefix('usuarios')->group(function () {
 			Route::get('/{cliente}', [UsuariosController::class, 'index'])->name('usuarios.index');
 			Route::get('/{cliente}/ajax', [UsuariosController::class, 'ajax'])->name('usuarios.ajax');
+			Route::get('/{cliente}/{user}/edit', [UsuariosController::class, 'edit'])->name('usuarios.edit');
+			Route::put('/{cliente}/{user}', [UsuariosController::class, 'update'])->name('usuarios.update');
 			Route::post('/{cliente}/{user}/delete', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
 			Route::get('/{cliente}/exportar', [UsuariosController::class, 'export'])->name('usuarios.export');
 			Route::get('/{cliente}/importar', [UsuariosController::class, 'import'])->name('usuarios.import');
@@ -141,6 +144,7 @@ Route::middleware('role:admin')->group(function () {
 		// Route::resource('/productos', ProductoController::class);
 		Route::resource('/usuarios-cliente', UsuariosClienteController::class);
 		Route::resource('/games', GameController::class);
+		Route::get('/games/ranking/{game}/delete', [GameController::class, 'ranking_delete'])->name('games.ranking.delete');
 		Route::get('/games/borrar/{juegoid}', [GameController::class, 'borrar'])->name('games.borrar');
 	});
 });
@@ -148,8 +152,10 @@ Route::middleware('role:admin')->group(function () {
 require __DIR__.'/auth.php';
 Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('registro')->middleware('auth');
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
-Route::get('/{slug}/start-game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
+Route::get('/{slug}/game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
 Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cliente.marco');
+Route::post('/{slug}/marco', [HomeController::class, 'cliente_marco_store'])->name('cliente.marco.store');
+Route::get('/{slug}/evento/{ClienteCartelera}', [HomeController::class, 'cliente_evento'])->name('cliente.download.event');
 
 Route::middleware('auth')->group(function () {
 	Route::post('/{slug}/save-game/{claveJuego}', [HomeController::class, 'saveGame'])->name('cliente.save-game');

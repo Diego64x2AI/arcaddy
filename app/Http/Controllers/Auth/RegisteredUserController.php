@@ -261,9 +261,11 @@ class RegisteredUserController extends Controller
 					]);
 				}
 			}
-			try {
-				$user->notify(new RegistroCodigo($user, $cliente, $elCodigo));
-			} catch (\Exception $e) {
+			if ($cliente->id !== 99) {
+				try {
+					$user->notify(new RegistroCodigo($user, $cliente, $elCodigo));
+				} catch (\Exception $e) {
+				}
 			}
 		}
 		return view('qr-registro-interno-de-usuario', [

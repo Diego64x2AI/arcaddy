@@ -102,6 +102,16 @@ class UpdateClienteRequest extends FormRequest
 			'experiencia_link.*' => 'nullable|string|max:255',
 			'experiencia_instrucciones.*' => 'nullable|string',
 			'experiencia_btn.*' => 'nullable|string|max:100',
+			'cartelera_cat_nombre.*' => 'required|string|max:255',
+			'cartelera_item_titulo.*' => 'required',
+			'cartelera_item_img.*.*' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif',
+			'cartelera_item_old.*.*' => 'nullable|sometimes',
+			'cartelera_item_expositor.*.*' => 'nullable',
+			'cartelera_item_hora.*.*' => 'nullable',
+			'cartelera_item_fecha.*.*' => 'nullable',
+			'cartelera_item_lugar.*.*' => 'nullable',
+			'cartelera_item_descripcion.*.*' => 'nullable',
+			'cartelera_item_inter.*.*' => 'nullable|sometimes',
 		];
 	}
 }

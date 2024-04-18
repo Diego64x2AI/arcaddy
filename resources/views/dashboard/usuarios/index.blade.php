@@ -11,6 +11,13 @@
 					Exportar
 				</a>
 			</div>
+			@if ($cliente->id !== NULL && $cliente->id === 99699999)
+			<div class="ml-3">
+				<a href="{{ route('usuarios.import', ['cliente' => $cliente->id]) }}" class="rounded-full bg-pink-600 text-white px-5 py-2 block">
+					Importar
+				</a>
+			</div>
+			@endif
 		</div>
 	</x-slot>
 
@@ -80,20 +87,16 @@
 			table {
 				display: inline-table !important;
 			}
-
 			thead tr:not(:first-child) {
 				display: none;
 			}
 		}
-
 		td {
 			text-align: center;
 		}
-
 		td:not(:last-child) {
 			border-bottom: 0;
 		}
-
 		th:not(:last-child) {
 			border-bottom: 2px solid rgba(0, 0, 0, .1);
 		}

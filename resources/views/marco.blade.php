@@ -1,11 +1,13 @@
+@php
+	$rlogin = (bool) $cliente->secciones()->where('seccion', 'galeriamarcos')->first()?->login;
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<title>{{ $cliente->cliente}} <?php  /*{{ config('app.name', 'Laravel') }}*/ ?></title>
+	<title>{{ $cliente->cliente}}</title>
 	<meta name="description" content="{{ $cliente->metadescription}}">
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +24,12 @@
 		gtag('js', new Date());
 		gtag('config', 'G-40ZEQ4JZ0Y');
 	</script>
+	{!! htmlScriptTagJsApi([
+		'action' => 'marco',
+		'callback_then' => 'callbackThen',
+    'callback_catch' => 'callbackCatch',
+		'custom_validation' => 'myCustomValidation'
+		]) !!}
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
 </head>
@@ -34,15 +42,28 @@
 	<main style="padding: 0 15px;" class="relative max-w-[500px] mx-auto pt-5 pb-20">
 		<div id="buttonsContainer" style="display: none;" class="flex flex-row gap-5 mb-5 items-center justify-evenly">
 			<div>
-				<button id="selectAnother" class="btn-pill2 !py-2 !px-8 !text-sm uppercase">Seleccionar<br>otra imagen</button>
+				<button id="finishEditing" class="btn-pill2 !py-2 !px-4 !font-semibold !text-sm uppercase">
+					<div class="flex flex-row items-center">
+						<div class="mr-3"><i class="fa fa-share-alt text-2xl"></i></div>
+						<div>Compartir tu foto</div>
+					</div>
+					</button>
 			</div>
 			<div>
-				<button id="finishEditing" class="btn-pill !py-2 !px-8 !font-bold uppercase">Descarga</button>
+				<button id="uploadBtn" class="btn-pill !py-2 !px-4 !font-semibold !text-sm uppercase">
+					<div class="flex flex-row items-center">
+						<div class="mr-3"><i class="fa fa-user-circle text-2xl"></i></div>
+						<div>Subir tu foto a la galería</div>
+					</div>
+				</button>
 			</div>
 		</div>
-		<div class="relative bg-white">
+		<div class="relative bg-white overflow-hidden">
 			<canvas id="c" width="400" height="400"></canvas>
 			<button id="uploadButton" class="absolute top-1/2 left-1/2 btn-pill2 !py-4 !px-8 !text-sm uppercase -translate-x-[85px] -translate-y-[35px]">Selecciona<br>tu foto</button>
+			<div id="anotherBtn" style="display: none;" class="absolute left-3 bottom-3">
+				<button id="selectAnother" class="btn-pill2 !py-2 !px-8 !text-sm uppercase">Seleccionar<br>otra imagen</button>
+			</div>
 		</div>
 		<input type="file" id="upload" accept="image/*" style="display: none;" />
 		<div id="info" style="display:none;"></div>
@@ -64,20 +85,79 @@
 	</main>
 	@includeIf('componentes.footer')
 	<script>
-		let canvas, frame, userImage, uploadButton, bg_img;
+		let canvas, frame, userImage, uploadButton, bg_img, captcha;
+		const rlogin = {{ $rlogin ? 'true' : 'false' }};
 		function resizeCanvas() {
 			var maxWidth = 500; // Máximo ancho para escritorio
 			var width = window.innerWidth > maxWidth ? maxWidth : window.innerWidth;
-			// console.log(width, window.innerWidth, maxWidth);
+			console.log(width, window.innerWidth, maxWidth);
 			width -= 30;
 			canvas.setWidth(width);
 			canvas.setHeight(width);
 			if (frame) {
 				var scaleFactor = width / frame.width;
-				// console.log(scaleFactor, frame.width, frame.height)
+				console.log(scaleFactor, frame.width, frame.height)
 				frame.scale(scaleFactor).setCoords();
 				canvas.renderAll();
 			}
+		}
+		function callbackThen(response){
+			// read HTTP status
+				console.log(response.status);
+
+				// read Promise object
+				response.json().then(function(data){
+						console.log(data);
+				});
+		}
+		function callbackCatch(error){
+				console.error('Error:', error)
+		}
+		const myCustomValidation = (response) => {
+			console.log(response);
+			captcha = response;
+		}
+		const uploadImage = async (compartir) => {
+			canvas.discardActiveObject().renderAll();
+			// Convertir el canvas de Fabric.js a data URL y luego a Blob
+			var dataURL = canvas.toDataURL();
+			// var blob = dataURLtoBlob(dataURL);
+			const blob = await (await fetch(dataURL)).blob()
+			// console.log(blob)
+			var formData = new FormData();
+			formData.append('imagen', blob);
+			formData.append('compartir', compartir);
+			formData.append('token', captcha);
+			$.ajax({
+				url: '{{ route('cliente.marco.store', ['slug' => $cliente->slug]) }}',
+				type: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+					console.log(response);
+					if (!compartir) {
+						Swal.fire({
+							title: response.status ? '¡Listo!' : 'ERROR',
+							text: response.message,
+							icon: response.status ? 'success' : 'error',
+							showConfirmButton: false,
+							timer: 2500
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					if (!compartir) {
+						Swal.fire({
+							title: '¡Error!',
+							text: 'Hubo un error al subir tu foto',
+							icon: 'error',
+							showConfirmButton: false,
+							timer: 2500
+						});
+					}
+				}
+			});
 		}
 		window.addEventListener('load', function() {
 			uploadButton = document.getElementById('uploadButton');
@@ -99,6 +179,7 @@
 			canvas = new fabric.Canvas('c', {
 				preserveObjectStacking: true
 			});
+			/*
 			canvas.on({
 				'touch:gesture': function() {
 					var text = document.createTextNode(' Gesture ');
@@ -121,6 +202,7 @@
 					info.insertBefore(text, info.firstChild);
 				}
 			});
+			*/
 			bg_img = new fabric.Image();
 			bg_img.setSrc('{{ asset('storage/'.$cliente->marco[0]->archivo) }}', function(img) {
 				frame = img;
@@ -175,12 +257,62 @@
 						canvas.add(userImage);
 						canvas.sendToBack(userImage);
 						document.getElementById('buttonsContainer').style.display = 'flex';
+						document.getElementById('anotherBtn').style.display = 'block';
 					}
 				}
 				reader.readAsDataURL(e.target.files[0]);
 			});
 			document.getElementById('selectAnother').onclick = function() {
 				document.getElementById('upload').click();
+			};
+			document.getElementById('uploadBtn').onclick = function() {
+				// if the login is required
+				if (rlogin) {
+					// show dialog to confirm
+					Swal.fire({
+						title: 'Al parecer aún no eres usuario registrado',
+						html: `
+							<div class="text-center color2">
+								Regístrate para participar en esta y otras increíbles dinámicas
+							</div>
+						`,
+						icon: null,
+						showCloseButton: false,
+						showCancelButton: true,
+						confirmButtonText: 'REGISTRARME',
+						cancelButtonText: 'CANCELAR'
+					}).then(async (result) => {
+						if (result.isConfirmed) {
+							window.location.href = '{{ route('register', ['cliente' => $cliente->id]) }}';
+						}
+					});
+					return;
+				}
+				// show dialog to confirm
+				Swal.fire({
+					title: 'SUBIR TU FOTO A LA GALERÍA',
+					html: `
+						<div class="text-center color2">
+							Al hacer click autorizas que utilicemos tu fotografía para:
+						</div>
+						<div class="text-center mt-3 color2">
+							<ul class="list-decimal text-center">
+								<li>1.- Formar parte de la galería</li>
+								<li>2.- Participar en las dinámicas en curso</li>
+								<li>3.- Publicación de ganadores en plataforma y redes sociales</li>
+							</ul>
+						</div>
+					`,
+					icon: null,
+					showCloseButton: false,
+					showCancelButton: true,
+					confirmButtonText: 'Sí, acepto',
+					cancelButtonText: 'Cancelar'
+				}).then(async (result) => {
+					if (result.isConfirmed) {
+						uploadImage(0);
+					}
+				});
 			};
 			document.getElementById('finishEditing').onclick = async () => {
 				canvas.discardActiveObject().renderAll();
@@ -212,6 +344,7 @@
 					link.click();
 					document.body.removeChild(link);
 				}
+				uploadImage(1);
 			};
 		});
 	</script>

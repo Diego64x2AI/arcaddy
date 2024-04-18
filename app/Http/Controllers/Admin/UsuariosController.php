@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\UsersExport;
 use App\Models\User;
 use App\Models\Cliente;
+use App\Exports\UsersExport;
 use Illuminate\Http\Request;
-use App\Models\ClienteUserField;
-use App\Http\Controllers\Controller;
 use App\Imports\CumbresImport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\ClienteUserField;
 use Yajra\Datatables\Datatables;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\ClienteUserFieldValue;
 
 class UsuariosController extends Controller
 {
@@ -24,8 +26,50 @@ class UsuariosController extends Controller
 		return view('dashboard.usuarios.index', [
 			'cliente' => $cliente,
 			'fields' => ClienteUserField::where('cliente_id', $cliente->id)->where('activo', 1)->get(),
-			'usuarios' => User::where('cliente_id', $cliente->id)->get(),
+			// 'usuarios' => User::where('cliente_id', $cliente->id)->get(),
 		]);
+	}
+
+	/**
+	 * Display a edit form of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit(Cliente $cliente, User $user)
+	{
+		return view('dashboard.usuarios.edit', [
+			'cliente' => $cliente,
+			'user' => $user,
+			'fields' => ClienteUserField::where('cliente_id', $cliente->id)->where('activo', 1)->get(),
+		]);
+	}
+
+	public function update(Cliente $cliente, User $user, Request $request)
+	{
+		$data = $request->validate([
+			'name' => 'required',
+			'email' => 'required|email|unique:users,email,'.$user->id,
+			'nacimiento' => 'nullable|sometimes|date',
+			'password' => 'nullable|sometimes',
+			'campos.*' => 'required',
+		]);
+		if ($request->filled('password')) {
+			$data['password'] = Hash::make($data['password']);
+		} else {
+			unset($data['password']);
+		}
+		$user->update($data);
+		if (isset($data['campos']) && count($data['campos']) > 0) {
+			foreach ($data['campos'] as $key => $nombre) {
+				ClienteUserFieldValue::updateOrCreate([
+					'user_id' => $user->id,
+					'campo_id' => $key,
+				], [
+					'valor' => $nombre,
+				]);
+			}
+		}
+		return redirect()->route('usuarios.edit', ['cliente' => $cliente->id, 'user' => $user->id])->with('success', 'Usuario actualizado correctamente');
 	}
 
 	public function ajax(Cliente $cliente, Request $request)
@@ -74,6 +118,7 @@ class UsuariosController extends Controller
 				})
 				->addColumn('action', function (User $user) use ($cliente) {
 					$actionBtn = '
+					<a href="'. route('usuarios.edit', ['cliente' => $cliente->id, 'user' => $user->id]) .'" class="text-sky-500"><i class="fas fa-edit"></i></a>
 					<form action="'. route('usuarios.destroy', ['cliente' => $cliente->id, 'user' => $user->id]) .'" method="POST" style="display: inline-block">
 						<input type="hidden" name="_token" value="'.csrf_token().'">
 						<button type="button" class="delete-item text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
