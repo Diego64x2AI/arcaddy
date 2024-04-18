@@ -27,17 +27,17 @@
 
 <body class="font-sans antialiased overflow-x-hidden">
 	@includeIf('componentes.header')
-	<main class="px-5 pb-20">
+	<main class="px-5 pb-20 w-full max-w-md mx-auto">
 		@if ($cliente->id === NULL)
 			<a href="{{ route('home') }}"><x-application-logo class="w-full h-auto max-w-xs fill-current text-gray-500 mt-5" /></a>
 		@else
-			<div class="flex justify-center w-full sm:max-w-md mt-5">
+			<div class="flex justify-center w-full mt-5">
 				<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}"><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-full h-auto max-w-xs fill-current text-gray-500"></a>
 			</div>
-			<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md">Login</h1>
+			<h1 class="text-center font-extrabold text-3xl mt-3 w-full">Login</h1>
 			@if($cliente->registro_img !== NULL)
-				<div class="mt-3 w-full sm:max-w-md">
-					<img src="{{ asset('storage/'.$cliente->registro_img) }}" style="border-radius:50px" class="img-general rounded-lg shadow object-cover w-100 border border-secondary">
+				<div class="mt-3 w-full">
+					<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="rounded-2xl shadow object-cover w-full h-auto border border-secondary">
 				</div>
 			@endif
 		@endif
