@@ -111,10 +111,11 @@ END:VCALENDAR";
 	{
 		// 1. Create Event domain entity.
 		$event = new Event();
-		$event
-			->setSummary($ClienteCartelera->titulo)
-			->setDescription($ClienteCartelera->descripcion)
-			->setLocation(
+		$event->setSummary($ClienteCartelera->titulo);
+		if (trim($ClienteCartelera->descripcion) !== '') {
+			$event->setDescription($ClienteCartelera->descripcion);
+		}
+		$event->setLocation(
 				(new Location($ClienteCartelera->lugar)) //->withGeographicPosition(new GeographicPosition(47.557579, 10.749704))
 			)
 			->setOccurrence(
