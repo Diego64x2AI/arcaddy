@@ -9,10 +9,10 @@
 		<div class="border relative borde rounded-3xl accordeon-link bg-client cursor-pointer text-white px-5 py-3 text-xl text-center uppercase font-bold">
 			<div>{{ $menu_categoria }}</div>
 			<div class="absolute top-3 right-5">
-				<i class="fa fa-plus"></i>
+				{!! $loop->first ? '<i class="fa fa-minus"></i>' : '<i class="fa fa-plus"></i>' !!}
 			</div>
 		</div>
-		<div class="py-3 gap-2 grid grid-cols-1 lg:grid-cols-3 justify-evenly" style="display: none;">
+		<div class="py-3 gap-2 grid grid-cols-1 lg:grid-cols-3 justify-evenly"{!! $loop->first ? '' : ' style="display:none;"' !!}>
 			@foreach ($cliente->menu->where('categoria', $menu_categoria) as $menu)
 			<div
 				class="border borde px-2 py-2 flex flex-row lg:flex-col items-center shadow rounded-3xl relative menu-item-link"
@@ -128,5 +128,8 @@
 				},
 			});
 		});
+		setTimeout(() => {
+			// $('#menu .accordeon-link').eq(0).trigger('click');
+		}, 1000);
 	});
 </script>

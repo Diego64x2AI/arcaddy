@@ -9,10 +9,10 @@
 		<div class="border relative borde rounded-3xl accordeon-link bg-client cursor-pointer text-white px-5 py-3 text-xl text-center uppercase font-bold">
 			<div>{{ $cartelera_categoria }}</div>
 			<div class="absolute top-3 right-5">
-				<i class="fa fa-plus"></i>
+				{!! $loop->first ? '<i class="fa fa-minus"></i>' : '<i class="fa fa-plus"></i>' !!}
 			</div>
 		</div>
-		<div class="py-3 gap-2 grid grid-cols-1 justify-evenly" style="display: none;">
+		<div class="py-3 gap-2 grid grid-cols-1 justify-evenly"{!! $loop->first ? '' : ' style="display:none;"' !!}>
 			@foreach ($cliente->cartelera->where('categoria', $cartelera_categoria) as $item)
 			<div
 				@class([
