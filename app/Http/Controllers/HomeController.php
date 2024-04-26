@@ -287,6 +287,21 @@ END:VCALENDAR";
 		} elseif (strpos($_SERVER['HTTP_HOST'], 'chandrany.com') !== false && $slug !== 'chandrany') {
 			header("Location: https://chandrany.com/chandrany");
 			exit();
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'juramamx.com') !== false && $slug !== 'jurama') {
+			header("Location: https://juramamx.com/jurama");
+			exit();
+		}
+		elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.mx') !== false && $slug !== 'lupita') {
+			header("Location: https://lacasitasagrada.mx/lupita");
+			exit();
+		}
+		elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.com.mx') !== false && $slug !== 'lupita') {
+			header("Location: https://lacasitasagrada.com.mx/lupita");
+			exit();
+		}
+		elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.com') !== false && $slug !== 'lupita') {
+			header("Location: https://lacasitasagrada.com/lupita");
+			exit();
 		}
 		/*elseif(strpos($_SERVER['HTTP_HOST'], 'oce-eg-ra.mx') !== false && $slug == 'gelicart'){
 
