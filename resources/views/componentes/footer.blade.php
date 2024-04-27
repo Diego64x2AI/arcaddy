@@ -1,12 +1,16 @@
 <footer class="mt-10">
 	<div class="grid grid-cols-2 px-3 items-center">
 		<div><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-12" alt="{{ $cliente->cliente }}"></div>
-		<div class="flex flex-row items-end grow justify-end"><?php /*{!! file_get_contents(public_path('images/logo.svg')) !!} */?></div>
+		<div class="flex flex-row items-end grow justify-end">
+			@if($cliente->show_logo)
+			{!! file_get_contents(public_path('images/logo.svg')) !!}
+			@endif
+		</div>
 
 	</div>
 	@if ($cliente->secciones()->where('activa', 1)->where('seccion', 'social')->count() > 0)
 	<div class="text-center mt-5">
-		<div class="text-xl">{{($cliente->id !== 82)?'Síguenos:':'Follow us:'}}</div>
+		<div class="text-xl">{{ __('arcaddy.followus') }}</div>
 		<div class="text-center mt-3 flex flex-row items-center justify-center">
 			@if ($cliente->instagram !== '' && $cliente->instagram !== NULL)
 			<a href="{{ $cliente->instagram }}" target="_blank" class="mr-2"><img

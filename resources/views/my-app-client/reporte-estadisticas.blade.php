@@ -10,8 +10,8 @@
 </div>
 <div class="alx-section">
 	<div class="container alx-mobile">
-		
-		
+
+
 
 		<div class="alx-table-txt">
 
@@ -96,7 +96,7 @@
 
 
 			<br><br><br>
-			
+
 
 
 			<div class="row">
@@ -254,19 +254,19 @@
 				</div>
 			</div>
 
-			
 
 
-			
 
-			
+
+
+
 		</div>
 
 
 
 		<div class="row">
 			<div class="col-xs-12">
-				<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.home')}}">CERRAR</a>
+				<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.home')}}">{{ __('arcaddy.close') }}</a>
 			</div>
 		</div>
 	</div>

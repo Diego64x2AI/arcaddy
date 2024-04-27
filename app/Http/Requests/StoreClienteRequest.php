@@ -28,6 +28,7 @@ class StoreClienteRequest extends FormRequest
 	{
 		return [
 		  'idioma' => 'required',
+			'show_logo' => 'required|boolean',
 			'cliente' => 'required|string|max:255',
 			'slug' => 'required|string|max:100|unique:clientes,slug',
 			'color' => 'required|string|max:55',

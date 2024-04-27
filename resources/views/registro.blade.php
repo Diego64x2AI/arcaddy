@@ -84,7 +84,7 @@
 			@endif
 		</div>
 		<div class="my-10 text-center w-full sm:max-w-md mx-auto">
-			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
+			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">{{ __('arcaddy.gohome') }}</a>
 		</div>
 	</main>
 	@if ($cliente->slug === 'estafeta')

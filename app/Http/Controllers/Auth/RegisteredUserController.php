@@ -31,6 +31,11 @@ class RegisteredUserController extends Controller
 	 */
 	public function create(Cliente $cliente)
 	{
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$sinlogin = 0;
 		return view('auth.register', compact('cliente', 'sinlogin'));
 	}
@@ -40,12 +45,22 @@ class RegisteredUserController extends Controller
 	{
 		$sinlogin = 1;
 		$cliente = Cliente::find($clienteid);
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('auth.register', compact('cliente', 'sinlogin'));
 	}
 
 	public function registroInternoDeUsuario($clienteid)
 	{
 		$cliente = Cliente::find($clienteid);
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('registro-interno-de-usuario', compact('cliente'));
 	}
 
@@ -59,6 +74,12 @@ class RegisteredUserController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$cliente = Cliente::find($request->cliente_id);
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$campos = $request->validate([
 			'name' => ['required', 'string', 'max:255'],
 			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -145,7 +166,6 @@ class RegisteredUserController extends Controller
 		if ($request->sinlogin == 0) {
 			Auth::login($user);
 		}
-		$cliente = Cliente::find($request->cliente_id);
 		if ($cliente->registro) {
 			$elCodigo = $cliente->id . '-1-' . $user->id . '-' . date('YmdHis');
 			/*QR ALEX*/
@@ -207,6 +227,12 @@ class RegisteredUserController extends Controller
 	/*RECIBE LOS REGISTROS INTERNOS DESDE MY APP CLIENT*/
 	public function recibeRegistroInternoDeUsuario(Request $request)
 	{
+		$cliente = Cliente::find($request->cliente_id);
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$campos = $request->validate([
 			'name' => ['required', 'string', 'max:255'],
 			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -231,7 +257,6 @@ class RegisteredUserController extends Controller
 			]);
 		}*/
 		event(new Registered($user));
-		$cliente = Cliente::find($request->cliente_id);
 		if ($cliente->registro) {
 			$elCodigo = $cliente->id . '-1-' . $user->id . '-' . date('YmdHis');
 			/*QR ALEX*/

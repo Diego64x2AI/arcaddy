@@ -1,12 +1,10 @@
 @extends('my-app-client.layout')
 
-
-
 @section('content')
 <div class="alx-section-title">
 	<div class="alx-mobile-int">
 		<div class="alx-section-title-txt" id="alx-title-redenciones">
-			Canje <br> de producto 
+			{{ __('arcaddy.admin11') }}<br>{{ __('arcaddy.admin12') }}
 		</div>
 	</div>
 </div>
@@ -24,24 +22,25 @@
 		<div class="container alx-mobile">
 			<div class="row">
 				<div class="col-xs-12">
-					<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.reporte-redenciones')}}">CERRAR</a>
+					<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.reporte-redenciones')}}">{{ __('arcaddy.close')
+						}}</a>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div id="alx-capa-scaner">
-	
+
 		<div id="alx-info-scaner" class="text-center">
-			
+
 			<div id="alx-info-scaner-ok" class="alx-info-scaner-ocultar">
 				<img src="{{asset('/images-my-app/qrok.png')}}" class="alx-info-img-scaner">
 				<br>
-				<div class="alx-w-extrabold alx-txt-super">Canje exitoso!</div>
+				<div class="alx-w-extrabold alx-txt-super">{{ __('arcaddy.admin13') }}</div>
 				<br>
 				<img src="{{asset('/images-my-app/qrno.png')}}" class="alx-info-img-scaner" id="alx-info-scaner-img-prodcuto">
-				
-			
+
+
 				<div class="alx-w-extrabold alx-txt-pink alx-txt-ch" id="alx-info-scaner-nombre-producto"></div>
 				<div class="alx-w-extrabold" id="alx-info-scaner-precio-producto"></div>
 			</div>
@@ -50,17 +49,17 @@
 				<img src="{{asset('/images-my-app/qrno.png')}}" class="alx-info-img-scaner">
 				<br>
 				<div class="alx-w-extrabold alx-txt-super">
-					Ya canjeaste<br> este beneficio
-			    </div>
+					{{ __('arcaddy.admin14') }}<br>{{ __('arcaddy.admin15') }}
+				</div>
 				<br>
 			</div>
 
-			
+
 
 			<div class="alx-w-extrabold" id="alx-info-scaner-nombre"></div>
-			
+
 			<div>
-				<div class="alx-btn alx-btn-cerrar" id="alx-cerrar-scaner">CERRAR</div>
+				<div class="alx-btn alx-btn-cerrar" id="alx-cerrar-scaner">{{ __('arcaddy.close') }}</div>
 			</div>
 
 		</div>
@@ -73,21 +72,20 @@
 @endsection
 
 @section('js')
-	<!--<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>-->
+<!--<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>-->
 
-	<script src="{{ asset('js/instascan.min.js')}}"></script>
+<script src="{{ asset('js/instascan.min.js')}}"></script>
 
 <script type="text/javascript">
+	$( document ).ready(function() {
 
-$( document ).ready(function() { 
-    
-    let scanner = new Instascan.Scanner({ 
+    let scanner = new Instascan.Scanner({
             mirror: false,
-    		/*video: document.getElementById('preview'), 
-    		scanPeriod: 5, 
+    		/*video: document.getElementById('preview'),
+    		scanPeriod: 5,
     		mirror: false */
 
-    		video: document.getElementById('preview'), 
+    		video: document.getElementById('preview'),
     		//continuous: false,
     		scanPeriod: 5,
     		backgroundScan: false
@@ -99,14 +97,14 @@ $( document ).ready(function() {
         //window.location.href=content;
 
         let route = $('#url-ajax').val();
-        let arr = content.split('-'); 
+        let arr = content.split('-');
 
 
-       
 
-      
-       
-        
+
+
+
+
         $.ajax({
             url: route + content+'/'+$('#productoid').val()+'/'+arr[2],
             type: 'GET',
@@ -115,25 +113,25 @@ $( document ).ready(function() {
                 if (json.status == 'ok') {
                  	$('#alx-info-scaner-ok').removeClass('alx-info-scaner-ocultar');
                  	$('#alx-info-scaner-nombre-producto').html(json.nombre_producto);
-                 	
+
                  	if(json.precio_producto != '0'){
                  	    	$('#alx-info-scaner-precio-producto').html(json.precio_producto);
                  	}
                  	else{
                  	    	$('#alx-info-scaner-precio-producto').html('');
                  	}
-                 
-                 	
+
+
                  	$('#alx-info-scaner-img-prodcuto').attr('src', json.img_producto);
                 }
                 else{
                 	$('#alx-info-scaner-no').removeClass('alx-info-scaner-ocultar');
                 }
                 $('#alx-info-scaner-nombre').html(json.nombre);
-                
+
                 $('#alx-capa-scaner').addClass('mostrar-info-scaner');
             },
-            
+
   			error: function( jqXHR, textStatus, errorThrown ) {
 
 	          if (jqXHR.status === 0) {
@@ -170,15 +168,15 @@ $( document ).ready(function() {
         });
 
 
-    
+
 
 
     });
-    
+
     Instascan.Camera.getCameras().then(function (cameras){
         if(cameras.length>0){
-            
-            
+
+
             if(cameras.length == 2){
                 scanner.start(cameras[1]);
             }
@@ -188,7 +186,7 @@ $( document ).ready(function() {
             else{
                 scanner.start(cameras[0]);
             }
-            
+
             $('[name="options"]').on('change',function(){
                 if($(this).val()==1){
                     if(cameras[0]!=""){
@@ -204,8 +202,8 @@ $( document ).ready(function() {
                     }
                 }
             });
-            
-        
+
+
         }else{
             console.error('No cameras found.');
             alert('No cameras found.');
@@ -221,18 +219,18 @@ $( document ).ready(function() {
     	$('#alx-info-scaner-ok').addClass('alx-info-scaner-ocultar');
     	$('#alx-info-scaner-no').addClass('alx-info-scaner-ocultar');
     	$('#alx-info-scaner-nombre').html('');
-        
+
     });
 
 
-  
-	    
+
+
 	    /*  $('#escanear').on('click', function(){
-	    	
+
 	    	scanner.scan();
 	    	alert('hola');
 	    })*/
 });
-     
+
 </script>
 @endsection

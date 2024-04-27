@@ -7,7 +7,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			<div class="flex justify-center w-full sm:max-w-md mt-5">
 				<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}"><img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-10 fill-current text-gray-500"></a>
 			</div>
-			<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md">Acceso restringuido</h1>
+			<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md">{{ __('arcaddy.forbbiden') }}</h1>
 		</x-slot>
 		{{--  <iframe src="https://drive.google.com/file/d/13gjNCbpJVPrsNMcTS2KBXmZa0Z0jOSKS/preview" width="640" height="480" allow="autoplay"></iframe>--}}
 		<!-- Session Status -->
@@ -16,7 +16,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		<!-- Validation Errors -->
 		<x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-		<p class="text-center">Para acceder a este arcaddy debemos obtener tu geo localización para ver si tienes acceso.</p>
+		<p class="text-center">{{ __('arcaddy.forbbiden-geo') }}</p>
 
 		<form method="POST" action="{{ route('zipcode', ['cliente' => $cliente->id]) }}">
 			@csrf
@@ -26,7 +26,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 
 			<div class="flex items-center justify-center mt-4">
 				<x-button type="button" class="ml-3 btn-pill">
-					Geolozalizar
+					{{ __('arcaddy.geo') }}
 				</x-button>
 			</div>
 		</form>
@@ -43,7 +43,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			console.log('click');
 			if(navigator.geolocation) {
 				Swal.fire({
-					title: 'Obteniendo tu ubicación',
+					title: '{{ __('arcaddy.geo-title') }}',
 					allowEscapeKey: false,
 					allowOutsideClick: false,
 				});
@@ -68,7 +68,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: 'Tu navegador no soporta geolocalización',
+					text: '{{ __('arcaddy.geo-error') }}',
 				});
 			}
 		});

@@ -4,7 +4,7 @@
 <div class="alx-section-title">
 	<div class="alx-mobile-int">
 		<div class="alx-section-title-txt" id="alx-title-usuarios">
-			Registro de <br>nuevo usuario
+			{{ __('Register') }}<br>{{ __('arcaddy.user') }}
 		</div>
 	</div>
 </div>
@@ -12,7 +12,7 @@
 <div style="position: relative;">
 <div class="alx-section">
 <div class="container alx-mobile">
-		<br>		
+		<br>
 		<div class="flex justify-center w-full sm:max-w-md mt-5">
 			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}"><img src="{{ asset('storage/'.$cliente->logo) }}" style="width: 100%;"></a>
 		</div>
@@ -35,22 +35,22 @@
 			<input type="hidden" name="cliente_id" value="{{ $cliente->id }}">
 			<!-- Name -->
 			<div>
-				<div class="alx-w-bold">Nombre</div>
-				
+				<div class="alx-w-bold">{{ __('Name') }}</div>
+
 				<x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
 			</div>
 			<br>
 
 			<!-- Email Address -->
 			<div class="mt-4">
-				<div class="alx-w-bold">Email</div>
+				<div class="alx-w-bold">{{ __('Email') }}</div>
 				<x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
 			</div>
 			<br>
 
 			<!-- Password -->
 			<div class="mt-4">
-				<div class="alx-w-bold">Contraseña</div>
+				<div class="alx-w-bold">{{ __('Password') }}</div>
 				<x-input id="password" class="block mt-1 w-full" type="password" name="password" required
 					autocomplete="new-password" />
 			</div>
@@ -65,32 +65,32 @@
 			<br>
 
 			@foreach ($cliente->campos()->where('activo', 1)->get() as $campo)
-				
-				@if($campo->campo_id != 4) 
+
+				@if($campo->campo_id != 4)
 				<div class="mt-4">
-					<x-label class="alx-w-bold" for="campos[{{ $campo->campo_id }}]" :value="$campo->nombre" /><br>
+					<x-label class="alx-w-bold" for="campos[{{ $campo->campo_id }}]" :value="__('arcaddy.field'.$campo->campo_id)" /><br>
 					<x-input class="block mt-1 w-full" type="text" name="campos[{{ $campo->campo_id }}]" required />
 				</div>
 					@else
 					<div class="mt-4">
-					    <x-label class="alx-w-bold" for="campos[{{ $campo->campo_id }}]" :value="$campo->nombre" /><br>
+					    <x-label class="alx-w-bold" for="campos[{{ $campo->campo_id }}]" :value="__('arcaddy.field'.$campo->campo_id)" /><br>
 					    <input type="date" id="nacimiento" name="nacimiento" class="block" style="width: initial;" required>
 						</div>
 					@endif
-				
-				
-				
-				
+
+
+
+
 				<br>
 			@endforeach
 			<div class="flex items-center justify-end mt-4 text-center">
 				<x-button class="alx-btn" style="border: 0px; margin: 0px auto;">
-					Registrar
+					{{ __('Register') }}
 				</x-button>
 			</div>
 			<br>
 			<div class="flex items-center justify-end mt-4 text-center">
-				<a href="{{route('my-app-client.reporte-base-usuarios')}}" class="alx-btn" style="border: 0px; margin: 0px auto;">Regresar al listado</a>
+				<a href="{{route('my-app-client.reporte-base-usuarios')}}" class="alx-btn" style="border: 0px; margin: 0px auto;">{{ __('arcaddy.back') }}</a>
 			</div>
 		</form>
 		<br><br>

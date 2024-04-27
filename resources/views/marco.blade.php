@@ -45,7 +45,7 @@
 				<button id="finishEditing" class="btn-pill2 !py-2 !px-4 !font-semibold !text-sm uppercase">
 					<div class="flex flex-row items-center">
 						<div class="mr-3"><i class="fa fa-share-alt text-2xl"></i></div>
-						<div>Compartir tu foto</div>
+						<div>{{ __('arcaddy.marco1') }}</div>
 					</div>
 					</button>
 			</div>
@@ -53,7 +53,7 @@
 				<button id="uploadBtn" class="btn-pill !py-2 !px-4 !font-semibold !text-sm uppercase">
 					<div class="flex flex-row items-center">
 						<div class="mr-3"><i class="fa fa-user-circle text-2xl"></i></div>
-						<div>Subir tu foto a la galería</div>
+						<div>{{ __('arcaddy.marco2') }}</div>
 					</div>
 				</button>
 			</div>
@@ -62,13 +62,13 @@
 			<canvas id="c" width="400" height="400"></canvas>
 			<button id="uploadButton" class="absolute top-1/2 left-1/2 btn-pill2 !py-4 !px-8 !text-sm uppercase -translate-x-[85px] -translate-y-[35px]">Selecciona<br>tu foto</button>
 			<div id="anotherBtn" style="display: none;" class="absolute left-3 bottom-3">
-				<button id="selectAnother" class="btn-pill2 !py-2 !px-8 !text-sm uppercase">Seleccionar<br>otra imagen</button>
+				<button id="selectAnother" class="btn-pill2 !py-2 !px-8 !text-sm uppercase">{{ __('arcaddy.marco3') }}<br>{{ __('arcaddy.marco4') }}</button>
 			</div>
 		</div>
 		<input type="file" id="upload" accept="image/*" style="display: none;" />
 		<div id="info" style="display:none;"></div>
 		@if($cliente->marco->count() > 1)
-		<div class="font-bold mt-3 text-center text-xl">Cambia el diseño:</div>
+		<div class="font-bold mt-3 text-center text-xl">{{ __('arcaddy.marco5') }}</div>
 		<div class="flex flex-row items-center justify-evenly md:justify-center gap-5 mt-3">
 			@foreach ($cliente->marco as $marco)
 				<div>
@@ -138,7 +138,7 @@
 					console.log(response);
 					if (!compartir) {
 						Swal.fire({
-							title: response.status ? '¡Listo!' : 'ERROR',
+							title: response.status ? '{{ __('arcaddy.marco6') }}' : 'ERROR',
 							text: response.message,
 							icon: response.status ? 'success' : 'error',
 							showConfirmButton: false,
@@ -150,7 +150,7 @@
 					if (!compartir) {
 						Swal.fire({
 							title: '¡Error!',
-							text: 'Hubo un error al subir tu foto',
+							text: '{{ __('arcaddy.marco7') }}',
 							icon: 'error',
 							showConfirmButton: false,
 							timer: 2500
@@ -270,17 +270,17 @@
 				if (rlogin) {
 					// show dialog to confirm
 					Swal.fire({
-						title: 'Al parecer aún no eres usuario registrado',
+						title: '{{ __('arcaddy.modal-nologin-title') }}',
 						html: `
 							<div class="text-center color2">
-								Regístrate para participar en esta y otras increíbles dinámicas
+								{{ __('arcaddy.modal-nologin-text') }}
 							</div>
 						`,
 						icon: null,
 						showCloseButton: false,
 						showCancelButton: true,
-						confirmButtonText: 'REGISTRARME',
-						cancelButtonText: 'CANCELAR'
+						confirmButtonText: '{{ __('Register') }}',
+						cancelButtonText: '{{ __('arcaddy.cancel') }}',
 					}).then(async (result) => {
 						if (result.isConfirmed) {
 							window.location.href = '{{ route('register', ['cliente' => $cliente->id]) }}';
@@ -290,24 +290,24 @@
 				}
 				// show dialog to confirm
 				Swal.fire({
-					title: 'SUBIR TU FOTO A LA GALERÍA',
+					title: '{{ __('arcaddy.marco2') }}',
 					html: `
 						<div class="text-center color2">
-							Al hacer click autorizas que utilicemos tu fotografía para:
+							{{ __('arcaddy.marco8') }}
 						</div>
 						<div class="text-center mt-3 color2">
 							<ul class="list-decimal text-center">
-								<li>1.- Formar parte de la galería</li>
-								<li>2.- Participar en las dinámicas en curso</li>
-								<li>3.- Publicación de ganadores en plataforma y redes sociales</li>
+								<li>{{ __('arcaddy.marco9') }}</li>
+								<li>{{ __('arcaddy.marco10') }}</li>
+								<li>{{ __('arcaddy.marco11') }}</li>
 							</ul>
 						</div>
 					`,
 					icon: null,
 					showCloseButton: false,
 					showCancelButton: true,
-					confirmButtonText: 'Sí, acepto',
-					cancelButtonText: 'Cancelar'
+					confirmButtonText: '{{ __('arcaddy.marco12') }}',
+					cancelButtonText: '{{ __('arcaddy.cancel') }}'
 				}).then(async (result) => {
 					if (result.isConfirmed) {
 						uploadImage(0);

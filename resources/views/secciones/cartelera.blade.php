@@ -44,7 +44,7 @@
 					<div class="text-xs text-start lg:text-base text-wrap">{{ $item->fecha->format('d-m-Y') }} {{ $item->hora }} - <span class="font-bold">{{ $item->lugar }}</span></div>
 				</div>
 				<div class="ml-auto text-center">
-					<div class="color text-xs font-semibold">Recordarme</div>
+					<div class="color text-xs font-semibold">{{ __('arcaddy.rememberme') }}</div>
 					<div class="text-3xl">
 						<a href="{{ route('cliente.download.event', ['ClienteCartelera' => $item->id, 'slug' => $cliente->slug]) }}"><i class="fa fa-calendar-plus"></i></a>
 					</div>

@@ -47,7 +47,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 @if ($cliente->slug === 'estafeta')
 	<div class="fixed right-0 bottom-0 mr-5 mb-5">
 		<div class="bg-[#25D366] py-3 px-5 text-white rounded-full text-xl">
-			<a href="https://wa.me/5213326293396?" target="_blank">Ayuda <i class="fa fa-whatsapp"></i></a>
+			<a href="https://wa.me/5213326293396?" target="_blank">{{ __('arcaddy.help') }} <i class="fa fa-whatsapp"></i></a>
 		</div>
 	</div>
 @endif

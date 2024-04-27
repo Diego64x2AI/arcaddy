@@ -79,7 +79,7 @@
 					</div>
 					<div class="text-center text-sm font-bold uppercase mt-2">{{ $participante->user->name }}</div>
 					@if($votacion->votar)
-					<div class="text-center text-sm font-bold color votos-{{ $participante->id }} uppercase">{{ $participante->votos }} votos</div>
+					<div class="text-center text-sm font-bold color votos-{{ $participante->id }} uppercase">{{ $participante->votos }} {{ strtolower(__('arcaddy.votes')) }}</div>
 					@endif
 				</div>
 			@endforeach

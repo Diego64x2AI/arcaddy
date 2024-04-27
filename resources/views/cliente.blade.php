@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<title>{{ $cliente->cliente}} <?php  /*{{ config('app.name', 'Laravel') }}*/ ?></title>
+	<title>{{ $cliente->cliente}}</title>
 	<meta name="description" content="{{ $cliente->metadescription}}">
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -281,7 +281,7 @@
 					media = `<div class="img-votacion-detalle" style="background-image: url(${imagen})"></div>`
 				}
 				if ($(this).data('votaciones') === 'Y') {
-					votoshtml = `<div class="text-center mt-2 votos-${id}">${votos} votos</div>`
+					votoshtml = `<div class="text-center mt-2 votos-${id}">${votos} {{ __('arcaddy.votes') }}</div>`
 				}
 				console.log('abrir', nombre, categoria, votos, video_id);
 				Swal.fire({
@@ -297,7 +297,7 @@
 						confirmButton: 'btn-pill',
 					},
 					confirmButtonText:
-						'<i class="fa fa-thumbs-up"></i> Votar',
+						'<i class="fa fa-thumbs-up"></i> {{ __('arcaddy.vote') }}',
 					confirmButtonAriaLabel: 'Votar',
 					cancelButtonText:
 						'<i class="fa fa-thumbs-down"></i>',
@@ -323,7 +323,7 @@
 							console.log(error.responseJSON.message)
 							Toast.fire({
 								icon: 'error',
-								title: error.responseJSON.message.replace('Too Many Attempts.', 'Ya votaste por este participante.')
+								title: error.responseJSON.message.replace('Too Many Attempts.', '{{ __('arcaddy.alreadyvoted') }}')
 							})
 						});
 					}

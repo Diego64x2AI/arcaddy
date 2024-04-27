@@ -189,6 +189,11 @@ END:VCALENDAR";
 	public function cliente_marco($slug = '')
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$seccion = $cliente->secciones()->where('seccion', 'marco')->firstOrFail();
 		// if is not active redirect to the client page
 		if (!$seccion->activa) {
@@ -202,6 +207,11 @@ END:VCALENDAR";
 	public function cliente_marco_store($slug = '', Request $request)
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$seccion = $cliente->secciones()->where('seccion', 'marco')->firstOrFail();
 		// if is not active redirect to the client page
 		if (!$seccion->activa) {
@@ -307,6 +317,11 @@ END:VCALENDAR";
 
 	    }*/
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		if ($cliente->password !== NULL && trim($cliente->password) !== '' && Cookie::get('cpass') !== $cliente->password) {
 			return view('cliente-password', [
 				'cliente' => $cliente,
@@ -348,6 +363,11 @@ END:VCALENDAR";
 	 */
 	public function zipcode(Cliente $cliente, Request $request)
 	{
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$request->validate([
 			'zip' => 'required|min:5'
 		]);
@@ -366,6 +386,11 @@ END:VCALENDAR";
 	 */
 	public function acceso(Cliente $cliente, Request $request)
 	{
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$request->validate([
 			'password' => 'required|string|min:1'
 		]);
@@ -383,6 +408,11 @@ END:VCALENDAR";
 	 */
 	public function registro(Cliente $cliente)
 	{
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		/*if (!is_dir(storage_path('app/public/qrcodesr'))) {
 			File::makeDirectory(storage_path('app/public/qrcodesr'));
 		}*/
@@ -462,6 +492,11 @@ END:VCALENDAR";
 	public function startGame($slug, $claveJuego)
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$juego = Juego::with(['categoria'])->where('clave', $claveJuego)->firstOrFail();
 		if ($juego) {
 			return view('games.'.$juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
@@ -472,6 +507,12 @@ END:VCALENDAR";
 
 	public function saveGame($slug, $claveJuego, Request $request)
 	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$data = $request->validate([
 			'tiempo' => 'numeric|min:1',
 			'aciertos' => 'numeric|min:0',
@@ -504,6 +545,11 @@ END:VCALENDAR";
 
 	public function quiz_respuesta(Cliente $cliente, Request $request)
 	{
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$data = $request->validate([
 			'quiz' => 'required|numeric|min:1|exists:\App\Models\ClienteQuiz,id',
 			'pregunta' => 'required|numeric|min:1|exists:\App\Models\ClienteQuizPregunta,id',

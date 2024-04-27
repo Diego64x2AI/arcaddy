@@ -20,10 +20,10 @@
 
 
 					<?php /*{{($cliente->id != 33 && $cliente->id != 42 && $cliente->id != 44)?'Ingresar a VR':'Ingresar a AR'}}*/?>
-					@if($item->texto_boton != '')
-					{{ $item->texto_boton }}
+					@if($item->texto_boton !== '')
+						{{ $item->texto_boton }}
 					@else
-						Ingresar a AR
+						{{ __('arcaddy.ar-join') }}
 					@endif
 					</a>
 				</div>

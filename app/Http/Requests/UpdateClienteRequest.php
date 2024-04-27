@@ -26,6 +26,7 @@ class UpdateClienteRequest extends FormRequest
 	{
 		return [
 			'idioma' => 'required',
+			'show_logo' => 'required|boolean',
 			'cliente' => 'required|string|max:255',
 			'slug' => 'required|string|max:100|unique:clientes,slug,' . $this->route('cliente')->id,
 			'color' => 'required|string|max:55',

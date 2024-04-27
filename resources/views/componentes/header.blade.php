@@ -33,10 +33,10 @@
 			<div class="ml-auto flex flex-row items-center flex-nowrap">
 				@if ($cliente->registro)
 				@if (Route::has('register'))
-				<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="text-base">Registro</a>
+				<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Register') }}</a>
 				<div class="ml-2">|</div>
 				@endif
-				<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">Login</a>
+				<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Login') }}</a>
 				@endif
 			</div>
 			@endauth

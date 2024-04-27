@@ -18,7 +18,11 @@ class AuthenticatedSessionController extends Controller
 	 */
 	public function create(Cliente $cliente)
 	{
-		// dd($cliente);
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('auth.login', compact('cliente'));
 	}
 
@@ -39,13 +43,13 @@ class AuthenticatedSessionController extends Controller
 			}
 			return redirect()->route('cliente', ['slug' => $cliente->slug]);
 		}
-		
-		$cliente = Cliente::find(auth()->user()->cliente_id);
-        if($cliente){
-            //auth()->user()->logo = $cliente->logo;
-             //dd(auth()->user()->logo);
 
-	        // Obtener el usuario actualmente autenticado
+		$cliente = Cliente::find(auth()->user()->cliente_id);
+		if ($cliente) {
+			//auth()->user()->logo = $cliente->logo;
+			//dd(auth()->user()->logo);
+
+			// Obtener el usuario actualmente autenticado
 			//$user = auth()->user();
 
 			// Agregar un valor personalizado al objeto User en la sesión
@@ -59,10 +63,10 @@ class AuthenticatedSessionController extends Controller
 
 			//auth()->user()->logo = $miValor;
 
-        }
+		}
 
-        //dd(auth()->user()->logo);
-        
+		//dd(auth()->user()->logo);
+
 		return redirect()->intended(RouteServiceProvider::HOME);
 	}
 

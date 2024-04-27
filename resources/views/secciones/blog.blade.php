@@ -16,7 +16,7 @@
 				<p class="text-center text-base px-8 mt-5">{!! nl2br($entry->descripcion) !!}</p>
 				@endif
 				@if ($entry->link !== NULL && $entry->link !== '')
-				<div class="text-center mt-4"><a href="{{ $entry->link }}" class="btn-pill" target="_blank">Ver más</a></div>
+				<div class="text-center mt-4"><a href="{{ $entry->link }}" class="btn-pill" target="_blank">{{ __('arcaddy.viewmore') }}</a></div>
 				@endif
 			</div>
 			@endforeach

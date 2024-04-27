@@ -10,7 +10,7 @@
 			@foreach($cliente->banners as $banner)
 			<div class="swiper-slide bg-cover bg-center slide-bg" style="background-image: url({{ asset('storage/'.$banner->archivo) }});">
 				@if ($banner->link !== NULL && trim($banner->link) !== '')
-					<a href="{{ $banner->link }}" style="text-indent: -8000px;display:block;width:100%;height:100%;">Link</a>
+					<a href="{{ $banner->link }}" style="text-indent: -8000px;display:block;width:100%;height:100%;">{{ __('arcaddy.link') }}</a>
 				@endif
 			</div>
 			@endforeach

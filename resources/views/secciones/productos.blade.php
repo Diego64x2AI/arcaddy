@@ -44,7 +44,7 @@
 				<div class="text-center font-bold px-2 mt-2">{{ $producto->nombre }}</div>
 
 				<div class="text-center mt-4">
-					<a href="javascript: void(0);" class="btn-pill">Canjear</a>
+					<a href="javascript: void(0);" class="btn-pill">{{ __('arcaddy.canjear') }}</a>
 				</div>
 			</div>
 			@endforeach

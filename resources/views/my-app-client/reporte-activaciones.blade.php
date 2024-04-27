@@ -10,7 +10,7 @@
 </div>
 <div class="alx-section">
 	<div class="container alx-mobile">
-		
+
 		<div class="row alx-mb-20">
 			<div class="col-xs-12">
 				<div class="input-container">
@@ -43,7 +43,7 @@
 						<div>Landing page</div>
 						<div class="alx-table-txt-min">Link web</div>
 					</div>
-					
+
 				</div>
 				<div class="col-xs-3 alx-table-no-padding text-center">
 					<div class="alx-table-dato">14,325</div>
@@ -65,7 +65,7 @@
 						<div>Familia Selfie</div>
 						<div class="alx-table-txt-min">Realidad aumentada</div>
 					</div>
-					
+
 				</div>
 				<div class="col-xs-3 alx-table-no-padding text-center">
 					<div class="alx-table-dato">1,325</div>
@@ -86,7 +86,7 @@
 						<div>Mapa virtual locales</div>
 						<div class="alx-table-txt-min">Realidad aumentada GPS</div>
 					</div>
-					
+
 				</div>
 				<div class="col-xs-3 alx-table-no-padding text-center">
 					<div class="alx-table-dato">1,325</div>
@@ -101,14 +101,14 @@
 			</div>
 			<div class="alx-table-row-border"></div>
 
-			
+
 		</div>
 
 
 
 		<div class="row">
 			<div class="col-xs-12">
-				<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.home')}}">CERRAR</a>
+				<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.home')}}">{{ __('arcaddy.close') }}</a>
 			</div>
 		</div>
 	</div>

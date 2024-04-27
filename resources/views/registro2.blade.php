@@ -31,7 +31,7 @@
 		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
 
 			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
-			
+
 			<?php /*
 			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
 			*/?>
@@ -40,7 +40,7 @@
 			<a href="{{ route('registro-de-usuario', $cliente->id) }}" class="btn btn-pill font-bold">Hacer otro registro</a>
 		</div>
 		<div class="my-5 text-center w-full sm:max-w-md mx-auto">
-			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
+			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">{{ __('arcaddy.gohome') }}</a>
 		</div>
 	</main>
 	@if ($cliente->slug === 'estafeta')

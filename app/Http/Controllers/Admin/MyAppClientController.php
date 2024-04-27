@@ -18,20 +18,28 @@ class MyAppClientController extends Controller
 {
 	public function home()
 	{
-
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.home', compact('clientedatos'));
 	}
 
 	public function homeEscaner()
 	{
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.escaner', compact('clientedatos'));
 	}
 
 	public function homeQr()
 	{
-
 		echo QrCode::format('png')
 			->size(500)
 			->margin(1)
@@ -76,27 +84,32 @@ class MyAppClientController extends Controller
 	{
 		/*return view('my-app-client.check-in');*/
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.check-in2', compact('clientedatos'));
 	}
 
 	public function checkIn2()
 	{
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.check-in2', compact('clientedatos'));
 	}
 
 	public function checkInValidar($codigo)
 	{
-
 		$codigo = UserQr::where('codigo', $codigo)->first();
-
 		if ($codigo) {
-
 			if ($codigo->usado == 0) {
-
 				$codigo->usado = 1;
 				$codigo->save();
-
 				return response([
 					'status' => 'ok',
 					'nombre' => $codigo->user->name,
@@ -121,23 +134,23 @@ class MyAppClientController extends Controller
 	public function reporteActivaciones()
 	{
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.reporte-activaciones', compact('clientedatos'));
 	}
 
 	public function reporteRedenciones()
 	{
-
 		//echo Auth::user()->name
-
 		$parametros = NULL;
-
 		if (!isset($_GET['buscar'])) {
-
 			$productos = ClienteProducto::where('cliente_id', auth()->user()->cliente_id)
 				->where('regalado', 1)
 				->get();
 		} else {
-
 			$parametros['buscar'] = $_GET['buscar'];
 			$productos = ClienteProducto::where('cliente_id', auth()->user()->cliente_id)
 				->where('regalado', 1)
@@ -145,12 +158,22 @@ class MyAppClientController extends Controller
 				->get();
 		}
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.reporte-redenciones', compact('productos', 'parametros', 'clientedatos'));
 	}
 
 	public function productoRedencion($producto_id)
 	{
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.producto-redencion2', compact('clientedatos', 'producto_id'));
 	}
 
@@ -197,18 +220,14 @@ class MyAppClientController extends Controller
 	public function reporteBaseUsuarios()
 	{
 		$parametros = NULL;
-
 		if (!isset($_GET['buscar'])) {
-
 			$usuarios = DB::table('users')
 				->join('model_has_roles as mhr', 'users.id', '=', 'mhr.model_id')
 				->where('cliente_id', auth()->user()->cliente_id)
 				->where('role_id', 3)
 				->get();
 		} else {
-
 			$parametros['buscar'] = $_GET['buscar'];
-
 			$usuarios = DB::table('users')
 				->join('model_has_roles as mhr', 'users.id', '=', 'mhr.model_id')
 				->where('cliente_id', auth()->user()->cliente_id)
@@ -219,47 +238,52 @@ class MyAppClientController extends Controller
 				})
 				->get();
 		}
-
 		$cliente_id = auth()->user()->cliente_id;
-
-
-
 		$usuariosTotales = DB::table('users')
 			->join('model_has_roles as mhr', 'users.id', '=', 'mhr.model_id')
 			->where('cliente_id', auth()->user()->cliente_id)
 			->where('role_id', 3)
 			->count();
-
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.reporte-base-usuarios', compact('usuarios', 'parametros', 'cliente_id', 'clientedatos', 'usuariosTotales'));
 	}
 
 
 	public function reenviarAcceso($clienteid, $usuarioid)
 	{
-
 		$user = User::find($usuarioid);
 		$cliente = Cliente::find($clienteid);
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		$userQr = UserQr::where('cliente_id', $clienteid)
 			->where('user_id', $user->id)
 			->first();
-
 		try {
 			$user->notify(new RegistroCodigo($user, $cliente, $userQr->codigo));
 		} catch (\Exception $e) {
 		}
-
 		return response([
 			'status' => 'ok',
 			'email' => $user->email
 		]);
 	}
 
-
-
 	public function reporteEstadisticas()
 	{
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
 		return view('my-app-client.reporte-estadisticas', compact('clientedatos'));
 	}
 }

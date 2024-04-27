@@ -39,6 +39,7 @@ class Cliente extends Model
 		'metadescription',
 		'login_bloqueo',
 		'btn_registro_en_login',
+		'show_logo',
 	];
 
 	/**
@@ -48,6 +49,7 @@ class Cliente extends Model
 	 */
 	protected $casts = [
 		'registro' => 'boolean',
+		'show_logo' => 'boolean',
 		'geo_bloqueo' => 'integer',
 	];
 

@@ -9,13 +9,13 @@ if (auth()->check()) {
 @if($scores->total() > 0)
 <section id="ranking" class="mt-5 py-5 text-center lg:mt-10 mx-auto w-full max-w-xl">
 	<div class="flex flex-row items-center justify-center">
-		<div class="titulo-modulo">Ranking</div>
-		<div class="color text-2xl font-extrabold lg:text-4xl ml-3 mt-1">Usuarios</div>
+		<div class="titulo-modulo">{{ __('arcaddy.ranking') }}</div>
+		<div class="color text-2xl font-extrabold lg:text-4xl ml-3 mt-1">{{ __('arcaddy.users') }}</div>
 	</div>
 	<div id="ranking-leaderboard" class="mt-5 lg:mt-10 px-5">
 	</div>
 	<div id="hasMorePages" class="mt-5">
-		<a id="load-ranking" href="#" class="btn-pill">Cargar más</a>
+		<a id="load-ranking" href="#" class="btn-pill">{{ __('arcaddy.loadmore') }}</a>
 	</div>
 </section>
 <script>
@@ -39,7 +39,7 @@ if (auth()->check()) {
 					<div>TÚ</div>
 					<div>{{ $scoresAll[$mPosicion]['user']['name'] }}</div>
 				</div>
-				<div class="ml-auto font-extrabold text-xl">{{ $scoresAll[$mPosicion]['tiempo'] }} seg</div>
+				<div class="ml-auto font-extrabold text-xl">{{ $scoresAll[$mPosicion]['tiempo'] }} {{ __('arcaddy.seconds') }}</div>
 			</div>
 		</div>
 		`;
@@ -66,7 +66,7 @@ if (auth()->check()) {
 						<div class="flex flex-row grow ml-2 items-center px-3 py-2 rounded-3xl"${style}>
 							{{--<div><img src="{{ asset('images/Imagen 73.jpg') }}" class="w-10 h-10 rounded-full" alt="Juan Carlos Perez"></div>--}}
 							<div class="grow text-left ml-2 font-semibold text-xs md:text-normal">${item.user.name}</div>
-							<div class="ml-auto font-extrabold text-xl">${item.tiempo} seg</div>
+							<div class="ml-auto font-extrabold text-xl">${item.tiempo} {{ __('arcaddy.seconds') }}</div>
 						</div>
 					</div>
 					`);

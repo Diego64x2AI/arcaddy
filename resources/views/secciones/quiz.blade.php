@@ -55,10 +55,10 @@ if ($quiz !== NULL && $quiz->score) {
 		</div>
 		<div id="quiz-controls" class="grid grid-cols-2 items-center mt-5">
 			<div class="font-bold text-center">
-				<span id="current-quiz-question">1</span> de <span id="total-quiz-question">{{ $preguntas->count() }}</span> preguntas
+				<span id="current-quiz-question">1</span> de <span id="total-quiz-question">{{ $preguntas->count() }}</span> {{ __('arcaddy.questions') }}
 			</div>
 			<div class="flex flex-row justify-center">
-				<a href="javascript:void(0);" class="btn-pill quiz-next">Siguiente</a>
+				<a href="javascript:void(0);" class="btn-pill quiz-next">{{ __('arcaddy.next') }}</a>
 			</div>
 		</div>
 	</div>
@@ -93,12 +93,12 @@ if ($quiz !== NULL && $quiz->score) {
 			if (quizLogin && !quizLogged) {
 				Swal.fire({
 					icon: 'error',
-					title: 'Al parecer aún no eres usuario registrado',
-					text: 'Regístrate para participar en esta y otras increíbles dinámicas',
+					title: '{{ __('arcaddy.modal-nologin-title') }}',
+					text: '{{ __('arcaddy.modal-nologin-text') }}',
 					// custom button for register
 					showCancelButton: true,
-					confirmButtonText: 'Registrarme',
-					cancelButtonText: 'Cancelar',
+					confirmButtonText: '{{ __('Register') }}',
+					cancelButtonText: '{{ __('arcaddy.cancel') }}',
 					customClass: 'quiz-swal',
 				}).then((result) => {
 					if (result.isConfirmed) {
@@ -120,7 +120,7 @@ if ($quiz !== NULL && $quiz->score) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: 'Debes seleccionar una respuesta',
+						text: '{{ __('arcaddy.select-error') }}',
 						customClass: 'quiz-swal',
 					});
 					return;
@@ -129,7 +129,7 @@ if ($quiz !== NULL && $quiz->score) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: 'Debes escribir una respuesta',
+						text: '{{ __('arcaddy.text-error') }}',
 						customClass: 'quiz-swal',
 					});
 					return;
@@ -143,7 +143,7 @@ if ($quiz !== NULL && $quiz->score) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: 'Debes seleccionar una respuesta',
+						text: '{{ __('arcaddy.select-error') }}',
 						customClass: 'quiz-swal',
 					});
 					return;
@@ -165,7 +165,7 @@ if ($quiz !== NULL && $quiz->score) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: 'Debes escribir una respuesta',
+						text: '{{ __('arcaddy.text-error') }}',
 						customClass: 'quiz-swal',
 					});
 					return;
@@ -179,7 +179,7 @@ if ($quiz !== NULL && $quiz->score) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: 'Debes seleccionar una respuesta',
+						text: '{{ __('arcaddy.select-error') }}',
 						customClass: 'quiz-swal',
 					});
 					return;
@@ -191,7 +191,7 @@ if ($quiz !== NULL && $quiz->score) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: 'Debes seleccionar una respuesta',
+						text: '{{ __('arcaddy.select-error') }}',
 						customClass: 'quiz-swal',
 					});
 					return;
@@ -202,7 +202,7 @@ if ($quiz !== NULL && $quiz->score) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: 'Debes escribir una respuesta',
+						text: '{{ __('arcaddy.text-error') }}',
 						customClass: 'quiz-swal',
 					});
 					return;
@@ -243,7 +243,7 @@ if ($quiz !== NULL && $quiz->score) {
 				Swal.fire({
 					icon: 'error',
 					title: 'Error',
-					text: 'Ocurrió un error, por favor intenta de nuevo',
+					text: '{{ __('arcaddy.error-gral') }}',
 					customClass: 'quiz-swal',
 				});
 			});
@@ -253,13 +253,13 @@ if ($quiz !== NULL && $quiz->score) {
 @if($quiz !== NULL && $quiz->score && $scores->total() > 0)
 <section id="ranking" class="py-5 text-center mx-auto w-full max-w-xl">
 	<div class="flex flex-row items-center justify-center">
-		<div class="titulo-modulo">Ranking</div>
-		<div class="color text-2xl font-extrabold lg:text-4xl ml-3 mt-1">Usuarios</div>
+		<div class="titulo-modulo">{{ __('arcaddy.ranking') }}</div>
+		<div class="color text-2xl font-extrabold lg:text-4xl ml-3 mt-1">{{ __('arcaddy.users') }}</div>
 	</div>
 	<div id="ranking-quiz-leaderboard" class="mt-5 lg:mt-10 px-5">
 	</div>
 	<div id="hasMorePagesQuiz" class="mt-5">
-		<a id="load-ranking-quiz" href="#" class="btn-pill">Cargar más</a>
+		<a id="load-ranking-quiz" href="#" class="btn-pill">{{ __('arcaddy.loadmore') }}</a>
 	</div>
 </section>
 <script>

@@ -4,19 +4,19 @@
 <div class="alx-section-title">
 	<div class="alx-mobile-int">
 		<div class="alx-section-title-txt" id="alx-title-redenciones">
-			Redenciones <br>digitales
+			{{ __('arcaddy.admin3') }}<br>{{ __('arcaddy.admin4') }}
 		</div>
 	</div>
 </div>
 <div class="alx-section">
 	<div class="container alx-mobile">
-		
+
 		<div class="row alx-mb-20">
 			<div class="col-xs-12">
 				<form method="GET" action="{{route('my-app-client.reporte-redenciones')}}">
 					<div class="input-container">
 						<button type="submit" class="alx-btn-search"></button>
-						<input class="alx-input-search" type="text" name="buscar" placeholder="Buscar" autocomplete="off" value="{{(!isset($parametros['buscar']))?'':$parametros['buscar'] }}">
+						<input class="alx-input-search" type="text" name="buscar" placeholder="{{ __('arcaddy.search') }}" autocomplete="off" value="{{(!isset($parametros['buscar']))?'':$parametros['buscar'] }}">
 					</div>
 				</form>
 			</div>
@@ -26,7 +26,7 @@
 
 			<div class="row alx-table-row-title">
 				<div class="col-xs-12"></div>
-				
+
 			</div>
 
 
@@ -43,22 +43,22 @@
 						@endif
 					</div>
 				</div>
-				
+
 			</div>
 			<div class="alx-table-row-border"></div>
 			@endforeach
 
 
-			
 
-			
+
+
 		</div>
 
 
 
 		<div class="row">
 			<div class="col-xs-12">
-				<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.home')}}">CERRAR</a>
+				<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.home')}}">{{ __('arcaddy.close') }}</a>
 			</div>
 		</div>
 	</div>

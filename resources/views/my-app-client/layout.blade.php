@@ -17,15 +17,15 @@
 
 		<div id="alx-header">
 			<div id="alx-header-etq"
-				<span class="alx-w-black">Hola</span>
+				<span class="alx-w-black">{{ __('arcaddy.hello') }}</span>
 				<?php /*<img src="{{ asset('/upload/logo/logo-arcaddy-arcaddy.png')}}"> */?>
-				
+
 				@if(isset($clientedatos) && $clientedatos->logo != '')
 				    <img src="{{ asset('storage/'.$clientedatos->logo) }}"><br>
 				@endif
-				
-				
-				
+
+
+
 			</div>
 		</div>
 

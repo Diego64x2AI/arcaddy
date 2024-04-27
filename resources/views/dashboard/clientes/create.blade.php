@@ -32,22 +32,6 @@
 						</div>
 
 								@endif
-
-						<div style="display: none;">
-						    <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
-									Idioma
-							</label>
-							<select class="shadow appearance-none border-0 py-2 px-3 text-gray-700" style="width: 200px;" name="idioma">
-							    @if($cliente->id !== NULL)
-							    <option value="ES" {{($cliente->idioma == 'ES')?'selected':''}} >Español</option>
-							    <option value="EN" {{($cliente->idioma == 'EN')?'selected':''}}>Inglés</option>
-							    @else
-							    <option value="ES">Español</option>
-							    <option value="EN">Inglés</option>
-							    @endif
-							</select>
-						</div>
-						<br>
 						<div class="grid grid-cols-1 md:grid-cols-7 items-center justify-around -mx-3">
 							<div class="col-span-2 px-3 mb-6 md:mb-6">
 								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
@@ -89,11 +73,38 @@
 									value="{{ ($cliente->id !== NULL) ? $cliente->color : old('color') }}" type="color" placeholder="#FF4E00" @if($cliente->id === NULL) required @endif>
 							</div>
 						</div>
-
-
-
+						<div class="flex flex-col md:flex-row items-center gap-5 mb-6">
+							<div>
+						    <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="idioma">
+									Idioma
+								</label>
+								<select class="input-underline opc-filtro min-w-32" id="idioma" name="idioma">
+										@if($cliente->id !== NULL)
+										<option value="ES" {{($cliente->idioma === 'ES')?'selected':''}} >Español</option>
+										<option value="EN" {{($cliente->idioma === 'EN')?'selected':''}}>Inglés</option>
+										@else
+										<option value="ES">Español</option>
+										<option value="EN">Inglés</option>
+										@endif
+								</select>
+							</div>
+							<div>
+						    <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="show_logo">
+									Mostrar logo
+								</label>
+								<select class="input-underline opc-filtro" name="show_logo" id="show_logo">
+										@if($cliente->id !== NULL)
+										<option value="1" @if($cliente->show_logo) selected @endif>SI</option>
+										<option value="0" @if(!$cliente->show_logo) selected @endif>NO</option>
+										@else
+										<option value="1">SI</option>
+										<option value="0">NO</option>
+										@endif
+								</select>
+							</div>
+						</div>
 						<div class="flex flex-wrap -mx-3">
-							<div class="w-full md:w-3/6 px-3 mb-6 md:mb-6">
+							<div class="w-full px-3 mb-6 md:mb-6">
         						<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="slug">
         									Meta description
         						</label>

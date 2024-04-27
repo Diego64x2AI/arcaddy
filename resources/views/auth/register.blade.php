@@ -77,8 +77,8 @@
 			</div>
 			@foreach ($cliente->campos()->where('activo', 1)->get() as $campo)
 				<div class="mt-4">
-					<x-label for="campos[{{ $campo->campo_id }}]" :value="$campo->nombre" />
-					@if($campo->campo_id != 4)
+					<x-label for="campos[{{ $campo->campo_id }}]" :value="__('arcaddy.field'.$campo->campo_id)" />
+					@if($campo->campo_id !== 4)
 					<x-input class="block mt-1 w-full" type="text" name="campos[{{ $campo->campo_id }}]" required />
 					@else
 					    <input type="date" id="nacimiento" name="nacimiento" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1" required>
@@ -95,7 +95,7 @@
 			</div>
 		</form>
 		<div class="my-10 text-center w-full sm:max-w-md mx-auto">
-			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">Ir a la página principal</a>
+			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">{{ __('arcaddy.gohome') }}</a>
 		</div>
 	</main>
 	@if ($cliente->slug === 'estafeta')
