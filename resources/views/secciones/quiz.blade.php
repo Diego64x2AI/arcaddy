@@ -55,7 +55,7 @@ if ($quiz !== NULL && $quiz->score) {
 		</div>
 		<div id="quiz-controls" class="grid grid-cols-2 items-center mt-5">
 			<div class="font-bold text-center">
-				<span id="current-quiz-question">1</span> de <span id="total-quiz-question">{{ $preguntas->count() }}</span> {{ __('arcaddy.questions') }}
+				<span id="current-quiz-question">1</span> {{ __('arcaddy.of') }} <span id="total-quiz-question">{{ $preguntas->count() }}</span> {{ __('arcaddy.questions') }}
 			</div>
 			<div class="flex flex-row justify-center">
 				<a href="javascript:void(0);" class="btn-pill quiz-next">{{ __('arcaddy.next') }}</a>

@@ -325,13 +325,13 @@
 			</div>
 			<div class="flex flex-row justify-evenly items-center my-5">
 				<div class="text-xl">
-					<div class="color">Tiempo:</div>
+					<div class="color">{{ __('arcaddy.time') }}:</div>
 					<div class="-mt-2">
-						<span id="timer" class="der">0</span>seg.
+						<span id="timer" class="der">0</span>{{ __('arcaddy.seconds') }}.
 					</div>
 				</div>
 				<div class="ml-auto">
-					<div class="btn-pill restart-game">Reiniciar</div>
+					<div class="btn-pill restart-game">{{ __('arcaddy.restart') }}</div>
 				</div>
 			</div>
 			<div id="puzzle"></div>
@@ -405,22 +405,22 @@
 			let modalContent = `<div class="flex flex-row justify-center items-center">
 				<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
 				</div>
-				<div class="font-extrabold text-4xl color">¡Felicidades!</div>`;
+				<div class="font-extrabold text-4xl color">{{ __('arcaddy.congratulations') }}</div>`;
 			if (logged) {
 				modalContent += `<div class="text-base">${name}</div>`;
 			}
 			modalContent += `<div class="mt-5 flex flex-row items-center justify-center font-bold">
 					<div class="mr-4">
-						<div class="color">Tiempo:</div>
-						<div class="">${timer} seg</div>
+						<div class="color">{{ __('arcaddy.time') }}:</div>
+						<div class="">${timer} {{ __('arcaddy.seconds') }}</div>
 					</div>
 					<div>
-						<a href="#" class="btn-pill2 restart-game">Volver a jugar</a>
+						<a href="#" class="btn-pill2 restart-game">{{ __('arcaddy.playagain') }}</a>
 					</div>
 				</div>`;
 			if (!logged) {
-				modalContent += `<div class="mt-7 text-base">Al parecer no eres un usuario registrado, <span class="font-bold">si deseas aparecer en el Ranking:</span></div>
-				<div class="mt-7"><a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="btn-pill">Regístrate aquí</a></div>
+				modalContent += `<div class="mt-7 text-base">{{ __('arcaddy.game1') }} <span class="font-bold">{{ __('arcaddy.game2') }}</span></div>
+				<div class="mt-7"><a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="btn-pill">{{ __('arcaddy.game3') }}</a></div>
 				`;
 			}
 			Swal.fire({
