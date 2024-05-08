@@ -119,8 +119,18 @@
 		}
 		const uploadImage = async (compartir) => {
 			canvas.discardActiveObject().renderAll();
+			// Crea un canvas temporal para la exportación
+			var tempCanvas = document.createElement('canvas');
+			tempCanvas.width = 1024;
+			tempCanvas.height = 1024;
+			var tempCtx = tempCanvas.getContext('2d');
+			// Redibuja el contenido del canvas principal en el canvas temporal
+			tempCtx.drawImage(canvas.getElement(), 0, 0, 1024, 1024);
 			// Convertir el canvas de Fabric.js a data URL y luego a Blob
-			var dataURL = canvas.toDataURL();
+			var dataURL = tempCanvas.toDataURL({
+				format: 'jpeg',
+				quality: 1 // Máxima calidad
+			});
 			// var blob = dataURLtoBlob(dataURL);
 			const blob = await (await fetch(dataURL)).blob()
 			// console.log(blob)
@@ -316,9 +326,20 @@
 			};
 			document.getElementById('finishEditing').onclick = async () => {
 				canvas.discardActiveObject().renderAll();
-				// Convertir el canvas de Fabric.js a data URL y luego a Blob
-				var dataURL = canvas.toDataURL();
-				// var blob = dataURLtoBlob(dataURL);
+				// Crea un canvas temporal para la exportación
+        var tempCanvas = document.createElement('canvas');
+        tempCanvas.width = 1024;
+        tempCanvas.height = 1024;
+        var tempCtx = tempCanvas.getContext('2d');
+
+        // Redibuja el contenido del canvas principal en el canvas temporal
+        tempCtx.drawImage(canvas.getElement(), 0, 0, 1024, 1024);
+
+        // Exporta la imagen del canvas temporal
+        var dataURL = tempCanvas.toDataURL({
+            format: 'jpeg',
+            quality: 1 // Máxima calidad
+        });
 				const blob = await (await fetch(dataURL)).blob()
 				// console.log(blob)
 				if (navigator.share) {
