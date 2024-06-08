@@ -16,6 +16,7 @@ use App\Models\ClienteCartelera;
 use App\Models\ProductoCanjeado;
 use App\Models\ClienteMarcoGaleria;
 use App\Models\ClienteQuizPregunta;
+use App\Models\ClienteQRExperiencia;
 use Eluceo\iCal\Domain\Entity\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -38,6 +39,15 @@ use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
 
 class HomeController extends Controller
 {
+
+	public function qr_experiencia($slug, ClienteQRExperiencia $qrexperiencia)
+	{
+		// incrementar las visitas
+		$qrexperiencia->increment('visitas');
+		if ($qrexperiencia->tipo === 'link') {
+			return redirect($qrexperiencia->url);
+		}
+	}
 
 	public function guardarEnCalendario($clienteid, $eventoid)
 	{

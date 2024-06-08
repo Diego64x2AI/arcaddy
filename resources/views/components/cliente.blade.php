@@ -38,6 +38,9 @@
 			<div class="flex flex-row items-center justify-center">
 				<a href="{{ route('cliente.galerias.index', ['cliente' => $id, 'compartida' => 0]) }}"><i class="fa fa-images"></i></a>
 			</div>
+			<div class="flex flex-row items-center justify-center">
+				<a href="{{ route('cliente.qrexperiencias.index', ['cliente' => $id]) }}"><i class="fa fa-globe-americas"></i></a>
+			</div>
 		</div>
 	</div>
 </div>

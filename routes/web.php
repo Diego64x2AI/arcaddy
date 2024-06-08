@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\VotacionesController;
 use App\Http\Controllers\Admin\MyAppClientController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\UsuariosClienteController;
+use App\Http\Controllers\QrExperienciasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,7 @@ Route::middleware('role:admin')->group(function () {
 			'except' => ['update']
 		]);
 		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
+		Route::resource('cliente.qrexperiencias', QrExperienciasController::class)->except(['show']);
 		Route::resource('cliente.galerias', MarcoGaleriaController::class)->except(['create', 'show', 'edit', 'update']);
 		Route::get('/cliente/{cliente}/galerias/ajax', [MarcoGaleriaController::class, 'ajax'])->name('cliente.galerias.ajax');
 		Route::get('/cliente/{cliente}/galerias/zip', [MarcoGaleriaController::class, 'zip'])->name('cliente.galerias.zip');
@@ -162,3 +164,4 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name('cliente.quiz.respuesta');
+Route::get('/{cliente}/experiencia/{qrexperiencia}', [HomeController::class, 'qr_experiencia'])->name('cliente.quiz.qrexperiencia');

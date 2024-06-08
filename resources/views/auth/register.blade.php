@@ -77,7 +77,7 @@
 			</div>
 			@foreach ($cliente->campos()->where('activo', 1)->get() as $campo)
 				<div class="mt-4">
-					<x-label for="campos[{{ $campo->campo_id }}]" :value="__('arcaddy.field'.$campo->campo_id)" />
+					<x-label for="campos[{{ $campo->campo_id }}]" :value="$campo->nombre" />
 					@if($campo->campo_id !== 4)
 					<x-input class="block mt-1 w-full" type="text" name="campos[{{ $campo->campo_id }}]" required />
 					@else
