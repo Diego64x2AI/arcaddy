@@ -1,5 +1,23 @@
 <div id="header" class="fixed top-0 right-0 w-full px-2 py-3 z-50 bg-white shadow-sm">
 		<div id="header-back"></div>
+		@if (!$cliente->registro)
+		<div class="flex flex-row justify-center items-center gap-5 relative">
+			@if (Route::currentRouteName() !== 'cliente' && $cliente->id !== NULL)
+			<a href="{{route('cliente', $cliente->slug)}}" class="absolute top-1 left-0">{!! file_get_contents(public_path('images/back.svg')) !!}</a>
+			@endif
+			@if ($cliente->id !== NULL)
+			<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-auto h-[40px]" alt="{{ $cliente->cliente }}">
+			@else
+			<img src="{{ asset('images/logo@2x.png') }}" class="w-auto h-[40px]" alt="Arcaddy">
+			@endif
+			@role('admin')
+			<a href="{{ route('dashboard') }}" class="absolute top-1 right-0">{!! file_get_contents(public_path('images/admin.svg')) !!}</a>
+			@endrole
+			@role('client')
+			<a href="{{ route('my-app-client.home') }}" class="absolute top-1 right-0">{!! file_get_contents(public_path('images/admin.svg')) !!}</a>
+			@endrole
+		</div>
+		@else
 		<div class="flex flex-row justify-start items-center gap-5">
 			<div class="flex flex-row flex-nowrap items-center">
 				@if (Route::currentRouteName() !== 'cliente' && $cliente->id !== NULL)
@@ -31,14 +49,13 @@
 			</div>
 			@else
 			<div class="ml-auto flex flex-row items-center flex-nowrap">
-				@if ($cliente->registro)
 				@if (Route::has('register'))
 				<a href="{{ route('register', ['cliente' => $cliente->id]) }}" class="text-base">{{ __('Register') }}</a>
 				<div class="ml-2">|</div>
 				@endif
 				<a href="{{ route('login', ['cliente' => $cliente->id]) }}" class="ml-2 text-base">{{ __('Login') }}</a>
-				@endif
 			</div>
 			@endauth
 		</div>
+		@endif
 	</div>
