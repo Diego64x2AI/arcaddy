@@ -37,6 +37,7 @@ class FillModulos extends Seeder
 			'marco',
 			'cartelera',
 			'galeriamarcos',
+			'rally',
 		];
 		$titulos = [
 			'banners' => 'Banners',
@@ -58,6 +59,7 @@ class FillModulos extends Seeder
 			'marco' => 'Marco / Photoop',
 			'cartelera' => 'Cartelera / Temario',
 			'galeriamarcos' => 'Galería de Marcos',
+			'rally' => 'Rally',
 		];
 		foreach ($clientes as $cliente) {
 			foreach ($secciones as $seccion) {

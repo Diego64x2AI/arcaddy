@@ -74,6 +74,7 @@ class Cliente extends Model
 		'marco',
 		'cartelera',
 		'galeriamarcos',
+		'rallys',
 	];
 
 	public function galeriamarcos()
@@ -174,5 +175,10 @@ class Cliente extends Model
 	public function juegos()
 	{
 		return $this->hasMany(Juego::class, 'cliente_id', 'id')->where('activo', 1);
+	}
+
+	public function rallys()
+	{
+		return $this->hasMany(ClienteRally::class, 'cliente_id', 'id');
 	}
 }

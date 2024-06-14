@@ -94,6 +94,7 @@
 		}
 		.btn-pill {
 			background-color: {{ $cliente->color }} !important;
+			box-shadow: none!important;
 		}
 		[type='checkbox'], [type='radio'] {
 			color: {{ $cliente->color }} !important;

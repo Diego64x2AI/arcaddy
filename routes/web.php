@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\UsuariosController;
 use App\Http\Controllers\Admin\VotacionesController;
 use App\Http\Controllers\Admin\MyAppClientController;
+use App\Http\Controllers\Admin\RallyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\UsuariosClienteController;
 use App\Http\Controllers\QrExperienciasController;
@@ -89,6 +90,13 @@ Route::middleware('role:admin')->group(function () {
 		]);
 		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
 		Route::resource('cliente.qrexperiencias', QrExperienciasController::class)->except(['show']);
+		Route::resource('cliente.rally', RallyController::class)->except(['show']);
+		Route::get('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'markers'])->name('cliente.rally.markers')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
+		Route::get('/cliente/{cliente}/rally/{rally}/markers/create', [RallyController::class, 'marker_create'])->name('cliente.rally.markers.create')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
+		Route::post('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'marker_store'])->name('cliente.rally.markers.store')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
+		Route::get('/cliente/{cliente}/rally/{rally}/markers/{ubicacion}/edit', [RallyController::class, 'marker_edit'])->name('cliente.rally.markers.edit')->where('rally', '[0-9]+')->where('cliente', '[0-9]+')->where('ubicacion', '[0-9]+');
+		Route::put('/cliente/{cliente}/rally/{rally}/markers/{ubicacion}', [RallyController::class, 'marker_update'])->name('cliente.rally.markers.update')->where('rally', '[0-9]+')->where('cliente', '[0-9]+')->where('ubicacion', '[0-9]+');
+		Route::delete('/cliente/{cliente}/rally/{rally}/markers/{ubicacion}', [RallyController::class, 'marker_destroy'])->name('cliente.rally.markers.destroy')->where('rally', '[0-9]+')->where('cliente', '[0-9]+')->where('ubicacion', '[0-9]+');
 		Route::resource('cliente.galerias', MarcoGaleriaController::class)->except(['create', 'show', 'edit', 'update']);
 		Route::get('/cliente/{cliente}/galerias/ajax', [MarcoGaleriaController::class, 'ajax'])->name('cliente.galerias.ajax');
 		Route::get('/cliente/{cliente}/galerias/zip', [MarcoGaleriaController::class, 'zip'])->name('cliente.galerias.zip');
@@ -165,3 +173,4 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name('cliente.quiz.respuesta');
 Route::get('/{cliente}/experiencia/{qrexperiencia}', [HomeController::class, 'qr_experiencia'])->name('cliente.quiz.qrexperiencia');
+Route::post('/{cliente}/rally/{rally}/{ubicacion}/completed', [HomeController::class, 'rally_completed'])->name('cliente.rally.completed')->middleware('auth')->where('rally', '[0-9]+')->where('ubicacion', '[0-9]+');

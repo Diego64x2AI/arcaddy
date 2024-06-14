@@ -8,6 +8,7 @@ use App\Models\UserQr;
 use DateTimeImmutable;
 use App\Models\Cliente;
 use App\Models\ClienteQuiz;
+use App\Models\ClienteRally;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
@@ -21,6 +22,7 @@ use Eluceo\iCal\Domain\Entity\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use App\Models\ClienteRallyUbicacion;
 use App\Models\ClienteProductoDigital;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\VotacionesParticipantes;
@@ -33,12 +35,45 @@ use Eluceo\iCal\Domain\ValueObject\Location;
 use Eluceo\iCal\Domain\ValueObject\TimeSpan;
 use Eluceo\iCal\Domain\ValueObject\Organizer;
 use Eluceo\iCal\Domain\ValueObject\Attachment;
+use App\Models\ClienteRallyUbicacionCompletados;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
 
 class HomeController extends Controller
 {
+	public function rally_completed($slug, ClienteRally $rally, ClienteRallyUbicacion $ubicacion)
+	{
+		// check if is ajax request
+		if (!request()->ajax()) {
+			abort(404);
+		}
+		$data = request()->validate([
+			'distancia' => 'required|numeric|min:0|max:'.$ubicacion->distancia,
+			'lat' => 'required|numeric',
+			'lng' => 'required|numeric',
+		]);
+		// log the rally completed
+		if (!ClienteRallyUbicacionCompletados::where('ubicacion_id', $ubicacion->id)->where('user_id', auth()->id())->exists()) {
+			ClienteRallyUbicacionCompletados::create([
+				'ubicacion_id' => $ubicacion->id,
+				'user_id' => auth()->id(),
+				'distancia' => (float) $data['distancia'],
+				'lat' => (float) $data['lat'],
+				'lng' => (float) $data['lng'],
+				'ip' => request()->ip(),
+				'referer' => request()->header('referer'),
+				'user_agent' => request()->header('user-agent'),
+			]);
+			$ubicacion->increment('completados');
+		}
+		return response()->json([
+			'status' => true,
+			'image' => $ubicacion->imagen,
+			'link' => $ubicacion->btn_link,
+			'message' => 'Ubicación completada.',
+		]);
+	}
 
 	public function qr_experiencia($slug, ClienteQRExperiencia $qrexperiencia)
 	{

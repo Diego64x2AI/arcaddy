@@ -90,26 +90,6 @@
 
 		window.addEventListener('load', function() {
 			init()
-			$('form.delete-form button').on('click', function(e) {
-				e.preventDefault();
-				console.log('delete?')
-				const $form = $(this).parent();
-				Swal.fire({
-					title: '¿Estás seguro?',
-					text: "Una ves que elimines el QR no podrás recuperar la información.",
-					icon: null,
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: 'SI, eliminarlo',
-					cancelButtonText: 'Cancelar',
-					allowOutsideClick: false,
-				}).then((result) => {
-					if (result.isConfirmed) {
-						$form.submit();
-					}
-				})
-			});
 		});
 		async function init() {
 			await customElements.whenDefined('gmp-map');
