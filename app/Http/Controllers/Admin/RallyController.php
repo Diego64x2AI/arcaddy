@@ -115,12 +115,12 @@ class RallyController extends Controller
 		]);
 		unset($data['imagen'], $data['marker']);
 		if ($request->hasFile('imagen')) {
-			Storage::delete($ubicacion->imagen);
-			$data['imagen'] = $request->file('imagen')->store('rally');
+			Storage::disk('public')->delete($ubicacion->imagen);
+			$data['imagen'] = $request->file('imagen')->store('rally', 'public');
 		}
 		if ($request->hasFile('marker')) {
-			Storage::delete($ubicacion->marker);
-			$data['marker'] = $request->file('marker')->store('rally');
+			Storage::disk('public')->delete($ubicacion->marker);
+			$data['marker'] = $request->file('marker')->store('rally', 'public');
 		}
 		$data['ver_mapa'] = $request->boolean('ver_mapa', false);
 		$ubicacion->update($data);
@@ -150,8 +150,8 @@ class RallyController extends Controller
 			'marker' => 'required|image',
 		]);
 		unset($data['imagen'], $data['marker']);
-		$data['imagen'] = $request->file('imagen')->store('rally');
-		$data['marker'] = $request->file('marker')->store('rally');
+		$data['imagen'] = $request->file('imagen')->store('rally', 'public');
+		$data['marker'] = $request->file('marker')->store('rally', 'public');
 		$data['ver_mapa'] = $request->boolean('ver_mapa', false);
 		$rally->ubicaciones()->create($data);
 		return redirect()->route('cliente.rally.markers', ['cliente' => $cliente->id, 'rally' => $rally->id])->with('success', 'Ubicación creada con éxito');
@@ -170,7 +170,7 @@ class RallyController extends Controller
 		$data['cliente_id'] = $cliente->id;
 		$data['activo'] = $request->boolean('activo', false);
 		$data['geo_oculto'] = $request->boolean('geo_oculto', false);
-		$data['banner'] = $request->file('imagen')->store('rally');
+		$data['banner'] = $request->file('imagen')->store('rally', 'public');
 		ClienteRally::create($data);
 		return redirect()->route('cliente.rally.index', ['cliente' => $cliente->id])->with('success', 'Rally creado con éxito');
 	}
@@ -213,8 +213,8 @@ class RallyController extends Controller
 		$data['activo'] = $request->boolean('activo', false);
 		$data['geo_oculto'] = $request->boolean('geo_oculto', false);
 		if ($request->hasFile('imagen')) {
-			Storage::delete($rally->banner);
-			$data['banner'] = $request->file('imagen')->store('rally');
+			Storage::disk('public')->delete($rally->banner);
+			$data['banner'] = $request->file('imagen')->store('rally', 'public');
 		}
 		$rally->update($data);
 		return redirect()->route('cliente.rally.index', ['cliente' => $cliente->id])->with('success', 'Rally actualizado con éxito');
@@ -230,11 +230,11 @@ class RallyController extends Controller
 	public function destroy(Cliente $cliente, ClienteRally $rally)
 	{
 		foreach ($rally->ubicaciones as $ubicacion) {
-			Storage::delete($ubicacion->imagen);
-			Storage::delete($ubicacion->marker);
+			Storage::disk('public')->delete($ubicacion->imagen);
+			Storage::disk('public')->delete($ubicacion->marker);
 			// $ubicacion->delete();
 		}
-		Storage::delete($rally->banner);
+		Storage::disk('public')->delete($rally->banner);
 		$rally->delete();
 		return redirect()->route('cliente.rally.index', ['cliente' => $cliente->id])->with('success', 'Rally eliminado con éxito');
 	}
