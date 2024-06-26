@@ -346,7 +346,7 @@
 					const filesArray = [
 						new File(
 							[blob],
-							'animation.png',
+							'marco.jpg',
 							{
 								type: blob.type,
 								lastModified: new Date().getTime()
@@ -359,7 +359,7 @@
 					navigator.share(shareData);
 				} else {
 					var link = document.createElement('a');
-					link.download = 'imagen_final.png';
+					link.download = 'imagen_final.jpg';
 					link.href = URL.createObjectURL(blob);
 					document.body.appendChild(link); // Necesario para Firefox
 					link.click();

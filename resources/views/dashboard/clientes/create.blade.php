@@ -1337,9 +1337,11 @@
 	</script>
 	<script type="text/javascript">
         tinymce.init({
+					// disable menubar
+					menubar: false,
           selector: 'textarea.alx-editor',
-          plugins: 'link code lists',
-          toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link code'
+          plugins: 'link code lists colorpicker textcolor',
+          toolbar: 'styles | bold italic | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link code'
         });
     </script>
 	@endsection

@@ -39,6 +39,8 @@ use App\Models\ClienteRallyUbicacionCompletados;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class HomeController extends Controller
 {
@@ -269,6 +271,7 @@ END:VCALENDAR";
 		]);
 		// dd(env('RECAPTCHA_SECRET_KEY'), $data['token']);
 		// validate recaptcha make a http request to google
+		/*
 		$response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
 			'secret' => env('RECAPTCHA_SECRET_KEY'),
 			'response' => $data['token'],
@@ -289,7 +292,15 @@ END:VCALENDAR";
 				'message' => 'Lo sentimos tu IP es posiblemente de un BOT.',
 			]);
 		}
-		$imagen = $data['imagen']->store('clientes/marcos', 'public');
+		*/
+		$filename = uniqid() . '.jpg';
+		$imagen = $data['imagen']->storeAs('clientes/marcos', $filename, 'public');
+		// resize image
+		$manager = new ImageManager(Driver::class);
+		$manager->read('storage/' . $imagen)->resize(1024, 1024, function ($constraint) {
+			$constraint->aspectRatio();
+			$constraint->upsize();
+		})->save('storage/' . $imagen);
 		ClienteMarcoGaleria::create([
 			'cliente_id' => $cliente->id,
 			'user_id' => $request->user()?->id,

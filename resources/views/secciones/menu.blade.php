@@ -28,12 +28,14 @@
 				data-key="{{ $loop->index }}"
 				data-cat-key="{{ $key }}"
 			>
-				<div class="w-16 min-w-16 lg:min-w-full">
-					<img alt="{{ $menu->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow rounded-xl" src="{{ ($menu->archivo !== NULL && trim($menu->archivo) !== '') ? asset('storage/'.$menu->archivo) : asset('images/blank.png') }}">
+				<div class="w-16 min-w-16 lg:min-w-full lg:w-full">
+					<img alt="{{ $menu->nombre }}" class="w-16 h-16 lg:w-full lg:aspect-square lg:h-auto object-cover shadow rounded-xl" src="{{ ($menu->archivo !== NULL && trim($menu->archivo) !== '') ? asset('storage/'.$menu->archivo) : asset('images/blank.png') }}">
 				</div>
-				<div class="mx-2 lg:mt-2">
-					<div class="font-semibold text-start lg:text-center">{{ $menu->nombre }}</div>
-					<div class="text-xs text-start lg:text-center lg:text-base text-wrap">{{ $menu->descripcion }}</div>
+				<div class="mx-2 lg:mt-2 grow">
+					<div class="font-semibold text-sm text-start lg:text-center">{{ $menu->nombre }}</div>
+					<div class="text-xs text-start lg:text-center lg:text-base">
+						<div class="line-clamp-2 lg:line-clamp-none">{!! $menu->descripcion !!}</div>
+					</div>
 					<div class="text-xs text-start lg:text-center hidden lg:block">{!! ($menu->cantidad !== NULL && trim($menu->cantidad) !== '') ? $menu->cantidad : '&nbsp;' !!}</div>
 				</div>
 				<div class="text-[15px] lg:text-base color font-bold">
@@ -90,7 +92,7 @@
 			const key = parseInt($(this).data('key'));
 			const catKey = parseInt($(this).data('cat-key'));
 			const cantidad = ($(this).data('cantidad') !== null && jQuery.trim($(this).data('cantidad')) !== '') ? $(this).data('cantidad') : '';
-			let media = `<img class="w-full h-auto z-10" src="${imagen}">`;
+			let media = `<img class="w-full aspect-square h-auto max-h-[80vh] z-10" src="${imagen}">`;
 			let canjeText = '';
 			let botonHtml = '';
 			if (canje !== '' && canje !== null) {
@@ -106,15 +108,21 @@
 			Swal.fire({
 				title: `<div class="font-bold uppercase text-xs color2">&nbsp;</div>`,
 				icon: null,
-				html: `<div id="current-menu" data-key="${key}" data-cat-key="${catKey}">
-					<div class="relative">${media}${canjeText}${buttons}</div>
-					<div class="grow text-xl color2 mt-5 text-center w-full">
-						<div class="font-semibold">${nombre}</div>
-						<div class="text-xs">${cantidad}</div>
-					</div>
-					<div class="text-base color font-bold">${precio}</div>
-					<div class="my-3 color2 text-[1rem]">${descripcion}</div>
-					${botonHtml}
+				html: `
+					<div id="current-menu" data-key="${key}" data-cat-key="${catKey}" class="flex flex-col lg:flex-row gap-3">
+						<div class="w-full lg:w-1/2 relative">
+							${media}${canjeText}${buttons}
+						</div>
+						<div class="w-full lg:w-1/2">
+							<div class="grow text-xl color2 mt-5 text-center w-full">
+								<div class="font-semibold">${nombre}</div>
+								<div class="text-xs">${cantidad}</div>
+							</div>
+							<div class="text-base color font-bold">${precio}</div>
+							<div class="my-3 color2 text-[1rem]">${descripcion}</div>
+							${botonHtml}
+							</div>
+						</div>
 					</div>
 				`,
 				showCloseButton: true,
@@ -133,3 +141,9 @@
 		}, 1000);
 	});
 </script>
+<style>
+	.popup-menu {
+		width: 95% !important;
+    max-width: 1024px !important;
+	}
+</style>

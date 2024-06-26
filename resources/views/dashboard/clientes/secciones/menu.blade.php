@@ -58,7 +58,7 @@
 									<input class="input-underline" name="menu_item_canje_texto[{{ $key }}][]" value="{{$menu->canje_texto}}" type="text" placeholder="Etiqueta">
 								</div>
 								<div class="mb-2 col-span-2">
-									<textarea class="input-border" name="menu_item_descripcion[{{ $key }}][]" rows="2" placeholder="Descripción">{{$menu->descripcion}}</textarea>
+									<textarea class="input-border alx-editor" name="menu_item_descripcion[{{ $key }}][]" rows="2" placeholder="Descripción">{{$menu->descripcion}}</textarea>
 								</div>
 							</div>
 							<div class="ml-4">
