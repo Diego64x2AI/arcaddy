@@ -20,6 +20,7 @@ class ClienteMenu extends Model
 		'canje_texto',
 		'descripcion',
 		'categoria',
+		'orden',
 	];
 
 	public $timestamps = false;

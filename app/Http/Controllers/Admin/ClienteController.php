@@ -27,6 +27,8 @@ use App\Http\Requests\UpdateClienteRequest;
 use App\Models\ClienteCartelera;
 use App\Models\ClienteMarco;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ClienteController extends Controller
 {
@@ -475,10 +477,11 @@ class ClienteController extends Controller
 		}
 		// menu
 		if (isset($campos['menu_cat_nombre']) && count($campos['menu_cat_nombre']) > 0) {
-			// ClienteBanner::where('cliente_id', $cliente->id)->delete();
+			// dd($campos['menu_item_nombre']);
 			ClienteMenu::where('cliente_id', $cliente->id)->delete();
 			foreach ($campos['menu_cat_nombre'] as $key => $categoria_nombre) {
 				$categoria_nombre = strtolower($categoria_nombre);
+				// dd($campos['menu_item_nombre'][$key], $campos['menu_item_nombre'][$key+1]);
 				foreach ($campos['menu_item_nombre'][$key] as $key2 => $nombre) {
 					$archivo = NULL;
 					// archivo viejo
@@ -486,12 +489,22 @@ class ClienteController extends Controller
 						$archivo = $request->input('menu_item_old.'.$key.'.'.$key2);
 					}
 					if ($request->hasFile('menu_item_img.'.$key.'.'.$key2) && $request->file('menu_item_img.'.$key.'.'.$key2)->isValid()) {
-						$archivo = $request->file('menu_item_img.'.$key.'.'.$key2)->store('clientes/menu', 'public');
+						// $archivo = $request->file('menu_item_img.'.$key.'.'.$key2)->store('clientes/menu', 'public');
+						$size = explode('x', $campos['menu_item_size'][$key][$key2]);
+						$filename = uniqid() . '.jpg';
+						$archivo = $request->file('menu_item_img.'.$key.'.'.$key2)->storeAs('clientes/menu', $filename, 'public');
+						// resize image
+						$manager = new ImageManager(Driver::class);
+						$manager->read('storage/' . $archivo)->resize($size[0], $size[1], function ($constraint) {
+							$constraint->aspectRatio();
+							$constraint->upsize();
+						})->save('storage/' . $archivo);
 					}
 					ClienteMenu::insert([
 						'cliente_id' => $cliente->id,
 						'archivo' => $archivo,
 						'nombre' => $nombre,
+						'orden' => $key,
 						'cantidad' => $campos['menu_item_cantidad'][$key][$key2],
 						'precio' => $campos['menu_item_precio'][$key][$key2],
 						'categoria' => $categoria_nombre,

@@ -16,12 +16,12 @@
 	<div id="menu-container" class="container-draggable mt-5 section-box">
 		@if ($cliente->id !== NULL)
 			@foreach ($cliente->menu()->orderBy('id', 'asc')->groupBy('categoria')->pluck('categoria') as $key => $menu_categoria)
-			<div class="w-full float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
+			<div class="w-full float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group menu-categoria-box">
 				<div class="p-3">
 					<div>
 						<input class="input-underline" name="menu_cat_nombre[]" value="{{ ucwords($menu_categoria) }}" type="text" placeholder="Nombre de la categoría" required>
 					</div>
-					<div id="menu-items" class="flex flex-col">
+					<div id="menu-items" class="flex flex-col container-draggable">
 						@foreach ($cliente->menu->where('categoria', $menu_categoria) as $menu)
 						<div class="bg-white item-container mt-2 p-2 flex flex-row h-20 overflow-hidden">
 							<div class="handler2 cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -36,6 +36,14 @@
 										<input type="hidden" name="menu_item_old[{{ $key }}][]" value="{{$menu->archivo}}" />
 										<input type="file" name="menu_item_img[{{ $key }}][]" class="file-general" accept="image/*" style="display:none" />
 									</div>
+								</div>
+								<div>
+									<input type="hidden" name="menu_item_id[{{ $key }}][]" value="{{$menu->id}}" />
+									<select name="menu_item_size[{{ $key }}][]" class="input-underline" required>
+										<option value="800x800">800x800</option>
+										<option value="800x600">800x600</option>
+										<option value="600x800">600x800</option>
+									</select>
 								</div>
 							</div>
 							<div class="ml-2 grow grid grid-cols-2 gap-2">

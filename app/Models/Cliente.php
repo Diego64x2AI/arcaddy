@@ -40,6 +40,12 @@ class Cliente extends Model
 		'login_bloqueo',
 		'btn_registro_en_login',
 		'show_logo',
+		'font',
+		'font_titulo',
+		'size1',
+		'size2',
+		'size3',
+		'negrita',
 	];
 
 	/**
@@ -51,6 +57,10 @@ class Cliente extends Model
 		'registro' => 'boolean',
 		'show_logo' => 'boolean',
 		'geo_bloqueo' => 'integer',
+		'size1' => 'decimal:2',
+		'size2' => 'decimal:2',
+		'size3' => 'decimal:2',
+		'negrita' => 'decimal:2',
 	];
 
 	protected $with = [
@@ -94,7 +104,7 @@ class Cliente extends Model
 
 	public function menu()
 	{
-		return $this->hasMany(ClienteMenu::class, 'cliente_id', 'id');
+		return $this->hasMany(ClienteMenu::class, 'cliente_id', 'id')->orderBy('id', 'asc');
 	}
 
 	public function cartelera()

@@ -1,7 +1,62 @@
 @php
-	list($r, $g, $b) = sscanf($cliente->color_bg, "#%02x%02x%02x");
-	list($r2, $g2, $b2) = sscanf($cliente->color, "#%02x%02x%02x");
-	@endphp
+list($r, $g, $b) = sscanf($cliente->color_bg, "#%02x%02x%02x");
+list($r2, $g2, $b2) = sscanf($cliente->color, "#%02x%02x%02x");
+$font = NULL;
+$font_titulo = NULL;
+$patterns = [
+	'!^https://fonts.googleapis.com/css\?!',
+	'!^https://fonts.googleapis.com/css2\?!',
+	'!(family=[^&:]+).*$!',
+	'!family=!',
+	'!\+!'
+];
+$replacements = [
+	"",
+	"",
+	'$1',
+	'',
+	' '
+];
+if ($cliente->font !== NULL && trim($cliente->font) !== '') {
+	$font = preg_replace($patterns, $replacements, $cliente->font);
+}
+if ($cliente->font_titulo !== NULL && trim($cliente->font_titulo) !== '') {
+	$font_titulo = preg_replace($patterns, $replacements, $cliente->font_titulo);
+}
+@endphp
+@if ($font !== NULL)
+	<link href="https://fonts.googleapis.com/css2?family={{ $font }}:wght@100;900&display=swap" rel="stylesheet">
+	<style>
+		html, body, * {
+			font-family: '{{ $font }}'!important;
+			font-optical-sizing: auto;
+		}
+	</style>
+@endif
+@if ($font_titulo !== NULL)
+	<link href="https://fonts.googleapis.com/css2?family={{ $font_titulo }}:wght@100;900&display=swap" rel="stylesheet">
+	<style>
+		.titulo-modulo {
+			font-family: '{{ $font_titulo }}'!important;
+			font-optical-sizing: auto;
+			@if ($cliente->negrita >= 100 && $cliente->negrita <= 900)
+			font-weight: {{ round($cliente->negrita, 0) }}!important;
+			@endif
+			@if ($cliente->size2 > 0)
+			font-size: {{ round($cliente->size2, 2) }}rem !important;
+			line-height: {{ round($cliente->size2, 2) }}rem !important;
+			@endif
+		}
+		@if ($cliente->size3 > 0)
+		@media (min-width: 1024px) {
+			.titulo-modulo {
+					font-size: {{ round($cliente->size3, 2) }}rem !important;
+					line-height: {{ round($cliente->size3, 2) }}rem !important;
+			}
+		}
+		@endif
+	</style>
+@endif
 	<style>
 		.swiper {
 			width: 100%;

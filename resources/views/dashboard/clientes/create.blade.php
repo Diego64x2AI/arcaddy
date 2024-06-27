@@ -73,12 +73,12 @@
 									value="{{ ($cliente->id !== NULL) ? $cliente->color : old('color') }}" type="color" placeholder="#FF4E00" @if($cliente->id === NULL) required @endif>
 							</div>
 						</div>
-						<div class="flex flex-col md:flex-row items-center gap-5 mb-6">
+						<div class="grid grid-cols-2 md:grid-cols-5 gap-5 mb-6">
 							<div>
-						    <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="idioma">
+						    <label class="block tracking-wide text-gray-700 text-xlx font-bold mb-2" for="idioma">
 									Idioma
 								</label>
-								<select class="input-underline opc-filtro min-w-32" id="idioma" name="idioma">
+								<select class="input-underline opc-filtro !py-2 !px-3 min-w-32" id="idioma" name="idioma">
 										@if($cliente->id !== NULL)
 										<option value="ES" {{($cliente->idioma === 'ES')?'selected':''}} >Español</option>
 										<option value="EN" {{($cliente->idioma === 'EN')?'selected':''}}>Inglés</option>
@@ -89,10 +89,10 @@
 								</select>
 							</div>
 							<div>
-						    <label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="show_logo">
+						    <label class="block tracking-wide text-gray-700 text-xlx font-bold mb-2" for="show_logo">
 									Mostrar logo
 								</label>
-								<select class="input-underline opc-filtro" name="show_logo" id="show_logo">
+								<select class="input-underline opc-filtro w-full !py-2 !px-3 text-gray-700" name="show_logo" id="show_logo">
 										@if($cliente->id !== NULL)
 										<option value="1" @if($cliente->show_logo) selected @endif>SI</option>
 										<option value="0" @if(!$cliente->show_logo) selected @endif>NO</option>
@@ -101,6 +101,42 @@
 										<option value="0">NO</option>
 										@endif
 								</select>
+							</div>
+							<div>
+						    <label class="block tracking-wide text-gray-700 text-xlx font-bold mb-2" for="font">
+									Tipografia Base
+								</label>
+								<input name="font" id="font" class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" value="{{ ($cliente->id !== NULL) ? $cliente->font : old('font') }}" type="text" placeholder="URL a la fuente">
+							</div>
+							<div>
+						    <label class="block tracking-wide text-gray-700 text-xlx font-bold mb-2" for="font_titulo">
+									Tipografia Títulos
+								</label>
+								<input name="font_titulo" id="font_titulo" class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" value="{{ ($cliente->id !== NULL) ? $cliente->font_titulo : old('font_titulo') }}" type="text" placeholder="URL a la fuente">
+							</div>
+							<div>
+						    <label class="block tracking-wide text-gray-700 text-xlx font-bold mb-2" for="size1">
+									Tamaño Base
+								</label>
+								<input name="size1" id="size1" class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" value="{{ ($cliente->id !== NULL) ? $cliente->size1 : old('size1', 0) }}" type="number" min="0" placeholder="0" required>
+							</div>
+							<div>
+						    <label class="block tracking-wide text-gray-700 font-bold mb-2" for="size2">
+									Tamaño Título Móvil
+								</label>
+								<input name="size2" id="size2" class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" value="{{ ($cliente->id !== NULL) ? $cliente->size2 : old('size2', 0) }}" type="number" min="0" placeholder="0" required>
+							</div>
+							<div>
+						    <label class="block tracking-wide text-gray-700 font-bold mb-2" for="size3">
+									Tamaño Título Desktop
+								</label>
+								<input name="size3" id="size3" class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" value="{{ ($cliente->id !== NULL) ? $cliente->size3 : old('size3', 0) }}" type="number" min="0" placeholder="0" required>
+							</div>
+							<div>
+						    <label class="block tracking-wide text-gray-700 font-bold mb-2" for="negrita">
+									Wheight Título
+								</label>
+								<input name="negrita" id="negrita" class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" value="{{ ($cliente->id !== NULL) ? $cliente->negrita : old('negrita', 0) }}" type="number" min="0" max="900" placeholder="0" required>
 							</div>
 						</div>
 						<div class="flex flex-wrap -mx-3">
@@ -113,13 +149,6 @@
 
 						</div>
 					    <br>
-
-
-
-
-
-
-
 						<div class="flex flex-wrap -mx-3 justify-center">
 							<div class="w-full md:w-1/6 px-3 mb-6 md:mb-6 text-center">
 							    <div>
@@ -598,12 +627,56 @@
 					handle: '.handler', // handle's class
 					animation: 150,
 					direction: 'vertical',
+					// reassign indexed
+					onEnd: function (evt) {
+						console.log(evt);
+						$('.menu-categoria-box').each(function (index, element) {
+							console.log($(element), $(element).find("input[name^=menu_item_old]"), index);
+							$(element).find("input[name^=menu_item_old]").each(function (i, e) {
+								$(e).attr('name', `menu_item_old[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_img]").each(function (i, e) {
+								$(e).attr('name', `menu_item_img[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_id]").each(function (i, e) {
+								$(e).attr('name', `menu_item_id[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_nombre]").each(function (i, e) {
+								$(e).attr('name', `menu_item_nombre[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_cantidad]").each(function (i, e) {
+								$(e).attr('name', `menu_item_cantidad[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_precio]").each(function (i, e) {
+								$(e).attr('name', `menu_item_precio[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_boton_titulo]").each(function (i, e) {
+								$(e).attr('name', `menu_item_boton_titulo[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_boton_link]").each(function (i, e) {
+								$(e).attr('name', `menu_item_boton_link[${index}][]`);
+							});
+							$(element).find("input[name^=menu_item_canje_texto]").each(function (i, e) {
+								$(e).attr('name', `menu_item_canje_texto[${index}][]`);
+							});
+							$(element).find("textarea[name^=menu_item_descripcion]").each(function (i, e) {
+								$(e).attr('name', `menu_item_descripcion[${index}][]`);
+							});
+							$(element).find("select[name^=menu_item_size]").each(function (i, e) {
+								$(e).attr('name', `menu_item_size[${index}][]`);
+							});
+						});
+					},
 				});
-				if (document.querySelector('#menu-container #menu-items') !== null) {
-					new Sortable(document.querySelector('#menu-container #menu-items'), {
-						handle: '.handler2', // handle's class
-						animation: 150,
-						direction: 'horizontal',
+				console.log($('#menu-container #menu-items').length);
+				if ($('#menu-container #menu-items').length > 0) {
+					console.log('menu-items', document.querySelector('#menu-container #menu-items'));
+					$('#menu-container #menu-items').each(function (index, element) {
+						new Sortable(element, {
+							handle: '.handler2', // handle's class
+							animation: 150,
+							direction: 'vertical',
+						});
 					});
 				}
 				$('body').on('change', '.file-general', function () {
@@ -735,6 +808,14 @@
 									<input type="hidden" name="menu_item_old[${index}][]" value="" />
 									<input type="file" name="menu_item_img[${index}][]" class="file-general" accept="image/*" style="display:none" />
 								</div>
+							</div>
+							<div>
+								<input type="hidden" name="menu_item_id[${index}][]" value="0" />
+								<select name="menu_item_size[${index}][]" class="input-underline" required>
+									<option value="800x800">800x800</option>
+									<option value="800x600">800x600</option>
+									<option value="600x800">600x800</option>
+								</select>
 							</div>
 						</div>
 						<div class="ml-2 grow grid grid-cols-2 gap-2">
