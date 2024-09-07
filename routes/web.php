@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\CuponesController;
+use App\Http\Controllers\Admin\GruposController;
 use App\Http\Controllers\Admin\MarcoGaleriaController;
 use App\Http\Controllers\Admin\PedidosController;
 use App\Http\Controllers\Admin\ProductoController;
@@ -110,6 +111,8 @@ Route::middleware('role:admin')->group(function () {
 				});
 			});
 		});
+		Route::resource('grupos', GruposController::class)->except(['show']);
+		Route::get('/grupos/clientes', [GruposController::class, 'clientes'])->name('grupos.clientes');
 		Route::prefix('votaciones')->group(function () {
 			Route::post('/{votacione}/atributo', [VotacionesController::class, 'updatea'])->name('votaciones.updatea');
 			Route::prefix('categorias')->group(function () {

@@ -24,6 +24,9 @@
 					<x-nav-link :href="route('votaciones.index')" :active="request()->routeIs('votaciones.index')">
 						{{ __('Votaciones') }}
 					</x-nav-link>
+					<x-nav-link :href="route('grupos.index')" :active="request()->routeIs('grupos.index')">
+						{{ __('Grupos') }}
+					</x-nav-link>
     				<x-nav-link :href="route('usuarios-cliente.index')" :active="request()->routeIs('usuarios-cliente.index')">
     				{{ __('Administrador cliente') }}
 					</x-nav-link>
@@ -94,6 +97,9 @@
 			</x-responsive-nav-link>
 			<x-responsive-nav-link :href="route('votaciones.index')" :active="request()->routeIs('votaciones.index')">
 				{{ __('Votaciones') }}
+			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('grupos.index')" :active="request()->routeIs('grupos.index')">
+				{{ __('Grupos') }}
 			</x-responsive-nav-link>
 			<x-responsive-nav-link :href="route('usuarios-cliente.index')" :active="request()->routeIs('usuarios-cliente.index')">
 				{{ __('Administrador cliente') }}

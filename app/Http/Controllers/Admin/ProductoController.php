@@ -50,6 +50,7 @@ class ProductoController extends Controller
 		$campos['cliente_id'] = $cliente->id;
 		$campos['digital'] = $request->boolean('digital');
 		$campos['regalado'] = $request->boolean('regalado');
+		$campos['grupos'] = $request->boolean('grupos');
 		// dd($campos);
 		$producto = ClienteProducto::create($campos);
 		// banners
@@ -122,6 +123,7 @@ class ProductoController extends Controller
 		$campos = $request->validated();
 		$campos['digital'] = $request->boolean('digital');
 		$campos['regalado'] = $request->boolean('regalado');
+		$campos['grupos'] = $request->boolean('grupos');
 		// dd($campos);
 		$producto->update($campos);
 		// banners

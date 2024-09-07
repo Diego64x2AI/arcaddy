@@ -46,10 +46,10 @@
 			*/?>
 		</div>
 		<div class="mx-auto w-full max-w-md">
-			@if ($cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->count() > 0)
+			@if ($productos->count() > 0)
 			<div class="titulo-modulo">Canjes disponibles</div>
 			<div class="grid grid-cols-1 gap-3">
-				@foreach ($cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->get() as $producto)
+				@foreach ($productos->get() as $producto)
 					<div class="flex flex-row items-center gap-5 border borde rounded-3xl px-3 pb-3">
 						<div class="w-16 min-w-16">
 							<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow-xl rounded-full">
@@ -62,10 +62,10 @@
 				@endforeach
 			</div>
 			@endif
-			@if ($cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados)->count() > 0)
+			@if ($productos2->count() > 0)
 			<div class="titulo-modulo mt-10">Canjes realizados</div>
 			<div class="grid grid-cols-1 gap-3">
-				@foreach ($cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados)->get() as $producto)
+				@foreach ($productos2->get() as $producto)
 					<div class="flex flex-row items-center gap-5 border borde rounded-3xl px-3 pb-3 relative">
 						<div class="w-16 min-w-16">
 							<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow-xl rounded-full">

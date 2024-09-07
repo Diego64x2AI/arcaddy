@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use App\Models\Cliente;
 use App\Models\ClienteQuiz;
 use App\Models\ClienteRally;
+use App\Models\GrupoMiembro;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
@@ -16,12 +17,14 @@ use App\Models\QuizRespuestas;
 use App\Models\ClienteCartelera;
 use App\Models\ProductoCanjeado;
 use App\Models\ClienteMarcoGaleria;
+use App\Models\ClienteProducto;
 use App\Models\ClienteQuizPregunta;
 use App\Models\ClienteQRExperiencia;
 use Eluceo\iCal\Domain\Entity\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Intervention\Image\ImageManager;
 use App\Models\ClienteRallyUbicacion;
 use App\Models\ClienteProductoDigital;
 use Illuminate\Support\Facades\Cookie;
@@ -29,6 +32,7 @@ use App\Models\VotacionesParticipantes;
 use Eluceo\iCal\Domain\Entity\Calendar;
 use Eluceo\iCal\Domain\ValueObject\Uri;
 use Eluceo\iCal\Domain\ValueObject\Alarm;
+use Intervention\Image\Drivers\Gd\Driver;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Eluceo\iCal\Domain\ValueObject\DateTime;
 use Eluceo\iCal\Domain\ValueObject\Location;
@@ -39,8 +43,6 @@ use App\Models\ClienteRallyUbicacionCompletados;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class HomeController extends Controller
 {
@@ -489,16 +491,49 @@ END:VCALENDAR";
 			->where('cliente_id', $cliente->id)
 			->first();
 		if ($userQr === null) {
-			return redirect()->route('cliente', $cliente->slug);
+			$elCodigo = $cliente->id . '-1-' . Auth::user()->id . '-' . date('YmdHis');
+			/*QR ALEX*/
+			QrCode::format('png')
+				->size(500)
+				->margin(1)
+				->color(0, 0, 0)
+				->backgroundColor(255, 255, 255)
+				->merge('/public/images/qr-logo.png', .3)
+				->errorCorrection('H')
+				->generate($elCodigo, public_path('storage/qrregister/' . $elCodigo . '.png'));
+			$userQr = UserQr::updateOrCreate([
+				'cliente_id' => $cliente->id,
+				'user_id' => Auth::user()->id,
+			],
+			[
+				'evento_id' => 1,
+				'codigo' => $elCodigo,
+				'usado'  => 0,
+			]);
+			//return redirect()->route('cliente', $cliente->slug);
 		}
 		// where('user_id', Auth::user()->id)
 		$canjeados = ProductoCanjeado::where('cliente_id', $cliente->id)->where('user_id', Auth::user()->id)->groupBy('producto_id')->pluck('producto_id')->toArray();
-		// dd($canjeados);
+		if (empty($canjeados)) {
+			array_push($canjeados, 0);
+		}
+		$productos = $cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados);
+		$productos2 = $cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados);
+		$gruposIds = GrupoMiembro::where('cliente_id', $cliente->id)->select('grupo_id')->pluck('grupo_id')->toArray();
+		if (!empty($gruposIds)) {
+			$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', $cliente->id)->select('cliente_id')->pluck('cliente_id')->toArray();
+			$productos = ClienteProducto::whereRaw('(cliente_id IN ('.implode(',', $clientesIds).') AND id NOT IN ('.implode(',', $canjeados).') AND grupos=1 AND regalado=1) OR (cliente_id='.$cliente->id.' AND id NOT IN ('.implode(',', $canjeados).') AND regalado=1)');
+			$productos2 = ClienteProducto::whereRaw('(cliente_id IN ('.implode(',', $clientesIds).') AND id IN ('.implode(',', $canjeados).') AND grupos=1 AND regalado=1) OR (cliente_id='.$cliente->id.' AND id IN ('.implode(',', $canjeados).') AND regalado=1)');
+			// dd($productos->toSql());
+		}
+		// dd($productos->get());
 		return view('registro', [
 			'cliente' => $cliente,
 			'userQr' => $userQr,
 			'ver' => $ver,
 			'canjeados' => $canjeados,
+			'productos' => $productos,
+			'productos2' => $productos2,
 		]);
 	}
 

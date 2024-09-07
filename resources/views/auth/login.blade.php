@@ -62,7 +62,7 @@
 			<!-- Email Address -->
 			<div>
 				<x-label for="email" :value="__('Email')" />
-				<x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
+				<x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $email)" required
 					autofocus />
 			</div>
 
@@ -108,6 +108,46 @@
 	<script>
 		window.addEventListener('load', function() {
 			$('body').css('paddingTop', $('#header').innerHeight());
+			@if ($groupExists !== NULL && $groupExists === 'yes')
+				Swal.fire({
+					html: `
+					@if ($grupo->logo !== NULL)
+					<div class="text-center color2 font-bold mb-5">
+						<img src="{{ asset('storage/'.$grupo->logo) }}" class="img-general inline-block object-cover w-auto h-15">
+					</div>
+					@endif
+						<div class="text-center color2 font-bold">
+							Tu correo:<br>{{ $email }}
+						</div>
+						<div class="text-center color2 px-16">
+							ya se ha registrado anteriormente pues forma parte de las dinámicas de <span class="font-bold">{{ $grupo->nombre }}</span>.
+						</div>
+						@if ($grupo->miembros->count() > 0)
+							<div class="grid grid-cols-4 items-center justify-center gap-3 mt-5">
+								@foreach ($grupo->miembros as $miembro)
+								<div class="text-center">
+									<img src="{{ asset('storage/'.$miembro->cliente->logo) }}" class="img-general inline-block object-cover w-auto h-7">
+								</div>
+								@endforeach
+							</div>
+						@endif
+						<div class="text-center color2 px-16 mt-5">
+							<span class="font-bold color">Ingresa con tu correo sin necesidad de registrarte nuevamente</span> y
+goza de los beneficios que Grupo Pasta
+Tiene para ti
+						</div>
+					`,
+					icon: null,
+					showCloseButton: false,
+					showCancelButton: false,
+					confirmButtonText: 'INGRESAR',
+					cancelButtonText: '{{ __('arcaddy.cancel') }}'
+				}).then(async (result) => {
+					if (result.isConfirmed) {
+						uploadImage(0);
+					}
+				});
+			@endif
 		});
 	</script>
 	@include('componentes.estilos')

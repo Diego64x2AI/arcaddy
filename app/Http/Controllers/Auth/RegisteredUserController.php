@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ClienteUserFieldValue;
+use App\Models\GrupoMiembro;
 use App\Notifications\RegistroCodigo;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
@@ -80,6 +81,15 @@ class RegisteredUserController extends Controller
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
+		$email = strip_tags($request->email);
+		$gruposIds = GrupoMiembro::where('cliente_id', $cliente->id)->select('grupo_id')->pluck('grupo_id')->toArray();
+		if (!empty($gruposIds)) {
+			$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->select('cliente_id')->pluck('cliente_id')->toArray();
+			if (User::whereIn('cliente_id', $clientesIds)->where('email', $email)->exists()) {
+				return redirect()->route('login', ['cliente' => $cliente->id, 'email' => $email, 'groupExists' => 'yes']);
+			}
+			// dd($email, $gruposIds, $clientesIds);
+		}
 		$campos = $request->validate([
 			'name' => ['required', 'string', 'max:255'],
 			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -90,8 +100,6 @@ class RegisteredUserController extends Controller
 		]);
 		/*	if($request->cliente_id == 2){
 		    //dd($campos);
-
-
             Para convertir cualquier formato al que deseamos
             $fechaEnCualquierFormato = $campos['nacimiento'];
             $formatosPosibles = [
@@ -100,7 +108,6 @@ class RegisteredUserController extends Controller
             $fechaFormateada = null;
             foreach ($formatosPosibles as $formato) {
                 $fechaObj = DateTime::createFromFormat($formato, $fechaEnCualquierFormato);
-
                 if ($fechaObj !== false) {
                     $fechaFormateada = $fechaObj->format('Y-m-d');
                     break;
@@ -109,15 +116,10 @@ class RegisteredUserController extends Controller
 		}*/
 		$permitirRegistro = true;
 		// validar si esta lleno el campo 3 que es el identificador (este no va a ser optimo por las prisas alex jaja)
-
 		/*@Alex: Agregue &&  Storage::disk('local')->exists("registro/{$request->cliente_id}.xlsx") para que solo en ese caso entre a validar cuando el cliente tenga excel en ese caso verifique que no exita ya el registro*/
 		if (ClienteUserField::where('cliente_id', $request->cliente_id)->where('campo_id', 3)->where('activo', 1)->exists()  &&  Storage::disk('local')->exists("registro/{$request->cliente_id}.xlsx")) {
-
 			$idsUsuarios = User::where('cliente_id', $request->cliente_id)->select('id', 'cliente_id')->pluck('id');
-
-
 			$identificadores = array_map('intval', ClienteUserFieldValue::where('campo_id', 3)->whereIn('user_id', $idsUsuarios)->pluck('valor')->toArray());
-
 			if (in_array(intval($campos['campos'][3]), $identificadores)) {
 				return redirect()->back()->withInput()->withErrors(['Ya existe un registro con este identificador.']);
 			}

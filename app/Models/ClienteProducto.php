@@ -18,6 +18,7 @@ class ClienteProducto extends Model
 		'descuento',
 		'digital',
 		'regalado',
+		'grupos',
 	];
 
 	public $timestamps = false;
@@ -26,6 +27,8 @@ class ClienteProducto extends Model
 		'precio' => 'float',
 		'descuento' => 'float',
 		'digital' => 'boolean',
+		'grupos' => 'boolean',
+		'regalado' => 'boolean',
 	];
 
 	protected $with = ['imagenes'];

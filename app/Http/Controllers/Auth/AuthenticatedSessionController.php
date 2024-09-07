@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Models\Cliente;
+use App\Models\GrupoMiembro;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,14 +18,24 @@ class AuthenticatedSessionController extends Controller
 	 *
 	 * @return \Illuminate\View\View
 	 */
-	public function create(Cliente $cliente)
+	public function create(Cliente $cliente, Request $request)
 	{
 		$lang = strtolower($cliente->idioma);
 		if ($lang === NULL) {
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
-		return view('auth.login', compact('cliente'));
+		$groupExists = $request->groupExists;
+		$email = htmlentities(strip_tags($request->email));
+		$grupo = NULL;
+		if ($groupExists === 'yes') {
+			$gruposIds = GrupoMiembro::where('cliente_id', $cliente->id)->select('grupo_id')->pluck('grupo_id')->toArray();
+			if (!empty($gruposIds)) {
+				$grupo = GrupoMiembro::whereIn('grupo_id', $gruposIds)->with('grupo')->first()->grupo;
+				// dd($grupo);
+			}
+		}
+		return view('auth.login', compact('cliente', 'groupExists', 'email', 'grupo'));
 	}
 
 	/**
@@ -34,7 +46,7 @@ class AuthenticatedSessionController extends Controller
 	 */
 	public function store(Cliente $cliente, LoginRequest $request)
 	{
-		// dd($cliente);
+		//dd($cliente);
 		$request->authenticate();
 		$request->session()->regenerate();
 		if ($cliente->id !== NULL) {
@@ -43,30 +55,21 @@ class AuthenticatedSessionController extends Controller
 			}
 			return redirect()->route('cliente', ['slug' => $cliente->slug]);
 		}
-
-		$cliente = Cliente::find(auth()->user()->cliente_id);
+		$cliente = Cliente::find($cliente->id);
 		if ($cliente) {
 			//auth()->user()->logo = $cliente->logo;
 			//dd(auth()->user()->logo);
-
 			// Obtener el usuario actualmente autenticado
 			//$user = auth()->user();
-
 			// Agregar un valor personalizado al objeto User en la sesión
 			session()->put('logo', $cliente->logo);
-
 			// Obtener el valor personalizado del objeto User desde la sesión
 			//$miValor = session()->get('logo');
-
 			// Agregar el valor personalizado al objeto User
 			//$user->logo = $miValor;
-
 			//auth()->user()->logo = $miValor;
-
 		}
-
 		//dd(auth()->user()->logo);
-
 		return redirect()->intended(RouteServiceProvider::HOME);
 	}
 

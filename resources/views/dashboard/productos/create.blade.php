@@ -89,7 +89,10 @@
 								</label>
 								Se muestra en la página, con botón para canjear con el QR del usuario.
 								<br>
-								<input type="checkbox" name="regalado" value="on" @if($producto->id !== NULL && $producto->regalado) checked @endif>
+								<input type="checkbox" name="regalado" id="regalado" value="on" @if($producto->id !== NULL && $producto->regalado) checked @endif> Canje gratuito
+								<div id="grupos_container">
+									<input type="checkbox" name="grupos" id="grupos" value="on" @if($producto->id !== NULL && $producto->grupos) checked @endif> Mortrar en los grupos
+								</div>
 							</div>
 						</div>
 
@@ -211,6 +214,14 @@
 						reader.readAsDataURL(this.files[0]);
 					}
 				});
+				$('#regalado').change(function() {
+					console.log(this.checked)
+					if(this.checked) {
+						$('#grupos_container').show();
+					} else {
+						$('#grupos_container').hide();
+					}
+				}).trigger('change');
 				// agregar banner
 				$('a#add_banner').on('click', function (e) {
 					e.preventDefault();
