@@ -53,7 +53,7 @@ class HomeController extends Controller
 			abort(404);
 		}
 		$data = request()->validate([
-			'distancia' => 'required|numeric|min:0|max:'.$ubicacion->distancia,
+			'distancia' => 'required|numeric|min:0|max:' . $ubicacion->distancia,
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric',
 		]);
@@ -165,12 +165,12 @@ END:VCALENDAR";
 			$event->setDescription($ClienteCartelera->descripcion);
 		}
 		$event->setLocation(
-				(new Location($ClienteCartelera->lugar)) //->withGeographicPosition(new GeographicPosition(47.557579, 10.749704))
-			)
+			(new Location($ClienteCartelera->lugar)) //->withGeographicPosition(new GeographicPosition(47.557579, 10.749704))
+		)
 			->setOccurrence(
 				new TimeSpan(
-					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} ".\Carbon\Carbon::parse($ClienteCartelera->hora)->format('H:i:s')), true),
-					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} ".\Carbon\Carbon::parse($ClienteCartelera->hora)->addHour()->format('H:i:s')), true)
+					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} " . \Carbon\Carbon::parse($ClienteCartelera->hora)->format('H:i:s')), true),
+					new DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', "{$ClienteCartelera->fecha->format('Y-m-d')} " . \Carbon\Carbon::parse($ClienteCartelera->hora)->addHour()->format('H:i:s')), true)
 				)
 			)
 			->addAlarm(
@@ -358,17 +358,17 @@ END:VCALENDAR";
 		} elseif (strpos($_SERVER['HTTP_HOST'], 'juramamx.com') !== false && $slug !== 'jurama') {
 			header("Location: https://juramamx.com/jurama");
 			exit();
-		}
-		elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.mx') !== false && $slug !== 'lupita') {
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.mx') !== false && $slug !== 'lupita') {
 			header("Location: https://lacasitasagrada.mx/lupita");
 			exit();
-		}
-		elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.com.mx') !== false && $slug !== 'lupita') {
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.com.mx') !== false && $slug !== 'lupita') {
 			header("Location: https://lacasitasagrada.com.mx/lupita");
 			exit();
-		}
-		elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.com') !== false && $slug !== 'lupita') {
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'lacasitasagrada.com') !== false && $slug !== 'lupita') {
 			header("Location: https://lacasitasagrada.com/lupita");
+			exit();
+		} elseif (strpos($_SERVER['HTTP_HOST'], 'malefica.betterware.com.mx') !== false && $slug !== 'malefica') {
+			header("Location: https://malefica.betterware.com.mx/malefica");
 			exit();
 		}
 		/*elseif(strpos($_SERVER['HTTP_HOST'], 'oce-eg-ra.mx') !== false && $slug == 'gelicart'){
@@ -501,15 +501,17 @@ END:VCALENDAR";
 				->merge('/public/images/qr-logo.png', .3)
 				->errorCorrection('H')
 				->generate($elCodigo, public_path('storage/qrregister/' . $elCodigo . '.png'));
-			$userQr = UserQr::updateOrCreate([
-				'cliente_id' => $cliente->id,
-				'user_id' => Auth::user()->id,
-			],
-			[
-				'evento_id' => 1,
-				'codigo' => $elCodigo,
-				'usado'  => 0,
-			]);
+			$userQr = UserQr::updateOrCreate(
+				[
+					'cliente_id' => $cliente->id,
+					'user_id' => Auth::user()->id,
+				],
+				[
+					'evento_id' => 1,
+					'codigo' => $elCodigo,
+					'usado'  => 0,
+				]
+			);
 			//return redirect()->route('cliente', $cliente->slug);
 		}
 		// where('user_id', Auth::user()->id)
@@ -522,8 +524,8 @@ END:VCALENDAR";
 		$gruposIds = GrupoMiembro::where('cliente_id', $cliente->id)->select('grupo_id')->pluck('grupo_id')->toArray();
 		if (!empty($gruposIds)) {
 			$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', $cliente->id)->select('cliente_id')->pluck('cliente_id')->toArray();
-			$productos = ClienteProducto::whereRaw('(cliente_id IN ('.implode(',', $clientesIds).') AND id NOT IN ('.implode(',', $canjeados).') AND grupos=1 AND regalado=1) OR (cliente_id='.$cliente->id.' AND id NOT IN ('.implode(',', $canjeados).') AND regalado=1)');
-			$productos2 = ClienteProducto::whereRaw('(cliente_id IN ('.implode(',', $clientesIds).') AND id IN ('.implode(',', $canjeados).') AND grupos=1 AND regalado=1) OR (cliente_id='.$cliente->id.' AND id IN ('.implode(',', $canjeados).') AND regalado=1)');
+			$productos = ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND id NOT IN (' . implode(',', $canjeados) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $cliente->id . ' AND id NOT IN (' . implode(',', $canjeados) . ') AND regalado=1)');
+			$productos2 = ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND id IN (' . implode(',', $canjeados) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $cliente->id . ' AND id IN (' . implode(',', $canjeados) . ') AND regalado=1)');
 			// dd($productos->toSql());
 		}
 		// dd($productos->get());
@@ -590,7 +592,7 @@ END:VCALENDAR";
 		\Illuminate\Support\Facades\App::setLocale($lang);
 		$juego = Juego::with(['categoria'])->where('clave', $claveJuego)->firstOrFail();
 		if ($juego) {
-			return view('games.'.$juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
+			return view('games.' . $juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
 		} else {
 			return redirect()->route('cliente', $slug);
 		}
