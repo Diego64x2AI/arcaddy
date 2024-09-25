@@ -44,6 +44,9 @@
 			<div class="flex flex-row items-center justify-center">
 				<a href="{{ route('cliente.rally.index', ['cliente' => $id]) }}" title="Experiencias GEO / Rally"><i class="fas fa-flag-checkered"></i></a>
 			</div>
+			<div class="flex flex-row items-center justify-center">
+				<a href="{{ route('cliente.qrlinks.index', ['cliente' => $id]) }}" title="QR Links"><i class="fas fa-link"></i></a>
+			</div>
 		</div>
 	</div>
 </div>

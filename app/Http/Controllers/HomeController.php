@@ -40,6 +40,7 @@ use Eluceo\iCal\Domain\ValueObject\TimeSpan;
 use Eluceo\iCal\Domain\ValueObject\Organizer;
 use Eluceo\iCal\Domain\ValueObject\Attachment;
 use App\Models\ClienteRallyUbicacionCompletados;
+use App\Models\QRLink;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
@@ -412,6 +413,23 @@ END:VCALENDAR";
 				'cliente' => $cliente,
 			]);
 		}
+	}
+
+	public function cliente_seccion($slug = '', $slug2 = '')
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$pagina = QRLink::where('slug', $slug2)->where('cliente_id', $cliente->id)->firstOrFail();
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
+		// incrementar las visitas
+		$pagina->increment('lecturas');
+		return view('cliente_seccion', [
+			'cliente' => $cliente,
+			'pagina' => $pagina,
+		]);
 	}
 
 	/**

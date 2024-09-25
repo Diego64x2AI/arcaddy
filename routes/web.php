@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\UsuariosController;
 use App\Http\Controllers\Admin\VotacionesController;
 use App\Http\Controllers\Admin\MyAppClientController;
+use App\Http\Controllers\Admin\QRLinksController;
 use App\Http\Controllers\Admin\RallyController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\UsuariosClienteController;
@@ -92,6 +93,7 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('cliente.quiz', QuizController::class)->except(['create', 'show']);
 		Route::resource('cliente.qrexperiencias', QrExperienciasController::class)->except(['show']);
 		Route::resource('cliente.rally', RallyController::class)->except(['show']);
+		Route::resource('cliente.qrlinks', QRLinksController::class)->except(['show']);
 		Route::get('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'markers'])->name('cliente.rally.markers')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
 		Route::get('/cliente/{cliente}/rally/{rally}/markers/create', [RallyController::class, 'marker_create'])->name('cliente.rally.markers.create')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
 		Route::post('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'marker_store'])->name('cliente.rally.markers.store')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
@@ -177,3 +179,4 @@ Route::middleware('auth')->group(function () {
 Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name('cliente.quiz.respuesta');
 Route::get('/{cliente}/experiencia/{qrexperiencia}', [HomeController::class, 'qr_experiencia'])->name('cliente.quiz.qrexperiencia');
 Route::post('/{cliente}/rally/{rally}/{ubicacion}/completed', [HomeController::class, 'rally_completed'])->name('cliente.rally.completed')->middleware('auth')->where('rally', '[0-9]+')->where('ubicacion', '[0-9]+');
+Route::get('/{slug}/{slug2}', [HomeController::class, 'cliente_seccion'])->name('cliente_seccion');

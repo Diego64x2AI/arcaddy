@@ -445,7 +445,7 @@
 						<!-- /flotantes -->
 						<div id="secciones-container">
 							@php
-								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos', 'banners2', 'menu', 'ranking', 'quiz', 'marco', 'cartelera'];
+								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos', 'banners2', 'menu', 'ranking', 'quiz', 'marco', 'cartelera', 'galeriamarcos', 'rally'];
 							@endphp
 							@foreach($secciones as $seccion)
 								@includeIf('dashboard.clientes.secciones.'.$seccion)
