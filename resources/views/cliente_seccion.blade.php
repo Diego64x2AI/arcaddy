@@ -68,6 +68,11 @@
 		<div class="px-5 mt-5">
 			{!! $pagina->texto !!}
 		</div>
+		@if($pagina->boton_texto !== NULL && trim($pagina->boton_texto) !== '' && $pagina->boton_link !== NULL && trim($pagina->boton_link) !== '')
+		<div class="text-center mt-5">
+			<a href="{{ $pagina->boton_link }}" class="btn-pill">{{ $pagina->boton_texto }}</a>
+		</div>
+		@endif
 	</main>
 </main>
 @include('componentes.footer')

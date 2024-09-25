@@ -50,7 +50,7 @@
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">{{ $link->id }}</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<a href="{{ asset('storage/qrcodes_secciones/'.$link->slug.'.png?'.time()) }}" download="qr-{{ $link->slug }}" target="_blank" title="Código QR">
-										<img src="{{ asset('storage/qrcodes_secciones/'.$link->slug.'.png?'.time()) }}" alt="Código QR" class="w-20 h-20 inline-block">
+										<img src="{{ asset('storage/qrcodes_secciones/'.$link->slug.'.png?'.time()) }}" alt="Código QR" class="w-20 h-auto inline-block">
 									</a>
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
@@ -146,7 +146,7 @@
 				columnDefs: [
 					{ responsivePriority: 1, targets: 0 },
 					{ responsivePriority: 2, targets: 1 },
-					{ responsivePriority: 3, targets: 2 }
+					{ responsivePriority: 3, targets: -1 }
         ],
 				language: {
 					url: '{{ asset("es-ES.json") }}'

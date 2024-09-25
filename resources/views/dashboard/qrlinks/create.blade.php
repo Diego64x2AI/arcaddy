@@ -187,8 +187,8 @@
 			menubar: false,
 			height: 700,
 			selector: 'textarea.alx-editor',
-			plugins: 'link code lists colorpicker textcolor',
-			toolbar: 'styles | bold italic | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link code'
+			plugins: 'link code lists colorpicker textcolor image media',
+			toolbar: 'styles | bold italic | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code'
 		});
 </script>
 	@endsection
