@@ -1,4 +1,13 @@
 @if($cliente->banners->count() > 0)
+@php
+	$sucursal_id = Session::get('sucursal_id');
+	$banners = $cliente->banners;
+	if ($sucursal_id !== NULL) {
+		$banners = $cliente->banners()->whereHas('sucursales', function($query) use ($sucursal_id) {
+			$query->where('sucursal_id', $sucursal_id);
+		})->orDoesntHave('sucursales')->where('cliente_id', $cliente->id)->get();
+	}
+@endphp
 <section id="banners">
 	@if ($cliente->secciones()->where('seccion', 'banners')->first()->mostrar_titulo)
 	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'banners')->first()->titulo }}</div>
@@ -7,7 +16,7 @@
 	<div class="swiper swiper-1">
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper">
-			@foreach($cliente->banners as $banner)
+			@foreach($banners as $banner)
 			<div class="swiper-slide bg-cover bg-center slide-bg" style="background-image: url({{ asset('storage/'.$banner->archivo) }});">
 				@if ($banner->link !== NULL && trim($banner->link) !== '')
 					<a href="{{ $banner->link }}" style="text-indent: -8000px;display:block;width:100%;height:100%;">{{ __('arcaddy.link') }}</a>

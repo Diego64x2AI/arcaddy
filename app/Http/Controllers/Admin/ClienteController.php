@@ -24,6 +24,7 @@ use App\Models\ClientePatrocinadores;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
+use App\Models\ClienteBannerSucursal;
 use App\Models\ClienteCartelera;
 use App\Models\ClienteMarco;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -109,11 +110,16 @@ class ClienteController extends Controller
 		$campos['registro'] = $request->boolean('registro');
 		$campos['login_bloqueo'] = $request->boolean('login_bloqueo');
 		$campos['btn_registro_en_login'] = $request->boolean('btn_registro_en_login');
+		$campos['registro_sucursal'] = $request->boolean('registro_sucursal');
+		$campos['sucursales_mapa'] = $request->boolean('sucursales_mapa');
 		if ($request->hasFile('registro_img')) {
 			$campos['registro_img'] = $request->file('registro_img')->store('clientes/images', 'public');
 		}
 		if ($request->hasFile('imagen_background')) {
 			$campos['imagen_background'] = $request->file('imagen_background')->store('clientes/images', 'public');
+		}
+		if ($request->hasFile('sucursales_pin')) {
+			$campos['sucursales_pin'] = $request->file('sucursales_pin')->store('clientes/pin', 'public');
 		}
 		// dd($campos);
 		$cliente = Cliente::create($campos);
@@ -421,9 +427,17 @@ class ClienteController extends Controller
 		if ($request->hasFile('registro_base')) {
 			$request->file('registro_base')->storeAs('registro', "{$cliente->id}.xlsx", 'local');
 		}
+		if ($request->hasFile('sucursales_pin')) {
+			if ($cliente->sucursales_pin !== NULL) {
+				Storage::delete($cliente->sucursales_pin);
+			}
+			$campos['sucursales_pin'] = $request->file('sucursales_pin')->store('clientes/pin', 'public');
+		}
 		$campos['registro'] = $request->boolean('registro');
 		$campos['login_bloqueo'] = $request->boolean('login_bloqueo');
 		$campos['btn_registro_en_login'] = $request->boolean('btn_registro_en_login');
+		$campos['registro_sucursal'] = $request->boolean('registro_sucursal');
+		$campos['sucursales_mapa'] = $request->boolean('sucursales_mapa');
 		$cliente->update($campos);
 		// secciones orden
 		if (isset($campos['secciones']) && count($campos['secciones']) > 0) {
@@ -579,6 +593,7 @@ class ClienteController extends Controller
 			}
 		}
 		// banners
+		// dd($campos);
 		if (isset($campos['banners_titulo']) && count($campos['banners_titulo']) > 0) {
 			/*
 			foreach ($cliente->banners as $banner) {
@@ -594,14 +609,22 @@ class ClienteController extends Controller
 				if ($request->hasFile('banners_img.' . $key) && $request->file('banners_img.' . $key)->isValid()) {
 					$archivo = $request->file('banners_img.' . $key)->store('clientes/banners', 'public');
 				}
-				ClienteBanner::insert([
+				$banner = ClienteBanner::create([
 					'cliente_id' => $cliente->id,
 					'archivo' => $archivo,
 					'titulo' => $titulo,
 					'link' => $campos['banners_link'][$key],
 				]);
+				$sucursales = isset($campos['banners_sucursales'][$key]) ? $campos['banners_sucursales'][$key] : [];
+				foreach ($sucursales as $sucursal) {
+					ClienteBannerSucursal::create([
+						'banner_id' => $banner->id,
+						'sucursal_id' => $sucursal,
+					]);
+				}
 			}
 		}
+		// dd($campos);
 		// banners 2
 		if (isset($campos['banners2_titulo']) && count($campos['banners2_titulo']) > 0) {
 			/*

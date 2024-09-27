@@ -343,6 +343,12 @@
 												</div>
 											</div>
 										@endforeach
+										<div class="flex items-center justify-end mt-2">
+											<div class="font-bold">Sucursal</div>
+											<div class="ml-2">
+												<input type="checkbox" name="registro_sucursal" value="on" @if($cliente->registro_sucursal) checked @endif>
+											</div>
+										</div>
 									</div>
 
 								</div>
@@ -445,7 +451,7 @@
 						<!-- /flotantes -->
 						<div id="secciones-container">
 							@php
-								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos', 'banners2', 'menu', 'ranking', 'quiz', 'marco', 'cartelera', 'galeriamarcos', 'rally'];
+								$secciones = ($cliente->id !== NULL) ? $cliente->secciones()->select('seccion')->pluck('seccion')->toArray() : ['banners', 'descriptivos', 'colaboradores', 'patrocinadores', 'blog', 'galeria', 'playlist', 'experiencia', 'libres', 'live', 'social', 'productos', 'banners2', 'menu', 'ranking', 'quiz', 'marco', 'cartelera', 'galeriamarcos', 'rally', 'sucursales'];
 							@endphp
 							@foreach($secciones as $seccion)
 								@includeIf('dashboard.clientes.secciones.'.$seccion)
@@ -495,6 +501,7 @@
 		</div>
 	</div>
 	@section('js')
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<script src="{{ asset('assets/editor/tinymce/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 	<script>
 		let cropper;
@@ -529,6 +536,15 @@
 			});
 		}
 		window.addEventListener('load', function() {
+			// load script
+			$.getScript('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', function() {
+				$('.js-example-basic-multiple').select2({
+					allowClear: true,
+					closeOnSelect: true,
+					multiple: true,
+					placeholder: 'Selecciona una o varias opciones',
+				});
+			});
 				$('body').on('click', 'a.crop-image', function (e) {
 					e.preventDefault();
 					const image = $(this).data('image');
@@ -860,6 +876,8 @@
 				// agregar banner
 				$('a#add_banner').on('click', function (e) {
 					e.preventDefault();
+					const index = $(this).parent().parent().find('#banners-container').find('.fotometria-box').length;
+					console.log($(this).parent().parent().find('#banners-container').find('.fotometria-box'));
 					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
 							<div class="mb-2 relative">
@@ -870,21 +888,33 @@
 											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 									</div>
 									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
-									<input type="hidden" name="banners_old[]" value="" />
-									<input type="file" name="banners_img[]" class="file-general" accept="image/*" style="display:none" />
+									<input type="hidden" name="banners_old[${index}]" value="" />
+									<input type="file" name="banners_img[${index}]" class="file-general" accept="image/*" style="display:none" />
 								</div>
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									Título SEO:
 								</label>
-								<input class="input-underline" name="banners_titulo[]" type="text">
+								<input class="input-underline" name="banners_titulo[${index}]" type="text">
 							</div>
 							<div class="mb-2">
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									LINK:
 								</label>
-								<input class="input-underline" name="banners_link[]" type="url">
+								<input class="input-underline" name="banners_link[${index}]" type="url">
+							</div>
+							<div class="mb-2">
+								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+									SUCURSALES:
+								</label>
+								<div class="!h-10">
+									<select class="js-example-basic-multiple input-underline" name="banners_sucursales[${index}][]" multiple="multiple">
+										@foreach ($cliente->sucursales as $sucursal)
+										<option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
+										@endforeach
+									</select>
+								</div>
 							</div>
 							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -894,6 +924,12 @@
 						</div>
 					</div>`;
 					$('#banners-container').append(html);
+					$('.js-example-basic-multiple').select2({
+						allowClear: true,
+						closeOnSelect: true,
+						multiple: true,
+						placeholder: 'Selecciona una o varias opciones',
+					});
 				});
 				// agregar marco
 				$('a#add_marco').on('click', function (e) {

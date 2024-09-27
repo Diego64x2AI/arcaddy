@@ -47,6 +47,9 @@
 			<div class="flex flex-row items-center justify-center">
 				<a href="{{ route('cliente.qrlinks.index', ['cliente' => $id]) }}" title="QR Links"><i class="fas fa-link"></i></a>
 			</div>
+			<div class="flex flex-row items-center justify-center">
+				<a href="{{ route('cliente.sucursales.index', ['cliente' => $id]) }}" title="Sucursales"><i class="fas fa-map-marker-alt"></i></a>
+			</div>
 		</div>
 	</div>
 </div>

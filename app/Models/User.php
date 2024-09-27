@@ -25,7 +25,8 @@ class User extends Authenticatable
 		'email',
 		'password',
 		'cliente_id',
-		'nacimiento'
+		'nacimiento',
+		'sucursal_id',
 	];
 
 	/**
@@ -54,6 +55,10 @@ class User extends Authenticatable
 	// user qr
 	public function qr() {
 		return $this->hasOne(UserQr::class, 'user_id', 'id');
+	}
+
+	public function sucursal() {
+		return $this->belongsTo(ClienteSucursal::class, 'sucursal_id', 'id');
 	}
 
 	/**

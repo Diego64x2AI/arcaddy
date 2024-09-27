@@ -40,10 +40,13 @@ use Eluceo\iCal\Domain\ValueObject\TimeSpan;
 use Eluceo\iCal\Domain\ValueObject\Organizer;
 use Eluceo\iCal\Domain\ValueObject\Attachment;
 use App\Models\ClienteRallyUbicacionCompletados;
+use App\Models\ClienteSucursal;
 use App\Models\QRLink;
+use App\Models\User;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -318,6 +321,21 @@ END:VCALENDAR";
 		]);
 	}
 
+	public function sucursal($slug = '', ClienteSucursal $sucursal)
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$sucursal->increment('lecturas');
+		// si el usuario esta autenticado guardar la sucursal en la sesion
+		if (auth()->check()) {
+			$user = auth()->user();
+			User::where('id', $user->id)->update([
+				'sucursal_id' => $sucursal->id,
+			]);
+		}
+		Session::put('sucursal_id', $sucursal->id);
+		return redirect()->route('cliente', $cliente->slug);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -381,6 +399,25 @@ END:VCALENDAR";
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
+		// revisar si el cliente tiene sucursales
+		$sucursal_id = Session::get('sucursal_id');
+		if ($cliente->sucursales->count() > 0) {
+			$user = auth()->user();
+			if ($cliente->sucursales->count() === 1) {
+				Session::put('sucursal_id', $cliente->sucursales->first()->id);
+				$sucursal_id = $cliente->sucursales->first()->id;
+			} elseif ($sucursal_id === NULL && auth()->check() && $user->sucursal_id !== NULL && in_array($user->sucursal_id, $cliente->sucursales->pluck('id')->toArray())) {
+				Session::put('sucursal_id', $user->sucursal_id);
+				$sucursal_id = $user->sucursal_id;
+			}
+			// dd($cliente->sucursales, $user->sucursal_id);
+		}
+		if ($sucursal_id === NULL || ClienteSucursal::where('id', $sucursal_id)->where('cliente_id', $cliente->id)->doesntExist()) {
+			return view('cliente-sucursales', [
+				'cliente' => $cliente,
+			]);
+		}
+		// var_dump($sucursal_id);
 		if ($cliente->password !== NULL && trim($cliente->password) !== '' && Cookie::get('cpass') !== $cliente->password) {
 			return view('cliente-password', [
 				'cliente' => $cliente,

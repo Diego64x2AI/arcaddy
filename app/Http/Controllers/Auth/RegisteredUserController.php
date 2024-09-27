@@ -96,7 +96,8 @@ class RegisteredUserController extends Controller
 			'password' => ['required', 'confirmed', Rules\Password::defaults()],
 			'campos.*' => 'required|string|max:255',
 			'cliente_id' => ['required', 'numeric', 'exists:clientes,id'],
-			'nacimiento' => ['nullable', 'sometimes', 'date']
+			'nacimiento' => ['nullable', 'sometimes', 'date'],
+			'sucursal_id' => ['nullable', 'sometimes', 'numeric', 'exists:cliente_sucursals,id'],
 		]);
 		/*	if($request->cliente_id == 2){
 		    //dd($campos);
@@ -153,6 +154,7 @@ class RegisteredUserController extends Controller
 			'email' => $request->email,
 			'cliente_id' => $request->cliente_id,
 			'password' => Hash::make($request->password),
+			'sucursal_id' => $request->sucursal_id,
 		]);
 		if (isset($request->nacimiento)) {
 			$user->nacimiento = $request->nacimiento;

@@ -15,7 +15,7 @@
 	</div>
 	<div id="banners-container" class="container-draggable mt-5 section-box">
 		@if ($cliente->id !== NULL)
-			@foreach ($cliente->banners as $banner)
+			@foreach ($cliente->banners as $key => $banner)
 			<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 				<div class="p-3">
 					<div class="mb-2 relative">
@@ -31,21 +31,33 @@
 									<i class="fas fa-crop"></i> Recortar
 								</a>
 							</div>
-							<input type="hidden" name="banners_old[]" value="{{$banner->archivo}}" />
-							<input type="file" name="banners_img[]" class="file-general" accept="image/*" style="display:none" />
+							<input type="hidden" name="banners_old[{{ $key }}]" value="{{$banner->archivo}}" />
+							<input type="file" name="banners_img[{{ $key }}]" class="file-general" accept="image/*" style="display:none" />
 						</div>
 					</div>
 					<div class="mb-2">
 						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 							Título SEO:
 						</label>
-						<input class="input-underline" name="banners_titulo[]" value="{{ $banner->titulo }}" type="text" >
+						<input class="input-underline" name="banners_titulo[{{ $key }}]" value="{{ $banner->titulo }}" type="text" >
 					</div>
 					<div class="mb-2">
 						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 							LINK:
 						</label>
-						<input class="input-underline" name="banners_link[]" value="{{ $banner->link }}" type="url">
+						<input class="input-underline" name="banners_link[{{ $key }}]" value="{{ $banner->link }}" type="url">
+					</div>
+					<div class="mb-2">
+						<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+							SUCURSALES:
+						</label>
+						<div class="!h-10">
+							<select class="js-example-basic-multiple input-underline" name="banners_sucursales[{{ $key }}][]" multiple>
+								@foreach ($cliente->sucursales as $sucursal)
+								<option value="{{ $sucursal->id }}" @selected(in_array($sucursal->id, $banner->sucursales->pluck('sucursal_id')->toArray()))>{{ $sucursal->nombre }}</option>
+								@endforeach
+							</select>
+						</div>
 					</div>
 					<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 						<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
@@ -66,21 +78,33 @@
 								class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
 						</div>
 						<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
-						<input type="hidden" name="banners_old[]" value="" />
-						<input type="file" name="banners_img[]" class="file-general" accept="image/*" style="display:none" />
+						<input type="hidden" name="banners_old[0]" value="" />
+						<input type="file" name="banners_img[0]" class="file-general" accept="image/*" style="display:none" />
 					</div>
 				</div>
 				<div class="mb-2">
 					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 						Título SEO:
 					</label>
-					<input class="input-underline" name="banners_titulo[]" type="text" >
+					<input class="input-underline" name="banners_titulo[0]" type="text" >
 				</div>
 				<div class="mb-2">
 					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 						LINK:
 					</label>
-					<input class="input-underline" name="banners_link[]" type="url">
+					<input class="input-underline" name="banners_link[0]" type="url">
+				</div>
+				<div class="mb-2">
+					<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
+						SUCURSALES:
+					</label>
+					<div class="!h-10">
+						<select class="js-example-basic-multiple input-underline" name="banners_sucursales[0][]" multiple>
+							@foreach ($cliente->sucursales as $sucursal)
+							<option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
+							@endforeach
+						</select>
+					</div>
 				</div>
 				<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
 					<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>

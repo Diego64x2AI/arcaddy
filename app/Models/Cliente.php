@@ -46,6 +46,10 @@ class Cliente extends Model
 		'size2',
 		'size3',
 		'negrita',
+		'registro_sucursal',
+		'sucursales_max',
+		'sucursales_mapa',
+		'sucursales_pin',
 	];
 
 	/**
@@ -56,6 +60,8 @@ class Cliente extends Model
 	protected $casts = [
 		'registro' => 'boolean',
 		'show_logo' => 'boolean',
+		'registro_sucursal' => 'boolean',
+		'sucursales_mapa' => 'boolean',
 		'geo_bloqueo' => 'integer',
 		'size1' => 'decimal:2',
 		'size2' => 'decimal:2',
@@ -85,7 +91,13 @@ class Cliente extends Model
 		'cartelera',
 		'galeriamarcos',
 		'rallys',
+		'sucursales',
 	];
+
+	public function sucursales()
+	{
+		return $this->hasMany(ClienteSucursal::class, 'cliente_id', 'id');
+	}
 
 	public function galeriamarcos()
 	{

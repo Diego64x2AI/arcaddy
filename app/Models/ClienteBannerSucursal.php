@@ -5,22 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClienteBanner extends Model
+class ClienteBannerSucursal extends Model
 {
 	use HasFactory;
 
 	protected $fillable = [
-		'cliente_id',
-		'archivo',
-		'titulo',
-		'link'
+		'banner_id',
+		'sucursal_id',
 	];
 
 	public $timestamps = false;
 
 	protected $with = [
 		// 'cliente',
-		'sucursales',
+		// 'banner',
+		'sucursal',
 	];
 
 	public function cliente()
@@ -28,8 +27,13 @@ class ClienteBanner extends Model
 		return $this->belongsTo(Cliente::class);
 	}
 
-	public function sucursales()
+	public function banner()
 	{
-		return $this->hasMany(ClienteBannerSucursal::class, 'banner_id', 'id');
+		return $this->belongsTo(ClienteBanner::class);
+	}
+
+	public function sucursal()
+	{
+		return $this->belongsTo(ClienteSucursal::class);
 	}
 }

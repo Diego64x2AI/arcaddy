@@ -15,7 +15,8 @@
 	<link
 		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"
 		rel="stylesheet">
-
+	<!-- Font Awesome Icons -->
+	<script src="https://kit.fontawesome.com/6167140cfb.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-40ZEQ4JZ0Y"></script>

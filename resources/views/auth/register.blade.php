@@ -85,6 +85,17 @@
 					@endif
 				</div>
 			@endforeach
+			@if ($cliente->registro_sucursal)
+			<div class="mt-4">
+			<x-label for="sucursal_id" :value="__('Sucursal')" />
+			<select name="sucursal_id" id="sucursal_id" class="block mt-1 w-full !border-gray-300" required>
+				<option value="">Selecciona una sucursal</option>
+				@foreach ($cliente->sucursales as $sucursal)
+				<option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
+				@endforeach
+			</select>
+			</div>
+			@endif
 			<div class="flex items-center justify-end mt-4">
 				<a class="underline text-sm color" href="{{ route('login', ['cliente' => $cliente->id]) }}">
 					{{ __('Already registered?') }}

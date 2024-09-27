@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\VotacionesController;
 use App\Http\Controllers\Admin\MyAppClientController;
 use App\Http\Controllers\Admin\QRLinksController;
 use App\Http\Controllers\Admin\RallyController;
+use App\Http\Controllers\Admin\SucursalesController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\UsuariosClienteController;
 use App\Http\Controllers\QrExperienciasController;
@@ -94,6 +95,7 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('cliente.qrexperiencias', QrExperienciasController::class)->except(['show']);
 		Route::resource('cliente.rally', RallyController::class)->except(['show']);
 		Route::resource('cliente.qrlinks', QRLinksController::class)->except(['show']);
+		Route::resource('cliente.sucursales', SucursalesController::class)->except(['show']);
 		Route::get('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'markers'])->name('cliente.rally.markers')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
 		Route::get('/cliente/{cliente}/rally/{rally}/markers/create', [RallyController::class, 'marker_create'])->name('cliente.rally.markers.create')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
 		Route::post('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'marker_store'])->name('cliente.rally.markers.store')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
@@ -167,6 +169,7 @@ Route::middleware('role:admin')->group(function () {
 require __DIR__.'/auth.php';
 Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('registro')->middleware('auth');
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
+Route::get('/{slug}/sucursales/{sucursal}', [HomeController::class, 'sucursal'])->name('cliente.sucursal');
 Route::get('/{slug}/game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
 Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cliente.marco');
 Route::post('/{slug}/marco', [HomeController::class, 'cliente_marco_store'])->name('cliente.marco.store');
