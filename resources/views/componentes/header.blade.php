@@ -1,3 +1,7 @@
+@php
+$sucursal_id = Session::get('sucursal_id');
+$sucursal = $cliente->sucursales->where('id', $sucursal_id)->first();
+@endphp
 <div id="header" class="fixed top-0 right-0 w-full px-2 py-3 z-50 bg-white shadow-sm">
 		<div id="header-back"></div>
 		@if (!$cliente->registro)
@@ -57,5 +61,13 @@
 			</div>
 			@endauth
 		</div>
+		@endif
+		@if ($sucursal_id !== NULL && $sucursal !== NULL)
+			<div class="flex flex-row items-center justify-center text-xs">
+				<div class="font-bold">Sucursal:</div>
+				<div class="ml-1">
+					<a href="{{ route('cliente.picksucursal', ['slug' => $cliente->slug]) }}" class="underline">{{ $sucursal->nombre }}</a>
+				</div>
+			</div>
 		@endif
 	</div>

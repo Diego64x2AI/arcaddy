@@ -174,7 +174,7 @@
 				}
 			});
 			$('body').css('paddingTop', $('#header').innerHeight());
-			$('.accordeon-link').click(function(){
+			$('body').on('click', '.accordeon-link', function() {
 				// close other accordions
 				$('.accordeon-link').not(this).removeClass('open').find('i').removeClass('fa-minus').addClass('fa-plus');
 				$('.accordeon-link').not(this).next().slideUp();

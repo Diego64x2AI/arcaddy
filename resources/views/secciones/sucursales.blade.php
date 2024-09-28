@@ -6,30 +6,8 @@
 	@if ($cliente->sucursales_mapa)
 	<div id="map" class="w-full h-[50vh]"></div>
 	@else
-	<div class="flex flex-col gap-3 px-5">
-		@foreach ($cliente->sucursales()->limit($cliente->sucursales_max)->get() as $sucursal)
-		<div class="shadow border bg-white rounded-lg">
-			<div class="relative rounded-3xl accordeon-link cursor-pointer px-5 py-3 uppercase font-bold flex flex-row items-center">
-				<div class="flex flex-row items-center grow">
-					<div>{{ $sucursal->nombre }}</div>
-					<div class="ml-auto">
-						<a href="https://www.google.com/maps/dir/?api=1&destination={{ $sucursal->lat }},{{ $sucursal->lng }}" target="_blank"><img src="{{ asset('images/sucursal-mapa.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
-					</div>
-					<div class="mr-5">
-						<a href="tel:{{ $sucursal->telefono }}"><img src="{{ asset('images/sucursal-phone.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
-					</div>
-				</div>
-				<div class="absolute top-4 right-5">
-					{!! $loop->first ? '<i class="fa fa-minus"></i>' : '<i class="fa fa-plus"></i>' !!}
-				</div>
-			</div>
-			<div class="px-5 pb-3 font-semibold text-sm text-left justify-evenly"{!! $loop->first ? '' : ' style="display:none;"' !!}>
-				<div>{{ $sucursal->direccion }}</div>
-				<div>{{ $sucursal->ciudad }}</div>
-				<div>{{ $sucursal->horario }}</div>
-			</div>
-		</div>
-		@endforeach
+	<div id="sucursales-cercanas" class="flex flex-col gap-3 px-5">
+
 	</div>
 	@endif
 </section>
@@ -70,35 +48,93 @@
 				zoom: 5,
 			});
 			let bounds = new google.maps.LatLngBounds();
-			@foreach ($cliente->sucursales()->limit($cliente->sucursales_max)->get() as $sucursal)
-			marker = new google.maps.Marker({
-				position: { lat: {{ $sucursal->lat }}, lng: {{ $sucursal->lng }} },
-				map,
-				title: `{{ $sucursal->nombre }}`,
-				icon: {
-					url: `{{ ($cliente->sucursales_pin !== NULL) ? asset('storage/'.$cliente->sucursales_pin) : asset('images/sucursal-pin.png') }}`,
-					scaledSize: new google.maps.Size(60, 60),
-				},
-			});
-			marker.addListener("click", () => {
-				openMarker({
-					lat: {{ $sucursal->lat }},
-					lng: {{ $sucursal->lng }},
-					titulo: `{{ $sucursal->nombre }}`,
-					telefono: `{{ $sucursal->telefono }}`,
-					direccion: `{{ $sucursal->direccion }}`,
-					ciudad: `{{ $sucursal->ciudad }}`,
+
+			navigator.geolocation.getCurrentPosition(function(position) {
+				axios.post(`{{ url('/') }}/{{ $cliente->slug }}/sucursales-cercanas`, {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+					cliente: {{ $cliente->id }},
 				})
-			});
-			bounds.extend({ lat: {{ $sucursal->lat }}, lng: {{ $sucursal->lng }} });
-			@endforeach
-			map.fitBounds(bounds);
-			let listener = google.maps.event.addListener(map, "idle", function () {
-				map.setZoom(13);
-				google.maps.event.removeListener(listener);
+				.then(response => {
+					let sucursales = response.data.sucursales;
+					if (sucursales.length > 0) {
+						sucursales.forEach(sucursal => {
+							marker = new google.maps.Marker({
+								position: { lat: sucursal.lat, lng: sucursal.lng },
+								map,
+								title: sucursal.nombre,
+								icon: {
+									url: `{{ ($cliente->sucursales_pin !== NULL) ? asset('storage/'.$cliente->sucursales_pin) : asset('images/sucursal-pin.png') }}`,
+									scaledSize: new google.maps.Size(60, 60),
+								},
+							});
+							marker.addListener("click", () => {
+								openMarker({
+									lat: sucursal.lat,
+									lng: sucursal.lng,
+									titulo: sucursal.nombre,
+									telefono: sucursal.telefono,
+									direccion: sucursal.direccion,
+									ciudad: sucursal.ciudad,
+								})
+							});
+							bounds.extend({ lat: sucursal.lat, lng: sucursal.lng });
+						});
+						map.fitBounds(bounds);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				});
 			});
 		}
 		@else
+		navigator.geolocation.getCurrentPosition(function(position) {
+			axios.post(`{{ url('/') }}/{{ $cliente->slug }}/sucursales-cercanas`, {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude,
+				cliente: {{ $cliente->id }},
+			})
+			.then(response => {
+				let sucursales = response.data.sucursales;
+				if (sucursales.length > 0) {
+					$('#sucursales-cercanas').empty();
+					let x = 0;
+					sucursales.forEach(sucursal => {
+						let icon = (x === 0) ? 'fa-minus' : 'fa-plus';
+						let style = (x === 0) ? 'block' : 'none';
+						$('#sucursales-cercanas').append(`
+							<div class="shadow border bg-white rounded-lg">
+								<div class="relative rounded-3xl accordeon-link cursor-pointer px-5 py-3 uppercase font-bold">
+									<div class="flex flex-row items-center">
+										<div>
+											${sucursal.nombre}
+											<div class="text-xs font-semibold color">${sucursal.distance.toFixed(2)} kms</div>
+										</div>
+										<div class="ml-auto">
+											<a href="https://www.google.com/maps/dir/?api=1&destination=${sucursal.lat},${sucursal.lng}" target="_blank"><img src="{{ asset('images/sucursal-mapa.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
+										</div>
+										<div class="mr-5">
+											<a href="tel:${sucursal.telefono}"><img src="{{ asset('images/sucursal-phone.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
+										</div>
+										<div class="absolute top-5 right-3">
+											<i class="fa ${icon}"></i>
+										</div>
+									</div>
+								</div>
+								<div class="px-5 pb-3 font-semibold text-sm text-left justify-evenly" style="display:${style};">
+									<div>${sucursal.direccion}</div>
+									<div>${sucursal.ciudad}</div>
+									<div>${sucursal.horario}</div>
+								</div>
+							</div>
+						`);
+						x++;
+					});
+				}
+			}).catch(function(error) {
+				console.log(error);
+			});
+		});
 		@endif
 	});
 </script>

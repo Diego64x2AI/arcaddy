@@ -356,6 +356,14 @@ END:VCALENDAR";
 		]);
 	}
 
+	public function sucursales($slug = '')
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		return view('cliente-sucursales', [
+			'cliente' => $cliente,
+		]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
