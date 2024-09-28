@@ -411,11 +411,11 @@ END:VCALENDAR";
 				$sucursal_id = $user->sucursal_id;
 			}
 			// dd($cliente->sucursales, $user->sucursal_id);
-		}
-		if ($sucursal_id === NULL || ClienteSucursal::where('id', $sucursal_id)->where('cliente_id', $cliente->id)->doesntExist()) {
-			return view('cliente-sucursales', [
-				'cliente' => $cliente,
-			]);
+			if ($sucursal_id === NULL || ClienteSucursal::where('id', $sucursal_id)->where('cliente_id', $cliente->id)->doesntExist()) {
+				return view('cliente-sucursales', [
+					'cliente' => $cliente,
+				]);
+			}
 		}
 		// var_dump($sucursal_id);
 		if ($cliente->password !== NULL && trim($cliente->password) !== '' && Cookie::get('cpass') !== $cliente->password) {
