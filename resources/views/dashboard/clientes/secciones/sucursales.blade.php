@@ -47,7 +47,9 @@
 									type="number" min="0" value="{{ ($cliente->id !== NULL) ? $cliente->sucursales_max : old('sucursales_max') }}" placeholder="Ejemplo: 5" required>
 			</div>
 		</div>
+		@if ($cliente->id !== NULL)
 		<a href="{{ route('cliente.sucursales.index', ['cliente' => $cliente->id]) }}" class="btn-pill">Administrar sucursales</a>
+		@endif
 	</div>
 </div>
 <!-- /sucursales -->

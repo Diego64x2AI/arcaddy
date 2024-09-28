@@ -25,8 +25,10 @@
 	<div id="galeriamarcos-container" class="container-draggable mt-5 section-box">
 
 	</div>
+	@if ($cliente->id !== NULL)
 	<div class="text-center mt-5">
 		<a href="{{ route('cliente.galerias.index', ['cliente' => $cliente->id]) }}" class="btn-pill">Administrar imagenes</a>
 	</div>
+	@endif
 </div>
 <!-- /galeriamarcos -->
