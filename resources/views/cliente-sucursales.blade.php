@@ -18,37 +18,63 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		<h1 class="text-center font-extrabold text-xl mt-3 w-full">
 			Para acceder a la plataforma selecciona tu sucursal preferida:
 		</h1>
-		<div class="flex flex-col gap-3 mt-10">
-			@foreach ($cliente->sucursales as $sucursal)
-			<div class="shadow border bg-white rounded-lg">
-				<div class="relative rounded-3xl accordeon-link cursor-pointer px-5 py-3 uppercase font-bold">
-					<div>{{ $sucursal->nombre }}</div>
-					<div class="absolute top-3 right-5">
-						{!! $loop->first ? '<i class="fa fa-minus"></i>' : '<i class="fa fa-plus"></i>' !!}
-					</div>
-				</div>
-				<div class="px-5 pb-3 font-semibold text-sm justify-evenly"{!! $loop->first ? '' : ' style="display:none;"' !!}>
-					<div>{{ $sucursal->direccion }}</div>
-					<div>{{ $sucursal->ciudad }}</div>
-					<div>{{ $sucursal->horario }}</div>
-					<div class="mt-2">
-						<a href="{{ route('cliente.sucursal', ['slug' => $cliente->slug, 'sucursal' => $sucursal->id]) }}" class="btn btn-pill !rounded-none">Seleccionar sucursal</a>
-					</div>
-				</div>
-			</div>
-			@endforeach
+		<div id="sucursales-cercanas" class="flex flex-col gap-3 mt-10">
+
 		</div>
 	</div>
 	<div class="h-10"></div>
 </x-guest-layout>
 <script>
 	window.addEventListener('load', function() {
-		$('.accordeon-link').click(function(){
+		$('body').on('click', '.accordeon-link', function() {
 			// close other accordions
 			$('.accordeon-link').not(this).removeClass('open').find('svg').removeClass('fa-minus').addClass('fa-plus');
 			$('.accordeon-link').not(this).next().slideUp();
 			$(this).next().slideToggle();
 			$(this).toggleClass('open').find('svg').toggleClass('fa-plus fa-minus');
+		});
+		// get user location
+		navigator.geolocation.getCurrentPosition(function(position) {
+			console.log(position.coords.latitude, position.coords.longitude);
+			axios.post(`{{ url('/') }}/{{ $cliente->slug }}/sucursales-cercanas`, {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude,
+				cliente: {{ $cliente->id }},
+			})
+			.then(response => {
+				console.log(response.data);
+				let sucursales = response.data.sucursales;
+				if (sucursales.length > 0) {
+					$('#sucursales-cercanas').empty();
+					let x = 0;
+					sucursales.forEach(sucursal => {
+						let icon = (x === 0) ? 'fa-minus' : 'fa-plus';
+						let style = (x === 0) ? 'block' : 'none';
+						$('#sucursales-cercanas').append(`
+							<div class="shadow border bg-white rounded-lg">
+								<div class="relative rounded-3xl accordeon-link cursor-pointer px-5 py-3 uppercase font-bold">
+									<div>${sucursal.nombre}</div>
+									<div class="text-xs font-semibold color">${sucursal.distance.toFixed(2)} kms</div>
+									<div class="absolute top-3 right-5">
+										<i class="fa ${icon}"></i>
+									</div>
+								</div>
+								<div class="px-5 pb-3 font-semibold text-sm justify-evenly" style="display:${style};">
+									<div>${sucursal.direccion}</div>
+									<div>${sucursal.ciudad}</div>
+									<div>${sucursal.horario}</div>
+									<div class="mt-2">
+										<a href="{{ url('/') }}/{{ $cliente->slug }}/sucursales/${sucursal.id}" class="btn btn-pill !rounded-none">Seleccionar sucursal</a>
+									</div>
+								</div>
+							</div>
+						`);
+						x++;
+					});
+				}
+			}).catch(function(error) {
+				console.log(error);
+			});
 		});
 	});
 </script>

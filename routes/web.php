@@ -169,6 +169,7 @@ Route::middleware('role:admin')->group(function () {
 require __DIR__.'/auth.php';
 Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('registro')->middleware('auth');
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
+Route::post('/{slug}/sucursales-cercanas', [HomeController::class, 'sucursales_cercanas']);
 Route::get('/{slug}/sucursales/{sucursal}', [HomeController::class, 'sucursal'])->name('cliente.sucursal');
 Route::get('/{slug}/game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
 Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cliente.marco');

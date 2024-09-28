@@ -336,6 +336,26 @@ END:VCALENDAR";
 		return redirect()->route('cliente', $cliente->slug);
 	}
 
+	public function sucursales_cercanas(Request $request)
+	{
+		$data = $request->validate([
+			'lat' => 'required|numeric',
+			'lng' => 'required|numeric',
+			'cliente' => 'required|numeric|min:1',
+		]);
+		$cliente = Cliente::where('id', $data['cliente'])->firstOrFail();
+		// search the nearest sucursales and get the distance in km
+		$sucursales = ClienteSucursal::selectRaw('*, ( 6371 * acos( cos( radians(?) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( lat ) ) ) ) AS distance', [$data['lat'], $data['lng'], $data['lat']])
+			->where('cliente_id', $cliente->id)
+			->orderBy('distance', 'asc')
+			->limit($cliente->sucursales_max)
+			->get();
+		return response()->json([
+			'status' => true,
+			'sucursales' => $sucursales,
+		]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
