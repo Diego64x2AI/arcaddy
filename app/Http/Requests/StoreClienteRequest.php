@@ -36,7 +36,7 @@ class StoreClienteRequest extends FormRequest
 			'color_base' => 'required|string|max:55',
 			'logo' => 'required|image|mimes:jpeg,png,jpg,gif',
 			'sucursales_pin' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif',
-			'sucursales_max' => 'required|numeric|min:0',
+			'sucursales_max' => 'nullable|sometimes|numeric|min:0',
 			'titulo' => 'nullable|string|max:255',
 			'subtitulo' => 'nullable|string|max:255',
 			'descripcion' => 'nullable|string',
