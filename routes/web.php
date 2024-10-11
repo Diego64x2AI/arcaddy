@@ -84,6 +84,7 @@ Route::middleware('role:client')->group(function () {
 Route::middleware('role:admin')->group(function () {
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [ClienteController::class, 'index'])->name('dashboard');
+		Route::post('/upload/editor', [ClienteController::class, 'upload_editor'])->name('clientes.upload.editor');
 		Route::post('/clientes/crop', [ClienteController::class, 'crop'])->name('clientes.crop');
 		Route::get('/clientes/search', [ClienteController::class, 'search'])->name('clientes.search');
 		Route::get('/clientes/registrodb/delete/{cliente}', [ClienteController::class, 'registrodb_delete'])->name('clientes.registrodb.delete');

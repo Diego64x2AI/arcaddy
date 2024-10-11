@@ -49,6 +49,7 @@ class QRLinksController extends Controller
 		$data['banners'] = $request->boolean('banners-activo');
 		$data['cliente_id'] = $cliente->id;
 		$data['slug'] = Str::slug($data['slug']);
+		$data['texto'] = str_replace(["../../../../storage", "../https"], [url("storage"), "https"], $data['texto']);
 		$pagina = QRLink::create($data);
 		// banners
 		if (isset($data['banners_img']) && count($data['banners_img']) > 0) {
@@ -105,6 +106,7 @@ class QRLinksController extends Controller
 		$data['banners'] = $request->boolean('banners-activo');
 		$data['cliente_id'] = $cliente->id;
 		$data['slug'] = Str::slug($data['slug']);
+		$data['texto'] = str_replace(["../../../../storage", "../https"], [url("storage"), "https"], $data['texto']);
 		$qrlink->update($data);
 		// banners
 		if (isset($data['banners_img']) && count($data['banners_img']) > 0) {

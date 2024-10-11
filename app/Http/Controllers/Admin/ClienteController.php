@@ -393,6 +393,18 @@ class ClienteController extends Controller
 		return redirect()->back()->with('success', 'Base de datos eliminada correctamente.');
 	}
 
+	public function upload_editor(Request $request)
+	{
+		$request->validate([
+			'file' => 'required|file',
+		]);
+		$filename = $request->file('file')->store('clientes/editor', 'public');
+		return response()->json([
+			'location' => url("storage/{$filename}"),
+			'title' => $request->file('file')->getClientOriginalName(),
+		]);
+	}
+
 	/**
 	 * Update the specified resource in storage.
 	 *

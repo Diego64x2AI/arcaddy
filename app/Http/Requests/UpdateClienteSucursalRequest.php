@@ -25,7 +25,7 @@ class UpdateClienteSucursalRequest extends FormRequest
 	{
 		return [
 			'nombre' => 'required|string|max:255',
-			'telefono' => 'required|string|max:15',
+			'telefono' => 'nullable|sometimes|string|max:15',
 			'direccion' => 'required|string|max:255',
 			'ciudad' => 'required|string|max:100',
 			'horario' => 'nullable|sometimes|string|max:100',

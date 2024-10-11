@@ -45,7 +45,7 @@
 						<input type="text" name="telefono" id="telefono" class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700"
 							value="{{ old('telefono') }}"
 							placeholder="Ejemplo: +52123456789"
-							required>
+							>
 					</div>
 					<div class="col-span-2">
 						<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="direccion">

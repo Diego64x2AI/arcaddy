@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\UserQr;
 use App\Models\User;
+use App\Models\UserQr;
 use App\Models\Cliente;
+use App\Models\GrupoMiembro;
+use Illuminate\Http\Request;
 use App\Models\ClienteProducto;
 use App\Models\ProductoCanjeado;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-//use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use App\Notifications\RegistroCodigo;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class MyAppClientController extends Controller
 {
@@ -150,12 +151,31 @@ class MyAppClientController extends Controller
 			$productos = ClienteProducto::where('cliente_id', auth()->user()->cliente_id)
 				->where('regalado', 1)
 				->get();
+			$gruposIds = GrupoMiembro::where('cliente_id', auth()->user()->cliente_id)->select('grupo_id')->pluck('grupo_id')->toArray();
+			if (!empty($gruposIds)) {
+				$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', auth()->user()->cliente_id)->select('cliente_id')->pluck('cliente_id')->toArray();
+				array_push($clientesIds, auth()->user()->cliente_id);
+				$productos = ClienteProducto::where('regalado', 1)
+				->whereIn('cliente_id', $clientesIds)
+				->get();
+				// dd(auth()->user()->cliente_id, $productos);
+			}
 		} else {
 			$parametros['buscar'] = $_GET['buscar'];
 			$productos = ClienteProducto::where('cliente_id', auth()->user()->cliente_id)
 				->where('regalado', 1)
 				->where('nombre', 'like', '%' . $_GET['buscar'] . '%')
 				->get();
+			$gruposIds = GrupoMiembro::where('cliente_id', auth()->user()->cliente_id)->select('grupo_id')->pluck('grupo_id')->toArray();
+			if (!empty($gruposIds)) {
+				$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', auth()->user()->cliente_id)->select('cliente_id')->pluck('cliente_id')->toArray();
+				array_push($clientesIds, auth()->user()->cliente_id);
+				$productos = ClienteProducto::where('regalado', 1)
+				->where('nombre', 'like', '%' . $_GET['buscar'] . '%')
+				->whereIn('cliente_id', $clientesIds)
+				->get();
+				// dd($productos->toSql());
+			}
 		}
 		$clientedatos = Cliente::find(auth()->user()->cliente_id);
 		$lang = strtolower($clientedatos->idioma);

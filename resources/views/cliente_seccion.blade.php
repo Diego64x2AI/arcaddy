@@ -65,7 +65,7 @@
 			</div>
 		</section>
 		@endif
-		<div class="px-5 mt-5">
+		<div class="p-5 max-w-5xl mx-auto lg:px-8 lg:mt-10">
 			{!! $pagina->texto !!}
 		</div>
 		@if($pagina->boton_texto !== NULL && trim($pagina->boton_texto) !== '' && $pagina->boton_link !== NULL && trim($pagina->boton_link) !== '')

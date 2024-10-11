@@ -3,7 +3,7 @@
 		<div class="flex items-center">
 			<div>
 				<h2 class="font-semibold text-xl text-gray-800 leading-tight">
-					Experiencias GEO / Rally
+					QR´s Sección
 				</h2>
 			</div>
 			<div class="ml-auto">
@@ -68,7 +68,7 @@
 						Contenido
 					</label>
 					<textarea class="input-border alx-editor" name="texto" id="texto"
-						rows="5">{{ old('texto') }}</textarea>
+						rows="5">{{ str_replace(["../../../../storage", "../https"], [url("storage"), "https"], old('texto')) }}</textarea>
 				</div>
 				<div class="mt-3">
 					<label class="block tracking-wide text-gray-900 text-xl font-bold mb-2">
@@ -187,8 +187,48 @@
 			menubar: false,
 			height: 700,
 			selector: 'textarea.alx-editor',
-			plugins: 'link code lists colorpicker textcolor image media',
-			toolbar: 'styles | bold italic | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code'
+			plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons accordion',
+			toolbar: 'styles | bold italic | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code',
+			image_title: true,
+			automatic_uploads: true,
+			file_picker_types: 'image media file',
+			images_upload_url: '{{ route('clientes.upload.editor') }}',
+			file_picker_callback: (cb, value, meta) => {
+				console.log(value, meta);
+				const input = document.createElement('input');
+				input.setAttribute('type', 'file');
+				if (meta.filetype === 'image') {
+					input.setAttribute('accept', 'image/*');
+				} else if (meta.filetype === 'media') {
+					input.setAttribute('accept', 'video/*');
+				} else if (meta.filetype === 'file') {
+					// accept only pdf and docx
+					input.setAttribute('accept', '.pdf,.docx');
+				}
+
+				input.addEventListener('change', (e) => {
+					const file = e.target.files[0];
+
+					const reader = new FileReader();
+					reader.addEventListener('load', () => {
+						/*
+							Note: Now we need to register the blob in TinyMCEs image blob
+							registry. In the next release this part hopefully won't be
+							necessary, as we are looking to handle it internally.
+						*/
+						const id = 'blobid' + (new Date()).getTime();
+						const blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+						const base64 = reader.result.split(',')[1];
+						const blobInfo = blobCache.create(id, file, base64);
+						blobCache.add(blobInfo);
+
+						/* call the callback and populate the Title field with the file name */
+						cb(blobInfo.blobUri(), { title: file.name });
+					});
+					reader.readAsDataURL(file);
+				});
+				input.click();
+			},
 		});
 </script>
 	@endsection

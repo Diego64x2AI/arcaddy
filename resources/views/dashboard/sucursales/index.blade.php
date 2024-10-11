@@ -37,7 +37,7 @@
 								@foreach ($sucursales as $sucursal)
 									<div class="flex flex-row items-center gap-3 text-sm border-b py-5">
 										<div>
-											<img src="{{ asset('images/sucursal-pin.png') }}" alt="{{ $sucursal->nombre }}" class="inline-block w-16 h-auto">
+											<img src="{{ ($cliente->sucursales_pin !== NULL) ? asset('storage/'.$cliente->sucursales_pin) : asset('images/sucursal-pin.png') }}" alt="{{ $sucursal->nombre }}" class="inline-block w-16 h-auto">
 										</div>
 										<div class="text-center grow">
 											<div class="font-bold line-clamp-2 text-basex leading-4">{{ $sucursal->nombre }}</div>
@@ -70,85 +70,93 @@
 							</div>
 						</div>
 						<div>
-							<gmpx-api-loader key="AIzaSyDl98_79CXXgbwn8UQflos9q_QAJO44Mlw"
-							solution-channel="GMP_GE_mapsandplacesautocomplete_v1"></gmpx-api-loader>
-							<gmp-map center="23.1518108, -110.3610418" zoom="5" map-id="DEMO_MAP_ID">
-
-							</gmp-map>
+							<div id="map" class="w-full h-[50vh]"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<style>
-		gmp-map {
-			width: 100%;
-			min-width: 350px;
-			height: 500px;
-			position: relative;
-		}
-	</style>
 	@section('js')
-	<script type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6"></script>
+	<!-- prettier-ignore -->
+	<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+		({key: "AIzaSyDl98_79CXXgbwn8UQflos9q_QAJO44Mlw", v: "weekly"});</script>
 	<script>
 		const url = '{{ url('dashboard/cliente/'.$cliente->id.'/quiz') }}';
 		window.addEventListener('load', function() {
 			init();
-			let map;
-			let marker;
-			let infoWindow;
-			let pinIMG;
+		let map;
+		let marker;
+		let infoWindow;
+		let pinIMG;
 
-			async function init() {
-				await customElements.whenDefined('gmp-map');
-				const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+		const openMarker = (markerInfo) => {
+			console.log(markerInfo);
+			Swal.fire({
+				title: markerInfo.titulo,
+				html: `
+					<div class="text-left text-black">
+						<div class="font-bold line-clamp-2 leading-4">${markerInfo.direccion}</div>
+						<div>${markerInfo.ciudad}</div>
+						<div><a href="tel:${markerInfo.telefono}">${markerInfo.telefono}</a></div>
+					</div>
+					<div class="mt-3">
+						<a href="https://www.google.com/maps/dir/?api=1&destination=${markerInfo.lat},${markerInfo.lng}" target="_blank" class="btn btn-pill">Cómo llegar</a>
+					</div>
+				`,
+				showConfirmButton: false,
+				showCloseButton: true,
+			});
+		};
 
-				map = document.querySelector('gmp-map');
-				infowindow = new google.maps.InfoWindow();
+		async function init() {
+			console.log('init');
+			const { Map } = await google.maps.importLibrary("maps");
 
+			map = new Map(document.getElementById("map"), {
+				center: { lat: 22.909155, lng: -102.450886 },
+				zoom: 5,
+			});
+			let bounds = new google.maps.LatLngBounds();
 
-
-				map.innerMap.setOptions({
-					mapTypeControl: false
-				});
-
-				// add markers
-				@foreach ($sucursales as $sucursal)
-					pinIMG = document.createElement("img");
-					pinIMG.src = "{{ asset('images/sucursal-pin.png') }}";
-					marker = new AdvancedMarkerElement({
-						position: { lat: {{ $sucursal->lat }}, lng: {{ $sucursal->lng }} },
-						title: '{{ $sucursal->nombre }}',
-						map: map.innerMap,
-						content: pinIMG,
-						gmpClickable: true,
-					});
-					marker.addEventListener('gmp-click', () => {
-						console.log('click');
-						infowindow = new google.maps.InfoWindow({
-							ariaLabel: '{{ $sucursal->nombre }}',
-							content: `
-								<div class="text-center">
-									<div class="font-bold line-clamp-2 text-basex leading-4">{{ $sucursal->nombre }}</div>
-									<div>{{ $sucursal->ciudad }}</div>
-								</div>
-							`,
+			navigator.geolocation.getCurrentPosition(function(position) {
+				axios.post(`{{ url('/') }}/{{ $cliente->slug }}/sucursales-cercanas`, {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+					cliente: {{ $cliente->id }},
+				})
+				.then(response => {
+					let sucursales = response.data.sucursales;
+					if (sucursales.length > 0) {
+						sucursales.forEach(sucursal => {
+							marker = new google.maps.Marker({
+								position: { lat: sucursal.lat, lng: sucursal.lng },
+								map,
+								title: sucursal.nombre,
+								icon: {
+									url: `{{ ($cliente->sucursales_pin !== NULL) ? asset('storage/'.$cliente->sucursales_pin) : asset('images/sucursal-pin.png') }}`,
+									scaledSize: new google.maps.Size(60, 60),
+								},
+							});
+							marker.addListener("click", () => {
+								openMarker({
+									lat: sucursal.lat,
+									lng: sucursal.lng,
+									titulo: sucursal.nombre,
+									telefono: sucursal.telefono,
+									direccion: sucursal.direccion,
+									ciudad: sucursal.ciudad,
+								})
+							});
+							bounds.extend({ lat: sucursal.lat, lng: sucursal.lng });
 						});
-						infowindow.open(map.innerMap, marker.innerMarker);
-					});
-					map.appendChild(marker);
-
-				@endforeach
-
-				// fit map to markers
-				const bounds = new google.maps.LatLngBounds();
-				document.querySelectorAll('gmp-advanced-marker').forEach(marker => {
-					bounds.extend(marker.position);
+						map.fitBounds(bounds);
+					}
+				}).catch(function(error) {
+					console.log(error);
 				});
-				map.innerMap.fitBounds(bounds);
-
-			}
+			});
+		}
 			const inlineEditElements = document.querySelectorAll('.edit-inline-text')
 			inlineEditElements.forEach(element => {
 				Flyter.attach(element, {

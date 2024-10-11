@@ -3,12 +3,11 @@
 	@if ($cliente->secciones()->where('seccion', 'sucursales')->first()->mostrar_titulo)
 	<div class="titulo-modulo">{{ $cliente->secciones()->where('seccion', 'sucursales')->first()->titulo }}</div>
 	@endif
-	@if ($cliente->sucursales_mapa)
-	<div id="map" class="w-full h-[50vh]"></div>
-	@else
 	<div id="sucursales-cercanas" class="flex flex-col gap-3 px-5">
 
 	</div>
+	@if ($cliente->sucursales_mapa)
+	<div id="map" class="w-full h-[50vh] mt-10"></div>
 	@endif
 </section>
 <script>
@@ -87,7 +86,7 @@
 				});
 			});
 		}
-		@else
+		@endif
 		navigator.geolocation.getCurrentPosition(function(position) {
 			axios.post(`{{ url('/') }}/{{ $cliente->slug }}/sucursales-cercanas`, {
 				lat: position.coords.latitude,
@@ -102,29 +101,38 @@
 					sucursales.forEach(sucursal => {
 						let icon = (x === 0) ? 'fa-minus' : 'fa-plus';
 						let style = (x === 0) ? 'block' : 'none';
+						let telefono = (sucursal.telefono !== null && sucursal.telefono !== '') ? `<div class="mr-3">
+											<a href="tel:${sucursal.telefono}"><img src="{{ asset('images/sucursal-phone.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
+										</div>` : '';
+						let data = ``;
+						if (sucursal.direccion !== null && sucursal.direccion !== '') {
+							data += `<div>${sucursal.direccion}</div>`;
+						}
+						if (sucursal.ciudad !== null && sucursal.ciudad !== '') {
+							data += `<div>${sucursal.ciudad}</div>`;
+						}
+						if (sucursal.horario !== null && sucursal.horario !== '') {
+							data += `<div>${sucursal.horario}</div>`;
+						}
 						$('#sucursales-cercanas').append(`
 							<div class="shadow border bg-white rounded-lg">
 								<div class="relative rounded-3xl accordeon-link cursor-pointer px-5 py-3 uppercase font-bold">
 									<div class="flex flex-row items-center">
-										<div>
+										<div class="w-2/3 text-left text-sm">
 											${sucursal.nombre}
 											<div class="text-xs font-semibold color">${sucursal.distance.toFixed(2)} kms</div>
 										</div>
-										<div class="ml-auto">
+										<div class="ml-auto mr-2">
 											<a href="https://www.google.com/maps/dir/?api=1&destination=${sucursal.lat},${sucursal.lng}" target="_blank"><img src="{{ asset('images/sucursal-mapa.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
 										</div>
-										<div class="mr-5">
-											<a href="tel:${sucursal.telefono}"><img src="{{ asset('images/sucursal-phone.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
-										</div>
+										${telefono}
 										<div class="absolute top-5 right-3">
 											<i class="fa ${icon}"></i>
 										</div>
 									</div>
 								</div>
 								<div class="px-5 pb-3 font-semibold text-sm text-left justify-evenly" style="display:${style};">
-									<div>${sucursal.direccion}</div>
-									<div>${sucursal.ciudad}</div>
-									<div>${sucursal.horario}</div>
+									${data}
 								</div>
 							</div>
 						`);
@@ -135,7 +143,6 @@
 				console.log(error);
 			});
 		});
-		@endif
 	});
 </script>
 @endif
