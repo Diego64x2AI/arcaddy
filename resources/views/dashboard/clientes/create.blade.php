@@ -700,7 +700,14 @@
 					if (this.files && this.files[0]) {
 						var reader = new FileReader();
 						reader.onload = function (e) {
-							$esto.parent().parent().find('img.img-general').attr('src', e.target.result);
+							console.log(e.target.result);
+							// check if ia a video
+							if (e.target.result.includes('video')) {
+								console.log('video');
+								$esto.parent().parent().find('img.img-general').attr('src', '{{ asset('images/video.webp') }}');
+							} else {
+								$esto.parent().parent().find('img.img-general').attr('src', e.target.result);
+							}
 						}
 						reader.readAsDataURL(this.files[0]);
 					}
@@ -889,7 +896,7 @@
 									</div>
 									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
 									<input type="hidden" name="banners_old[${index}]" value="" />
-									<input type="file" name="banners_img[${index}]" class="file-general" accept="image/*" style="display:none" />
+									<input type="file" name="banners_img[${index}]" class="file-general" accept="image/*,.mp4" style="display:none" />
 								</div>
 							</div>
 							<div class="mb-2">

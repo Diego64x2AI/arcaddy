@@ -19,7 +19,14 @@
 			<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 				<div class="p-3">
 					<div class="mb-2 relative">
+						@if (pathinfo($banner->archivo, PATHINFO_EXTENSION) == 'mp4')
+						<video id="banners-{{ $banner->id }}" class="img-general object-cover w-100 border border-secondary" controls>
+							<source src="{{ asset('storage/'.$banner->archivo) }}" type="video/mp4">
+							Your browser does not support the video tag.
+						</video>
+						@else
 						<img id="banners-{{ $banner->id }}" src="{{ asset('storage/'.$banner->archivo) }}" class="img-general object-cover w-100 border border-secondary">
+						@endif
 						<div class="examinar-img group-hover:block">
 							<div>
 								<button type="button" class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">
@@ -32,7 +39,7 @@
 								</a>
 							</div>
 							<input type="hidden" name="banners_old[{{ $key }}]" value="{{$banner->archivo}}" />
-							<input type="file" name="banners_img[{{ $key }}]" class="file-general" accept="image/*" style="display:none" />
+							<input type="file" name="banners_img[{{ $key }}]" class="file-general" accept="image/*,.mp4" style="display:none" />
 						</div>
 					</div>
 					<div class="mb-2">

@@ -79,7 +79,7 @@ class UpdateClienteRequest extends FormRequest
 			'menu_item_boton_link.*.*' => 'nullable|string',
 			'menu_item_canje_texto.*.*' => 'nullable|string',
 			'menu_item_descripcion.*.*' => 'nullable|string',
-			'banners_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
+			'banners_img.*' => 'required|file|mimes:jpeg,png,jpg,gif,mp4',
 			'banners_titulo.*' => 'nullable|string|max:255',
 			'banners_link.*' => 'nullable|string',
 			'banners_sucursales.*' => 'nullable|sometimes',

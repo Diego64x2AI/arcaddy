@@ -17,7 +17,14 @@
 		<!-- Additional required wrapper -->
 		<div class="swiper-wrapper">
 			@foreach($banners as $banner)
-			<div class="swiper-slide bg-cover bg-center slide-bg" style="background-image: url({{ asset('storage/'.$banner->archivo) }});">
+			<div class="swiper-slide bg-cover bg-center slide-bg relative flex items-center
+        justify-center h-screen overflow-hidden" style="background-image: url({{ asset('storage/'.$banner->archivo) }});">
+				@if (pathinfo($banner->archivo, PATHINFO_EXTENSION) == 'mp4')
+				<video style="position: absolute; z-index: -1; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" autoplay loop muted>
+					<source src="{{ asset('storage/'.$banner->archivo) }}" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+				@endif
 				@if ($banner->link !== NULL && trim($banner->link) !== '')
 					<a href="{{ $banner->link }}" style="text-indent: -8000px;display:block;width:100%;height:100%;">{{ __('arcaddy.link') }}</a>
 				@endif

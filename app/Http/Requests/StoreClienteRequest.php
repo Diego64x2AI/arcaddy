@@ -76,7 +76,7 @@ class StoreClienteRequest extends FormRequest
 			'menu_item_descripcion.*.*' => 'nullable|string',
 			'banners_titulo.*' => 'nullable|string|max:255',
 			'banners_link.*' => 'nullable|string',
-			'banners_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
+			'banners_img.*' => 'required|file|mimes:jpeg,png,jpg,gif,mp4',
 			'banners_sucursales.*' => 'nullable|sometimes',
 			'marco_titulo.*' => 'nullable|string|max:255',
 			'marco_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
