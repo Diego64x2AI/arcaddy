@@ -78,6 +78,7 @@ class StoreClienteRequest extends FormRequest
 			'banners_link.*' => 'nullable|string',
 			'banners_img.*' => 'required|file|mimes:jpeg,png,jpg,gif,mp4',
 			'banners_sucursales.*' => 'nullable|sometimes',
+			'banners-timer' => 'nullable|sometimes|numeric|min:0',
 			'marco_titulo.*' => 'nullable|string|max:255',
 			'marco_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
 			'marco_id.*' => 'required|numeric|min:0',

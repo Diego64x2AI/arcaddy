@@ -146,7 +146,7 @@ class Cliente extends Model
 
 	public function banners()
 	{
-		return $this->hasMany(ClienteBanner::class, 'cliente_id', 'id');
+		return $this->hasMany(ClienteBanner::class, 'cliente_id', 'id')->where('activo', 1);
 	}
 
 	public function banners2()

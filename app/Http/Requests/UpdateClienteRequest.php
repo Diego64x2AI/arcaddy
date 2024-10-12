@@ -83,6 +83,7 @@ class UpdateClienteRequest extends FormRequest
 			'banners_titulo.*' => 'nullable|string|max:255',
 			'banners_link.*' => 'nullable|string',
 			'banners_sucursales.*' => 'nullable|sometimes',
+			'banners-timer' => 'nullable|sometimes|numeric|min:0',
 			'marco_img.*' => 'required|image|mimes:jpeg,png,jpg,gif',
 			'marco_titulo.*' => 'nullable|string|max:255',
 			'marco_id.*' => 'required|numeric|min:0',

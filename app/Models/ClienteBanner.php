@@ -13,7 +13,8 @@ class ClienteBanner extends Model
 		'cliente_id',
 		'archivo',
 		'titulo',
-		'link'
+		'link',
+		'activo',
 	];
 
 	public $timestamps = false;
@@ -21,6 +22,10 @@ class ClienteBanner extends Model
 	protected $with = [
 		// 'cliente',
 		'sucursales',
+	];
+
+	protected $casts = [
+		'activo' => 'boolean',
 	];
 
 	public function cliente()

@@ -135,6 +135,7 @@ class ClienteController extends Controller
 						'orden' => $key,
 						'activa' => $request->boolean($seccion . '-activo'),
 						'login' => $request->boolean($seccion . '-login'),
+						'timer' => isset($campos[$seccion . '-timer']) ? $campos[$seccion . '-timer'] : 0,
 					]
 				);
 			}
@@ -259,6 +260,7 @@ class ClienteController extends Controller
 					'archivo' => $file->store('clientes/banners', 'public'),
 					'titulo' => $campos['banners_titulo'][$key],
 					'link' => $campos['banners_link'][$key],
+					'activo' => $campos['banners_activo'][$key],
 				]);
 			}
 		}
@@ -465,6 +467,7 @@ class ClienteController extends Controller
 						'activa' => $request->boolean($seccion . '-activo'),
 						'mostrar_titulo' => $request->boolean($seccion . '-activo2'),
 						'login' => $request->boolean($seccion . '-login'),
+						'timer' => isset($campos[$seccion . '-timer']) ? $campos[$seccion . '-timer'] : 0,
 					]
 				);
 			}
@@ -626,6 +629,7 @@ class ClienteController extends Controller
 					'archivo' => $archivo,
 					'titulo' => $titulo,
 					'link' => $campos['banners_link'][$key],
+					'activo' => $request->boolean('banners_activo.'.$key),
 				]);
 				$sucursales = isset($campos['banners_sucursales'][$key]) ? $campos['banners_sucursales'][$key] : [];
 				foreach ($sucursales as $sucursal) {

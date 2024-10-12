@@ -17,6 +17,7 @@ class ClienteSecciones extends Model
 		'orden',
 		'activa',
 		'login',
+		'timer',
 	];
 
 	public $timestamps = false;
@@ -25,6 +26,7 @@ class ClienteSecciones extends Model
 		'activa' => 'boolean',
 		'mostrar_titulo' => 'boolean',
 		'login' => 'boolean',
+		'timer' => 'integer',
 	];
 
 	public function cliente()

@@ -684,7 +684,6 @@
 						});
 					},
 				});
-				console.log($('#menu-container #menu-items').length);
 				if ($('#menu-container #menu-items').length > 0) {
 					console.log('menu-items', document.querySelector('#menu-container #menu-items'));
 					$('#menu-container #menu-items').each(function (index, element) {
@@ -887,16 +886,26 @@
 					console.log($(this).parent().parent().find('#banners-container').find('.fotometria-box'));
 					const html = `<div class="w-2/4 md:w-1/4 float-left bg-white hover:bg-gray-100 hover:shadow fotometria-box group">
 						<div class="p-3">
+							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
+								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
+								<div class="grow text-center text-sm">
+									Activo: <input type="checkbox" name="banners_activo[${index}]" value="on" checked>
+								</div>
+								<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
+											class="fas fa-trash-alt"></i></a></div>
+							</div>
 							<div class="mb-2 relative">
-								<img src="{{ asset('images/banner.jpg') }}"
-									class="img-general object-cover w-100 border border-secondary">
-								<div class="examinar-img group-hover:block">
-									<div><button type="button"
-											class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+								<div class="w-full pb-[56.25%] h-0 relative">
+									<img src="{{ asset('images/banner.jpg') }}"
+										class="img-general absolute object-cover w-full h-full border border-secondary">
+									<div class="examinar-img group-hover:block">
+										<div><button type="button"
+												class="examinar-btn rounded-full bg-pink-600 text-white px-5 py-2 inline-block">Examinar...</button>
+										</div>
+										<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
+										<input type="hidden" name="banners_old[${index}]" value="" />
+										<input type="file" name="banners_img[${index}]" class="file-general" accept="image/*,.mp4" style="display:none" />
 									</div>
-									<small class="examinar-size text-gray-400">(jpg 1000x1000px)</small>
-									<input type="hidden" name="banners_old[${index}]" value="" />
-									<input type="file" name="banners_img[${index}]" class="file-general" accept="image/*,.mp4" style="display:none" />
 								</div>
 							</div>
 							<div class="mb-2">
@@ -915,18 +924,13 @@
 								<label class="block tracking-wide text-gray-700 text-base font-bold mb-1">
 									SUCURSALES:
 								</label>
-								<div class="!h-10">
+								<div class="!h-20">
 									<select class="js-example-basic-multiple input-underline" name="banners_sucursales[${index}][]" multiple="multiple">
 										@foreach ($cliente->sucursales as $sucursal)
 										<option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
 										@endforeach
 									</select>
 								</div>
-							</div>
-							<div class="invisible group-hover:visible flex flex-row fotometria-acciones justify-between">
-								<div class="handler cursor-move"><i class="fas fa-ellipsis-v"></i></div>
-								<div class="delete-fotometria"><a href="javascript:void(0);" class="text-dark"><i
-											class="fas fa-trash-alt"></i></a></div>
 							</div>
 						</div>
 					</div>`;
