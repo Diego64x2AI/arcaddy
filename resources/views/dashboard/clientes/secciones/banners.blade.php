@@ -15,7 +15,7 @@
 		</div>
 		<div class="flex flex-col gap-1 items-center">
 			<div class="text-sm lg:text-base"><label for="banners-timer">Timer</label></div>
-			<div><input type="number" min="0" id="banners-timer" class="!text-center w-24 !text-xs !px-2 !py-1" name="banners-timer" value="{{ $cliente->secciones()->where('seccion', 'banners')->first()->timer }}" required></div>
+			<div><input type="number" min="0" id="banners-timer" class="!text-center w-24 !text-xs !px-2 !py-1" name="banners-timer" value="{{ ($cliente->id !== NULL) ? $cliente->secciones()->where('seccion', 'banners')->first()->timer : 3000 }}" required></div>
 		</div>
 		<div class="flex flex-col gap-1 items-center cursor-move handler2">
 			<div class="text-sm lg:text-base">Mover</div>
