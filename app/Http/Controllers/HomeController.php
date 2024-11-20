@@ -50,6 +50,18 @@ use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
+
+	public function galeriamarcos($slug, Request $request)
+	{
+		// check if is ajax request
+		if (!request()->ajax()) {
+			abort(404);
+		}
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$marcos = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->where('aprobada', true);
+		return $marcos->paginate(12);
+	}
+
 	public function rally_completed($slug, ClienteRally $rally, ClienteRallyUbicacion $ubicacion)
 	{
 		// check if is ajax request

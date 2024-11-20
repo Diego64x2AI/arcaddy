@@ -10,7 +10,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 	<!-- Font Awesome Icons -->
-	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/6167140cfb.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

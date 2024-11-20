@@ -9,7 +9,7 @@
 	<!-- Fonts -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 	<!-- Font Awesome Icons -->
-	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/6167140cfb.js" crossorigin="anonymous"></script>
 	<!-- Scripts -->
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

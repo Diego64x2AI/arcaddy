@@ -175,6 +175,7 @@ Route::get('/{slug}/sucursales', [HomeController::class, 'sucursales'])->name('c
 Route::get('/{slug}/sucursales/{sucursal}', [HomeController::class, 'sucursal'])->name('cliente.sucursal');
 Route::get('/{slug}/game/{claveJuego}', [HomeController::class, 'startGame'])->name('cliente.start-game');
 Route::get('/{slug}/marco', [HomeController::class, 'cliente_marco'])->name('cliente.marco');
+Route::get('/{slug}/galeriamarcos', [HomeController::class, 'galeriamarcos'])->name('cliente.galeriamarcos');
 Route::post('/{slug}/marco', [HomeController::class, 'cliente_marco_store'])->name('cliente.marco.store');
 Route::get('/{slug}/evento/{ClienteCartelera}', [HomeController::class, 'cliente_evento'])->name('cliente.download.event');
 
