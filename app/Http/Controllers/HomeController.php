@@ -42,6 +42,7 @@ use Eluceo\iCal\Domain\ValueObject\Attachment;
 use App\Models\ClienteRallyUbicacionCompletados;
 use App\Models\ClienteSucursal;
 use App\Models\QRLink;
+use App\Models\RealidadAumentada;
 use App\Models\User;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
@@ -540,6 +541,23 @@ END:VCALENDAR";
 		// incrementar las visitas
 		$pagina->increment('lecturas');
 		return view('cliente_seccion', [
+			'cliente' => $cliente,
+			'pagina' => $pagina,
+		]);
+	}
+
+	public function cliente_ar($slug = '', $slug2 = '')
+	{
+		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$pagina = RealidadAumentada::where('slug', $slug2)->where('cliente_id', $cliente->id)->firstOrFail();
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
+		// incrementar las visitas
+		$pagina->increment('lecturas');
+		return view('cliente_ar', [
 			'cliente' => $cliente,
 			'pagina' => $pagina,
 		]);

@@ -201,6 +201,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+				\Torann\GeoIP\GeoIPServiceProvider::class,
+
     ],
 
     /*
@@ -219,6 +221,7 @@ return [
 			'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
 			'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 			'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
+			'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
     ])->toArray(),
 
 ];

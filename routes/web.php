@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\VotacionesController;
 use App\Http\Controllers\Admin\MyAppClientController;
 use App\Http\Controllers\Admin\QRLinksController;
 use App\Http\Controllers\Admin\RallyController;
+use App\Http\Controllers\Admin\RealidadAumentadaController;
 use App\Http\Controllers\Admin\SucursalesController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\UsuariosClienteController;
@@ -96,6 +97,7 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('cliente.qrexperiencias', QrExperienciasController::class)->except(['show']);
 		Route::resource('cliente.rally', RallyController::class)->except(['show']);
 		Route::resource('cliente.qrlinks', QRLinksController::class)->except(['show']);
+		Route::resource('cliente.realidad', RealidadAumentadaController::class)->except(['show']);
 		Route::resource('cliente.sucursales', SucursalesController::class)->except(['show']);
 		Route::get('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'markers'])->name('cliente.rally.markers')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
 		Route::get('/cliente/{cliente}/rally/{rally}/markers/create', [RallyController::class, 'marker_create'])->name('cliente.rally.markers.create')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
@@ -187,3 +189,4 @@ Route::post('/{cliente}/quiz', [HomeController::class, 'quiz_respuesta'])->name(
 Route::get('/{cliente}/experiencia/{qrexperiencia}', [HomeController::class, 'qr_experiencia'])->name('cliente.quiz.qrexperiencia');
 Route::post('/{cliente}/rally/{rally}/{ubicacion}/completed', [HomeController::class, 'rally_completed'])->name('cliente.rally.completed')->middleware('auth')->where('rally', '[0-9]+')->where('ubicacion', '[0-9]+');
 Route::get('/{slug}/{slug2}', [HomeController::class, 'cliente_seccion'])->name('cliente_seccion');
+Route::get('/{slug}/ar/{slug2}', [HomeController::class, 'cliente_ar'])->name('cliente_ar');
