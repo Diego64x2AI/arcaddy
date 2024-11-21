@@ -125,6 +125,7 @@ class UpdateClienteRequest extends FormRequest
 			'cartelera_item_lugar.*.*' => 'nullable',
 			'cartelera_item_descripcion.*.*' => 'nullable',
 			'cartelera_item_inter.*.*' => 'nullable|sometimes',
+			'galeriamarcos-timer' => 'nullable|sometimes|numeric|min:0',
 		];
 	}
 }

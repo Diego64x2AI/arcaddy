@@ -18,6 +18,7 @@ class ClienteSecciones extends Model
 		'activa',
 		'login',
 		'timer',
+		'random',
 	];
 
 	public $timestamps = false;
@@ -25,6 +26,7 @@ class ClienteSecciones extends Model
 	protected $casts = [
 		'activa' => 'boolean',
 		'mostrar_titulo' => 'boolean',
+		'random' => 'boolean',
 		'login' => 'boolean',
 		'timer' => 'integer',
 	];

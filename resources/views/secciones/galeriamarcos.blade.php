@@ -32,7 +32,7 @@
 @endif
 <script>
 	let currentPageGaleriasMarcos = 0;
-	let perPageGaleriasMarcos = 25;
+	let perPageGaleriasMarcos = {{ ($cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer > 0) ? $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer : 24 }};
 	let hasMorePagesGaleriasMarcos = true;
 	let lastPageGaleriasMarcos = 1;
 	let galeriasMarcosLoading = false;

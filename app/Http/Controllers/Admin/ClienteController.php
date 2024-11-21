@@ -133,8 +133,11 @@ class ClienteController extends Controller
 					],
 					[
 						'orden' => $key,
+						'titulo' => $request->input("titulos.{$seccion}"),
 						'activa' => $request->boolean($seccion . '-activo'),
+						'mostrar_titulo' => $request->boolean($seccion . '-activo2'),
 						'login' => $request->boolean($seccion . '-login'),
+						'random' => $request->boolean($seccion . '-random'),
 						'timer' => isset($campos[$seccion . '-timer']) ? $campos[$seccion . '-timer'] : 0,
 					]
 				);
@@ -467,6 +470,7 @@ class ClienteController extends Controller
 						'activa' => $request->boolean($seccion . '-activo'),
 						'mostrar_titulo' => $request->boolean($seccion . '-activo2'),
 						'login' => $request->boolean($seccion . '-login'),
+						'random' => $request->boolean($seccion . '-random'),
 						'timer' => isset($campos[$seccion . '-timer']) ? $campos[$seccion . '-timer'] : 0,
 					]
 				);

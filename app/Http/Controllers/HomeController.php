@@ -57,9 +57,37 @@ class HomeController extends Controller
 		if (!request()->ajax()) {
 			abort(404);
 		}
+		// generate a seed for the random order and put it in the session if is not set
+		if (!Session::has('seed')) {
+			$seed = time();
+			Session::put('seed', $seed);
+		} else {
+			$seed = Session::get('seed');
+		}
+		$page = (int) $request->input('page', 1);
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
+		$limite = ($cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer > 0) ? $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer : 24;
+		// if is the first page and the user is logged in get the user marcos
+		$userMarcos = collect([]);
+		if ($page === 1 && auth()->check()) {
+			$marcos = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->where('user_id', auth()->id())->where('aprobada', true);
+			$userMarcos = $marcos->get();
+			// if the user has marcos rest from the limite
+			// $limite -= $userMarcos->count();
+		}
 		$marcos = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->where('aprobada', true);
-		return $marcos->paginate(12);
+		// check if is activated the random order
+		if ($cliente->secciones()->where('seccion', 'galeriamarcos')->first()->random) {
+			$marcos = $marcos->inRandomOrder($seed);
+		} else {
+			$marcos = $marcos->orderBy('id', 'desc');
+		}
+		$marcos = $marcos->paginate($limite)->toJson();
+		$marcos = json_decode($marcos);
+		if ($page === 1 && $userMarcos->count() > 0) {
+			array_unshift($marcos->data, ...$userMarcos);
+		}
+		return $marcos;
 	}
 
 	public function rally_completed($slug, ClienteRally $rally, ClienteRallyUbicacion $ubicacion)
@@ -329,7 +357,7 @@ END:VCALENDAR";
 		// response json
 		return response()->json([
 			'status' => true,
-			'message' => 'Tu foto ha sido subida correctamente',
+			'message' => 'Tu foto se cargó correctamente y la revisará nuestro equipo antes de publicarla.',
 		]);
 	}
 
@@ -475,11 +503,18 @@ END:VCALENDAR";
 				'cliente' => $cliente,
 			]);
 		}
+		// generate a seed for the random order and put it in the session if is not set
+		if (!Session::has('seed')) {
+			$seed = time();
+			Session::put('seed', $seed);
+		} else {
+			$seed = Session::get('seed');
+		}
 		if ($cliente->login_bloqueo) {
-
 			if (auth()->check()) {
 				return view('cliente', [
 					'cliente' => $cliente,
+					'seed' => $seed,
 				]);
 			} else {
 				// Usuario no autenticado, redirige al formulario de inicio de sesión
@@ -488,6 +523,7 @@ END:VCALENDAR";
 		} else {
 			return view('cliente', [
 				'cliente' => $cliente,
+				'seed' => $seed,
 			]);
 		}
 	}

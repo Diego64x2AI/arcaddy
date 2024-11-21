@@ -17,6 +17,14 @@
 			<div class="text-sm lg:text-base"><label for="galeriamarcos-login">Login</label></div>
 			<div><input type="checkbox" id="galeriamarcos-login" name="galeriamarcos-login" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->login) checked @endif></div>
 		</div>
+		<div class="flex flex-col gap-1 items-center">
+			<div class="text-sm lg:text-base"><label for="galeriamarcos-random">Random</label></div>
+			<div><input type="checkbox" id="galeriamarcos-random" name="galeriamarcos-random" value="on" @if($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->random) checked @endif></div>
+		</div>
+		<div class="flex flex-col gap-1 items-center">
+			<div class="text-sm lg:text-base"><label for="galeriamarcos-timer">Mostrar</label></div>
+			<div><input type="number" min="0" id="galeriamarcos-timer" class="!text-center w-24 !text-xs !px-2 !py-1" name="galeriamarcos-timer" value="{{ ($cliente->id !== NULL && $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer > 0) ? $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer : 24 }}" required></div>
+		</div>
 		<div class="flex flex-col gap-1 items-center cursor-move handler2">
 			<div class="text-sm lg:text-base">Mover</div>
 			<div><i class="fas fa-ellipsis-v"></i></div>

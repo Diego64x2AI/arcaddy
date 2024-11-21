@@ -117,6 +117,49 @@
 			console.log(response);
 			captcha = response;
 		}
+		const downloadImage = async () => {
+			canvas.discardActiveObject().renderAll();
+			// Crea un canvas temporal para la exportación
+			var tempCanvas = document.createElement('canvas');
+			tempCanvas.width = 1024;
+			tempCanvas.height = 1024;
+			var tempCtx = tempCanvas.getContext('2d');
+			// Redibuja el contenido del canvas principal en el canvas temporal
+			tempCtx.drawImage(canvas.getElement(), 0, 0, 1024, 1024);
+			// Exporta la imagen del canvas temporal
+			var dataURL = tempCanvas.toDataURL({
+				format: 'jpeg',
+				quality: 1 // Máxima calidad
+			});
+			const blob = await (await fetch(dataURL)).blob()
+			// console.log(blob)
+			var link = document.createElement('a');
+			link.download = 'imagen_final.jpg';
+			link.href = URL.createObjectURL(blob);
+			document.body.appendChild(link); // Necesario para Firefox
+			link.click();
+			document.body.removeChild(link);
+		}
+		const showUploadSuccess = (status, message) => {
+			Swal.fire({
+			title: status ? '{{ __('arcaddy.marco6') }}' : 'ERROR',
+			html: `
+				<div class="text-center color2">
+					${message}
+				</div>
+				<div class="text-center color2 mt-5 grid grid-cols-2 gap-3">
+					<a href="#" class="btn-pill2 !py-2 !px-4 !font-semibold !text-sm uppercase descargar-btn" onclick="Swal.closeModal();">Descargar</a>
+					<a href="#" class="btn-pill2 !py-2 !px-4 !font-semibold !text-sm uppercase compartir-btn" onclick="Swal.closeModal();">Compartir</a>
+				</div>
+				<div class="text-center color2 mt-5">
+					<a href="#" class="btn-pill !py-2 !px-4 !font-semibold !text-sm uppercase" onclick="Swal.closeModal();">{{ __('arcaddy.close') }}</a>
+				</div>
+			`,
+			icon: status ? 'success' : 'error',
+			showConfirmButton: false,
+			// timer: 2500
+		});
+		}
 		const uploadImage = async (compartir) => {
 			canvas.discardActiveObject().renderAll();
 			// Crea un canvas temporal para la exportación
@@ -147,13 +190,7 @@
 				success: function(response) {
 					console.log(response);
 					if (!compartir) {
-						Swal.fire({
-							title: response.status ? '{{ __('arcaddy.marco6') }}' : 'ERROR',
-							text: response.message,
-							icon: response.status ? 'success' : 'error',
-							showConfirmButton: false,
-							timer: 2500
-						});
+						showUploadSuccess(response.status, response.message);
 					}
 				},
 				error: function(xhr, status, error) {
@@ -170,6 +207,7 @@
 			});
 		}
 		window.addEventListener('load', function() {
+			// showUploadSuccess(true, 'Tu foto se cargó correctamente y la revisará nuestro equipo antes de publicarla.');
 			uploadButton = document.getElementById('uploadButton');
 			let info = document.getElementById('info');
 			const roundedCorners = (fabricObject, cornerRadius) => new fabric.Rect({
@@ -324,7 +362,13 @@
 					}
 				});
 			};
-			document.getElementById('finishEditing').onclick = async () => {
+			$('body').on('click', '.descargar-btn', async function(e) {
+				e.preventDefault();
+				downloadImage();
+			});
+			$('body').on('click', '#finishEditing, .compartir-btn', async function(e) {
+				e.preventDefault();
+				console.log('compartir');
 				canvas.discardActiveObject().renderAll();
 				// Crea un canvas temporal para la exportación
         var tempCanvas = document.createElement('canvas');
@@ -366,7 +410,7 @@
 					document.body.removeChild(link);
 				}
 				uploadImage(1);
-			};
+			});
 		});
 	</script>
 	@includeIf('componentes.estilos')
