@@ -37,18 +37,17 @@
 	    font-weight: bold;
 	}
 	model-viewer {
-        width: 100%;
-        height: 85vh; /* Ajusta el tamaño para que sea más visible y haya espacio para el botón y el texto */
-        background-color: #FFFFFF; /* Fondo gris oscuro para el model-viewer */
-      }
-			#ar-prompt {
-        display: none; /* Oculta el ícono de la esquina */
-      }
+		width: 100%;
+		height: 85vh; /* Ajusta el tamaño para que sea más visible y haya espacio para el botón y el texto */
+	}
+	#ar-prompt {
+		display: none; /* Oculta el ícono de la esquina */
+	}
 
-      .icon-ar {
-        width: 24px; /* Tamaño ajustable del icono */
-        height: 24px;
-      }
+	.icon-ar {
+		width: 24px; /* Tamaño ajustable del icono */
+		height: 24px;
+	}
 	</style>
 </head>
 
@@ -65,10 +64,10 @@
 				<img src="{{ asset('images/ar_hand_prompt.png') }}">
 			</div>
 		</model-viewer>
-		<div class="p-5 max-w-5xl mx-auto lg:px-8 lg:mt-10">
-			{!! $pagina->texto !!}
-		</div>
-		<div class="text-center mt-5">
+		<div class="text-center fixed bottom-5 w-full left-0">
+			<div class="px-5 max-w-5xl mx-auto lg:px-8 mb-5">
+				{!! $pagina->texto !!}
+			</div>
 			<a id="custom-ar-button" href="javascript:startAR()" class="btn-pill">
 				<img src="{{ asset('images/ic_view_in_ar_new_googblue_48dp.png') }}" alt="AR Icon" class="w-[24px] h-auto inline-block">
 				{{ $pagina->boton_texto }}
@@ -76,17 +75,6 @@
 		</div>
 	</main>
 </main>
-@include('componentes.footer')
-
-@foreach ($cliente->flotantes as $flotante)
-<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000; font-size: 0.9em;">
-	<div class="py-3 px-5 text-white rounded-full "
-		style="background-color: {{ $flotante->color }}; font-weight: bold;">
-		<a href="{{ $flotante->link }}" target="{{ $flotante->target }}">{{ $flotante->texto }} <i
-				class="{{ $flotante->icono }}"></i></a>
-	</div>
-</div>
-@endforeach
 	<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 	<script>
 		// Handles loading the events for <model-viewer>'s slotted progress bar
