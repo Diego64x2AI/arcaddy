@@ -2,24 +2,22 @@
 
 namespace App\Helpers;
 
-use App\Models\Card;
 use App\Models\Visita;
 use Illuminate\Http\Request;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class Visitas
 {
-
 	private $ignoreCrawlers = true;
-
 	private $request = null;
+	private $model = null;
+	private $model_id = null;
 
-	private $card = null;
-
-	public function __construct(Request $request, Card $card)
+	public function __construct(Request $request, $model = null, $model_id = 0)
 	{
 		$this->request = $request;
-		$this->card = $card;
+		$this->model = $model;
+		$this->model_id = $model_id;
 	}
 
 	protected function isCrawler()
@@ -31,6 +29,7 @@ class Visitas
 	{
 		//  && !$this->recordedIp()
 		// dd($this->recordedIp());
+		$force = true;
 		$ip = $this->getVisitorCountry()->ip ?? '127.0.0.1';
 		if ((!$this->isCrawler() && !$this->recordedIp($ip)) || $force) {
 			$campos = [
@@ -47,14 +46,13 @@ class Visitas
 				'so' => $this->getVisitorOperatingSystem(),
 				'language' => $this->getVisitorLanguage(),
 				'browser' => $this->getVisitorBrowserName(),
-				'card_id' => $this->card->id,
+				'url' => $this->request->url(),
+				'model' => $this->model,
+				'model_id' => $this->model_id,
+				'user_id' => auth()->id(),
 			];
 			// dd($campos);
 			Visita::create($campos);
-			$this->card->increment('visits_total');
-			$this->card->increment('visits_month');
-			$this->card->increment('visits_week');
-			$this->card->increment('visits_year');
 			return true;
 		}
 		return false;
@@ -62,7 +60,7 @@ class Visitas
 
 	protected function recordedIp($ip)
 	{
-		return Visita::where('ip', $ip)->where('card_id', $this->card->id)->where('created_at', '>=', now()->subHours(1))->exists();
+		return Visita::where('ip', $ip)->where('model_id', $this->model_id)->where('model', $this->model)->where('created_at', '>=', now()->subHours(1))->exists();
 	}
 
 	/**

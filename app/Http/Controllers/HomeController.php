@@ -44,6 +44,7 @@ use App\Models\ClienteSucursal;
 use App\Models\QRLink;
 use App\Models\RealidadAumentada;
 use App\Models\User;
+use App\Models\Visita;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
@@ -124,10 +125,13 @@ class HomeController extends Controller
 		]);
 	}
 
-	public function qr_experiencia($slug, ClienteQRExperiencia $qrexperiencia)
+	public function qr_experiencia($slug, ClienteQRExperiencia $qrexperiencia, Request $request)
 	{
 		// incrementar las visitas
 		$qrexperiencia->increment('visitas');
+		// record the visit
+		$visitas = new \App\Helpers\Visitas($request, "\App\Models\ClienteQRExperiencia", $qrexperiencia->id);
+		$visitas->record();
 		if ($qrexperiencia->tipo === 'link') {
 			return redirect($qrexperiencia->url);
 		}
@@ -280,7 +284,7 @@ END:VCALENDAR";
 		]);
 	}
 
-	public function cliente_marco($slug = '')
+	public function cliente_marco($slug = '', Request $request)
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
 		$lang = strtolower($cliente->idioma);
@@ -293,6 +297,9 @@ END:VCALENDAR";
 		if (!$seccion->activa) {
 			return redirect()->route('cliente', $cliente->slug);
 		}
+		// record the visit
+		$visitas = new \App\Helpers\Visitas($request, "\App\Models\ClienteSecciones", $seccion->id);
+		$visitas->record();
 		return view('marco', [
 			'cliente' => $cliente,
 		]);
@@ -362,7 +369,7 @@ END:VCALENDAR";
 		]);
 	}
 
-	public function sucursal($slug = '', ClienteSucursal $sucursal)
+	public function sucursal($slug = '', ClienteSucursal $sucursal, Request $request)
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
 		$sucursal->increment('lecturas');
@@ -374,6 +381,9 @@ END:VCALENDAR";
 			]);
 		}
 		Session::put('sucursal_id', $sucursal->id);
+		// record the visit
+		$visitas = new \App\Helpers\Visitas($request, "\App\Models\ClienteSucursal", $sucursal->id);
+		$visitas->record();
 		return redirect()->route('cliente', $cliente->slug);
 	}
 
@@ -410,7 +420,7 @@ END:VCALENDAR";
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function cliente($slug = '')
+	public function cliente($slug = '', Request $request)
 	{
 		//$dominio = $_SERVER['HTTP_HOST'];
 		if (strpos($_SERVER['HTTP_HOST'], 'oce-geli-ra.mx') !== false && $slug !== 'gelicart') {
@@ -468,6 +478,9 @@ END:VCALENDAR";
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
+		// record the visit
+		$visitas = new \App\Helpers\Visitas($request, "\App\Models\Cliente", $cliente->id);
+		$visitas->record();
 		// revisar si el cliente tiene sucursales
 		$sucursal_id = Session::get('sucursal_id');
 		if ($cliente->sucursales->count() > 0) {
@@ -529,7 +542,7 @@ END:VCALENDAR";
 		}
 	}
 
-	public function cliente_seccion($slug = '', $slug2 = '')
+	public function cliente_seccion($slug = '', $slug2 = '', Request $request)
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
 		$pagina = QRLink::where('slug', $slug2)->where('cliente_id', $cliente->id)->firstOrFail();
@@ -538,6 +551,9 @@ END:VCALENDAR";
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
+		// record the visit
+		$visitas = new \App\Helpers\Visitas($request, "\App\Models\QRLink", $pagina->id);
+		$visitas->record();
 		// incrementar las visitas
 		$pagina->increment('lecturas');
 		return view('cliente_seccion', [
@@ -546,7 +562,7 @@ END:VCALENDAR";
 		]);
 	}
 
-	public function cliente_ar($slug = '', $slug2 = '')
+	public function cliente_ar($slug = '', $slug2 = '', Request $request)
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
 		$pagina = RealidadAumentada::where('slug', $slug2)->where('cliente_id', $cliente->id)->firstOrFail();
@@ -555,6 +571,9 @@ END:VCALENDAR";
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
+		// record the visit
+		$visitas = new \App\Helpers\Visitas($request, "\App\Models\RealidadAumentada", $pagina->id);
+		$visitas->record();
 		// incrementar las visitas
 		$pagina->increment('lecturas');
 		return view('cliente_ar', [
@@ -731,7 +750,7 @@ END:VCALENDAR";
 		return redirect()->back()->with('success', 'Cupón canjeado con éxito');
 	}
 
-	public function startGame($slug, $claveJuego)
+	public function startGame($slug, $claveJuego, Request $request)
 	{
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
 		$lang = strtolower($cliente->idioma);
@@ -741,6 +760,9 @@ END:VCALENDAR";
 		\Illuminate\Support\Facades\App::setLocale($lang);
 		$juego = Juego::with(['categoria'])->where('clave', $claveJuego)->firstOrFail();
 		if ($juego) {
+			// record the visit
+			$visitas = new \App\Helpers\Visitas($request, "\App\Models\Juego", $juego->id);
+			$visitas->record();
 			return view('games.' . $juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
 		} else {
 			return redirect()->route('cliente', $slug);
