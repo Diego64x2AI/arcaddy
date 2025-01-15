@@ -12,12 +12,14 @@ class Visitas
 	private $request = null;
 	private $model = null;
 	private $model_id = null;
+	private $cliente_id = 0;
 
-	public function __construct(Request $request, $model = null, $model_id = 0)
+	public function __construct(Request $request, $cliente_id = 0, $model = null, $model_id = 0)
 	{
 		$this->request = $request;
 		$this->model = $model;
 		$this->model_id = $model_id;
+		$this->cliente_id = $cliente_id;
 	}
 
 	protected function isCrawler()
@@ -50,6 +52,7 @@ class Visitas
 				'model' => $this->model,
 				'model_id' => $this->model_id,
 				'user_id' => auth()->id(),
+				'cliente_id' => $this->cliente_id,
 			];
 			// dd($campos);
 			Visita::create($campos);
@@ -60,7 +63,7 @@ class Visitas
 
 	protected function recordedIp($ip)
 	{
-		return Visita::where('ip', $ip)->where('model_id', $this->model_id)->where('model', $this->model)->where('created_at', '>=', now()->subHours(1))->exists();
+		return Visita::where('ip', $ip)->where('cliente_id', $this->cliente_id)->where('model_id', $this->model_id)->where('model', $this->model)->where('created_at', '>=', now()->subHours(1))->exists();
 	}
 
 	/**

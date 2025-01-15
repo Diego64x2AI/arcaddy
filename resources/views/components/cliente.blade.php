@@ -21,7 +21,7 @@
 				<a href="{{ route('usuarios.index', ['cliente' => $id]) }}" title="Usuarios"><i class="fa fa-users"></i></a>
 			</div>
 			<div class="flex flex-row items-center justify-center">
-				<a href="" title="Estadisticas"><i class="fa fa-chart-line"></i></a>
+				<a href="{{ route('cliente.estadisticas.index', ['cliente' => $id]) }}" title="Estadisticas"><i class="fa fa-chart-line"></i></a>
 			</div>
 			<div class="flex flex-row items-center justify-center">
 				<a href="{{ route('cliente.quiz.index', ['cliente' => $id]) }}" title="Quiz"><i class="fa fa-question-circle"></i></a>

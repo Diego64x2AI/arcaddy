@@ -6,6 +6,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\ClienteController;
+use App\Http\Controllers\Admin\ClienteEstadisticas;
 use App\Http\Controllers\Admin\CuponesController;
 use App\Http\Controllers\Admin\GruposController;
 use App\Http\Controllers\Admin\MarcoGaleriaController;
@@ -99,6 +100,9 @@ Route::middleware('role:admin')->group(function () {
 		Route::resource('cliente.qrlinks', QRLinksController::class)->except(['show']);
 		Route::resource('cliente.realidad', RealidadAumentadaController::class)->except(['show']);
 		Route::resource('cliente.sucursales', SucursalesController::class)->except(['show']);
+		Route::prefix('estadisticas')->group(function () {
+			Route::get('/cliente/{cliente}/estadisticas', [ClienteEstadisticas::class, 'index'])->name('cliente.estadisticas.index');
+		});
 		Route::get('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'markers'])->name('cliente.rally.markers')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
 		Route::get('/cliente/{cliente}/rally/{rally}/markers/create', [RallyController::class, 'marker_create'])->name('cliente.rally.markers.create')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');
 		Route::post('/cliente/{cliente}/rally/{rally}/markers', [RallyController::class, 'marker_store'])->name('cliente.rally.markers.store')->where('rally', '[0-9]+')->where('cliente', '[0-9]+');

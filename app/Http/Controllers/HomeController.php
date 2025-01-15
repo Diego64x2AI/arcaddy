@@ -130,7 +130,7 @@ class HomeController extends Controller
 		// incrementar las visitas
 		$qrexperiencia->increment('visitas');
 		// record the visit
-		$visitas = new \App\Helpers\Visitas($request, "\App\Models\ClienteQRExperiencia", $qrexperiencia->id);
+		$visitas = new \App\Helpers\Visitas($request, $qrexperiencia->cliente_id, "\App\Models\ClienteQRExperiencia", $qrexperiencia->id);
 		$visitas->record();
 		if ($qrexperiencia->tipo === 'link') {
 			return redirect($qrexperiencia->url);
@@ -298,7 +298,7 @@ END:VCALENDAR";
 			return redirect()->route('cliente', $cliente->slug);
 		}
 		// record the visit
-		$visitas = new \App\Helpers\Visitas($request, "\App\Models\ClienteSecciones", $seccion->id);
+		$visitas = new \App\Helpers\Visitas($request, $cliente->id, "\App\Models\ClienteSecciones", $seccion->id);
 		$visitas->record();
 		return view('marco', [
 			'cliente' => $cliente,
@@ -382,7 +382,7 @@ END:VCALENDAR";
 		}
 		Session::put('sucursal_id', $sucursal->id);
 		// record the visit
-		$visitas = new \App\Helpers\Visitas($request, "\App\Models\ClienteSucursal", $sucursal->id);
+		$visitas = new \App\Helpers\Visitas($request, $cliente->id, "\App\Models\ClienteSucursal", $sucursal->id);
 		$visitas->record();
 		return redirect()->route('cliente', $cliente->slug);
 	}
@@ -479,7 +479,7 @@ END:VCALENDAR";
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
 		// record the visit
-		$visitas = new \App\Helpers\Visitas($request, "\App\Models\Cliente", $cliente->id);
+		$visitas = new \App\Helpers\Visitas($request, $cliente->id, "\App\Models\Cliente", $cliente->id);
 		$visitas->record();
 		// revisar si el cliente tiene sucursales
 		$sucursal_id = Session::get('sucursal_id');
@@ -552,7 +552,7 @@ END:VCALENDAR";
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
 		// record the visit
-		$visitas = new \App\Helpers\Visitas($request, "\App\Models\QRLink", $pagina->id);
+		$visitas = new \App\Helpers\Visitas($request, $cliente->id, "\App\Models\QRLink", $pagina->id);
 		$visitas->record();
 		// incrementar las visitas
 		$pagina->increment('lecturas');
@@ -572,7 +572,7 @@ END:VCALENDAR";
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
 		// record the visit
-		$visitas = new \App\Helpers\Visitas($request, "\App\Models\RealidadAumentada", $pagina->id);
+		$visitas = new \App\Helpers\Visitas($request, $cliente->id, "\App\Models\RealidadAumentada", $pagina->id);
 		$visitas->record();
 		// incrementar las visitas
 		$pagina->increment('lecturas');
@@ -761,7 +761,7 @@ END:VCALENDAR";
 		$juego = Juego::with(['categoria'])->where('clave', $claveJuego)->firstOrFail();
 		if ($juego) {
 			// record the visit
-			$visitas = new \App\Helpers\Visitas($request, "\App\Models\Juego", $juego->id);
+			$visitas = new \App\Helpers\Visitas($request, $cliente->id, "\App\Models\Juego", $juego->id);
 			$visitas->record();
 			return view('games.' . $juego->categoria->slug, compact('juego', 'cliente', 'slug', 'claveJuego'));
 		} else {

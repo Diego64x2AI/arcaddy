@@ -32,6 +32,7 @@ class Visita extends Model
 		'model',
 		'model_id',
 		'user_id',
+		'cliente_id',
 	];
 
 	/**
@@ -56,5 +57,10 @@ class Visita extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class);
+	}
+
+	public function cliente()
+	{
+		return $this->belongsTo(Cliente::class);
 	}
 }
