@@ -57,11 +57,11 @@
 									</div>
 									<div class="border-gray-300 p-2 border-r text-center">
 										<div class="text-pink-600 font-bold uppercase">Admisiones</div>
-										<div>1,130,000</div>
+										<div>{{ number_format($totales['admisiones']) }}</div>
 									</div>
 									<div class="border-gray-300 p-2 text-center">
 										<div class="text-pink-600 font-bold uppercase">Activaciones QR</div>
-										<div>1,130,000</div>
+										<div>{{ number_format($totales['activaciones']) }}</div>
 									</div>
 								</div>
 							</div>
@@ -91,8 +91,8 @@
 							<div class="bg-white w-full p-5 border border-white rounded-3xl">
 								<h1 class="text-3xl font-extrabold">Páginas más visitadas</h1>
 								@foreach ($visitas as $visita)
-								<div class="flex flex-row items-center font-semibold text-sm mt-5">
-									<div class="font-bold">
+								<div class="grid grid-cols-4 items-center font-semibold text-sm mt-5">
+									<div class="font-bold truncate col-span-3">
 										<a href="{{ $visita->url }}" class="underline" target="_blank">{{ $visita->url }}</a>
 									</div>
 									<div class="ml-auto">
@@ -154,9 +154,9 @@
 						</div>
 					</div>
 					@if ($quiz !== NULL)
-					<h1 class="text-3xl font-extrabold my-5 lg:my-10">Quiz Actual:</h1>
-					<h3 class="text-xl font-extrabold my-5">{{ $quiz->nombre }} <span class="text-pink-600">({{ $quiz_totales }} respuestas)</span></h3>
-					<div id="pdf-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+					<h1 class="text-3xl font-extrabold my-5 lg:my-10 px-5">Quiz Actual:</h1>
+					<h3 class="text-xl font-extrabold my-5 px-5">{{ $quiz->nombre }} <span class="text-pink-600">({{ $quiz_totales }} respuestas)</span></h3>
+					<div id="pdf-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 px-5">
 						@foreach ($quiz_respuestas as $respuesta)
 							<div class="bg-gray-200 px-5 py-8 shadow">
 								<div class="font-bold text-end mb-8">{{ str_replace(['open', 'level', 'option', 'like', 'multi', 'versus'], ['Abierta', 'Level Satisfaction', 'Opción', 'Like or Not', 'Multiple', 'VS'], $respuesta['pregunta']->tipo) }}</div>
@@ -190,7 +190,7 @@
 										<div class="flex flex-col items-center text-center justify-center">
 											<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->respuesta }}</div>
 											<div class="mt-3 font-extrabold text-4xl">
-												{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id)->first()?->porcentaje }}%
+												{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id)->first()?->porcentaje, 2) }}%
 											</div>
 											<div class="font-extrabold text-xl">
 												{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id)->first()?->total }}
@@ -199,7 +199,7 @@
 										<div class="flex flex-col items-center text-center justify-center">
 											<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->respuesta }}</div>
 											<div class="mt-3 font-extrabold text-4xl">
-												{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id)->first()?->porcentaje }}%
+												{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id)->first()?->porcentaje, 2) }}%
 											</div>
 											<div class="font-extrabold text-xl">
 												{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id)->first()?->total }}
@@ -294,8 +294,8 @@
 					</div>
 					@endif
 					@if(!empty($games))
-					<h1 class="text-3xl font-extrabold my-5 lg:my-10">Score Games</h1>
-					<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+					<h1 class="text-3xl font-extrabold my-5 lg:my-10 px-5">Score Games</h1>
+					<div class="grid grid-cols-1 lg:grid-cols-3 gap-10 px-5">
 						@foreach ($games as $game)
 						<div class="bg-white w-full p-5 border border-white rounded-3xl">
 							<div class="flex flex-row items-center">

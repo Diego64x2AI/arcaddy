@@ -18,7 +18,9 @@ use App\Models\RealidadAumentada;
 use Illuminate\Support\Facades\DB;
 use App\Models\ClienteMarcoGaleria;
 use App\Http\Controllers\Controller;
+use App\Models\ClienteQRExperiencia;
 use App\Models\ClienteQuizRespuesta;
+use App\Models\UserQr;
 
 class ClienteEstadisticas extends Controller
 {
@@ -41,6 +43,8 @@ class ClienteEstadisticas extends Controller
 			'usuarios' => User::where('cliente_id', $cliente->id)->count(),
 			'redenciones' => ProductoCanjeado::where('cliente_id', $cliente->id)->count(),
 			'productos' => ClienteProducto::where('cliente_id', $cliente->id)->count(),
+			'admisiones' => UserQr::where('cliente_id', $cliente->id)->where('usado', 1)->count(),
+			'activaciones' => ClienteQRExperiencia::where('cliente_id', $cliente->id)->sum('visitas'),
 		];
 		$juegos = Juego::where('cliente_id', $cliente->id)->where('activo', 1)->orderBy('id', 'desc')->get();
 		$games = [];
