@@ -245,7 +245,7 @@
 										<div class="flex flex-col items-center text-center justify-center">
 											<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->respuesta }}</div>
 											<div class="mt-3 font-extrabold text-4xl">
-												{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id)->first()?->porcentaje }}%
+												{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id)->first()?->porcentaje, 2) }}%
 											</div>
 											<div class="font-extrabold text-xl">
 												{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id)->first()?->total }}
@@ -254,7 +254,7 @@
 										<div class="flex flex-col items-center text-center justify-center">
 											<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->respuesta }}</div>
 											<div class="mt-3 font-extrabold text-4xl">
-												{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id)->first()?->porcentaje }}%
+												{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id)->first()?->porcentaje, 2) }}%
 											</div>
 											<div class="font-extrabold text-xl">
 												{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id)->first()?->total }}
