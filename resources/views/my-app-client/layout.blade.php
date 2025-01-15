@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/alx-owl-carousel/owl.theme.default.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/alx-css.css')}}?v=10">
     @yield('metas')
+		@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 	<div class="alx-mobile">

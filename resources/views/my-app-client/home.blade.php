@@ -24,6 +24,11 @@
 			{{ __('arcaddy.admin5') }}<br>{{ __('arcaddy.admin6') }}
 		</a>
 	</div>
+	<div class="alx-mobile-int">
+		<a class="alx-home-btn" id="alx-btn-estadisticas" href="{{route('my-app-client.reporte-estadisticas')}}">
+			Estadísticas <br>generales
+		</a>
+	</div>
 <?php /*
 		<a class="alx-home-btn" id="alx-btn-estadisticas" href="{{route('my-app-client.reporte-estadisticas')}}">
 			Estadísticas <br>generales

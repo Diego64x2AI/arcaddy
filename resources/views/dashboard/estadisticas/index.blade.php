@@ -15,7 +15,7 @@
 	</x-slot>
 
 	<div class="py-6 bg-gray-50">
-		<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+		<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-5">
 			<div>
 				<div class="text-center">
 					<img src="{{ asset('storage/'.$cliente->logo) }}" alt="{{ $cliente->cliente }}" class="inline-block w-full h-auto max-w-xs">
@@ -154,9 +154,9 @@
 						</div>
 					</div>
 					@if ($quiz !== NULL)
-					<h1 class="text-3xl font-extrabold my-5 lg:my-10 px-5">Quiz Actual:</h1>
-					<h3 class="text-xl font-extrabold my-5 px-5">{{ $quiz->nombre }} <span class="text-pink-600">({{ $quiz_totales }} respuestas)</span></h3>
-					<div id="pdf-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 px-5">
+					<h1 class="text-3xl font-extrabold my-5 lg:my-10">Quiz Actual:</h1>
+					<h3 class="text-xl font-extrabold my-5">{{ $quiz->nombre }} <span class="text-pink-600">({{ $quiz_totales }} respuestas)</span></h3>
+					<div id="pdf-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
 						@foreach ($quiz_respuestas as $respuesta)
 							<div class="bg-gray-200 px-5 py-8 shadow">
 								<div class="font-bold text-end mb-8">{{ str_replace(['open', 'level', 'option', 'like', 'multi', 'versus'], ['Abierta', 'Level Satisfaction', 'Opción', 'Like or Not', 'Multiple', 'VS'], $respuesta['pregunta']->tipo) }}</div>
@@ -294,8 +294,8 @@
 					</div>
 					@endif
 					@if(!empty($games))
-					<h1 class="text-3xl font-extrabold my-5 lg:my-10 px-5">Score Games</h1>
-					<div class="grid grid-cols-1 lg:grid-cols-3 gap-10 px-5">
+					<h1 class="text-3xl font-extrabold my-5 lg:my-10">Score Games</h1>
+					<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
 						@foreach ($games as $game)
 						<div class="bg-white w-full p-5 border border-white rounded-3xl">
 							<div class="flex flex-row items-center">

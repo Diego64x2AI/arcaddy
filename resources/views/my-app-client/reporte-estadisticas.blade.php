@@ -1,274 +1,476 @@
-@extends('my-app-client.layout')
+@extends('my-app-client.layout2')
 
 @section('content')
-<div class="alx-section-title">
-	<div class="alx-mobile-int">
-		<div class="alx-section-title-txt" id="alx-title-estadisticas">
-			Estadísticas <br>generales
+<div class="py-[21px] bg-white w-full">
+	<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+		<div class="flex flex-row items-center w-full">
+			<div class="grow max-w-[90%] flex flex-row items-center">
+				<div class="bg-gray-50 flex flex-row items-center p-5 w-full shadow-lg max-w-md rounded-tr-3xl rounded-br-3xl border border-gray-100">
+					<h1 class="text-2xl font-extrabold">Hola</h1>
+					<div class="ml-5">
+						@if(isset($clientedatos) && $clientedatos->logo != '')
+							<img src="{{ asset('storage/'.$clientedatos->logo) }}" class="w-auto h-8">
+						@endif
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-<div class="alx-section">
-	<div class="container alx-mobile">
-
-
-
-		<div class="alx-table-txt">
-
-
-
-			<div class="row">
-				<div class="col-xs-6">
-					<div class="alx-estadistica-cuadro">
-						<div class="alx-icon-estadistica icon-www"></div>
-						<div class="alx-table-super-title alx-txt-pink">
-							VISITAS WEB:
-						</div>
-						<div class="alx-table-super-title">
-							13,000
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6 alx-line-v-left">
-					<div class="alx-estadistica-cuadro">
-						<div class="alx-icon-estadistica icon-regitros"></div>
-						<div class="alx-table-super-title alx-txt-pink">
-							REGISTROS:
-						</div>
-						<div class="alx-table-super-title">
-							4,500
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="alx-line-h"></div>
-			<div class="row">
-				<div class="col-xs-6">
-					<div class="alx-estadistica-cuadro">
-						<div class="alx-icon-estadistica icon-acceso"></div>
-						<div class="alx-table-super-title alx-txt-pink">
-							ACCESO A <br>EVENTOS:
-						</div>
-						<div class="alx-table-super-title">
-							2,700
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6 alx-line-v-left">
-					<div class="alx-estadistica-cuadro">
-						<div class="alx-icon-estadistica icon-activaciones"></div>
-						<div class="alx-table-super-title alx-txt-pink">
-							ACTIVACIONES <br>AR/QR:
-						</div>
-						<div class="alx-table-super-title">
-							14,600
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="alx-line-h"></div>
-			<div class="row">
-				<div class="col-xs-6">
-					<div class="alx-estadistica-cuadro">
-						<div class="alx-icon-estadistica icon-canjes"></div>
-						<div class="alx-table-super-title alx-txt-pink">
-							CANJES EN <br>EVENTO:
-						</div>
-						<div class="alx-table-super-title">
-							3,600
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6 alx-line-v-left">
-					<div class="alx-estadistica-cuadro">
-						<div class="alx-icon-estadistica icon-ganancia"></div>
-						<div class="alx-table-super-title alx-txt-pink">
-							RETORNO <br>CANJES:
-						</div>
-						<div class="alx-table-super-title">
-							$116,000
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="alx-line-h"></div>
-
-
-
-			<br><br><br>
-
-
-
-			<div class="row">
-				<div class="col-xs-6">
-					<div class="alx-table-super-title alx-txt-pink">
-						FUENTE DE <br>TRÁFICO:
-					</div>
-				</div>
-				<div class="col-xs-6">
-					<div class="row alx-table-row">
-						<div class="col-xs-6 alx-table-dato">
-							Facebook
-						</div>
-						<div class="col-xs-6">
-							7,000
-						</div>
-					</div>
-					<div class="row alx-table-row">
-						<div class="col-xs-6 alx-table-dato">
-							IG
-						</div>
-						<div class="col-xs-6">
-							4,000
-						</div>
-					</div>
-					<div class="row alx-table-row">
-						<div class="col-xs-6 alx-table-dato">
-							Búsqueda
-						</div>
-						<div class="col-xs-6">
-							1,000
-						</div>
-					</div>
-					<div class="row alx-table-row">
-						<div class="col-xs-6 alx-table-dato">
-							Mail
-						</div>
-						<div class="col-xs-6">
-							2,000
-						</div>
-					</div>
-					<div class="row alx-table-row">
-						<div class="col-xs-6 alx-table-dato">
-							Directo
-						</div>
-						<div class="col-xs-6">
-							5,000
-						</div>
-					</div>
-				</div>
-			</div>
-			<br><br>
-
-
-
-
-			<div class="alx-table-row-border"></div>
-			<br>
-
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="alx-table-super-title alx-txt-pink">
-						GEO LOCALIZACIÓN/IP:
-					</div>
-				</div>
-			</div>
-			<br>
-
-			<div class="row alx-table-row-title">
-				<div class="col-xs-3">
-					<div class="alx-table-title-col"></div>
-				</div>
-				<div class="col-xs-3  alx-table-no-padding text-center">
-					<div class="alx-table-title-col-black">Visitas</div>
-				</div>
-				<div class="col-xs-3  alx-table-no-padding text-center">
-					<div class="alx-table-title-col-black">Registro</div>
-				</div>
-				<div class="col-xs-3 alx-table-no-padding-left text-center">
-					<div class="alx-table-title-col-black">Activaciones</div>
-					<div class="alx-table-txt-min">AR/QR</div>
-				</div>
-			</div>
-
-
-
-			<div class="row alx-table-row">
-				<div class="col-xs-3">
-					<div class="alx-table-dato-min">Guadalajara</div>
-				</div>
-				<div class="col-xs-3 alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3 alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3 alx-table-no-padding-left text-center">
-					7,000
-				</div>
-			</div>
-			<div class="row alx-table-row">
-				<div class="col-xs-3">
-					<div class="alx-table-dato-min">CDMX</div>
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3  text-center alx-table-no-padding-left text-center">
-					7,000
-				</div>
-			</div>
-			<div class="row alx-table-row">
-				<div class="col-xs-3">
-					<div class="alx-table-dato-min">Yucatán</div>
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3  text-center alx-table-no-padding-left text-center">
-					7,000
-				</div>
-			</div>
-			<div class="row alx-table-row">
-				<div class="col-xs-3">
-					<div class="alx-table-dato-min">Nuevo León</div>
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3  text-center alx-table-no-padding-left text-center">
-					7,000
-				</div>
-			</div>
-			<div class="row alx-table-row">
-				<div class="col-xs-3">
-					<div class="alx-table-dato-min">Guadalajara</div>
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3 text-center alx-table-no-padding text-center">
-					7,000
-				</div>
-				<div class="col-xs-3  text-center alx-table-no-padding-left text-center">
-					7,000
-				</div>
-			</div>
-
-
-
-
-
-
-
+<div class="bg-[#262626] w-full py-5 text-white">
+	<div class="flex flex-row items-center justify-center">
+		<div class="">
+			<img src="{{ asset('images-my-app/btn-estadisticas.png') }}" alt="Estadisticas Generales" class="w-auto h-14">
 		</div>
-
-
-
-		<div class="row">
-			<div class="col-xs-12">
-				<a class="alx-btn alx-btn-cerrar" href="{{route('my-app-client.home')}}">{{ __('arcaddy.close') }}</a>
+		<div class="ml-5 font-bold text-xl">
+			Estadísticas<br>Generales
+		</div>
+	</div>
+</div>
+<div class="py-6 bg-gray-50">
+	<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+	<div class="px-5">
+		<div class="bg-white w-full p-5 border border-white rounded-3xl">
+			<h1 class="text-3xl font-extrabold">General perfomance</h1>
+			<div class="grid grid-cols-2 font-semibold text-sm mt-5">
+				<div class="border-b border-gray-300 p-2 border-r px-2 text-center">
+					<div class="text-pink-600 font-bold uppercase">Visitas</div>
+					<div>{{ number_format($totales['visitas']) }}</div>
+				</div>
+				<div class="border-b border-gray-300 p-2 text-center">
+					<div class="text-pink-600 font-bold uppercase">Usuarios</div>
+					<div>{{ number_format($totales['usuarios']) }}</div>
+				</div>
+				<div class="border-b border-gray-300 p-2 border-r text-center">
+					<div class="text-pink-600 font-bold uppercase">Redenciones</div>
+					<div>{{ number_format($totales['redenciones']) }}</div>
+				</div>
+				<div class="border-b border-gray-300 p-2 text-center">
+					<div class="text-pink-600 font-bold uppercase">Productos</div>
+					<div>{{ number_format($totales['productos']) }}</div>
+				</div>
+				<div class="border-gray-300 p-2 border-r text-center">
+					<div class="text-pink-600 font-bold uppercase">Admisiones</div>
+					<div>{{ number_format($totales['admisiones']) }}</div>
+				</div>
+				<div class="border-gray-300 p-2 text-center">
+					<div class="text-pink-600 font-bold uppercase">Activaciones QR</div>
+					<div>{{ number_format($totales['activaciones']) }}</div>
+				</div>
 			</div>
+		</div>
+		@if($marcos->count() > 0)
+		<div class="bg-white w-full p-5 border border-white rounded-3xl mt-5 px-5 lg:mt-10">
+			<h1 class="text-3xl font-extrabold text-center">Marcos</h1>
+			<div class="my-5 grid grid-cols-2">
+				<div>
+					<div class="text-center font-bold text-pink-600 uppercase">Compartidos</div>
+					<div class="text-center font-bold">{{ $marcos_compartidos }}</div>
+				</div>
+				<div>
+					<div class="text-center font-bold text-pink-600 uppercase">Subidos</div>
+					<div class="text-center font-bold">{{ $marcos_subidos }}</div>
+				</div>
+			</div>
+			<div class="grid grid-cols-3">
+				@foreach ($marcos as $galeria)
+					<div>
+						<img src="{{ asset('storage/'.$galeria->archivo) }}" alt="{{ $galeria->titulo }}" class="w-full h-auto">
+					</div>
+				@endforeach
+			</div>
+		</div>
+		@endif
+	</div>
+	<div class="lg:col-span-2 px-5">
+		@if($visitas->count() > 0)
+		<div class="bg-white w-full p-5 border border-white rounded-3xl">
+			<h1 class="text-3xl font-extrabold">Páginas más visitadas</h1>
+			@foreach ($visitas as $visita)
+			<div class="grid grid-cols-4 items-center font-semibold text-sm mt-5">
+				<div class="font-bold truncate col-span-3">
+					<a href="{{ $visita->url }}" class="underline" target="_blank">{{ $visita->url }}</a>
+				</div>
+				<div class="ml-auto">
+					<span class="text-pink-600">{{ $visita->total }}</span> visitas
+				</div>
+			</div>
+			@endforeach
+		</div>
+		@endif
+		<div class="grid grid-cols-1 lg:grid-cols-2 mt-5 xl:mt-10 gap-5">
+			@if($qrlinks->count() > 0)
+			<div class="bg-white w-full p-5 border border-white rounded-3xl">
+				<h1 class="text-3xl font-extrabold">Links QR's</h1>
+				@foreach ($qrlinks as $link)
+				<div class="flex flex-row items-center font-semibold text-sm mt-5">
+					<div class="font-bold">
+						<a href="{{ route('cliente_seccion', ['slug' => $link->cliente->slug, 'slug2' => $link->slug]) }}" class="underline" target="_blank">{{ $link->titulo }}</a>
+					</div>
+					<div class="ml-auto">
+						<span class="text-pink-600">{{ $link->lecturas }}</span> lecturas
+					</div>
+				</div>
+				@endforeach
+			</div>
+			@endif
+			@if($realidades->count() > 0)
+			<div class="bg-white w-full p-5 border border-white rounded-3xl">
+				<h1 class="text-3xl font-extrabold">Secciones AR's</h1>
+				@foreach ($realidades as $link)
+				<div class="flex flex-row items-center font-semibold text-sm mt-5">
+					<div class="font-bold">
+						<a href="{{ route('cliente_ar', ['slug' => $link->cliente->slug, 'slug2' => $link->slug]) }}" class="underline" target="_blank">{{ $link->titulo }}</a>
+					</div>
+					<div class="ml-auto">
+						<span class="text-pink-600">{{ $link->lecturas }}</span> lecturas
+					</div>
+				</div>
+				@endforeach
+			</div>
+			@endif
+		</div>
+		@if($sucursales->count() > 0)
+		<div class="bg-white w-full p-5 border border-white rounded-3xl mt-5 xl:mt-10">
+			<h1 class="text-3xl font-extrabold">Sucursales</h1>
+			<div>
+				<div class="lg:col-span-3">
+					@foreach ($sucursales as $sucursal)
+						<div class="flex flex-row items-center font-semibold text-sm mt-5">
+							<div class="font-bold">
+								{{ $sucursal->nombre }}
+							</div>
+							<div class="ml-auto">
+								<span class="text-pink-600">{{ $sucursal->lecturas }}</span> lecturas
+							</div>
+						</div>
+						@endforeach
+				</div>
+				<div class="mt-5">
+					<div id="map" class="w-full h-[40vh]"></div>
+				</div>
+			</div>
+		</div>
+		@endif
+	</div>
+</div>
+@if ($quiz !== NULL)
+<h1 class="text-3xl font-extrabold my-5 lg:my-10 px-5">Quiz Actual:</h1>
+<h3 class="text-xl font-extrabold my-5 px-5">{{ $quiz->nombre }} <span class="text-pink-600">({{ $quiz_totales }} respuestas)</span></h3>
+<div id="pdf-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 px-5">
+	@foreach ($quiz_respuestas as $respuesta)
+		<div class="bg-gray-200 px-5 py-8 shadow">
+			<div class="font-bold text-end mb-8">{{ str_replace(['open', 'level', 'option', 'like', 'multi', 'versus'], ['Abierta', 'Level Satisfaction', 'Opción', 'Like or Not', 'Multiple', 'VS'], $respuesta['pregunta']->tipo) }}</div>
+			<div class="text-pink-600 font-bold text-xl text-center mb-10">
+				{{ $respuesta['pregunta']->pregunta }}
+			</div>
+			@if ($respuesta['pregunta']->tipo == 'open')
+				<div class="divide-y divide-zinc-500">
+					@foreach ($respuesta['respuestas'] as $item)
+						<div class="text-start font-bold py-2">
+							{{ $item['respuesta'] }}
+						</div>
+					@endforeach
+				</div>
+			@elseif ($respuesta['pregunta']->tipo == 'like')
+			<div class="flex flex-col gap-3">
+				<div>
+					<img src="{{ asset('storage/'.$respuesta['pregunta']->archivo) }}" alt="{{ $respuesta['pregunta']->pregunta }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
+				</div>
+				<dib class="grid grid-cols-2 items-center gap-1 mt-3 font-semibold">
+					<div class="flex flex-row justify-center">
+						<a href="javascript:void(0);" class="rounded-full cursor-default border-0 border-white like-click bg-pink-600 text-white text-center overflow-hidden flex flex-col justify-center text-3xl items-center p-4">
+							<i class="far fa-thumbs-up"></i>
+						</a>
+					</div>
+					<div class="flex flex-row justify-center">
+						<a href="javascript:void(0);" class="rounded-full cursor-default border-0 border-white dislike-click bg-pink-600 text-white text-center overflow-hidden flex flex-col justify-center text-3xl items-center p-4">
+							<i class="far fa-thumbs-down"></i>
+						</a>
+					</div>
+					<div class="flex flex-col items-center text-center justify-center">
+						<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->respuesta }}</div>
+						<div class="mt-3 font-extrabold text-4xl">
+							{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id)->first()?->porcentaje, 2) }}%
+						</div>
+						<div class="font-extrabold text-xl">
+							{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id)->first()?->total }}
+						</div>
+					</div>
+					<div class="flex flex-col items-center text-center justify-center">
+						<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->respuesta }}</div>
+						<div class="mt-3 font-extrabold text-4xl">
+							{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id)->first()?->porcentaje, 2) }}%
+						</div>
+						<div class="font-extrabold text-xl">
+							{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id)->first()?->total }}
+						</div>
+					</div>
+				</dib>
+			</div>
+			@elseif ($respuesta['pregunta']->tipo == 'level')
+			<div class="flex flex-col gap-3">
+				@if($respuesta['pregunta']->archivo !== NULL)
+				<div>
+					<img src="{{ asset('storage/'.$respuesta['pregunta']->archivo) }}" alt="{{ $respuesta['pregunta']->pregunta }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
+				</div>
+				@endif
+				<div>
+					<div data-value="{{ round($respuesta['promedio'], 2) }}" class="mt-5 slider-level"></div>
+				</div>
+				<dib class="grid grid-cols-3 items-center gap-3 mt-6 font-semibold">
+					<div class="text-start">
+						{{ $respuesta['pregunta']->respuestas->where('tipo', 'low')->first()?->respuesta }}
+					</div>
+					<div class="font-extrabold text-4xl text-center">
+						{{ round(($respuesta['promedio'] * 10), 2) }}%
+					</div>
+					<div class="text-end">
+						{{ $respuesta['pregunta']->respuestas->where('tipo', 'high')->first()?->respuesta }}
+					</div>
+				</dib>
+			</div>
+			@elseif ($respuesta['pregunta']->tipo == 'versus')
+			<div class="flex flex-col gap-3">
+				<dib class="grid grid-cols-2 items-center gap-3 font-semibold">
+					<div class="flex flex-row justify-center">
+						<div class="mb-3 relative">
+							<img src="{{ asset('storage/'.$respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->archivo) }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
+						</div>
+					</div>
+					<div class="flex flex-row justify-center">
+						<div class="mb-3 relative">
+							<img src="{{ asset('storage/'.$respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->archivo) }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
+						</div>
+					</div>
+					<div class="flex flex-col items-center text-center justify-center">
+						<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->respuesta }}</div>
+						<div class="mt-3 font-extrabold text-4xl">
+							{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id)->first()?->porcentaje, 2) }}%
+						</div>
+						<div class="font-extrabold text-xl">
+							{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id)->first()?->total }}
+						</div>
+					</div>
+					<div class="flex flex-col items-center text-center justify-center">
+						<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->respuesta }}</div>
+						<div class="mt-3 font-extrabold text-4xl">
+							{{ (float) round($respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id)->first()?->porcentaje, 2) }}%
+						</div>
+						<div class="font-extrabold text-xl">
+							{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id)->first()?->total }}
+						</div>
+					</div>
+				</dib>
+			</div>
+			@elseif ($respuesta['pregunta']->tipo == 'option' || $respuesta['pregunta']->tipo == 'multi')
+			<div class="">
+				<div class="flex flex-row items-center gap-5 font-bold">
+					<div class="grow">&nbsp;</div>
+					<div class="w-[100px] text-center">Cantidad</div>
+					<div class="w-[60px] text-center">%</div>
+				</div>
+				<div class="divide-y divide-zinc-500">
+				@foreach ($respuesta['respuestas'] as $item)
+				<div class="flex flex-row items-center gap-5 font-bold">
+					<div class="text-start font-bold py-2 grow truncate">
+						{{ $item['respuesta'] }}
+					</div>
+					<div class="w-[100px] text-center font-bold py-2">
+						{{ $item['total'] }}
+					</div>
+					<div class="w-[60px] text-center font-bold py-2">
+						{{ round($item['porcentaje'], 2) }}%
+					</div>
+				</div>
+				@endforeach
+				</div>
+				<div>
+					<canvas class="pie-chart" data-json="{{ json_encode($respuesta['dataset'] ?? []) }}"></canvas>
+				</div>
+			</div>
+			@endif
+		</div>
+	@endforeach
+</div>
+@endif
+@if(!empty($games))
+<h1 class="text-3xl font-extrabold my-5 lg:my-10 px-5">Score Games</h1>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 px-5">
+	@foreach ($games as $game)
+	<div class="bg-white w-full p-5 border border-white rounded-3xl">
+		<div class="flex flex-row items-center">
+			<div>
+				<h1 class="text-xl font-extrabold">{{ $game['nombre'] }}</h1>
+			</div>
+			<div class="ml-auto">
+				<span class="text-pink-600">{{ $game['visitas'] }}</span> visitas
+			</div>
+		</div>
+		<div class="mt-5">
+			@foreach ($game['scores'] as $score)
+			@php
+			$style = ($loop->iteration === 1) ? ' style="background-color: '.$cliente->color_base.'; color: '.$cliente->color_bg.';"' : '';
+			@endphp
+			<div class="flex flex-row items-center mb-2">
+				<div class="color font-bold text-2xl text-center w-5">{{ $loop->iteration }}</div>
+				<div class="flex flex-row grow ml-2 items-center px-3 py-2 rounded-3xl"{!! $style !!}>
+					{{--<div><img src="{{ asset('images/Imagen 73.jpg') }}" class="w-10 h-10 rounded-full" alt="Juan Carlos Perez"></div>--}}
+					<div class="grow text-left ml-2 font-semibold text-xs md:text-normal">{{ $score->user->name }}</div>
+					<div class="ml-auto font-extrabold text-xl">{{ $score->tiempo }} {{ __('arcaddy.seconds') }}</div>
+				</div>
+			</div>
+			@endforeach
+		</div>
+	</div>
+	@endforeach
+</div>
+@endif
+</div>
+</div>
+<div class="py-10">
+		<div class="flex flex-row items-center justify-center">
+			<a class="rounded-full bg-pink-600 text-white px-5 py-2 block" href="{{route('my-app-client.home')}}">
+				<i class="fa fa-close"></i> {{ __('arcaddy.close') }}
+			</a>
 		</div>
 	</div>
 </div>
 @endsection
+
+@section('js')
+	<style>
+		.slider-level {
+    	height: 15px;
+			border-radius: 25px;
+			border: 1px solid #D3D3D3;
+			background-color: #cfd2d8;
+			box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
+		}
+		.noUi-handle:before {
+			content: "";
+			display: block;
+			position: absolute;
+			height: 20px;
+			width: 1px;
+			background: #E8E7E6;
+			left: 15px;
+			top: 8px;
+		}
+		.noUi-connects {
+			border-radius: 25px;
+			overflow: hidden;
+		}
+		.noUi-handle:after {
+			content: "";
+			display: block;
+			position: absolute;
+			height: 20px;
+			width: 1px;
+			background: #E8E7E6;
+			left: 20px;
+			top: 8px;
+		}
+		.slider-level .noUi-connect {
+			background: #db2777;
+			border-radius: 25px;
+		}
+		.slider-level .noUi-handle {
+			height: 38px;
+			width: 38px;
+			top: -15px;
+			right: -17px; /* half the width */
+			border-radius: 50%;
+		}
+		[disabled].noUi-target, [disabled].noUi-handle, [disabled] .noUi-handle {
+    	cursor: default;
+		}
+	</style>
+	<!-- prettier-ignore -->
+	<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+		({key: "AIzaSyDl98_79CXXgbwn8UQflos9q_QAJO44Mlw", v: "weekly"});</script>
+	 <script>
+		document.addEventListener('DOMContentLoaded', function load() {
+			if (!window.jQuery) return setTimeout(load, 50);
+			console.log(`stats load`);
+			$('.pie-chart').each(function(){
+				const pieChart = this;
+				const ctx = pieChart.getContext('2d');
+				const data = JSON.parse(pieChart.dataset.json);
+				const labels = data.labels;
+				const values = data.data;
+				new Chart(ctx, {
+					type: 'doughnut',
+					data: {
+						labels: labels,
+						datasets: [{
+							data: values,
+							// backgroundColor: colors
+						}]
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: {
+								display: true,
+								position: 'bottom',
+							}
+						}
+					}
+				});
+			});
+			$('.slider-level').each(function(){
+				const levelSlider = this;
+				noUiSlider.create(levelSlider, {
+					start: 0,
+					// step: 1,
+					connect: 'lower',
+					tooltips: false,
+					range: {
+						'min': 0,
+						'max': 10
+					}
+				});
+				levelSlider.noUiSlider.disable();
+				setTimeout(() => {
+					levelSlider.noUiSlider.set($(levelSlider).data('value'));
+				}, 100);
+				/*
+				levelSlider.noUiSlider.on('update', function (values, handle) {
+					console.log(values[handle]);
+				});
+				*/
+			});
+			init();
+			let map;
+			let marker;
+
+			async function init() {
+				console.log('init');
+				const { Map } = await google.maps.importLibrary("maps");
+
+				map = new Map(document.getElementById("map"), {
+					center: { lat: 22.909155, lng: -102.450886 },
+					zoom: 5,
+				});
+				let bounds = new google.maps.LatLngBounds();
+
+				@foreach ($sucursales as $sucursal)
+					marker = new google.maps.Marker({
+						position: { lat: {{ $sucursal->lat }}, lng: {{ $sucursal->lng }} },
+						map,
+						title: '{{ $sucursal->nombre }}',
+						icon: {
+							url: `{{ ($cliente->sucursales_pin !== NULL) ? asset('storage/'.$cliente->sucursales_pin) : asset('images/sucursal-pin.png') }}`,
+							scaledSize: new google.maps.Size(60, 60),
+						},
+					});
+					bounds.extend({ lat: {{ $sucursal->lat }}, lng: {{ $sucursal->lng }} });
+
+				@endforeach
+				map.fitBounds(bounds);
+			}
+		});
+	</script>
+	@endsection
