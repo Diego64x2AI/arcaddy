@@ -53,6 +53,7 @@ class Visitas
 				'model_id' => $this->model_id,
 				'user_id' => auth()->id(),
 				'cliente_id' => $this->cliente_id,
+				'referrer' => $this->getVisitorReferrer(),
 			];
 			// dd($campos);
 			Visita::create($campos);
@@ -100,6 +101,15 @@ class Visitas
 			}
 		}
 		return 'unknown';
+	}
+
+	/**
+	 *  Gets visitor referrer
+	 * @return mixed|string
+	 */
+	public function getVisitorReferrer()
+	{
+		return $this->request->server('HTTP_REFERER') ?? 'unknown';
 	}
 
 	/**

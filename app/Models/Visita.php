@@ -33,6 +33,7 @@ class Visita extends Model
 		'model_id',
 		'user_id',
 		'cliente_id',
+		'referrer',
 	];
 
 	/**
