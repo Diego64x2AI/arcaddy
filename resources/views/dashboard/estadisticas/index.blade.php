@@ -129,6 +129,7 @@
 									@endforeach
 								</div>
 							</div>
+							@if($sucursales->count() > 0)
 							<div class="bg-white w-full p-5 border border-white rounded-3xl mt-5 xl:mt-10">
 								<h1 class="text-3xl font-extrabold">Sucursales</h1>
 								<div>
@@ -149,7 +150,7 @@
 									</div>
 								</div>
 							</div>
-
+							@endif
 						</div>
 					</div>
 					@if(!empty($games))
