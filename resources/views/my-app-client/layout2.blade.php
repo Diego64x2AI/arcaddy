@@ -13,7 +13,8 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css">
 	<!-- Font Awesome Icons -->
-	<script src="https://kit.fontawesome.com/6167140cfb.js" crossorigin="anonymous"></script>
+	<link href="{{ asset('fontawesome-free-6.7.2-web/css/all.min.css') }}" rel="stylesheet">
+	<script src="{{ asset('fontawesome-free-6.7.2-web/js/all.min.js') }}"></script>
 	<script type="text/javascript" src="https://unpkg.com/@popperjs/core@2"></script>
 	<!-- Scripts -->
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
