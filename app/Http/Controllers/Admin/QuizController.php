@@ -104,7 +104,12 @@ class QuizController extends Controller
 		$campos['score'] = $request->boolean('score');
 		$campos['random'] = $request->boolean('random');
 		$campos['calificacion'] = $request->boolean('calificacion');
+		$campos['cupon'] = $request->boolean('cupon');
 		$campos['login'] = $request->boolean('login');
+		if ($campos['cupon']) {
+			// force login option
+			$campos['login'] = true;
+		}
 		if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
 			$campos['imagen'] = $request->file('imagen')->store('quiz', 'public');
 		}
@@ -160,6 +165,13 @@ class QuizController extends Controller
 		if ($request->filled('login')) {
 			$quiz->update(['login' => $request->boolean('login')]);
 		}
+		if ($request->filled('cupon')) {
+			if ($request->boolean('cupon')) {
+				// force login option
+				$quiz->update(['login' => true]);
+			}
+			$quiz->update(['cupon' => $request->boolean('cupon')]);
+		}
 		if ($request->filled('activa')) {
 			// if is active, deactivate the others
 			if ($request->boolean('activa')) {
@@ -169,6 +181,9 @@ class QuizController extends Controller
 		}
 		if ($request->filled('nombre')) {
 			$quiz->update(['nombre' => $request->nombre]);
+		}
+		if ($request->filled('puntos')) {
+			$quiz->update(['puntos' => $request->puntos]);
 		}
 		if ($request->filled('felicidades_text')) {
 			$quiz->update(['felicidades_text' => $request->felicidades_text]);

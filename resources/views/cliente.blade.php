@@ -48,8 +48,28 @@
 			<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-full h-auto max-w-xs" alt="{{ $cliente->cliente }}">
 		</div>
 		--}}
-
-		@if($cliente->id != 82)
+		@php
+		$beneficios = \App\Models\UserBeneficio::where('cliente_id', $cliente->id)->where('user_id', auth()->user()?->id)->whereNull('fecha_canje')->get();
+		@endphp
+		@if ($beneficios != NULL && $beneficios->count() > 0)
+			<section id="beneficio" class="container mx-auto py-10 px-5 max-w-xl">
+			<div class="border-2 borde py-10 rounded-3xl">
+				<div class="px-5">
+					<div class="text-center flex flex-row justify-center items-center">
+						<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
+					</div>
+					@auth
+					<div class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
+					@endauth
+					<div class="text-center mt-1 font-bold text-xl">¡Felicidades haz ganado un beneficio!</div>
+					<div class="text-center flex flex-row justify-center items-center mt-5">
+						<a href="{{ route('beneficios', ['cliente' => $cliente->id]) }}" class="btn-pill">Canjear mi beneficio</a>
+					</div>
+				</div>
+			</div>
+			</section>
+		@endif
+		@if($cliente->id !== 82)
 		@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
 			@includeIf('secciones.'.$seccion->seccion)
 		@endforeach

@@ -33,6 +33,7 @@ class StoreClienteProductoRequest extends FormRequest
 			'descripcion' => 'required|string',
 			'banners_img.*' => 'required|image|mimes:jpeg,png,jpg',
 			'banners_titulo.*' => 'required|string|max:255',
+			'cantidad' => 'required|numeric',
 		];
 	}
 }

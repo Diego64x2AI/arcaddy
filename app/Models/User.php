@@ -61,6 +61,18 @@ class User extends Authenticatable
 		return $this->belongsTo(ClienteSucursal::class, 'sucursal_id', 'id');
 	}
 
+	public function canjeados($cliente_id = 0) {
+		return ProductoCanjeado::where('user_id', $this->id)->where('cliente_id', $cliente_id)->count();
+	}
+
+	public function beneficios($cliente_id = 0) {
+		return [
+			'ganados' => UserBeneficio::where('user_id', $this->id)->where('cliente_id', $cliente_id)->count(),
+			'canjeados' => UserBeneficio::where('user_id', $this->id)->where('cliente_id', $cliente_id)->whereNotNull('fecha_canje')->where('canjeado', 1)->count(),
+			'redimidos' => UserBeneficio::where('user_id', $this->id)->where('cliente_id', $cliente_id)->whereNotNull('fecha_canje')->where('canjeado', 0)->count(),
+		];
+	}
+
 	/**
 	 * The "booted" method of the model.
 	 *

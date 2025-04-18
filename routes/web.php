@@ -67,7 +67,7 @@ Route::middleware('role:client')->group(function () {
 	Route::prefix('my-app-client')->group(function () {
 		Route::get('/home', [MyAppClientController::class, 'home'])->name('my-app-client.home');
 		Route::get('/reporte-activaciones', [MyAppClientController::class, 'reporteActivaciones'])->name('my-app-client.reporte-activaciones');
-		Route::get('/reporte-redenciones', [MyAppClientController::class, 'reporteRedenciones'])->name('my-app-client.reporte-redenciones');
+		Route::any('/reporte-redenciones', [MyAppClientController::class, 'reporteRedenciones'])->name('my-app-client.reporte-redenciones');
 		Route::get('/reporte-base-usuarios', [MyAppClientController::class, 'reporteBaseUsuarios'])->name('my-app-client.reporte-base-usuarios');
 		Route::get('/reporte-estadisticas', [MyAppClientController::class, 'reporteEstadisticas'])->name('my-app-client.reporte-estadisticas');
 		Route::get('/home-qr', [MyAppClientController::class, 'homeQr'])->name('my-app-client.home-qr');
@@ -75,8 +75,8 @@ Route::middleware('role:client')->group(function () {
 		Route::get('/check-in', [MyAppClientController::class, 'checkIn'])->name('my-app-client.check-in');
 		Route::get('/check-in2', [MyAppClientController::class, 'checkIn2'])->name('my-app-client.check-in2');
 		Route::get('/check-in-validar/{codigo}', [MyAppClientController::class, 'checkInValidar'])->name('my-app-client.check-in-validar');
-		Route::get('/producto-redencion/{producto_id}', [MyAppClientController::class, 'productoRedencion'])->name('my-app-client.producto-redencion');
-		Route::get('/producto-redencion-validar/{producto_id}/{codigo}/{usuario_id}', [MyAppClientController::class, 'productoRedencionValidar'])->name('my-app-client.producto-redencion-validar');
+		Route::get('/producto-redencion/{producto}', [MyAppClientController::class, 'productoRedencion'])->name('my-app-client.producto-redencion');
+		Route::get('/producto-redencion-validar/{producto?}/{codigo?}/{user?}', [MyAppClientController::class, 'productoRedencionValidar'])->name('my-app-client.producto-redencion-validar');
 		Route::get('/reenviar-acceso/{clienteid}/{usuarioid}', [MyAppClientController::class, 'reenviarAcceso'])->name('my-app-client.reenviar-acceso');
 		/*Registro de usuario en la app de client*/
 		Route::get('/registro-interno-de-usuario/{clienteid}', [RegisteredUserController::class, 'registroInternoDeUsuario'])->name('registro-interno-de-usuario');
@@ -114,6 +114,7 @@ Route::middleware('role:admin')->group(function () {
 		Route::get('/cliente/{cliente}/galerias/zip', [MarcoGaleriaController::class, 'zip'])->name('cliente.galerias.zip');
 		Route::get('/cliente/{cliente}/galerias/delete-all', [MarcoGaleriaController::class, 'delete_all'])->name('cliente.galerias.delete-all');
 		Route::post('/cliente/{cliente}/galerias/{galeria}/atributo', [MarcoGaleriaController::class, 'update'])->name('cliente.galerias.update');
+		Route::get('/cliente/{cliente}/galerias/{user}/beneficio', [MarcoGaleriaController::class, 'beneficio'])->name('cliente.galerias.beneficio');
 		Route::prefix('cliente')->group(function () {
 			Route::prefix('{cliente}')->group(function () {
 				Route::prefix('quiz/{quiz}')->group(function () {
@@ -175,6 +176,8 @@ Route::middleware('role:admin')->group(function () {
 
 require __DIR__.'/auth.php';
 Route::get('/registro/{cliente}', [HomeController::class, 'registro'])->name('registro')->middleware('auth');
+Route::get('/beneficios/{cliente}', [HomeController::class, 'beneficios'])->name('beneficios')->middleware('auth');
+Route::get('/beneficios/{cliente}/{producto}', [HomeController::class, 'beneficios_cambiar'])->name('beneficios_cambiar')->middleware('auth');
 Route::get('/{slug}', [HomeController::class, 'cliente'])->name('cliente');
 Route::post('/{slug}/sucursales-cercanas', [HomeController::class, 'sucursales_cercanas']);
 Route::get('/{slug}/sucursales', [HomeController::class, 'sucursales'])->name('cliente.picksucursal');

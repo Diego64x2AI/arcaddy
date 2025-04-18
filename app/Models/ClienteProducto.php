@@ -19,6 +19,7 @@ class ClienteProducto extends Model
 		'digital',
 		'regalado',
 		'grupos',
+		'cantidad',
 	];
 
 	public $timestamps = false;

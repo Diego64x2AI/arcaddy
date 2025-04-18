@@ -95,4 +95,6 @@ return [
 	'admin13' => '¡Canje exitoso!',
 	'admin14' => 'Ya canjeaste',
 	'admin15' => 'este producto',
+	'admin16' => 'Beneficios',
+	'admin17' => 'de usuario',
 ];

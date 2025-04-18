@@ -43,12 +43,12 @@
 		</div>
 		@endforeach
 		</div>
-		<br><br>
-		<b>Cup&oacute;n:</b> No se muestra en la p&aacute;gina, es para generar un cup&oacute;n directo.
-		<br>
-		<b>Canje:</b>	Se muestra en la p&aacute;gina, con bot&oacute;n para canjear con el QR del usuario.
-		<br>
-		<b>Venta:</b> Por el momento la p&aacute;gina no muestra productos para venta.
+		<div class="text-sm text-gray-500 mt-5">
+			<span class="font-bold">Cupón:</span> No se muestra en la página, es para generar un cupones que se ganan en el quiz o se asignan manualmente a los usuarios como regalo.
+		</div>
+		<div class="text-sm text-gray-500 mt-1">
+			<span class="font-bold">Canje:</span> Se muestra en la página, con botón para canjear con el QR del usuario.
+		</div>
 	@else
 		<p class="text-center py-10">Para poder agregar productos, guarda primero la información para generar el cliente.</p>
 	@endif

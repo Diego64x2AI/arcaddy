@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use DateInterval;
+use App\Models\User;
 use App\Models\Juego;
+use App\Models\QRLink;
 use App\Models\UserQr;
+use App\Models\Visita;
 use DateTimeImmutable;
 use App\Models\Cliente;
 use App\Models\ClienteQuiz;
@@ -14,10 +17,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\JuegoResultado;
 use App\Models\QuizRespuestas;
+use App\Models\ClienteProducto;
+use App\Models\ClienteSucursal;
 use App\Models\ClienteCartelera;
 use App\Models\ProductoCanjeado;
+use App\Models\RealidadAumentada;
+use Illuminate\Support\Facades\DB;
 use App\Models\ClienteMarcoGaleria;
-use App\Models\ClienteProducto;
 use App\Models\ClienteQuizPregunta;
 use App\Models\ClienteQRExperiencia;
 use Eluceo\iCal\Domain\Entity\Event;
@@ -31,6 +37,7 @@ use Illuminate\Support\Facades\Cookie;
 use App\Models\VotacionesParticipantes;
 use Eluceo\iCal\Domain\Entity\Calendar;
 use Eluceo\iCal\Domain\ValueObject\Uri;
+use Illuminate\Support\Facades\Session;
 use Eluceo\iCal\Domain\ValueObject\Alarm;
 use Intervention\Image\Drivers\Gd\Driver;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -40,15 +47,10 @@ use Eluceo\iCal\Domain\ValueObject\TimeSpan;
 use Eluceo\iCal\Domain\ValueObject\Organizer;
 use Eluceo\iCal\Domain\ValueObject\Attachment;
 use App\Models\ClienteRallyUbicacionCompletados;
-use App\Models\ClienteSucursal;
-use App\Models\QRLink;
-use App\Models\RealidadAumentada;
-use App\Models\User;
-use App\Models\Visita;
+use App\Models\UserBeneficio;
 use Eluceo\iCal\Domain\ValueObject\EmailAddress;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
-use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -639,18 +641,6 @@ END:VCALENDAR";
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
-		/*if (!is_dir(storage_path('app/public/qrcodesr'))) {
-			File::makeDirectory(storage_path('app/public/qrcodesr'));
-		}*/
-		// dd(storage_path('app/public/'.$cliente->logo)); '/storage/app/public/'.$cliente->logo
-		/*QrCode::format('png')->size(500)->merge('/public/images/qr-logo.png', .3)->errorCorrection('H')->generate('https://ar-caddy.com/'.$cliente->slug.'?user='.Auth::user()->id, storage_path('app/public/qrcodesr/' . Auth::user()->id . '.png'));*/
-		/*$userQr = UserQr::create([
-				'cliente_id' => $cliente->id,
-				'user_id' => $user->id,
-				'evento_id' => 1,
-				'codigo' => $elCodigo,
-				'usado'  => 0,
-			]);*/
 		$ver = 0;
 		if (isset($_GET['ver']) && $_GET['ver'] == 1) {
 			$ver = 1;
@@ -683,20 +673,47 @@ END:VCALENDAR";
 			//return redirect()->route('cliente', $cliente->slug);
 		}
 		// where('user_id', Auth::user()->id)
+		$productosIds = [];
+		$productos = collect([]);
+		$productos2 = collect([]);
 		$canjeados = ProductoCanjeado::where('cliente_id', $cliente->id)->where('user_id', Auth::user()->id)->groupBy('producto_id')->pluck('producto_id')->toArray();
 		if (empty($canjeados)) {
 			array_push($canjeados, 0);
 		}
-		$productos = $cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados);
-		$productos2 = $cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados);
+		// get productos ids
+		$productosIds = $cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->pluck('id')->toArray();
+		foreach($cliente->productos()->where('regalado', 1)->whereNotIn('id', $canjeados)->get() as $productox) {
+			$productos->push($productox);
+		}
+		foreach($cliente->productos()->where('regalado', 1)->whereIn('id', $canjeados)->get() as $productox) {
+			$productos2->push($productox);
+		}
 		$gruposIds = GrupoMiembro::where('cliente_id', $cliente->id)->select('grupo_id')->pluck('grupo_id')->toArray();
 		if (!empty($gruposIds)) {
+			if (empty($productosIds)) {
+				array_push($productosIds, 0);
+			}
 			$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', $cliente->id)->select('cliente_id')->pluck('cliente_id')->toArray();
-			$productos = ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND id NOT IN (' . implode(',', $canjeados) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $cliente->id . ' AND id NOT IN (' . implode(',', $canjeados) . ') AND regalado=1)');
-			$productos2 = ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND id IN (' . implode(',', $canjeados) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $cliente->id . ' AND id IN (' . implode(',', $canjeados) . ') AND regalado=1)');
+			$idsProductosGrupos = ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND id NOT IN (' . implode(',', $canjeados) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $cliente->id . ' AND id NOT IN (' . implode(',', $canjeados) . ') AND regalado=1) AND id NOT IN (' . implode(',', $productosIds) . ')')->pluck('id')->toArray();
+			$productosIds = array_merge($productosIds, $idsProductosGrupos);
+			foreach(ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND id NOT IN (' . implode(',', $canjeados) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $cliente->id . ' AND id NOT IN (' . implode(',', $canjeados) . ') AND regalado=1) AND id NOT IN (' . implode(',', $productosIds) . ')')->get() as $productox) {
+				$productos->push($productox);
+			}
+			// $productos2 = ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND id IN (' . implode(',', $canjeados) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $cliente->id . ' AND id IN (' . implode(',', $canjeados) . ') AND regalado=1)');
 			// dd($productos->toSql());
 		}
-		// dd($productos->get());
+		if (empty($productosIds)) {
+			array_push($productosIds, 0);
+		}
+		$beneficiosIds = UserBeneficio::with(['producto'])->where('cliente_id', $cliente->id)->where('canjeado', 0)->whereNotIn('producto_id', $productosIds)->where('user_id', Auth::user()->id)->whereNotNull('fecha_canje')->pluck('producto_id')->toArray();
+		foreach($cliente->productos()->where('digital', 1)->whereNotIn('id', $canjeados)->whereNotIn('id', $productosIds)->whereIn('id', $beneficiosIds)->get() as $productox) {
+			$productos->push($productox);
+		}
+		$beneficiosCanjeadosIds = UserBeneficio::with(['producto'])->where('cliente_id', $cliente->id)->where('canjeado', 1)->where('user_id', Auth::user()->id)->whereNotNull('fecha_canje')->pluck('producto_id')->toArray();
+		foreach($beneficiosCanjeadosIds as $beneficioCanjeadoId) {
+			$productox = $cliente->productos()->where('digital', 1)->where('id', $beneficioCanjeadoId)->first();
+			$productos2->push($productox);
+		}
 		return view('registro', [
 			'cliente' => $cliente,
 			'userQr' => $userQr,
@@ -705,6 +722,60 @@ END:VCALENDAR";
 			'productos' => $productos,
 			'productos2' => $productos2,
 		]);
+	}
+
+	public function beneficios(Cliente $cliente)
+	{
+		$lang = strtolower($cliente->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
+		$canjeados = ProductoCanjeado::where('cliente_id', $cliente->id)->where('user_id', Auth::user()->id)->groupBy('producto_id')->pluck('producto_id')->toArray();
+		if (empty($canjeados)) {
+			array_push($canjeados, 0);
+		}
+		$beneficios = UserBeneficio::where('cliente_id', $cliente->id)->where('user_id', Auth::user()->id)->whereNull('fecha_canje')->get();
+		$beneficios_totales = $beneficios->count();
+		$productos = ClienteProducto::where('cliente_id', $cliente->id)->where('digital', 1)
+		->where(function($query) {
+			return $query->where('cantidad', -1)->orWhere('cantidad', '>', 0);
+		})
+		->get();
+		return view('beneficios', [
+			'cliente' => $cliente,
+			'beneficios' => $beneficios,
+			'beneficios_totales' => $beneficios_totales,
+			'productos' => $productos,
+		]);
+	}
+
+	public function beneficios_cambiar(Cliente $cliente, ClienteProducto $producto)
+	{
+		// dd($producto, $cliente);{
+		if ($producto->cliente_id !== $cliente->id) {
+			return redirect()->back()->with('error', 'Este producto no pertenece al cliente.');
+		}
+		if (!$producto->digital) {
+			return redirect()->back()->with('error', 'Este producto no es un beneficio canjeable.');
+		}
+		if ($producto->cantidad === 0) {
+			return redirect()->back()->with('error', 'Este producto no tiene cantidad disponible.');
+		}
+		$beneficio = UserBeneficio::where('cliente_id', $cliente->id)->where('user_id', Auth::user()->id)->whereNull('fecha_canje')->orderBy('id', 'asc')->first();
+		if ($beneficio === NULL) {
+			return redirect()->back()->with('error', 'No tienes beneficios disponibles.');
+		}
+		$beneficio->update([
+			'producto_id' => $producto->id,
+			'fecha_canje' => now(),
+		]);
+		// decrement the quantity of the product
+		if ($producto->cantidad > 0) {
+			$producto->decrement('cantidad');
+		}
+		// back with status
+		return redirect()->back()->with('status', 'Beneficio cambiado con éxito');
 	}
 
 	/**
@@ -846,7 +917,7 @@ END:VCALENDAR";
 		}
 		// dd($respuesta);
 		$puntos = 0;
-		if (($quiz->score || $quiz->calificacion) && $respuesta->correcta) {
+		if (($quiz->score || $quiz->calificacion || $quiz->cupon) && $respuesta->correcta) {
 			$puntos = $pregunta->valor;
 		}
 		if ($pregunta->tipo === 'level') {
@@ -870,7 +941,7 @@ END:VCALENDAR";
 			foreach ($data['multi'] as $value) {
 				$respuesta = $pregunta->respuestas()->where('id', $value)->firstOrFail();
 				$puntos = 0;
-				if (($quiz->score || $quiz->calificacion) && $respuesta->correcta) {
+				if (($quiz->score || $quiz->calificacion || $quiz->cupon) && $respuesta->correcta) {
 					$puntos = $pregunta->valor;
 				}
 				// check if the user is logged
@@ -906,6 +977,8 @@ END:VCALENDAR";
 				'message' => 'Siguiente pregunta.',
 			]);
 		}
+		$beneficio = false;
+		$beneficios_count = 0;
 		// check if the user is logged
 		if (!Auth::check()) {
 			QuizRespuestas::create([
@@ -933,10 +1006,34 @@ END:VCALENDAR";
 
 				]
 			);
+			if ($quiz->cupon) {
+				$scoresAll = QuizRespuestas::select('id', 'user_id', DB::raw('SUM(puntos) as total'))->where('quiz_id', $quiz->id)->where('user_id', $request->user()?->id)->first();
+				if ($scoresAll->total >= $quiz->puntos) {
+					// check if the user already has a coupon
+					$productos = ClienteProducto::where('cliente_id', $cliente->id)->where('digital', 1)
+					->where(function($query) {
+						return $query->where('cantidad', -1)->orWhere('cantidad', '>', 0);
+					})
+					->get();
+					$beneficio_canjeado = UserBeneficio::where('cliente_id', $cliente->id)->where('user_id', $request->user()->id)->whereNotNull('fecha_canje')->first();
+					if ($productos->count() > 0 && $beneficio_canjeado === null) {
+						UserBeneficio::updateOrCreate([
+							'cliente_id' => $cliente->id,
+							'user_id' => $request->user()->id,
+							'quiz_id' => $quiz->id,
+						]);
+						$beneficio = true;
+						$beneficios_count = $productos->count();
+					}
+				}
+			}
 		}
 		return response()->json([
 			'status' => true,
 			'message' => 'Siguiente pregunta.',
+			'beneficio' => $beneficio,
+			'beneficios_count' => $beneficios_count,
+			'puntos' => $puntos,
 		]);
 	}
 }

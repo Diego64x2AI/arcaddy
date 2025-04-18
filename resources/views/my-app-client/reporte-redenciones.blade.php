@@ -13,10 +13,11 @@
 
 		<div class="row alx-mb-20">
 			<div class="col-xs-12">
-				<form method="GET" action="{{route('my-app-client.reporte-redenciones')}}">
+				<form method="POST" action="{{route('my-app-client.reporte-redenciones')}}">
+					@csrf
 					<div class="input-container">
 						<button type="submit" class="alx-btn-search"></button>
-						<input class="alx-input-search" type="text" name="buscar" placeholder="{{ __('arcaddy.search') }}" autocomplete="off" value="{{(!isset($parametros['buscar']))?'':$parametros['buscar'] }}">
+						<input class="alx-input-search" type="text" name="buscar" placeholder="{{ __('arcaddy.search') }}" autocomplete="off" value="{{ $busqueda }}">
 					</div>
 				</form>
 			</div>
@@ -37,9 +38,15 @@
 						<a class="alx-table-producto-img" href="{{route('my-app-client.producto-redencion',$producto->id)}}">
 							<img src="{{asset('storage/'.$producto->imagenes[0]->archivo)}}">
 						</a>
-						<div>{!! $producto->nombre !!}</div>
+						<div class="font-bold">{!! $producto->nombre !!}</div>
+						@if ($producto->digital)
+						<div class="text-sm">
+							Stock: {{ ($producto->cantidad === -1) ? 'Ilimitado' : $producto->cantidad }}
+						</div>
+						@else
 						@if($producto->precio != '0')
 						<div class="alx-table-txt-min">Valor: ${!! $producto->precio !!}</div>
+						@endif
 						@endif
 					</div>
 				</div>

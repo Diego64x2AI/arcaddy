@@ -34,21 +34,15 @@
 				<img src="{{ asset('storage/'.$cliente->registro_img) }}" class="inline-block shadow object-cover w-100 h-auto max-w-[200px] border border-secondary rounded-2xl">
 			</div>
 		@endif
-		<h1 class="text-center font-extrabold text-3xl mt-3 w-full sm:max-w-md mx-auto">{{($ver == 0)?'¡Registro exitoso!':'Mi QR'}}</h1>
-		<h4 class="color uppercase font-bold text-center mt-5 w-full sm:max-w-md mx-auto">Bienvenido</h4>
+		<h4 class="color uppercase font-bold text-center mt-5 w-full sm:max-w-md mx-auto">Felicidades</h4>
 		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->name }}</div>
-		<div class="text-center font-semibold w-full sm:max-w-md mx-auto">{{ Auth::user()->email }}</div>
-		<div class="w-full sm:max-w-md mx-auto" style="text-align: center; margin-top: 2rem;">
-
-			<img src="{{ asset('storage/qrregister/'.$userQr->codigo.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
-
-			<?php /*
-			<img src="{{ asset('storage/qrcodesr/'.Auth::user()->id.'.png?'.time()) }}" style="width:100%;max-width: 200px; height:auto;display:inline-block" alt="{{ $cliente->cliente }}">
-			*/?>
-		</div>
+		@if ($beneficios_totales === 0)
+			<div class="text-center py-10">Ve a tu perfil para ver tus beneficios disponibles.</div>
+		@else
 		<div class="mx-auto w-full max-w-md">
 			@if ($productos->count() > 0)
-			<div class="titulo-modulo">Canjes disponibles</div>
+			<div class="titulo-modulo">Beneficios disponibles</div>
+			<div class="text-center">{{ ($beneficios_totales > 1) ? "Puedes cambiar hasta ".$beneficios_totales." totales." : "Selecciona un beneficio para cambiar." }}</div>
 			<div class="grid grid-cols-1 gap-3">
 				@foreach ($productos as $producto)
 					<div class="flex flex-row items-center gap-5 border borde rounded-3xl px-3 py-3">
@@ -59,33 +53,19 @@
 							<div>{{ $producto->nombre }}</div>
 							<div class="text-sm">{{ $producto->descripcion }}</div>
 						</div>
-					</div>
-				@endforeach
-			</div>
-			@endif
-			@if ($productos2->count() > 0)
-			<div class="titulo-modulo mt-10">Canjes realizados</div>
-			<div class="grid grid-cols-1 gap-3">
-				@foreach ($productos2 as $producto)
-					<div class="flex flex-row items-center gap-5 border borde rounded-3xl px-3 pb-3 relative">
-						<div class="w-16 min-w-16">
-							<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 lg:w-full lg:h-auto object-cover shadow-xl rounded-full">
-						</div>
-						<div>
-							<div>{{ $producto->nombre }}</div>
-							<div class="text-sm">{{ $producto->descripcion }}</div>
-						</div>
-						<div class="absolute w-full h-full flex flex-row items-center justify-center" style="top: -1px; left: -1px; width: calc(100% + 2px); height: calc(100% + 2px);">
-							<div class="bg-semitransparent w-full h-full top-0 left-0 absolute z-0"></div>
-							<div class="btn-pill2 uppercase font-bold z-50">Canjeado</div>
+						<div class="ml-auto">
+							<a href="{{ route('beneficios_cambiar', ['cliente' => $cliente->id, 'producto' => $producto->id]) }}" class="btn btn-pill font-bold">Seleccionar</a>
 						</div>
 					</div>
 				@endforeach
 			</div>
+			@else
+				<div class="text-center py-10">Ve a tu perfil para ver tus beneficios disponibles.</div>
 			@endif
 		</div>
+		@endif
 		<div class="my-10 text-center w-full sm:max-w-md mx-auto">
-			<a href="{{ route('cliente', ['slug' => $cliente->slug]) }}" class="btn btn-pill font-bold">{{ __('arcaddy.gohome') }}</a>
+			<a href="{{ route('registro', ['cliente' => $cliente->id]) }}" class="btn btn-pill font-bold">Ir a mi perfil</a>
 		</div>
 	</main>
 	@if ($cliente->slug === 'estafeta')
@@ -99,6 +79,23 @@
 	<script>
 		window.addEventListener('load', function() {
 			$('body').css('paddingTop', $('#header').innerHeight());
+			// if session status show swal
+			@if (session('status'))
+				Swal.fire({
+					title: "¡Éxito!",
+					text: "{{ session('status') }}",
+					icon: "success",
+					button: "Aceptar",
+				});
+			@endif
+			@if (session('error'))
+				Swal.fire({
+					title: "¡Error!",
+					text: "{{ session('error') }}",
+					icon: "error",
+					button: "Aceptar",
+				});
+			@endif
 		});
 	</script>
 	@include('componentes.estilos')

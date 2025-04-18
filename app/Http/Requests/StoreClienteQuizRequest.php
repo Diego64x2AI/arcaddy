@@ -29,6 +29,8 @@ class StoreClienteQuizRequest extends FormRequest
 			'activa' => 'sometimes',
 			'score' => 'sometimes',
 			'random' => 'sometimes',
+			'cupon' => 'sometimes',
+			'puntos' => 'sometimes|nullable|numeric|min:0',
 			'calificacion' => 'sometimes',
 			'login' => 'sometimes',
 			'imagen' => 'sometimes|image',

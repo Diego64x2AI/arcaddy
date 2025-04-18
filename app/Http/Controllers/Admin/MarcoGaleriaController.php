@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\Cliente;
+use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 use App\Models\ClienteMarcoGaleria;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteMarcoGaleriaRequest;
 use App\Http\Requests\UpdateClienteMarcoGaleriaRequest;
-use Yajra\Datatables\Datatables;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\UserBeneficio;
 
 class MarcoGaleriaController extends Controller
 {
@@ -134,6 +136,15 @@ class MarcoGaleriaController extends Controller
 		return redirect()->route('cliente.galerias.index', ['cliente' => $cliente->id])->with('success', 'Imagen eliminada correctamente.');
 	}
 
+	public function beneficio(Cliente $cliente, User $user)
+	{
+		UserBeneficio::create([
+			'user_id' => $user->id,
+			'cliente_id' => $cliente->id,
+		]);
+		return redirect()->route('cliente.galerias.index', ['cliente' => $cliente->id])->with('success', 'Beneficio regalado correctamente.');
+	}
+
 	public function ajax(Cliente $cliente, Request $request)
 	{
 		$compartida = $request->filled('compartida') ? $request->boolean('compartida') : false;
@@ -164,6 +175,7 @@ class MarcoGaleriaController extends Controller
 				->addColumn('action', function (ClienteMarcoGaleria $galeria) use ($cliente) {
 					// <a href="'. route('usuarios.edit', ['cliente' => $cliente->id, 'user' => $user->id]) .'" class="text-sky-500"><i class="fas fa-edit"></i></a>
 					$actionBtn = '
+					<a href="'. route('cliente.galerias.beneficio', ['cliente' => $cliente->id, 'user' => $galeria->user->id]) .'" class="text-sky-500 regalar-beneficio"><i class="fas fa-gift"></i></a>
 					<form action="'. route('cliente.galerias.destroy', ['cliente' => $cliente->id, 'galeria' => $galeria->id]) .'" method="POST" style="display: inline-block">
 						<input type="hidden" name="_token" value="'.csrf_token().'">
 						<input type="hidden" name="_method" value="DELETE">

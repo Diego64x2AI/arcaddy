@@ -15,53 +15,66 @@ if ($quiz !== NULL && $quiz->score) {
  	$mPosicion = (array_search(auth()->user()->id, $scoresAll->pluck('user_id')->toArray()) === false) ? -1 : array_search(auth()->user()->id, $scoresAll->pluck('user_id')->toArray());
  }
 }
+$beneficio = \App\Models\UserBeneficio::where('cliente_id', $cliente->id)->where('user_id', auth()->user()?->id)->where('quiz_id', $quiz->id)->orderBy('id', 'asc')->first();
 @endphp
-@if ($quiz !== NULL)
-<section id="quiz" class="container mx-auto py-10 px-5 max-w-xl">
-	@if ($cliente->secciones()->where('seccion', 'quiz')->first()->mostrar_titulo)
-	<div class="titulo-modulo color">{{ $quiz->nombre }}</div>
-	@endif
-	<div class="border-2 borde py-10 rounded-3xl">
-		@if($quiz->imagen !== NULL)
-		<div class="text-center mb-10">
-			<img src="{{ asset('storage/'.$quiz->imagen) }}" alt="{{ $quiz->nombre }}" class="w-100 h-auto object-cover inline-block">
-		</div>
+@if ($quiz !== NULL && $beneficio === NULL)
+	<section id="quiz" class="container mx-auto py-10 px-5 max-w-xl">
+		@if ($cliente->secciones()->where('seccion', 'quiz')->first()->mostrar_titulo)
+		<div class="titulo-modulo color">{{ $quiz->nombre }}</div>
 		@endif
-		<div id="quiz-congratulations" class="px-5" style="display:none;">
-			<div class="text-center flex flex-row justify-center items-center">
-				<dotlottie-player src="https://lottie.host/c0b45a5c-d12c-48b4-9587-943a4565c74f/ZkF7i1SCUK.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
+		<div class="border-2 borde py-10 rounded-3xl">
+			@if($quiz->imagen !== NULL)
+			<div class="text-center mb-10">
+				<img src="{{ asset('storage/'.$quiz->imagen) }}" alt="{{ $quiz->nombre }}" class="w-100 h-auto object-cover inline-block">
 			</div>
-			@if($quiz->felicidades_text !== NULL && trim($quiz->felicidades_text) !== '')
-			<div class="text-center mt-1 font-bold text-3xl">{{ $quiz->felicidades_text }}</div>
 			@endif
-			@auth
-			<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
-			@endauth
-			<div class="text-center flex flex-row justify-center items-center mt-5">
-				<a href="javascript:void(0);" class="btn-pill quiz-again">{{ $quiz->boton_text }}</a>
-			</div>
-		</div>
-		<!-- Slider main container -->
-		<div id="quiz-slider" class="swiper swiper-quiz">
-			<!-- Additional required wrapper -->
-			<div class="swiper-wrapper">
-				@foreach($preguntas as $pregunta)
-				<div class="swiper-slide px-5" data-tipo="{{ $pregunta->tipo }}" data-quiz="{{ $quiz->id }}" data-pregunta="{{ $pregunta->id }}">
-					<div class="mb-5 text-xl font-extrabold">{{ $loop->iteration }}.- {{ $pregunta->pregunta }}</div>
-					@includeIf('secciones.quiz.'.$pregunta->tipo)
+			<div id="quiz-congratulations" class="px-5" style="display:none;">
+				<div class="text-center flex flex-row justify-center items-center">
+					<dotlottie-player src="https://lottie.host/c0b45a5c-d12c-48b4-9587-943a4565c74f/ZkF7i1SCUK.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
 				</div>
-				@endforeach
+				@if($quiz->felicidades_text !== NULL && trim($quiz->felicidades_text) !== '')
+				<div class="text-center mt-1 font-bold text-3xl">{{ $quiz->felicidades_text }}</div>
+				@endif
+				@auth
+				<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
+				@endauth
+				<div class="text-center flex flex-row justify-center items-center mt-5">
+					<a href="javascript:void(0);" class="btn-pill quiz-again">{{ $quiz->boton_text }}</a>
+				</div>
+			</div>
+			<div id="quiz-beneficios" class="px-5" style="display:none;">
+				<div class="text-center flex flex-row justify-center items-center">
+					<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
+				</div>
+				@auth
+				<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
+				@endauth
+				<div class="text-center mt-1 font-bold text-xl">¡Felicidades haz ganado un beneficio!</div>
+				<div class="text-center flex flex-row justify-center items-center mt-5">
+					<a href="{{ route('beneficios', ['cliente' => $cliente->id]) }}" class="btn-pill">Canjear mi beneficio</a>
+				</div>
+			</div>
+			<!-- Slider main container -->
+			<div id="quiz-slider" class="swiper swiper-quiz">
+				<!-- Additional required wrapper -->
+				<div class="swiper-wrapper">
+					@foreach($preguntas as $pregunta)
+					<div class="swiper-slide px-5" data-tipo="{{ $pregunta->tipo }}" data-quiz="{{ $quiz->id }}" data-pregunta="{{ $pregunta->id }}">
+						<div class="mb-5 text-xl font-extrabold">{{ $loop->iteration }}.- {{ $pregunta->pregunta }}</div>
+						@includeIf('secciones.quiz.'.$pregunta->tipo)
+					</div>
+					@endforeach
+				</div>
+			</div>
+			<div id="quiz-controls" class="grid grid-cols-2 items-center mt-5">
+				<div class="font-bold text-center">
+					<span id="current-quiz-question">1</span> {{ __('arcaddy.of') }} <span id="total-quiz-question">{{ $preguntas->count() }}</span> {{ __('arcaddy.questions') }}
+				</div>
+				<div class="flex flex-row justify-center">
+					<a href="javascript:void(0);" class="btn-pill quiz-next">{{ __('arcaddy.next') }}</a>
+				</div>
 			</div>
 		</div>
-		<div id="quiz-controls" class="grid grid-cols-2 items-center mt-5">
-			<div class="font-bold text-center">
-				<span id="current-quiz-question">1</span> {{ __('arcaddy.of') }} <span id="total-quiz-question">{{ $preguntas->count() }}</span> {{ __('arcaddy.questions') }}
-			</div>
-			<div class="flex flex-row justify-center">
-				<a href="javascript:void(0);" class="btn-pill quiz-next">{{ __('arcaddy.next') }}</a>
-			</div>
-		</div>
-	</div>
 </section>
 <script>
 	const quizLogged = {{ auth()->check() ? 'true' : 'false' }};
@@ -231,7 +244,11 @@ if ($quiz !== NULL && $quiz->score) {
 				const total = Number($('#total-quiz-question').text());
 				swiper.slideNext();
 				if (current > total) {
-					$('#quiz-congratulations').show();
+					if (response.data.beneficio && response.data.beneficios_count > 0) {
+						$('#quiz-beneficios').show();
+					} else {
+						$('#quiz-congratulations').show();
+					}
 					$('#quiz-slider, #quiz-controls').hide();
 					return;
 				}

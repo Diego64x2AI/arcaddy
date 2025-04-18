@@ -22,6 +22,8 @@ class ClienteQuiz extends Model
 		'imagen',
 		'felicidades_text',
 		'boton_text',
+		'cupon',
+		'puntos',
 	];
 
 	/**
@@ -35,6 +37,8 @@ class ClienteQuiz extends Model
 		'calificacion' => 'boolean',
 		'score' => 'boolean',
 		'login' => 'boolean',
+		'cupon' => 'boolean',
+		'puntos' => 'float',
 	];
 
 	protected $with = ['preguntas', 'preguntas.respuestas'];

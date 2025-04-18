@@ -101,6 +101,45 @@
 								</div>
 								@endforeach
 							</div>
+							<div class="bg-white w-full p-5 mt-5 xl:mt-10 border border-white rounded-3xl">
+								<h1 class="text-3xl font-extrabold">Usuarios más activos</h1>
+								<div class="grid-cols-1 lg:grid-cols-6 items-center font-semibold text-sm mt-5 hidden lg:grid">
+									<div class="font-bold text-xl text-pink-600 truncate lg:col-span-3 text-center lg:text-left">
+										Usuario
+									</div>
+									<div class="font-bold text-xl text-pink-600 text-center">
+										Visitas
+									</div>
+									<div class="font-bold text-xl text-pink-600 text-center">
+										Canjes
+									</div>
+									<div class="font-bold text-xl text-pink-600 text-center">
+										Beneficios
+									</div>
+								</div>
+								@foreach ($top_users as $visita)
+								@php
+									$redencioens_stats = $visita->user->beneficios($visita->cliente_id);
+								@endphp
+								<div class="grid grid-cols-3 gap-5 lg:grid-cols-6 items-center font-semibold text-sm mt-5">
+									<div class="font-bold truncate col-span-3 text-center lg:text-left">
+										{{ $visita->user->name }}
+									</div>
+									<div class="text-center">
+										<div>{{ $visita->total }}</div>
+										<div class="text-pink-600 lg:hidden">visitas</div>
+									</div>
+									<div class="text-center">
+										<div>{{ $visita->user->canjeados($visita->cliente_id) }}</div>
+										<div class="text-pink-600 lg:hidden">canjeos</div>
+									</div>
+									<div class="text-center">
+										<div>{{ $redencioens_stats['ganados'] }} / {{ $redencioens_stats['canjeados'] }}</div>
+										<div class="text-pink-600 lg:hidden">beneficios</div>
+									</div>
+								</div>
+								@endforeach
+							</div>
 							<div class="grid grid-cols-1 lg:grid-cols-2 mt-5 xl:mt-10 gap-10 xl:gap-16">
 								<div class="bg-white w-full p-5 border border-white rounded-3xl">
 									<h1 class="text-3xl font-extrabold">Links QR's</h1>

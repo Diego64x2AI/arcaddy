@@ -44,6 +44,8 @@
 								<th class="p-3 !text-center">Random</th>
 								<th class="p-3 !text-center">Calificación</th>
 								<th class="p-3 !text-center">Login</th>
+								<th class="p-3 !text-center">Cupón</th>
+								<th class="p-3 !text-center">Puntos</th>
 								<th class="p-3 !text-center" style="min-width: 100px">Opciones</th>
 							</tr>
 						</thead>
@@ -121,6 +123,20 @@
 									</div>
 								</td>
 								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									<div class="flex items-center justify-center w-full mb-2">
+										<label for="cupon_{{ $quiz->id }}" class="flex items-center cursor-pointer">
+											<div class="relative">
+												<input id="cupon_{{ $quiz->id }}" name="cupon_{{ $quiz->id }}" data-id="{{ $quiz->id }}" data-campo="cupon" type="checkbox" class="update-quiz sr-only" @if($quiz->cupon) checked @endif />
+												<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+												<div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
+											</div>
+										</label>
+									</div>
+								</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
+									<div class="edit-inline-text" data-id="{{ $quiz->id }}" data-campo="puntos">{{ $quiz->puntos }}</div>
+								</td>
+								<td class="border-grey-light border hover:bg-gray-100 p-3 text-center">
 									<a href="{{ route('clientes.quiz.stats', ['cliente' => $cliente->id, 'quiz' => $quiz->id]) }}" class="text-black"><i class="fas fa-chart-pie"></i></a>
 									<a href="{{ route('cliente.quiz.edit', ['cliente' => $cliente->id, 'quiz' => $quiz->id]) }}" class="text-black"><i class="fas fa-edit"></i></a>
 									<form action="{{ route('cliente.quiz.destroy', ['cliente' => $cliente->id, 'quiz' => $quiz->id]) }}" method="POST" class="inline delete-form">
@@ -183,6 +199,15 @@
 							<input type="checkbox" name="login" id="login" value="on">
 							<label for="login" class="inline-block">Requiere login</label>
 						</div>
+						<div class="mt-1">
+							<div class="">
+								<input type="checkbox" name="cupon" id="cupon" value="on">
+								<label for="cupon" class="inline-block">Otorgar cupón</label>
+							</div>
+							<div id="puntos_div" class="">
+								<input type="number" min="0" name="puntos" id="puntos" class="shadow appearance-none border border-blue-500 w-full py-2 px-3 text-gray-700 mt-1" placeholder="Puntos minimos para el cupón" value="">
+							</div>
+						</div>
 					</div>
 					<!--Footer-->
 					<div class="flex justify-end pt-4">
@@ -243,17 +268,26 @@
 						});
 					}
 				})
-			})
+			});
+			$('#cupon').change(function(){
+				if ($(this).is(':checked')) {
+					$('#puntos_div').show();
+					$('#puntos').prop('required', true);
+				} else {
+					$('#puntos_div').hide();
+					$('#puntos').prop('required', false);
+				}
+			}).trigger('change');
 			$('table#usuarios').DataTable({
 				paging: true,
 				searching: true,
 				ordering:  true,
-				responsive: true,
+				responsive: false,
 				pageLength: 25,
 				columnDefs: [
 					{ responsivePriority: 1, targets: 0 },
-					{ responsivePriority: 2, targets: 1 },
-					{ responsivePriority: 3, targets: 2 }
+					{ responsivePriority: 20, targets: 1 },
+					{ responsivePriority: 1, targets: -1 }
         ],
 				language: {
 					url: '{{ asset("es-ES.json") }}'

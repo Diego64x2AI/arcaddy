@@ -128,9 +128,6 @@ class ProductoController extends Controller
 		$producto->update($campos);
 		// banners
 		if (isset($campos['banners_titulo']) && count($campos['banners_titulo']) > 0) {
-			foreach ($producto->imagenes as $banner) {
-				Storage::delete($banner->archivo);
-			}
 			ClienteProductoBanner::where('producto_id', $producto->id)->delete();
 			foreach ($campos['banners_titulo'] as $key => $titulo) {
 				// archivo viejo
@@ -138,6 +135,7 @@ class ProductoController extends Controller
 					$archivo = $request->input('banners_old.' . $key);
 				}
 				if ($request->hasFile('banners_img.' . $key) && $request->file('banners_img.' . $key)->isValid()) {
+					Storage::delete($request->input('banners_old.' . $key));
 					$archivo = $request->file('banners_img.' . $key)->store('clientes/banners', 'public');
 				}
 				ClienteProductoBanner::insert([

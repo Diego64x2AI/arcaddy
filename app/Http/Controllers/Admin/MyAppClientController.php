@@ -10,8 +10,9 @@ use App\Models\Visita;
 use App\Models\Cliente;
 use App\Models\ClienteQuiz;
 use App\Models\GrupoMiembro;
-//use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\UserBeneficio;
 use App\Models\JuegoResultado;
 use App\Models\QuizRespuestas;
 use App\Models\ClienteProducto;
@@ -154,62 +155,103 @@ class MyAppClientController extends Controller
 		return view('my-app-client.reporte-activaciones', compact('clientedatos'));
 	}
 
-	public function reporteRedenciones()
+	public function reporteRedenciones(Request $request)
 	{
-		//echo Auth::user()->name
-		$parametros = NULL;
-		if (!isset($_GET['buscar'])) {
-			$productos = ClienteProducto::where('cliente_id', auth()->user()->cliente_id)
-				->where('regalado', 1)
-				->get();
-			$gruposIds = GrupoMiembro::where('cliente_id', auth()->user()->cliente_id)->select('grupo_id')->pluck('grupo_id')->toArray();
-			if (!empty($gruposIds)) {
-				$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', auth()->user()->cliente_id)->select('cliente_id')->pluck('cliente_id')->toArray();
-				array_push($clientesIds, auth()->user()->cliente_id);
-				$productos = ClienteProducto::where('regalado', 1)
-				->whereIn('cliente_id', $clientesIds)
-				->get();
-				// dd(auth()->user()->cliente_id, $productos);
+		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
+		$busqueda = $request->input('buscar');
+		$productosIds = [];
+		$productos = collect([]);
+		// get productos ids
+		$query = ClienteProducto::where('cliente_id', $clientedatos->id)->where(function ($query) {
+			$query->where('regalado', 1)->orWhere('digital', 1);
+		});
+		if (!empty($busqueda)) {
+			$query->where(function ($query) use ($busqueda) {
+				$query->where('nombre', 'like', '%' . $busqueda . '%');
+			});
+		}
+		$productosIds = $query->pluck('id')->toArray();
+		foreach($query->get() as $productox) {
+			$productos->push($productox);
+		}
+		$gruposIds = GrupoMiembro::where('cliente_id', $clientedatos->id)->select('grupo_id')->pluck('grupo_id')->toArray();
+		if (!empty($gruposIds)) {
+			if (empty($productosIds)) {
+				array_push($productosIds, 0);
+			}
+			$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', $clientedatos->id)->select('cliente_id')->pluck('cliente_id')->toArray();
+			$idsProductosGrupos = ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND regalado=1 OR digital=1) AND id NOT IN (' . implode(',', $productosIds) . ')')->pluck('id')->toArray();
+			$productosIds = array_merge($productosIds, $idsProductosGrupos);
+			foreach(ClienteProducto::whereRaw('(cliente_id IN (' . implode(',', $clientesIds) . ') AND grupos=1 AND regalado=1) OR (cliente_id=' . $clientedatos->id . ' AND regalado=1) AND id NOT IN (' . implode(',', $productosIds) . ')')->get() as $productox) {
+				$productos->push($productox);
+			}
+			// dd($productos->toSql());
+		}
+		// dd($busqueda);
+		return view('my-app-client.reporte-redenciones', compact('productos', 'busqueda', 'clientedatos'));
+	}
+
+	public function productoRedencion(ClienteProducto $producto)
+	{
+		$clientedatos = Cliente::find(auth()->user()->cliente_id);
+		$lang = strtolower($clientedatos->idioma);
+		if ($lang === NULL) {
+			$lang = 'es';
+		}
+		\Illuminate\Support\Facades\App::setLocale($lang);
+		return view('my-app-client.producto-redencion2', compact('clientedatos', 'producto'));
+	}
+
+	public function productoRedencionValidar(ClienteProducto $producto, $codigo = NULL, User $user)
+	{
+		$cliente = Cliente::find(auth()->user()->cliente_id);
+		$status = false;
+		$message = 'Error al canjear el producto.';
+		if ($producto->digital) {
+			$beneficio = UserBeneficio::where('user_id', $user->id)->where('producto_id', $producto->id)->where('canjeado', 0)->whereNotNull('fecha_canje')->orderBy('id', 'asc')->first();
+			if ($beneficio === NULL) {
+				$message = 'El usuario no tiene asignado este producto para canjear.';
+			} else {
+				$beneficio->update([
+					'codigo' => $codigo,
+					'canjeado' => 1,
+				]);
+				$status = true;
+				$message = 'Producto canjeado correctamente.';
+			}
+		} elseif ($producto->regalado) {
+			$codigoExiste = ProductoCanjeado::where('codigo', $codigo)->where('producto_id', $producto->id)->exists();
+			if ($codigoExiste) {
+				$message = 'Este código ya ha sido canjeado.';
+			} else {
+				ProductoCanjeado::create([
+					'cliente_id' => $producto->cliente_id,
+					'user_id' => $user->id,
+					'evento_id' => 1,
+					'codigo' => $codigo,
+					'producto_id'  => $producto->id,
+				]);
+				$status = true;
+				$message = 'Producto canjeado correctamente.';
 			}
 		} else {
-			$parametros['buscar'] = $_GET['buscar'];
-			$productos = ClienteProducto::where('cliente_id', auth()->user()->cliente_id)
-				->where('regalado', 1)
-				->where('nombre', 'like', '%' . $_GET['buscar'] . '%')
-				->get();
-			$gruposIds = GrupoMiembro::where('cliente_id', auth()->user()->cliente_id)->select('grupo_id')->pluck('grupo_id')->toArray();
-			if (!empty($gruposIds)) {
-				$clientesIds = GrupoMiembro::whereIn('grupo_id', $gruposIds)->where('cliente_id', '!=', auth()->user()->cliente_id)->select('cliente_id')->pluck('cliente_id')->toArray();
-				array_push($clientesIds, auth()->user()->cliente_id);
-				$productos = ClienteProducto::where('regalado', 1)
-				->where('nombre', 'like', '%' . $_GET['buscar'] . '%')
-				->whereIn('cliente_id', $clientesIds)
-				->get();
-				// dd($productos->toSql());
-			}
+			$status = false;
+			$message = 'Este producto no puede ser canjeado.';
 		}
-		$clientedatos = Cliente::find(auth()->user()->cliente_id);
-		$lang = strtolower($clientedatos->idioma);
-		if ($lang === NULL) {
-			$lang = 'es';
-		}
-		\Illuminate\Support\Facades\App::setLocale($lang);
-		return view('my-app-client.reporte-redenciones', compact('productos', 'parametros', 'clientedatos'));
-	}
-
-	public function productoRedencion($producto_id)
-	{
-		$clientedatos = Cliente::find(auth()->user()->cliente_id);
-		$lang = strtolower($clientedatos->idioma);
-		if ($lang === NULL) {
-			$lang = 'es';
-		}
-		\Illuminate\Support\Facades\App::setLocale($lang);
-		return view('my-app-client.producto-redencion2', compact('clientedatos', 'producto_id'));
-	}
-
-	public function productoRedencionValidar($codigo, $producto_id, $usuario_id)
-	{
+		return response([
+			'status' => $status,
+			'message' => $message,
+			'nombre' => $user->name,
+			'nombre_producto' => $producto->name,
+			'precio_producto' => $producto->precio,
+			'img_producto' => asset('storage/' . $producto->imagenes[0]->archivo)
+		]);
+		/*
 		$codigoExiste = ProductoCanjeado::where('codigo', $codigo)
 			->where('producto_id', $producto_id)
 			->first();
@@ -246,6 +288,7 @@ class MyAppClientController extends Controller
 				'nombre' => $usuario->name
 			]);
 		}
+			*/
 	}
 
 	public function reporteBaseUsuarios()

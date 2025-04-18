@@ -67,7 +67,7 @@
 		</div>
 	</div>
 	<input type="hidden" id="url-ajax" value="https://ar-caddy.com/my-app-client/producto-redencion-validar/">
-	<input type="hidden" id="productoid" value="{!! $producto_id !!}">
+	<input type="hidden" id="productoid" value="{{ $producto->id }}">
 
 </div>
 
@@ -79,130 +79,78 @@
 <script type="text/javascript">
 
 $( document ).ready(function() {
-
-    const video = document.getElementById('preview');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    let scanning = false;
-
-    navigator.mediaDevices
-        .getUserMedia({ video: { facingMode: "environment" } })
-        .then(function(stream) {
-          video.srcObject = stream;
-        })
-        .catch(function(error) {
-          console.error("Error al acceder a la cámara: " + error);
-        });
-
-
-    function escanea(){
-         const interval = setInterval(function() {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-            if (code) {
-              //resultElement.textContent = 'QR Code Data: ' + code.data;
-              clearInterval(interval);
-              let route = $('#url-ajax').val();
-              let content = code.data;
-              let arr = content.split('-');
-
-              $.ajax({
-                    url: route + content+'/'+$('#productoid').val()+'/'+arr[2],
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (json) {
-                        if (json.status == 'ok') {
-                            $('#alx-info-scaner-ok').removeClass('alx-info-scaner-ocultar');
-                            $('#alx-info-scaner-nombre-producto').html(json.nombre_producto);
-
-                            if(json.precio_producto != '0'){
-                                    $('#alx-info-scaner-precio-producto').html(json.precio_producto);
-                            }
-                            else{
-                                    $('#alx-info-scaner-precio-producto').html('');
-                            }
-
-
-                            $('#alx-info-scaner-img-prodcuto').attr('src', json.img_producto);
-                        }
-                        else{
-                            $('#alx-info-scaner-no').removeClass('alx-info-scaner-ocultar');
-                        }
-                        $('#alx-info-scaner-nombre').html(json.nombre);
-
-                        $('#alx-capa-scaner').addClass('mostrar-info-scaner');
-                    },
-
-
-
-                    error: function( jqXHR, textStatus, errorThrown ) {
-
-                      if (jqXHR.status === 0) {
-
-                        alert('Not connect: Verify Network.');
-
-                      } else if (jqXHR.status == 404) {
-
-                        alert('Requested page not found [404]');
-
-                      } else if (jqXHR.status == 500) {
-
-                        alert('Internal Server Error [500].');
-
-                      } else if (textStatus === 'parsererror') {
-
-                        alert('Requested JSON parse failed.');
-
-                      } else if (textStatus === 'timeout') {
-
-                        alert('Time out error.');
-
-                      } else if (textStatus === 'abort') {
-
-                        alert('Ajax request aborted.');
-
-                      } else {
-
-                        alert('Uncaught Error: ' + jqXHR.responseText);
-
-                      }
-
-                    }
-                });
-
-              //END IF
-            }
-          }, 3000);
-     }
-     /*FIN scanea*/
-
-
-    video.addEventListener('canplay', function() {
-        if (!scanning) {
-          scanning = true;
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          escanea();
-        }
-    });
-
-
-
-    $('#alx-cerrar-scaner').on('click', function(){
-
-    	$('#alx-capa-scaner').removeClass('mostrar-info-scaner');
-    	$('#alx-info-scaner-ok').addClass('alx-info-scaner-ocultar');
-    	$('#alx-info-scaner-no').addClass('alx-info-scaner-ocultar');
-    	$('#alx-info-scaner-nombre').html('');
-         escanea();
-
-    });
-
-
-
+	const video = document.getElementById('preview');
+	const canvas = document.getElementById('canvas');
+	const ctx = canvas.getContext('2d');
+	let scanning = false;
+	navigator.mediaDevices
+	.getUserMedia({ video: { facingMode: "environment" } })
+	.then(function(stream) {
+		video.srcObject = stream;
+	})
+	.catch(function(error) {
+		console.error("Error al acceder a la cámara: " + error);
+	});
+	function escanea(){
+		const interval = setInterval(function() {
+			ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+			const code = jsQR(imageData.data, canvas.width, canvas.height);
+			if (code) {
+				//resultElement.textContent = 'QR Code Data: ' + code.data;
+				clearInterval(interval);
+				const codigo = code.data;
+				const split = codigo.split('-');
+				const cliente_id = split[0];
+				const user_id = split[2];
+				console.log('Simulando validación...', codigo, cliente_id, user_id);
+				axios.get(`{{ route("my-app-client.producto-redencion-validar", ["producto" => $producto->id]) }}/${codigo}/${user_id}`)
+				.then(function(response) {
+					console.log(response.data);
+					if (!response.data.status) {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: response.data.message,
+							customClass: 'quiz-swal',
+						});
+						return;
+					}
+					Swal.fire({
+						icon: 'success',
+						title: 'Éxito',
+						text: response.data.message,
+						customClass: 'quiz-swal',
+					});
+				})
+				.catch(function(error) {
+					console.log(error);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: '{{ __('arcaddy.error-gral') }}',
+						customClass: 'quiz-swal',
+					});
+				});
+			}
+		}, 3000);
+	}
+	/*FIN scanea*/
+	video.addEventListener('canplay', function() {
+		if (!scanning) {
+			scanning = true;
+			canvas.width = video.videoWidth;
+			canvas.height = video.videoHeight;
+			escanea();
+		}
+	});
+	$('#alx-cerrar-scaner').on('click', function(){
+		$('#alx-capa-scaner').removeClass('mostrar-info-scaner');
+		$('#alx-info-scaner-ok').addClass('alx-info-scaner-ocultar');
+		$('#alx-info-scaner-no').addClass('alx-info-scaner-ocultar');
+		$('#alx-info-scaner-nombre').html('');
+		escanea();
+	});
 });
-
 </script>
 @endsection

@@ -159,6 +159,24 @@
 					}
 				})
 			});
+			$('body').on('click', '.regalar-beneficio', function(e) {
+				e.preventDefault();
+				var form = $(this).parents('form');
+				Swal.fire({
+					title: '¿Estás seguro?',
+					text: "Estás a punto de regalar un beneficio.",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: '¡Sí, regalar!',
+					cancelButtonText: 'Cancelar'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.top.location = $(this).attr('href');
+					}
+				})
+			});
 			$('body').on('click', '.delete-item', function(e) {
 				e.preventDefault();
 				var form = $(this).parents('form');

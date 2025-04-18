@@ -76,15 +76,20 @@
 									type="number" value="{{ ($producto->id !== NULL) ? $producto->descuento : old('descuento') }}" placeholder="0" required>
 							</div>
 							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
-								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="descuento">
-									Cupón
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="digital">
+									Cupón <input type="checkbox" name="digital" id="digital" value="on" @if($producto->id !== NULL && $producto->digital) checked @endif>
 								</label>
-								No se muestra en la página, es para generar un cupón directo.
-								<br>
-								<input type="checkbox" name="digital" value="on" @if($producto->id !== NULL && $producto->digital) checked @endif>
+								<div class="text-xs text-gray-500 mb-2">
+									No se muestra en la página, es para generar un cupón que se puede ganar en los quiz, manualmente en los marcos.
+								</div>
+								<div class="font-bold">
+									<div class="mb-1 text-sm">Cantidad disponible (usar -1 para ilimitado):</div>
+									<input class="shadow appearance-none border-0 w-full py-2 px-3 text-gray-700" name="cantidad" id="cantidad"
+										type="number" value="{{ ($producto->id !== NULL) ? $producto->cantidad : old('cantidad', -1) }}" placeholder="1000" required>
+								</div>
 							</div>
 							<div class="w-full md:w-1/3 px-3 mb-6 md:mb-6">
-								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="descuento">
+								<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2" for="regalado">
 									Canje
 								</label>
 								Se muestra en la página, con botón para canjear con el QR del usuario.
@@ -178,7 +183,7 @@
 									@endif
 								</div>
 								<div class="text-right mt-5">
-									<a href="" id="add_banner" class="btn-pill">+ Agregar</a>
+									<a href="" id="add_banner" class="btn-pill">+ Agregar imagen</a>
 								</div>
 							</div>
 							<!-- /banners -->
@@ -194,6 +199,18 @@
 	@section('js')
 	<script>
 		window.addEventListener('load', function() {
+			// if the checkbox #digital is checked, disable the other checkbox
+			$('#digital').change(function() {
+				console.log(this.checked)
+				if(this.checked) {
+					// uncheck #regalado
+					$('#regalado').prop('checked', false).attr('disabled', true);
+					$('#grupos').prop('checked', false).attr('disabled', true);
+				} else {
+					$('#regalado').attr('disabled', false);
+					$('#grupos').attr('disabled', false);
+				}
+			}).trigger('change');
 				$('body').on('click', 'button.examinar-btn', function (e) {
 					e.preventDefault();
 					console.log('click')

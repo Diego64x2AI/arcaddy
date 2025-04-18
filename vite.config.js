@@ -9,8 +9,8 @@ export default defineConfig({
 		hmr: { host },
 		host,
 		https: {
-			key: fs.readFileSync('C:/laragon/etc/ssl/laragon.key'),
-			cert: fs.readFileSync('C:/laragon/etc/ssl/laragon.crt')
+			key: fs.readFileSync('C:/Users/admin/AppData/Local/Programs/PhpWebStudy-Data/server/CA/1744908169101/CA-1744908169101.key'),
+			cert: fs.readFileSync('C:/Users/admin/AppData/Local/Programs/PhpWebStudy-Data/server/CA/1744908169101/CA-1744908169101.crt')
 		}
 	},
 	plugins: [

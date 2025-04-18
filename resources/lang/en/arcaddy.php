@@ -95,4 +95,6 @@ return [
 	'admin13' => 'Successful redemption!',
 	'admin14' => 'You have already redeemed',
 	'admin15' => 'this product',
+	'admin16' => 'User',
+	'admin17' => 'benefits',
 ];
