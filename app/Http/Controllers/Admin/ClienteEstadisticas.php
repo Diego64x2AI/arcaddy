@@ -31,6 +31,8 @@ class ClienteEstadisticas extends Controller
 	 */
 	public function index(Cliente $cliente, Request $request)
 	{
+		$canjes = ClienteProducto::with(['canjeados'])->where('cliente_id', $cliente->id)->where('regalado', 1)->take(5)->get();
+		// dd($canjes);
 		$visitas = Visita::select('id', 'url', 'cliente_id', 'model', 'model_id', DB::raw('count(*) as total'))->where('cliente_id', $cliente->id)->groupBy('url')->orderBy('total', 'desc')->take(10)->get();
 		// get the top users by visits
 		$top_users = Visita::select('user_id', 'cliente_id', DB::raw('count(*) as total'))->with(['user'])->where('cliente_id', $cliente->id)->whereNotNull('user_id')->groupBy('user_id')->orderBy('total', 'desc')->take(10)->get();
@@ -104,6 +106,6 @@ class ClienteEstadisticas extends Controller
 				}
 			}
 		}
-		return view('dashboard.estadisticas.index', compact('cliente', 'quiz', 'quiz_totales', 'top_users', 'quiz_respuestas', 'totales', 'games', 'visitas', 'qrlinks', 'realidades', 'sucursales', 'marcos', 'marcos_compartidos', 'marcos_subidos'));
+		return view('dashboard.estadisticas.index', compact('cliente', 'quiz', 'canjes', 'quiz_totales', 'top_users', 'quiz_respuestas', 'totales', 'games', 'visitas', 'qrlinks', 'realidades', 'sucursales', 'marcos', 'marcos_compartidos', 'marcos_subidos'));
 	}
 }

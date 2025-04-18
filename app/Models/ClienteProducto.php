@@ -43,4 +43,9 @@ class ClienteProducto extends Model
 	{
 		return $this->hasMany(ClienteProductoBanner::class, 'producto_id', 'id');
 	}
+
+	public function canjeados()
+	{
+		return $this->hasMany(ProductoCanjeado::class, 'producto_id', 'id');
+	}
 }
