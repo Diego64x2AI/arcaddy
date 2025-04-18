@@ -48,4 +48,9 @@ class ClienteProducto extends Model
 	{
 		return $this->hasMany(ProductoCanjeado::class, 'producto_id', 'id');
 	}
+
+	public function beneficios()
+	{
+		return $this->hasMany(UserBeneficio::class, 'producto_id', 'id');
+	}
 }

@@ -167,6 +167,36 @@
 								</div>
 								@endforeach
 							</div>
+							<div class="bg-white w-full p-5 mt-5 xl:mt-10 border border-white rounded-3xl">
+								<h1 class="text-3xl font-extrabold mb-5">Beneficios</h1>
+								@foreach ($beneficios as $producto)
+								<div class="grid grid-cols-4 gap-5 items-start border-b border-gray-300 py-3">
+									<div class="col-span-1 font-bold text-xl">
+										<img src="{{ asset('storage/'.$producto->imagenes[0]->archivo) }}" alt="{{ $producto->nombre }}" class="w-full h-auto shadow border">
+									</div>
+									<div class="col-span-3 font-semibold text-xl">
+										<div>{{ $producto->nombre }}</div>
+										<div class="text-sm text-gray-500">{{ $producto->descripcion }}</div>
+										<div class="mt-4 text-sm">
+											<span class="text-pink-600">Stock actual:</span> {{ ($producto->cantidad === -1) ? 'Ilimitado' : $producto->cantidad }}
+										</div>
+										<div class="mt-0 text-sm">
+											<span class="text-pink-600">Canjes totales:</span> {{ $producto->beneficios()->where('canjeado', 1)->count() }}
+										</div>
+										@if ($producto->beneficios()->where('canjeado', 1)->orderBy('id', 'desc')->take(3)->count() > 0)
+											<div class="mt-2 text-sm">Últimos canjes:</div>
+											<ul>
+												@foreach ($producto->beneficios()->where('canjeado', 1)->orderBy('id', 'desc')->take(3)->get() as $canje)
+													<li class="text-sm">
+														{{ $canje->user->name }} - {{ $canje->created_at->format('d/m/Y H:i') }}
+													</li>
+												@endforeach
+											</ul>
+										@endif
+									</div>
+								</div>
+								@endforeach
+							</div>
 							<div class="grid grid-cols-1 lg:grid-cols-2 mt-5 xl:mt-10 gap-10 xl:gap-16">
 								<div class="bg-white w-full p-5 border border-white rounded-3xl">
 									<h1 class="text-3xl font-extrabold">Links QR's</h1>
