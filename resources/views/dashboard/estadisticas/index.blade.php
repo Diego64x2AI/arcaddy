@@ -156,7 +156,7 @@
 										@if ($producto->canjeados()->orderBy('id', 'desc')->take(3)->count() > 0)
 											<div class="mt-2 text-sm">Últimos canjes:</div>
 											<ul>
-												@foreach ($producto->canjeados as $canje)
+												@foreach ($producto->canjeados()->orderBy('id', 'desc')->take(3)->get() as $canje)
 													<li class="text-sm">
 														{{ $canje->user->name }} - {{ $canje->created_at->format('d/m/Y H:i') }}
 													</li>
