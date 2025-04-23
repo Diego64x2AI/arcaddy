@@ -198,6 +198,7 @@
                 "issues": "https://github.com/biscolab/laravel-recaptcha/issues",
                 "source": "https://github.com/biscolab/laravel-recaptcha/tree/v6.1.0"
             },
+            "abandoned": true,
             "time": "2024-03-27T11:06:21+00:00"
         },
         {
@@ -11622,12 +11623,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.0.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

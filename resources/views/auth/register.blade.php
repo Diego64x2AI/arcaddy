@@ -22,6 +22,12 @@
 		gtag('js', new Date());
 		gtag('config', 'G-40ZEQ4JZ0Y');
 	</script>
+	{!! htmlScriptTagJsApi([
+		'action' => 'registro',
+		'callback_then' => 'callbackThen',
+    'callback_catch' => 'callbackCatch',
+		'custom_validation' => 'myCustomValidation'
+		]) !!}
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
 </head>
@@ -54,6 +60,7 @@
 			@csrf
 			<input type="hidden" name="cliente_id" value="{{ $cliente->id }}">
 			<input type="hidden" name="sinlogin" value="{{ $sinlogin }}">
+			<input type="hidden" id="token" name="token" value="">
 			<!-- Name -->
 			<div>
 				<x-label for="name" :value="__('Name')" />
@@ -119,6 +126,21 @@
 	@endif
 	@includeIf('componentes.footer')
 	<script>
+		function callbackThen(response){
+			// read HTTP status
+				console.log(response.status);
+
+				// read Promise object
+				response.json().then(function(data){
+						console.log(data);
+				});
+		}
+		function callbackCatch(error){
+				console.error('Error:', error)
+		}
+		const myCustomValidation = (response) => {
+			$('input#token').val(response);
+		}
 		window.addEventListener('load', function() {
 			$('body').css('paddingTop', $('#header').innerHeight());
 		});

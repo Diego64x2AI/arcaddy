@@ -98,7 +98,17 @@ class RegisteredUserController extends Controller
 			'cliente_id' => ['required', 'numeric', 'exists:clientes,id'],
 			'nacimiento' => ['nullable', 'sometimes', 'date'],
 			'sucursal_id' => ['nullable', 'sometimes', 'numeric', 'exists:cliente_sucursals,id'],
+			'token' => ['required', 'string'],
 		]);
+		// validate token with recaptcha v3
+		$recaptcha = $request->input('token');
+		$secretKey = env('RECAPTCHA_SECRET_KEY');
+		$ip = $request->ip();
+		$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$recaptcha}&remoteip={$ip}");
+		$responseKeys = json_decode($response, true);
+		if ($responseKeys["success"] !== true) {
+			return redirect()->back()->withInput()->withErrors(['El token de verificación no es válido.']);
+		}
 		/*	if($request->cliente_id == 2){
 		    //dd($campos);
             Para convertir cualquier formato al que deseamos

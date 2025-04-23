@@ -185,12 +185,12 @@ return [
         /*
          * Package Service Providers...
          */
-				Spatie\Permission\PermissionServiceProvider::class,
-				Darryldecode\Cart\CartServiceProvider::class,
-				Laraveles\Spanish\SpanishServiceProvider::class,
-				Maatwebsite\Excel\ExcelServiceProvider::class,
-				Yajra\DataTables\DataTablesServiceProvider::class,
-				Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        Darryldecode\Cart\CartServiceProvider::class,
+        Laraveles\Spanish\SpanishServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -201,7 +201,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-				\Torann\GeoIP\GeoIPServiceProvider::class,
+		\Torann\GeoIP\GeoIPServiceProvider::class,
+        \Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
 
     ],
 
@@ -222,6 +223,7 @@ return [
 			'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 			'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
 			'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+            'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
     ])->toArray(),
 
 ];
