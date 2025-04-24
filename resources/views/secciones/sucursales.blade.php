@@ -30,7 +30,7 @@
 						<div><a href="tel:${markerInfo.telefono}">${markerInfo.telefono}</a></div>
 					</div>
 					<div class="mt-3">
-						<a href="https://www.google.com/maps/dir/?api=1&destination=${markerInfo.lat},${markerInfo.lng}" target="_blank" class="btn btn-pill">Cómo llegar</a>
+						<a href="https://www.google.com/maps/dir/?api=1&destination=${markerInfo.lat},${markerInfo.lng}" target="_blank" class="btn btn-pill">{{ __('arcaddy.sucursales1') }}</a>
 					</div>
 				`,
 				showConfirmButton: false,
@@ -102,7 +102,7 @@
 						let icon = (x === 0) ? 'fa-minus' : 'fa-plus';
 						let style = (x === 0) ? 'block' : 'none';
 						let telefono = (sucursal.telefono !== null && sucursal.telefono !== '') ? `<div class="mr-3">
-											<a href="tel:${sucursal.telefono}"><img src="{{ asset('images/sucursal-phone.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
+											<a href="tel:${sucursal.telefono}"><img src="{{ asset('images/sucursal-phone.png') }}" alt="{{ __('arcaddy.sucursales1') }}" class="w-14 h-auto"></a>
 										</div>` : '';
 						let data = ``;
 						if (sucursal.direccion !== null && sucursal.direccion !== '') {
@@ -123,7 +123,7 @@
 											<div class="text-xs font-semibold color">${sucursal.distance.toFixed(2)} kms</div>
 										</div>
 										<div class="ml-auto mr-2">
-											<a href="https://www.google.com/maps/dir/?api=1&destination=${sucursal.lat},${sucursal.lng}" target="_blank"><img src="{{ asset('images/sucursal-mapa.png') }}" alt="¿Cómo llegar?" class="w-14 h-auto"></a>
+											<a href="https://www.google.com/maps/dir/?api=1&destination=${sucursal.lat},${sucursal.lng}" target="_blank"><img src="{{ asset('images/sucursal-mapa.png') }}" alt="{{ __('arcaddy.sucursales1') }}" class="w-14 h-auto"></a>
 										</div>
 										${telefono}
 										<div class="absolute top-5 right-3">

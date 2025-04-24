@@ -97,4 +97,12 @@ return [
 	'admin15' => 'this product',
 	'admin16' => 'User',
 	'admin17' => 'benefits',
+	'beneficio1' => 'Congratulations you have won a benefit!',
+	'beneficio2' => 'Redeem my benefit',
+	'rally1' => 'To unlock this archivement you must log in.',
+	'rally2' => 'Your browser does not support geolocation',
+	'rally3' => 'Achievement unlocked',
+	'rally4' => 'You are',
+	'rally5' => 'meters from the target.',
+	'sucursales1' => 'How to get there',
 ];

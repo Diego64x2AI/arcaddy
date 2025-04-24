@@ -31,7 +31,7 @@
 				Swal.fire({
 					icon: 'error',
 					title: 'Error',
-					text: 'Para poder desbloquear este logro debes iniciar sesión.',
+					text: '{{ __('arcaddy.rally1') }}',
 					// prevent outside click
 					allowOutsideClick: false,
 					// custom button for register
@@ -51,7 +51,7 @@
 		if (!navigator.geolocation) {
 			Swal.fire({
 				title: 'ERROR',
-				text: "Tu navegador no soporta la geolocalización",
+				text: "{{ __('arcaddy.rally2') }}",
 				icon: 'error',
 				showConfirmButton: false,
 				timer: 2500
@@ -75,7 +75,7 @@
 								<div>
 									<dotlottie-player src="https://lottie.host/d81808b2-b7e4-4020-971d-0eaf1c330533/3m6Na9wiNs.json" background="transparent" speed="1" style="width: 50px; height: 50px;" loop autoplay></dotlottie-player>
 								</div>
-								<div class="font-bold text-xl text-green-500">Logro desbloqueado</div>
+								<div class="font-bold text-xl text-green-500">{{ __('arcaddy.rally3') }}</div>
 							</div>
 							<div class="text-center">
 								<img src="{{ asset('storage/') }}/${response.data.image}" class="w-full h-auto inline-block">
@@ -122,7 +122,7 @@
 							<img src="{{ asset('images/rango.png') }}" class="w-3/4 h-auto inline-block">
 						</div>
 						<div class="mt-5 text-xs color2 font-semibold">${markerInfo.fuera_rango}</div>
-						<div class="mt-5 text-xs color2 font-semibold">Te encuentras a ${distancia} metros del objetivo.</div>
+						<div class="mt-5 text-xs color2 font-semibold">{{ __('arcaddy.rally4') }} ${distancia} {{ __('arcaddy.rally5') }}</div>
 						${btn}
 					`,
 					showConfirmButton: false,
@@ -136,7 +136,7 @@
 		}, function() {
 			Swal.fire({
 				title: 'ERROR',
-				text: "No se pudo obtener tu ubicación",
+				text: "{{ __('arcaddy.rally2') }}",
 				icon: 'error',
 				showConfirmButton: false,
 				timer: 2500

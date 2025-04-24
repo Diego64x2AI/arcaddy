@@ -49,9 +49,9 @@ $beneficio = \App\Models\UserBeneficio::where('cliente_id', $cliente->id)->where
 				@auth
 				<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
 				@endauth
-				<div class="text-center mt-1 font-bold text-xl">¡Felicidades haz ganado un beneficio!</div>
+				<div class="text-center mt-1 font-bold text-xl">{{ __('arcaddy.beneficio1') }}</div>
 				<div class="text-center flex flex-row justify-center items-center mt-5">
-					<a href="{{ route('beneficios', ['cliente' => $cliente->id]) }}" class="btn-pill">Canjear mi beneficio</a>
+					<a href="{{ route('beneficios', ['cliente' => $cliente->id]) }}" class="btn-pill">{{ __('arcaddy.beneficio2') }}</a>
 				</div>
 			</div>
 			<!-- Slider main container -->

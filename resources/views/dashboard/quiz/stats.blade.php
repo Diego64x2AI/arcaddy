@@ -43,51 +43,68 @@
 							<div class="text-pink-600 font-bold text-xl text-center mb-10">
 								{{ $respuesta['pregunta']->pregunta }}
 							</div>
-							@if ($respuesta['pregunta']->tipo == 'open')
+							@if ($respuesta['pregunta']->tipo === 'open')
 								<div class="divide-y divide-zinc-500">
 									@foreach ($respuesta['respuestas'] as $item)
 										<div class="text-start font-bold py-2">
-											{{ $item['respuesta'] }}
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $item['pregunta_id'], 'respuesta' => $item['respuesta_id']]) }}">{{ $item['respuesta'] }}</a>
 										</div>
 									@endforeach
 								</div>
-							@elseif ($respuesta['pregunta']->tipo == 'like')
+							@elseif ($respuesta['pregunta']->tipo === 'like')
 							<div class="flex flex-col gap-3">
 								<div>
 									<img src="{{ asset('storage/'.$respuesta['pregunta']->archivo) }}" alt="{{ $respuesta['pregunta']->pregunta }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
 								</div>
 								<dib class="grid grid-cols-2 items-center gap-1 mt-3 font-semibold">
 									<div class="flex flex-row justify-center">
-										<a href="javascript:void(0);" class="rounded-full cursor-default border-0 border-white like-click bg-pink-600 text-white text-center overflow-hidden flex flex-col justify-center text-3xl items-center p-4">
+
+										<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id]) }}" class="rounded-full border-0 border-white like-click bg-pink-600 text-white text-center overflow-hidden flex flex-col justify-center text-3xl items-center p-4">
 											<i class="far fa-thumbs-up"></i>
 										</a>
 									</div>
 									<div class="flex flex-row justify-center">
-										<a href="javascript:void(0);" class="rounded-full cursor-default border-0 border-white dislike-click bg-pink-600 text-white text-center overflow-hidden flex flex-col justify-center text-3xl items-center p-4">
+										<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id]) }}" class="rounded-full border-0 border-white dislike-click bg-pink-600 text-white text-center overflow-hidden flex flex-col justify-center text-3xl items-center p-4">
 											<i class="far fa-thumbs-down"></i>
 										</a>
 									</div>
 									<div class="flex flex-col items-center text-center justify-center">
-										<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->respuesta }}</div>
+										<div>
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id]) }}">
+											{{ $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->respuesta }}
+											</a>
+										</div>
 										<div class="mt-3 font-extrabold text-4xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id]) }}">
 											{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id)->first()?->porcentaje }}%
+											</a>
 										</div>
 										<div class="font-extrabold text-xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id]) }}">
 											{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'like')->first()?->id)->first()?->total }}
+											</a>
 										</div>
 									</div>
 									<div class="flex flex-col items-center text-center justify-center">
-										<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->respuesta }}</div>
+										<div>
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id]) }}">
+											{{ $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->respuesta }}
+											</a>
+										</div>
 										<div class="mt-3 font-extrabold text-4xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id]) }}">
 											{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id)->first()?->porcentaje }}%
+											</a>
 										</div>
 										<div class="font-extrabold text-xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id]) }}">
 											{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'dislike')->first()?->id)->first()?->total }}
+											</a>
 										</div>
 									</div>
 								</dib>
 							</div>
-							@elseif ($respuesta['pregunta']->tipo == 'level')
+							@elseif ($respuesta['pregunta']->tipo === 'level')
 							<div class="flex flex-col gap-3">
 								@if($respuesta['pregunta']->archivo !== NULL)
 								<div>
@@ -109,40 +126,60 @@
 									</div>
 								</dib>
 							</div>
-							@elseif ($respuesta['pregunta']->tipo == 'versus')
+							@elseif ($respuesta['pregunta']->tipo === 'versus')
 							<div class="flex flex-col gap-3">
 								<dib class="grid grid-cols-2 items-center gap-3 font-semibold">
 									<div class="flex flex-row justify-center">
 										<div class="mb-3 relative">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id]) }}">
 											<img src="{{ asset('storage/'.$respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->archivo) }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
+											</a>
 										</div>
 									</div>
 									<div class="flex flex-row justify-center">
 										<div class="mb-3 relative">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id]) }}">
 											<img src="{{ asset('storage/'.$respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->archivo) }}" class="object-cover w-full h-auto border border-secondary shadow rounded-3xl">
+											</a>
 										</div>
 									</div>
 									<div class="flex flex-col items-center text-center justify-center">
-										<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->respuesta }}</div>
+										<div>
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id]) }}">
+											{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->respuesta }}
+											</a>
+										</div>
 										<div class="mt-3 font-extrabold text-4xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id]) }}">
 											{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id)->first()?->porcentaje }}%
+											</a>
 										</div>
 										<div class="font-extrabold text-xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id]) }}">
 											{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus1')->first()?->id)->first()?->total }}
+											</a>
 										</div>
 									</div>
 									<div class="flex flex-col items-center text-center justify-center">
-										<div>{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->respuesta }}</div>
+										<div>
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id]) }}">
+											{{ $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->respuesta }}
+											</a>
+										</div>
 										<div class="mt-3 font-extrabold text-4xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id]) }}">
 											{{ (float) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id)->first()?->porcentaje }}%
+											</a>
 										</div>
 										<div class="font-extrabold text-xl">
+											<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $respuesta['pregunta'], 'respuesta' => $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id]) }}">
 											{{ (int) $respuesta['respuestas']->where('respuesta_id', $respuesta['pregunta']->respuestas->where('tipo', 'versus2')->first()?->id)->first()?->total }}
+											</a>
 										</div>
 									</div>
 								</dib>
 							</div>
-							@elseif ($respuesta['pregunta']->tipo == 'option' || $respuesta['pregunta']->tipo == 'multi')
+							@elseif ($respuesta['pregunta']->tipo === 'option' || $respuesta['pregunta']->tipo === 'multi')
 							<div class="">
 								<div class="flex flex-row items-center gap-5 font-bold">
 									<div class="grow">&nbsp;</div>
@@ -153,13 +190,13 @@
 								@foreach ($respuesta['respuestas'] as $item)
 								<div class="flex flex-row items-center gap-5 font-bold">
 									<div class="text-start font-bold py-2 grow truncate">
-										{{ $item['respuesta'] }}
+										<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $item['pregunta_id'], 'respuesta' => $item['id']]) }}">{{ $item['respuesta'] }}</a>
 									</div>
 									<div class="w-[100px] text-center font-bold py-2">
-										{{ $item['total'] }}
+										<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $item['pregunta_id'], 'respuesta' => $item['id']]) }}">{{ $item['total'] }}</a>
 									</div>
 									<div class="w-[60px] text-center font-bold py-2">
-										{{ round($item['porcentaje'], 2) }}%
+										<a href="{{ route('clientes.quiz.respuestas', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'pregunta' => $item['pregunta_id'], 'respuesta' => $item['id']]) }}">{{ round($item['porcentaje'], 2) }}%</a>
 									</div>
 								</div>
 								@endforeach

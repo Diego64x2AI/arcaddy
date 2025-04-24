@@ -7,7 +7,7 @@
 		<a href="{{ route('cliente.marco', ['slug' => $cliente->slug]) }}" class="btn-pill !py-2 !px-4 !font-semibold !text-sm uppercase">
 			<div class="flex flex-row items-center">
 				<div class="mr-3"><i class="fa fa-user-circle text-2xl"></i></div>
-				<div>Subir tu foto a la galería</div>
+				<div>{{ __('arcaddy.marco2') }}</div>
 			</div>
 		</a>
 	</div>

@@ -97,4 +97,12 @@ return [
 	'admin15' => 'este producto',
 	'admin16' => 'Beneficios',
 	'admin17' => 'de usuario',
+	'beneficio1' => '¡Felicidades haz ganado un beneficio!',
+	'beneficio2' => 'Canjear mi beneficio',
+	'rally1' => 'Para poder desbloquear este logro debes iniciar sesión.',
+	'rally2' => 'Tu navegador no soporta la geolocalización',
+	'rally3' => 'Logro desbloqueado',
+	'rally4' => 'Te encuentras a',
+	'rally5' => 'metros del objetivo.',
+	'sucursales1' => 'Cómo llegar',
 ];
