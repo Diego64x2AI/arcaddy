@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\Cliente;
 use App\Models\ClienteQuiz;
 use Illuminate\Http\Request;
+use App\Models\UserBeneficio;
 use App\Models\QuizRespuestas;
+use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 use App\Models\ClienteQuizPregunta;
 use App\Http\Controllers\Controller;
@@ -26,6 +29,74 @@ class QuizController extends Controller
 		return view('dashboard.quiz.index', compact('cliente'));
 	}
 
+	public function respuestas(Cliente $cliente, ClienteQuiz $quiz, ClienteQuizPregunta $pregunta, $respuesta_id = 0)
+	{
+		$respuesta_original = ClienteQuizRespuesta::where('pregunta_id', $pregunta->id)->where('id', $respuesta_id)->first();
+		// $respuesta = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->id)->where('respuesta_id', $respuesta_id)->first();
+		return view('dashboard.quiz.respuestas', compact('cliente', 'quiz', 'pregunta', 'respuesta_original'));
+	}
+
+	public function respuestas_ajax(Cliente $cliente, ClienteQuiz $quiz, $respuesta_id = 0, Request $request)
+	{
+		if ($request->ajax()) {
+			$query = QuizRespuestas::query();
+			$query->where('quiz_id', $quiz->id);
+			$query->where('respuesta_id', $respuesta_id);
+			// busqueda
+			setlocale(LC_CTYPE, 'es_ES');
+			$q = trim($request->input('search.value', ''));
+			$q = mb_convert_encoding($q, 'UTF-8', mb_detect_encoding($q));
+			$q2 = preg_replace("/[^A-Za-z0-9 ]/", '', iconv('UTF-8', 'ASCII//TRANSLIT', $q));
+			// dd($q, $q2);
+			if ($q !== '') {
+				$query->where(function ($query) use ($q, $q2) {
+					$query->whereHas('user', function ($query) use ($q, $q2) {
+						$query->where('name', 'LIKE', '%'.$q.'%')
+							->orWhere('email', 'LIKE', '%'.$q.'%');
+					});
+					$query->orWhere('respuesta', 'LIKE', '%'.$q.'%');
+					$query->orWhere('respuesta', 'LIKE', '%'.$q2.'%');
+				});
+			}
+			// dd($query->toSql());
+			$data = $query->get();
+			// dd($data);
+			return DataTables::of($data)
+				->addIndexColumn()
+				->setRowId('id')
+				->editColumn('name', function (QuizRespuestas $respuesta) {
+					return $respuesta->user->name;
+				})
+				->editColumn('email', function (QuizRespuestas $respuesta) {
+					return $respuesta->user->email;
+				})
+				->editColumn('respuesta', function (QuizRespuestas $respuesta) {
+					return $respuesta->respuesta;
+				})
+				->editColumn('created_at', function (QuizRespuestas $respuesta) {
+					return $respuesta->created_at->format('Y-m-d H:i:s');
+				})
+				->addColumn('action', function (QuizRespuestas $respuesta) use ($cliente, $quiz) {
+					$actionBtn = '
+					<a href="'. route('clientes.quiz.beneficio', ['cliente' => $cliente->id, 'quiz' => $quiz->id, 'user' => $respuesta->user_id]) .'" class="text-sky-500 regalar-beneficio"><i class="fas fa-gift"></i></a>';
+					return $actionBtn;
+				})
+				->rawColumns(['action'])
+				->make(true);
+		} else {
+			abort(404);
+		}
+	}
+
+	public function beneficio(Cliente $cliente, ClienteQuiz $quiz, User $user)
+	{
+		UserBeneficio::create([
+			'user_id' => $user->id,
+			'cliente_id' => $cliente->id,
+		]);
+		return redirect()->back()->with('success', 'Beneficio regalado correctamente.');
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -43,9 +114,9 @@ class QuizController extends Controller
 			$respuestas[$pregunta->pregunta->id]['pregunta'] = $pregunta->pregunta;
 			$respuestas[$pregunta->pregunta->id]['respuesta'] = $pregunta->respuesta;
 			if ($pregunta->pregunta->tipo === 'open') {
-				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta')->get();
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', 'pregunta_id', 'id')->get();
 			} elseif ($pregunta->pregunta->tipo === 'level') {
-				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta')->get();
+				$respuestas[$pregunta->pregunta->id]['respuestas'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->groupBy('respuesta')->select('respuesta', 'respuesta_id', 'pregunta_id', 'id')->get();
 				// calculate average
 				$respuestas[$pregunta->pregunta->id]['promedio'] = QuizRespuestas::where('quiz_id', $quiz->id)->where('pregunta_id', $pregunta->pregunta->id)->avg('puntos');
 			} elseif ($pregunta->pregunta->tipo === 'like') {
@@ -76,8 +147,8 @@ class QuizController extends Controller
 				];
 			}
 		}
-		// dd($respuestas[14]);
-		return view('dashboard.quiz.stats', compact('cliente', 'respuestas', 'totales'));
+		// dd($respuestas[310]);
+		return view('dashboard.quiz.stats', compact('cliente', 'respuestas', 'totales', 'quiz'));
 	}
 
 	/**

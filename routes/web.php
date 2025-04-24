@@ -120,6 +120,9 @@ Route::middleware('role:admin')->group(function () {
 				Route::prefix('quiz/{quiz}')->group(function () {
 					Route::get('/stats', [QuizController::class, 'stats'])->name('clientes.quiz.stats');
 					Route::post('/atributo', [QuizController::class, 'updatea'])->name('cliente.quiz.updatea')->where('quiz', '[0-9]+')->where('cliente', '[0-9]+');
+					Route::get('/respuestas/{pregunta}/{respuesta}', [QuizController::class, 'respuestas'])->name('clientes.quiz.respuestas')->where('quiz', '[0-9]+')->where('pregunta', '[0-9]+')->where('respuesta', '[0-9]+');
+					Route::get('/respuestas/{respuesta}/ajax', [QuizController::class, 'respuestas_ajax'])->name('clientes.quiz.respuestas.ajax');
+					Route::get('/{user}/beneficio', [QuizController::class, 'beneficio'])->name('clientes.quiz.beneficio');
 				});
 			});
 		});
