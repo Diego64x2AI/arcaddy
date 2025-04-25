@@ -359,6 +359,10 @@ class MyAppClientController extends Controller
 			$lang = 'es';
 		}
 		\Illuminate\Support\Facades\App::setLocale($lang);
+		$canjes = ClienteProducto::with(['canjeados'])->where('cliente_id', $cliente->id)->where('regalado', 1)->take(5)->get();
+		$beneficios = ClienteProducto::with(['beneficios'])->where('cliente_id', $cliente->id)->where('digital', 1)->take(5)->get();
+		$top_users = Visita::select('user_id', 'cliente_id', DB::raw('count(*) as total'))->with(['user'])->where('cliente_id', $cliente->id)->whereNotNull('user_id')->groupBy('user_id')->orderBy('total', 'desc')->take(10)->get();
+		// dd($beneficios);
 		$visitas = Visita::select('id', 'url', 'cliente_id', 'model', 'model_id', DB::raw('count(*) as total'))->where('cliente_id', $cliente->id)->groupBy('url')->orderBy('total', 'desc')->take(10)->get();
 		$qrlinks = QRLink::where('cliente_id', $cliente->id)->orderBy('lecturas', 'desc')->take(5)->get();
 		$realidades = RealidadAumentada::where('cliente_id', $cliente->id)->orderBy('lecturas', 'desc')->take(5)->get();
@@ -430,6 +434,6 @@ class MyAppClientController extends Controller
 				}
 			}
 		}
-		return view('my-app-client.reporte-estadisticas', compact('clientedatos', 'cliente', 'visitas', 'qrlinks', 'realidades', 'sucursales', 'marcos', 'marcos_compartidos', 'marcos_subidos', 'totales', 'games', 'quiz', 'quiz_totales', 'quiz_respuestas'));
+		return view('my-app-client.reporte-estadisticas', compact('clientedatos', 'canjes', 'beneficios', 'top_users', 'cliente', 'visitas', 'qrlinks', 'realidades', 'sucursales', 'marcos', 'marcos_compartidos', 'marcos_subidos', 'totales', 'games', 'quiz', 'quiz_totales', 'quiz_respuestas'));
 	}
 }
