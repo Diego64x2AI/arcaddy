@@ -188,6 +188,9 @@ class QuizController extends Controller
 		if ($campos['activa']) {
 			$cliente->quiz()->update(['activa' => false]);
 		}
+		if (!isset($campos['puntos']) || $campos['puntos'] === NULL) {
+			$campos['puntos'] = 0;
+		}
 		ClienteQuiz::create($campos);
 		return redirect()->route('cliente.quiz.index', ['cliente' => $cliente->id])->with('success', 'Quiz creado correctamente.');
 	}
