@@ -105,6 +105,7 @@ class HomeController extends Controller
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric',
 		]);
+		$beneficio = false;
 		// log the rally completed
 		if (!ClienteRallyUbicacionCompletados::where('ubicacion_id', $ubicacion->id)->where('user_id', auth()->id())->exists()) {
 			ClienteRallyUbicacionCompletados::create([
@@ -118,9 +119,17 @@ class HomeController extends Controller
 				'user_agent' => request()->header('user-agent'),
 			]);
 			$ubicacion->increment('completados');
+			if ($ubicacion->cupon) {
+				UserBeneficio::create([
+					'user_id' => auth()->id(),
+					'cliente_id' => $rally->cliente_id,
+				]);
+				$beneficio = true;
+			}
 		}
 		return response()->json([
 			'status' => true,
+			'beneficio' => $beneficio,
 			'image' => $ubicacion->imagen,
 			'link' => $ubicacion->btn_link,
 			'message' => 'Ubicación completada.',

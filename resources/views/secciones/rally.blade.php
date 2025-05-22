@@ -69,8 +69,22 @@
 				})
 				.then(response => {
 					console.log(response.data);
-					Swal.fire({
-						html: `
+					let contenidoHTML = '';
+					if (response.data.beneficio) {
+						contenidoHTML = `<div id="quiz-beneficios" class="px-5">
+				<div class="text-center flex flex-row justify-center items-center">
+					<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
+				</div>
+				@auth
+				<div id="nombre-quiz" class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
+				@endauth
+				<div class="text-center mt-1 font-bold text-xl">{{ __('arcaddy.beneficio1') }}</div>
+				<div class="text-center flex flex-row justify-center items-center mt-5">
+					<a href="{{ route('beneficios', ['cliente' => $cliente->id]) }}" class="btn-pill">{{ __('arcaddy.beneficio2') }}</a>
+				</div>
+			</div>`;
+					} else {
+						contenidoHTML =  `
 							<div class="flex flex-row items-center gap-3">
 								<div>
 									<dotlottie-player src="https://lottie.host/d81808b2-b7e4-4020-971d-0eaf1c330533/3m6Na9wiNs.json" background="transparent" speed="1" style="width: 50px; height: 50px;" loop autoplay></dotlottie-player>
@@ -88,7 +102,10 @@
 							</div>
 							<div class="mt-5 text-xs color2 font-semibold">${markerInfo.descripcion}</div>
 							<div class="mt-8"><a href="${response.data.link}" target="_blank" class="btn-pill">${markerInfo.btn_titulo}</a></div>
-						`,
+						`;
+					}
+					Swal.fire({
+						html: contenidoHTML,
 						showConfirmButton: false,
 						showCancelButton: true,
 						cancelButtonText: 'X',

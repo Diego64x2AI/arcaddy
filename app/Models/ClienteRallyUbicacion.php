@@ -23,12 +23,14 @@ class ClienteRallyUbicacion extends Model
 		'marker',
 		'ver_mapa',
 		'completados',
+		'cupon',
 	];
 
 	public $timestamps = false;
 
 	protected $casts = [
 		'ver_mapa' => 'boolean',
+		'cupon' => 'boolean',
 	];
 
 	public function rally()

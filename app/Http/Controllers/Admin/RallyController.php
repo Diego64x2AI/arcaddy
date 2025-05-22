@@ -123,6 +123,7 @@ class RallyController extends Controller
 			$data['marker'] = $request->file('marker')->store('rally', 'public');
 		}
 		$data['ver_mapa'] = $request->boolean('ver_mapa', false);
+		$data['cupon'] = $request->boolean('cupon', false);
 		$ubicacion->update($data);
 		return redirect()->route('cliente.rally.markers', ['cliente' => $cliente->id, 'rally' => $rally->id])->with('success', 'Ubicación actualizada con éxito');
 	}
@@ -153,6 +154,7 @@ class RallyController extends Controller
 		$data['imagen'] = $request->file('imagen')->store('rally', 'public');
 		$data['marker'] = $request->file('marker')->store('rally', 'public');
 		$data['ver_mapa'] = $request->boolean('ver_mapa', false);
+		$data['cupon'] = $request->boolean('cupon', false);
 		$rally->ubicaciones()->create($data);
 		return redirect()->route('cliente.rally.markers', ['cliente' => $cliente->id, 'rally' => $rally->id])->with('success', 'Ubicación creada con éxito');
 	}

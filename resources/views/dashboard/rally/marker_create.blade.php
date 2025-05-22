@@ -91,7 +91,7 @@
 						<div id="preview-container"></div>
 						<input type="file" id="marker" name="marker" multiple accept="image/*" required>
 					</div>
-					<div class="font-bold col-span-2">
+					<div class="font-bold">
 						<label for="ver_mapa" class="flex items-center cursor-pointer">
 							<div class="relative mr-5">
 								<input id="ver_mapa" name="ver_mapa" type="checkbox" class="sr-only" checked />
@@ -99,6 +99,16 @@
 								<div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
 							</div>
 							Ver en mapa
+						</label>
+					</div>
+					<div class="font-bold">
+						<label for="cupon" class="flex items-center cursor-pointer">
+							<div class="relative mr-5">
+								<input id="cupon" name="cupon" type="checkbox" class="sr-only" />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
+							</div>
+							Otorgar cupón
 						</label>
 					</div>
 					<div>
