@@ -10,8 +10,8 @@
 @endphp
 @if ($rally !== NULL)
 <section id="rally">
-	<div class="bg-center bg-no-repeat bg-cover w-full h-[50vh]" style="background-image: url({{ asset('storage/'.$rally->banner) }});">
-
+	<div class="text-center mb-10">
+		<img src="{{ asset('storage/'.$rally->banner) }}" class="w-100 h-auto object-cover inline-block">
 	</div>
 	<div id="map" class="w-full h-[50vh]"></div>
 </section>
