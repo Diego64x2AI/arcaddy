@@ -10,7 +10,7 @@
 @endphp
 @if ($rally !== NULL)
 <section id="rally">
-	<div class="text-center mb-10">
+	<div class="text-center">
 		<img src="{{ asset('storage/'.$rally->banner) }}" class="w-100 h-auto object-cover inline-block">
 	</div>
 	<div id="map" class="w-full h-[50vh]"></div>
