@@ -11,7 +11,7 @@
 @if ($rally !== NULL)
 <section id="rally" class="max-w-5xl mx-auto lg:px-8 lg:mt-10">
 	<div class="text-center">
-		<img src="{{ asset('storage/'.$rally->banner) }}" class="w-100 h-auto object-cover inline-block">
+		<img src="{{ asset('storage/'.$rally->banner) }}" class="w-full h-auto object-cover inline-block">
 	</div>
 	<div id="map" class="w-full h-[50vh] rounded-b-2xl"></div>
 </section>
