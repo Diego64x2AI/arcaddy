@@ -9,11 +9,11 @@
 	}
 @endphp
 @if ($rally !== NULL)
-<section id="rally">
+<section id="rally" class="max-w-5xl mx-auto lg:px-8 lg:mt-10">
 	<div class="text-center">
 		<img src="{{ asset('storage/'.$rally->banner) }}" class="w-100 h-auto object-cover inline-block">
 	</div>
-	<div id="map" class="w-full h-[50vh]"></div>
+	<div id="map" class="w-full h-[50vh] rounded-b-2xl"></div>
 </section>
 <script>
 	const rallyLogged = {{ auth()->check() ? 'true' : 'false' }};
@@ -193,7 +193,7 @@
 
 		map.fitBounds(bounds);
 		let listener = google.maps.event.addListener(map, "idle", function () {
-			map.setZoom(13);
+			// map.setZoom(13);
 			google.maps.event.removeListener(listener);
 		});
 	}
