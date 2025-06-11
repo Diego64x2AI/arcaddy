@@ -1,10 +1,10 @@
 {
   "resources/js/app.js": {
-    "file": "assets/app.fc2b5cb4.js",
+    "file": "assets/app.681015e8.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_axios.6b484fa5.js",
+      "_axios.703e2798.js",
       "_jquery.09e1e4f4.js",
       "_datatables.net.d29a5d95.js",
       "_datatables.net-responsive.eee2bf44.js",
@@ -15,7 +15,7 @@
       "_cropperjs.ddaa5768.js",
       "_@tarekraafat.bc85b370.js",
       "_isotope-layout.c959e3aa.js",
-      "_flyter.cfbf4ee0.js",
+      "_flyter.afb0ee83.js",
       "_nouislider.37b943ec.js",
       "_chart.js.30be5824.js",
       "_alpinejs.4386c4b3.js",
@@ -28,7 +28,7 @@
       "_desandro-matches-selector.cd724741.js",
       "_masonry-layout.4227091c.js",
       "_deepmerge.56c6c427.js",
-      "_dompurify.d7426dd3.js",
+      "_dompurify.f4ca33b4.js",
       "_@kurkle.1fd9dacb.js"
     ]
   },
@@ -44,8 +44,8 @@
   "_alpinejs.4386c4b3.js": {
     "file": "assets/alpinejs.4386c4b3.js"
   },
-  "_axios.6b484fa5.js": {
-    "file": "assets/axios.6b484fa5.js"
+  "_axios.703e2798.js": {
+    "file": "assets/axios.703e2798.js"
   },
   "_chart.js.30be5824.js": {
     "file": "assets/chart.js.30be5824.js",
@@ -84,8 +84,8 @@
       "_ssr-window.10fb1174.js"
     ]
   },
-  "_dompurify.d7426dd3.js": {
-    "file": "assets/dompurify.d7426dd3.js",
+  "_dompurify.f4ca33b4.js": {
+    "file": "assets/dompurify.f4ca33b4.js",
     "imports": [
       "_@tarekraafat.bc85b370.js"
     ]
@@ -102,12 +102,12 @@
       "_desandro-matches-selector.cd724741.js"
     ]
   },
-  "_flyter.cfbf4ee0.js": {
-    "file": "assets/flyter.cfbf4ee0.js",
+  "_flyter.afb0ee83.js": {
+    "file": "assets/flyter.afb0ee83.js",
     "imports": [
       "_@tarekraafat.bc85b370.js",
       "_deepmerge.56c6c427.js",
-      "_dompurify.d7426dd3.js"
+      "_dompurify.f4ca33b4.js"
     ]
   },
   "_get-size.6cee944b.js": {

@@ -149,7 +149,8 @@ class MarcoGaleriaController extends Controller
 	{
 		$compartida = $request->filled('compartida') ? $request->boolean('compartida') : false;
 		if ($request->ajax()) {
-			$query = ClienteMarcoGaleria::where('cliente_id', $cliente->id);
+			$query = ClienteMarcoGaleria::where('cliente_id', $cliente->id)
+			->has('user');
 			$query->where('compartida', $compartida);
 			$data = $query->get();
 			// dd($data);
