@@ -149,8 +149,10 @@ class MarcoGaleriaController extends Controller
 	{
 		$compartida = $request->filled('compartida') ? $request->boolean('compartida') : false;
 		if ($request->ajax()) {
-			$query = ClienteMarcoGaleria::where('cliente_id', $cliente->id)
-			->has('user');
+			
+			// PEPE CAMBIO			
+			$query = ClienteMarcoGaleria::where('cliente_id', $cliente->id);
+			// ->has('user');
 			$query->where('compartida', $compartida);
 			$data = $query->get();
 			// dd($data);
@@ -171,17 +173,37 @@ class MarcoGaleriaController extends Controller
 				</label>';
 				})
 				->editColumn('user_id', function (ClienteMarcoGaleria $galeria) {
-					return $galeria->user_id !== NULL ? "{$galeria->user->name}#{$galeria->user->id}" : '';
+					// return $galeria->user_id !== NULL ? "{$galeria->user->name}#{$galeria->user->id}" : '';
+					// PEPE CAMBIO
+					return $galeria->user ? "{$galeria->user->name}#{$galeria->user->id}" : 'Invitado / Anónimo';
 				})
 				->addColumn('action', function (ClienteMarcoGaleria $galeria) use ($cliente) {
 					// <a href="'. route('usuarios.edit', ['cliente' => $cliente->id, 'user' => $user->id]) .'" class="text-sky-500"><i class="fas fa-edit"></i></a>
-					$actionBtn = '
-					<a href="'. route('cliente.galerias.beneficio', ['cliente' => $cliente->id, 'user' => $galeria->user->id]) .'" class="text-sky-500 regalar-beneficio"><i class="fas fa-gift"></i></a>
-					<form action="'. route('cliente.galerias.destroy', ['cliente' => $cliente->id, 'galeria' => $galeria->id]) .'" method="POST" style="display: inline-block">
-						<input type="hidden" name="_token" value="'.csrf_token().'">
-						<input type="hidden" name="_method" value="DELETE">
-						<button type="button" class="delete-item text-red-500 hover:text-red-600"><i class="fas fa-trash"></i></button>
-					</form>';
+					
+					//PEPE RESP
+					// $actionBtn = '
+					// <a href="'. route('cliente.galerias.beneficio', ['cliente' => $cliente->id, 'user' => $galeria->user->id]) .'" class="text-sky-500 regalar-beneficio"><i class="fas fa-gift"></i></a>
+					// <form action="'. route('cliente.galerias.destroy', ['cliente' => $cliente->id, 'galeria' => $galeria->id]) .'" method="POST" style="display: inline-block">
+					// 	<input type="hidden" name="_token" value="'.csrf_token().'">
+					// 	<input type="hidden" name="_method" value="DELETE">
+					// 	<button type="button" class="delete-item text-red-500 hover:text-red-600"><i class="fas fa-trash"></i></button>
+					// </form>';
+
+					// PEPE CAMBIO
+					$actionBtn = '';
+    
+				    // Solo mostramos el botón de regalo si existe un usuario
+				    if ($galeria->user) {
+				        $actionBtn .= '<a href="'. route('cliente.galerias.beneficio', ['cliente' => $cliente->id, 'user' => $galeria->user->id]) .'" class="text-sky-500 regalar-beneficio"><i class="fas fa-gift"></i></a>';
+				    }
+
+				    $actionBtn .= '
+				    <form action="'. route('cliente.galerias.destroy', ['cliente' => $cliente->id, 'galeria' => $galeria->id]) .'" method="POST" style="display: inline-block">
+				        '.csrf_field().'
+				        <input type="hidden" name="_method" value="DELETE">
+				        <button type="button" class="delete-item text-red-500 hover:text-red-600"><i class="fas fa-trash"></i></button>
+				    </form>';
+				    
 					return $actionBtn;
 				})
 				->rawColumns(['action', 'archivo', 'aprobada'])
