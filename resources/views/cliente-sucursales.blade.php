@@ -19,7 +19,22 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			Para acceder a la plataforma selecciona tu sucursal preferida:
 		</h1>
 		<div id="sucursales-cercanas" class="flex flex-col gap-3 mt-10">
-
+			<div id="sucursales-fallback" style="display:none;">
+				@foreach($cliente->sucursales as $sucursal)
+				<div class="shadow border bg-white rounded-lg">
+					<div class="px-5 py-3 font-bold uppercase">{{ $sucursal->nombre }}</div>
+					<div class="px-5 pb-3 text-sm font-semibold">
+						<div>{{ $sucursal->direccion }}</div>
+						<div>{{ $sucursal->ciudad }}</div>
+						<div>{{ $sucursal->horario }}</div>
+						<div class="mt-2">
+							<a href="{{ route('cliente.sucursal', ['slug' => $cliente->slug, 'sucursal' => $sucursal->id]) }}"
+							   class="btn btn-pill !rounded-none">Seleccionar sucursal</a>
+						</div>
+					</div>
+				</div>
+				@endforeach
+			</div>
 		</div>
 	</div>
 	<div class="h-10"></div>
@@ -35,6 +50,7 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 		});
 		// get user location
 		navigator.geolocation.getCurrentPosition(function(position) {
+			document.getElementById('sucursales-fallback').style.display = 'none';
 			console.log(position.coords.latitude, position.coords.longitude);
 			axios.post(`{{ url('/') }}/{{ $cliente->slug }}/sucursales-cercanas`, {
 				lat: position.coords.latitude,
@@ -75,6 +91,11 @@ $classes = $cliente->id === NULL ? 'degradado pb-20' : 'bg-gray-100 pb-20';
 			}).catch(function(error) {
 				console.log(error);
 			});
+		}, function() {
+			const fallback = document.getElementById('sucursales-fallback');
+			fallback.style.display = 'flex';
+			fallback.style.flexDirection = 'column';
+			fallback.style.gap = '0.75rem';
 		});
 	});
 </script>
