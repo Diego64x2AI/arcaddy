@@ -63,7 +63,24 @@
 							Activo
 						</label>
 					</div>
+					@if($sucursales->count() > 0)
 					<div class="lg:col-span-2">
+						<label class="block tracking-wide text-gray-700 text-xl font-bold mb-2">
+							Sucursales
+						</label>
+						<p class="text-sm text-gray-500 mb-3">Selecciona las sucursales donde se mostrará este rally. Si no seleccionas ninguna, se mostrará en todas.</p>
+						<div class="flex flex-col gap-2">
+							@foreach($sucursales as $sucursal)
+							<label class="flex items-center gap-3 cursor-pointer">
+								<input type="checkbox" name="sucursales[]" value="{{ $sucursal->id }}" class="w-4 h-4"
+									@checked(in_array($sucursal->id, $sucursalesAsignadas))>
+								<span>{{ $sucursal->nombre }}</span>
+							</label>
+							@endforeach
+						</div>
+					</div>
+				@endif
+				<div class="lg:col-span-2">
 						<button type="submit" class="bg-pink-600 text-white px-5 py-2 rounded-md">Guardar</button>
 					</div>
 				</div>

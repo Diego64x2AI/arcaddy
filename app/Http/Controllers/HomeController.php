@@ -492,6 +492,13 @@ END:VCALENDAR";
 		// record the visit
 		$visitas = new \App\Helpers\Visitas($request, $cliente->id, "\App\Models\Cliente", $cliente->id);
 		$visitas->record();
+		// generate a seed for the random order and put it in the session if is not set
+		if (!Session::has('seed')) {
+			$seed = time();
+			Session::put('seed', $seed);
+		} else {
+			$seed = Session::get('seed');
+		}
 		// revisar si el cliente tiene sucursales
 		$sucursal_id = Session::get('sucursal_id');
 		if ($cliente->sucursales->count() > 0) {
@@ -503,14 +510,14 @@ END:VCALENDAR";
 				Session::put('sucursal_id', $user->sucursal_id);
 				$sucursal_id = $user->sucursal_id;
 			}
-			// dd($cliente->sucursales, $user->sucursal_id);
 			if ($sucursal_id === NULL || ClienteSucursal::where('id', $sucursal_id)->where('cliente_id', $cliente->id)->doesntExist()) {
-				return view('cliente-sucursales', [
+				return view('cliente', [
 					'cliente' => $cliente,
+					'seed' => $seed,
+					'sucursales_picker' => $cliente->sucursales,
 				]);
 			}
 		}
-		// var_dump($sucursal_id);
 		if ($cliente->password !== NULL && trim($cliente->password) !== '' && Cookie::get('cpass') !== $cliente->password) {
 			return view('cliente-password', [
 				'cliente' => $cliente,
@@ -527,13 +534,6 @@ END:VCALENDAR";
 			return view('cliente-zip', [
 				'cliente' => $cliente,
 			]);
-		}
-		// generate a seed for the random order and put it in the session if is not set
-		if (!Session::has('seed')) {
-			$seed = time();
-			Session::put('seed', $seed);
-		} else {
-			$seed = Session::get('seed');
 		}
 		if ($cliente->login_bloqueo) {
 			if (auth()->check()) {

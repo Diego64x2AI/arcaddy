@@ -8,6 +8,7 @@ use App\Models\ClienteRally;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ClienteRallyUbicacion;
+use App\Models\ClienteRallySucursal;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreClienteRallyRequest;
 use App\Http\Requests\UpdateClienteRallyRequest;
@@ -34,7 +35,8 @@ class RallyController extends Controller
 	 */
 	public function create(Cliente $cliente)
 	{
-		return view('dashboard.rally.create', compact('cliente'));
+		return view('dashboard.rally.create', compact('cliente'))
+			->with('sucursales', $cliente->sucursales);
 	}
 
 	/**
@@ -173,7 +175,15 @@ class RallyController extends Controller
 		$data['activo'] = $request->boolean('activo', false);
 		$data['geo_oculto'] = $request->boolean('geo_oculto', false);
 		$data['banner'] = $request->file('imagen')->store('rally', 'public');
-		ClienteRally::create($data);
+		$rally = ClienteRally::create($data);
+		if ($request->filled('sucursales')) {
+			foreach ($request->input('sucursales') as $sucursalId) {
+				ClienteRallySucursal::create([
+					'rally_id' => $rally->id,
+					'sucursal_id' => $sucursalId,
+				]);
+			}
+		}
 		return redirect()->route('cliente.rally.index', ['cliente' => $cliente->id])->with('success', 'Rally creado con éxito');
 	}
 
@@ -198,7 +208,9 @@ class RallyController extends Controller
 	 */
 	public function edit(Cliente $cliente, ClienteRally $rally)
 	{
-		return view('dashboard.rally.edit', compact('cliente', 'rally'));
+		return view('dashboard.rally.edit', compact('cliente', 'rally'))
+			->with('sucursales', $cliente->sucursales)
+			->with('sucursalesAsignadas', $rally->sucursales->pluck('sucursal_id')->toArray());
 	}
 
 	/**
@@ -217,6 +229,15 @@ class RallyController extends Controller
 		if ($request->hasFile('imagen')) {
 			Storage::disk('public')->delete($rally->banner);
 			$data['banner'] = $request->file('imagen')->store('rally', 'public');
+		}
+		ClienteRallySucursal::where('rally_id', $rally->id)->delete();
+		if ($request->filled('sucursales')) {
+			foreach ($request->input('sucursales') as $sucursalId) {
+				ClienteRallySucursal::create([
+					'rally_id' => $rally->id,
+					'sucursal_id' => $sucursalId,
+				]);
+			}
 		}
 		$rally->update($data);
 		return redirect()->route('cliente.rally.index', ['cliente' => $cliente->id])->with('success', 'Rally actualizado con éxito');

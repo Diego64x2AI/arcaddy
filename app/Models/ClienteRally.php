@@ -36,4 +36,9 @@ class ClienteRally extends Model
 	{
 		return $this->hasMany(ClienteRallyUbicacion::class, 'rally_id');
 	}
+
+	public function sucursales()
+	{
+		return $this->hasMany(ClienteRallySucursal::class, 'rally_id');
+	}
 }

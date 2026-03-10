@@ -1,11 +1,26 @@
 @php
-	$rally = $cliente->rallys()->where('activo', true)->orderBy('id', 'desc')->first();
+	$sucursal_id = Session::get('sucursal_id');
+	if ($sucursal_id !== NULL) {
+		$rally = $cliente->rallys()
+			->where('activo', true)
+			->where(function($q) use ($sucursal_id) {
+				$q->whereHas('sucursales', fn($q2) => $q2->where('sucursal_id', $sucursal_id))
+				  ->orDoesntHave('sucursales');
+			})
+			->orderBy('id', 'desc')
+			->first();
+	} else {
+		$rally = $cliente->rallys()->where('activo', true)->orderBy('id', 'desc')->first();
+	}
 	list($r, $g, $b) = sscanf($cliente->color_bg, "#%02x%02x%02x");
 	list($r2, $g2, $b2) = sscanf($cliente->color, "#%02x%02x%02x");
-	$markers = $rally->ubicaciones->map->only(['id', 'titulo', 'rally_id', 'lat', 'lng', 'marker', 'ver_mapa', 'distancia', 'fuera_rango', 'descripcion', 'btn_titulo']);
+	$markers = [];
 	$completados = [];
-	if (auth()->check()) {
-		$completados = \App\Models\ClienteRallyUbicacionCompletados::where('user_id', auth()->user()->id)->pluck('ubicacion_id')->toArray();
+	if ($rally !== NULL) {
+		$markers = $rally->ubicaciones->map->only(['id', 'titulo', 'rally_id', 'lat', 'lng', 'marker', 'ver_mapa', 'distancia', 'fuera_rango', 'descripcion', 'btn_titulo']);
+		if (auth()->check()) {
+			$completados = \App\Models\ClienteRallyUbicacionCompletados::where('user_id', auth()->user()->id)->pluck('ubicacion_id')->toArray();
+		}
 	}
 @endphp
 @if ($rally !== NULL)
