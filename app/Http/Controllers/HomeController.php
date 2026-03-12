@@ -57,41 +57,53 @@ class HomeController extends Controller
 
 	public function galeriamarcos($slug, Request $request)
 	{
-		// check if is ajax request
-		if (!request()->ajax()) {
+		if (!$request->ajax()) {
 			abort(404);
 		}
-		// generate a seed for the random order and put it in the session if is not set
+
 		if (!Session::has('seed')) {
 			$seed = time();
 			Session::put('seed', $seed);
 		} else {
 			$seed = Session::get('seed');
 		}
+
 		$page = (int) $request->input('page', 1);
 		$cliente = Cliente::where('slug', $slug)->firstOrFail();
-		$limite = ($cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer > 0) ? $cliente->secciones()->where('seccion', 'galeriamarcos')->first()->timer : 24;
-		// if is the first page and the user is logged in get the user marcos
+
+		$seccion = $cliente->secciones()->where('seccion', 'galeriamarcos')->first();
+		$limite = ($seccion && $seccion->timer > 0) ? $seccion->timer : 24;
+
 		$userMarcos = collect([]);
+		$userMarcosIds = [];
+
 		if ($page === 1 && auth()->check()) {
-			$marcos = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->where('user_id', auth()->id())->where('aprobada', true);
-			$userMarcos = $marcos->get();
-			// if the user has marcos rest from the limite
-			// $limite -= $userMarcos->count();
+			$userMarcos = ClienteMarcoGaleria::where('cliente_id', $cliente->id)
+				->where('user_id', auth()->id())
+				->where('aprobada', true)
+				->get();
+
+			$userMarcosIds = $userMarcos->pluck('id')->toArray();
 		}
-		$marcos = ClienteMarcoGaleria::where('cliente_id', $cliente->id)->where('aprobada', true);
-		// check if is activated the random order
-		if ($cliente->secciones()->where('seccion', 'galeriamarcos')->first()->random) {
-			$marcos = $marcos->inRandomOrder($seed);
+
+		$query = ClienteMarcoGaleria::where('cliente_id', $cliente->id)
+			->where('aprobada', true)
+			->whereNotIn('id', $userMarcosIds);
+
+		if ($seccion && $seccion->random) {
+			$query->inRandomOrder($seed);
 		} else {
-			$marcos = $marcos->orderBy('id', 'desc');
+			$query->orderBy('id', 'desc');
 		}
-		$marcos = $marcos->paginate($limite)->toJson();
-		$marcos = json_decode($marcos);
+
+		$paginated = $query->paginate($limite);
+		$responseData = json_decode($paginated->toJson());
+
 		if ($page === 1 && $userMarcos->count() > 0) {
-			array_unshift($marcos->data, ...$userMarcos);
+			array_unshift($responseData->data, ...$userMarcos->toArray());
 		}
-		return $marcos;
+
+		return response()->json($responseData);
 	}
 
 	public function rally_completed($slug, ClienteRally $rally, ClienteRallyUbicacion $ubicacion)
