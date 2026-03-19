@@ -10,7 +10,9 @@
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"
+		rel="stylesheet">
 	<!-- Font Awesome Icons -->
 	<link href="{{ asset('fontawesome-free-6.7.2-web/css/all.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('fontawesome-free-6.7.2-web/js/all.min.js') }}"></script>
@@ -19,7 +21,7 @@
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-40ZEQ4JZ0Y"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
+		function gtag() { dataLayer.push(arguments); }
 		gtag('js', new Date());
 
 		gtag('config', 'G-40ZEQ4JZ0Y');
@@ -27,16 +29,16 @@
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 	<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 	<style>
-	.alx-btn-add-calendario{
-	    padding: 0px 10px;
-	    line-height: 30px;
-	    border-radius: 30px;
-	    border: 1px solid #FFFFFF;
-	    display: block;
-	    width: 200px;
-	    margin-left: 20px;
-	    font-weight: bold;
-	}
+		.alx-btn-add-calendario {
+			padding: 0px 10px;
+			line-height: 30px;
+			border-radius: 30px;
+			border: 1px solid #FFFFFF;
+			display: block;
+			width: 200px;
+			margin-left: 20px;
+			font-weight: bold;
+		}
 	</style>
 </head>
 
@@ -44,62 +46,64 @@
 	@include('componentes.header')
 	<main>
 		@if($pagina->banners)
-		<section id="banners">
-			<!-- Slider main container -->
-			<div class="swiper swiper-1">
-				<!-- Additional required wrapper -->
-				<div class="swiper-wrapper">
-					@foreach($pagina->banners2 as $banner)
-					<div class="swiper-slide bg-cover bg-center slide-bg" style="background-image: url({{ asset('storage/'.$banner->archivo) }});">
-						@if ($banner->link !== NULL && trim($banner->link) !== '')
-							<a href="{{ $banner->link }}" style="text-indent: -8000px;display:block;width:100%;height:100%;">{{ __('arcaddy.link') }}</a>
-						@endif
+			<section id="banners">
+				<!-- Slider main container -->
+				<div class="swiper swiper-1">
+					<!-- Additional required wrapper -->
+					<div class="swiper-wrapper">
+						@foreach($pagina->banners2 as $banner)
+							<div class="swiper-slide bg-cover bg-center slide-bg"
+								style="background-image: url({{ asset('storage/' . $banner->archivo) }});">
+								@if ($banner->link !== NULL && trim($banner->link) !== '')
+									<a href="{{ $banner->link }}"
+										style="text-indent: -8000px;display:block;width:100%;height:100%;">{{ __('arcaddy.link') }}</a>
+								@endif
+							</div>
+						@endforeach
 					</div>
-					@endforeach
+					<div class="swiper-button-next">
+						<i class="fa fa-chevron-right"></i>
+					</div>
+					<div class="swiper-button-prev">
+						<i class="fa fa-chevron-left"></i>
+					</div>
 				</div>
-				<div class="swiper-button-next">
-					<i class="fa fa-chevron-right"></i>
-				</div>
-				<div class="swiper-button-prev">
-					<i class="fa fa-chevron-left"></i>
-				</div>
-			</div>
-		</section>
+			</section>
 		@endif
 		<div class="p-5 max-w-5xl mx-auto lg:px-8 lg:mt-10">
 			{!! $pagina->texto !!}
 		</div>
 		@if($pagina->boton_texto !== NULL && trim($pagina->boton_texto) !== '' && $pagina->boton_link !== NULL && trim($pagina->boton_link) !== '')
-		<div class="text-center mt-5">
-			<a href="{{ $pagina->boton_link }}" class="btn-pill">{{ $pagina->boton_texto }}</a>
-		</div>
+			<div class="text-center mt-5">
+				<a href="{{ $pagina->boton_link }}" class="btn-pill">{{ $pagina->boton_texto }}</a>
+			</div>
 		@endif
 	</main>
-</main>
-@include('componentes.footer')
+	</main>
+	@include('componentes.footer')
 
-@foreach ($cliente->flotantes as $flotante)
-<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000; font-size: 0.9em;">
-	<div class="py-3 px-5 text-white rounded-full "
-		style="background-color: {{ $flotante->color }}; font-weight: bold;">
-		<a href="{{ $flotante->link }}" target="{{ $flotante->target }}">{{ $flotante->texto }} <i
-				class="{{ $flotante->icono }}"></i></a>
-	</div>
-</div>
-@endforeach
+	@foreach ($cliente->flotantes as $flotante)
+		<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000; font-size: 0.9em;">
+			<div class="py-3 px-5 text-white rounded-full "
+				style="background-color: {{ $flotante->color }}; font-weight: bold;">
+				<a href="{{ $flotante->link }}" target="{{ $flotante->target }}">{{ $flotante->texto }} <i
+						class="{{ $flotante->icono }}"></i></a>
+			</div>
+		</div>
+	@endforeach
 	<!-- prettier-ignore -->
-	<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-		({key: "AIzaSyBxLFY8L9duiFmTS_zqgTPywfW4iiwMUVM", v: "weekly"});</script>
+	<script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+			({ key: "{{ env('GOOGLE_MAPS_API_KEY') }}", v: "weekly" });</script>
 	<script>
 		const votar_url = '{{ route('votar') }}';
-		window.addEventListener('load', function() {
+		window.addEventListener('load', function () {
 			$.ajaxSetup({
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			});
 			$('body').css('paddingTop', $('#header').innerHeight());
-			$('.accordeon-link').click(function(){
+			$('.accordeon-link').click(function () {
 				// close other accordions
 				$('.accordeon-link').not(this).removeClass('open').find('i').removeClass('fa-minus').addClass('fa-plus');
 				$('.accordeon-link').not(this).next().slideUp();
@@ -107,7 +111,7 @@
 				$(this).toggleClass('open').find('i').toggleClass('fa-plus fa-minus');
 			});
 			if ($('.isotope-votaciones').length > 0) {
-				const iso = new Isotope( '.isotope-votaciones', {
+				const iso = new Isotope('.isotope-votaciones', {
 					itemSelector: '.isotope-votaciones-item',
 					percentPosition: true,
 					layoutMode: 'masonry', /*fitRows*/
@@ -118,7 +122,7 @@
 					}
 				})
 				// filter items on button click
-				$('.filter-button-group').on( 'click', 'button', function() {
+				$('.filter-button-group').on('click', 'button', function () {
 					$('.filter-button-group button').removeClass('current-cat');
 					$(this).addClass('current-cat');
 					var filterValue = $(this).attr('data-filter');
@@ -136,7 +140,7 @@
 				});
 			}
 			if ($('.isotope-galeria').length > 0) {
-				const iso = new Isotope( '.isotope-galeria', {
+				const iso = new Isotope('.isotope-galeria', {
 					itemSelector: '.isotope-galeria-item',
 					percentPosition: true,
 					layoutMode: 'masonry', /*fitRows*/
@@ -148,7 +152,7 @@
 				})
 			}
 			if ($('.isotope-menu').length > 0) {
-				const iso = new Isotope( '.isotope-menu', {
+				const iso = new Isotope('.isotope-menu', {
 					itemSelector: '.isotope-menu-item',
 					percentPosition: true,
 					layoutMode: 'fitRows',
@@ -160,7 +164,7 @@
 				});
 				if ($('.filter-button-group2').length > 0) {
 					// filter items on button click
-					$('.filter-button-group2').on( 'click', 'button', function() {
+					$('.filter-button-group2').on('click', 'button', function () {
 						$('.filter-button-group2 button').removeClass('current-cat');
 						$(this).addClass('current-cat');
 						var filterValue = $(this).attr('data-filter');
@@ -168,7 +172,7 @@
 					});
 				}
 				if ($('#select-menu').length > 0) {
-					$('#select-menu').change(function() {
+					$('#select-menu').change(function () {
 						var filterValue = $(this).val();
 						iso.arrange({ filter: filterValue })
 					}).trigger('change');
@@ -185,7 +189,7 @@
 					toast.addEventListener('mouseleave', Swal.resumeTimer)
 				}
 			});
-			$('.isotope-votaciones-item').click(function(e) {
+			$('.isotope-votaciones-item').click(function (e) {
 				e.preventDefault();
 				const nombre = $(this).data('nombre');
 				const categoria = $(this).data('categoria');
@@ -202,9 +206,9 @@
 				} else if (plataforma === 'vimeo') {
 					/*media = `<iframe src="https://player.vimeo.com/video/${video_id}?h=${plataforma_user}&amp;badge=0&autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`*/
 					media = `<iframe src="https://player.vimeo.com/video/${video_id}?autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
-				} else if( plataforma === 'youtube'){
+				} else if (plataforma === 'youtube') {
 					media = `<iframe  src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen  style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
-				} else if( plataforma === 'imagen'){
+				} else if (plataforma === 'imagen') {
 					//media = `<img src="${imagen}" class="img-general inline-block object-cover w-full h-auto" />`
 					media = `<div class="img-votacion-detalle" style="background-image: url(${imagen})"></div>`
 				}
@@ -239,7 +243,7 @@
 							data: {
 								id: id,
 							},
-						}).then(function(data){
+						}).then(function (data) {
 							console.log(data)
 							$(`.participante-${id}`).data('votos', data.votos);
 							$(`.votos-${id}`).html(`${data.votos} votos`);
@@ -247,7 +251,7 @@
 								icon: 'success',
 								title: data.message
 							})
-						}).fail(function(error){
+						}).fail(function (error) {
 							console.log(error.responseJSON.message)
 							Toast.fire({
 								icon: 'error',
@@ -270,7 +274,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-2', {
@@ -281,9 +285,9 @@
 				centerInsufficientSlides: true,
 				autoHeight: true,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -294,7 +298,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 			new Swiper('.swiper-1', {
 				// Optional parameters
@@ -307,7 +311,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-quiz', {
@@ -355,7 +359,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 			new Swiper('.swiper-3', {
 				// Optional parameters
@@ -365,9 +369,9 @@
 				centerInsufficientSlides: true,
 				autoHeight: true,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -378,7 +382,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-galeria', {
@@ -390,9 +394,9 @@
 				loop: false,
 				autoHeight: true,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -406,7 +410,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-experiencia', {
@@ -424,13 +428,13 @@
 				},
 				loop: false,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 		});
 	</script>

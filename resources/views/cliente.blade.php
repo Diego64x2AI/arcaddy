@@ -10,7 +10,9 @@
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"
+		rel="stylesheet">
 	<!-- Font Awesome Icons -->
 	<link href="{{ asset('fontawesome-free-6.7.2-web/css/all.min.css') }}" rel="stylesheet">
 	<script src="{{ asset('fontawesome-free-6.7.2-web/js/all.min.js') }}"></script>
@@ -19,7 +21,7 @@
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-40ZEQ4JZ0Y"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
+		function gtag() { dataLayer.push(arguments); }
 		gtag('js', new Date());
 
 		gtag('config', 'G-40ZEQ4JZ0Y');
@@ -27,16 +29,16 @@
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
 	<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 	<style>
-	.alx-btn-add-calendario{
-	    padding: 0px 10px;
-	    line-height: 30px;
-	    border-radius: 30px;
-	    border: 1px solid #FFFFFF;
-	    display: block;
-	    width: 200px;
-	    margin-left: 20px;
-	    font-weight: bold;
-	}
+		.alx-btn-add-calendario {
+			padding: 0px 10px;
+			line-height: 30px;
+			border-radius: 30px;
+			border: 1px solid #FFFFFF;
+			display: block;
+			width: 200px;
+			margin-left: 20px;
+			font-weight: bold;
+		}
 	</style>
 </head>
 
@@ -45,157 +47,174 @@
 	<main>
 		{{--
 		<div class="flex items-center justify-center py-5">
-			<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-full h-auto max-w-xs" alt="{{ $cliente->cliente }}">
+			<img src="{{ asset('storage/'.$cliente->logo) }}" class="w-full h-auto max-w-xs"
+				alt="{{ $cliente->cliente }}">
 		</div>
 		--}}
 		@php
-		$beneficios = \App\Models\UserBeneficio::where('cliente_id', $cliente->id)->where('user_id', auth()->user()?->id)->whereNull('fecha_canje')->get();
+			$beneficios = \App\Models\UserBeneficio::where('cliente_id', $cliente->id)->where('user_id', auth()->user()?->id)->whereNull('fecha_canje')->get();
 		@endphp
 		@if ($beneficios != NULL && $beneficios->count() > 0)
 			<section id="beneficio" class="container mx-auto py-10 px-5 max-w-xl">
-			<div class="border-2 borde py-10 rounded-3xl">
-				<div class="px-5">
-					<div class="text-center flex flex-row justify-center items-center">
-						<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json" background="transparent" speed="1" style="width: 150px; height: auto;" loop autoplay></dotlottie-player>
-					</div>
-					@auth
-					<div class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
-					@endauth
-					<div class="text-center mt-1 font-bold text-xl">{{ __('arcaddy.beneficio1') }}</div>
-					<div class="text-center flex flex-row justify-center items-center mt-5">
-						<a href="{{ route('beneficios', ['cliente' => $cliente->id]) }}" class="btn-pill">{{ __('arcaddy.beneficio2') }}</a>
+				<div class="border-2 borde py-10 rounded-3xl">
+					<div class="px-5">
+						<div class="text-center flex flex-row justify-center items-center">
+							<dotlottie-player src="https://lottie.host/8098cf36-fe3e-4181-b9f5-1bf97918a3ee/9KuD05DkOl.json"
+								background="transparent" speed="1" style="width: 150px; height: auto;" loop
+								autoplay></dotlottie-player>
+						</div>
+						@auth
+							<div class="text-center mt-1 font-semibold text-xl">{{ auth()->user()->name }}</div>
+						@endauth
+						<div class="text-center mt-1 font-bold text-xl">{{ __('arcaddy.beneficio1') }}</div>
+						<div class="text-center flex flex-row justify-center items-center mt-5">
+							<a href="{{ route('beneficios', ['cliente' => $cliente->id]) }}"
+								class="btn-pill">{{ __('arcaddy.beneficio2') }}</a>
+						</div>
 					</div>
 				</div>
-			</div>
 			</section>
 		@endif
 		@if($cliente->id !== 82)
-		@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
-			@includeIf('secciones.'.$seccion->seccion)
-		@endforeach
+			@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
+				@includeIf('secciones.' . $seccion->seccion)
+			@endforeach
 		@else
-		@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
-			@includeIf('secciones.'.$seccion->seccion)
-			@if($seccion->seccion == "libres")
+			@foreach($cliente->secciones()->where('activa', 1)->get() as $seccion)
+				@includeIf('secciones.' . $seccion->seccion)
+				@if($seccion->seccion == "libres")
 
 
-	    <!-- Alebrije -->
-        <link type="text/css" href="https://ar-caddy.com/projects/ar-scio/styles.css" rel="stylesheet"/>
-        <style>
-        #libres{
-            display: none;
-        }
-        #alebrije{
-            height: 400px;
-            width: 100%;
-            margin: 0px auto;
-        }
-        @media screen and (min-width: 768px) {
-            #alebrije{
-                height: 340px;
-                 width: 50%;
-            }
-        }
-        @media screen and (min-width: 992px) {
-            #alebrije{
-                height: 340px;
-                 width: 50%;
-            }
-        }
-         @media screen and (min-width: 1200px) {
-            #alebrije{
-                height: 600px;
-                 width: 50%;
-            }
-        }
-        #alx-base-3d{
-            position: relative;
-        }
-        #alx-tapa-3d{
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            z-index: 10;
-            left: 0px;
-            top: 0px;
-        }
-        #alx-btn-simula-ver{
-                background-image: url('https://ar-caddy.com/projects/ar-scio/ar_icon.png');
-                background-repeat: no-repeat;
+					<!-- Alebrije -->
+					<link type="text/css" href="https://ar-caddy.com/projects/ar-scio/styles.css" rel="stylesheet" />
+					<style>
+						#libres {
+							display: none;
+						}
 
-                background-size: 20px 20px;
-                background-position: 12px 50%;
-                width: 170px;
-                height: 30px;
-                border: 1px solid #DADCE0;
-                border-radius: 20px;
-                font-size: 12px;
-                line-height: 30px;
-                text-align: center;
-                margin: -40px auto 50px;
-                position: relative;
-                z-index: 10;
-                color: #4285f4;
-                padding-left: 22px;
-                display: none;
-        }
-        @media screen and (max-width: 991px) {
-            #alx-btn-simula-ver{
-               display: block;
-            }
-        }
-        #alebrije{
-            background-color: transparent;
-        }
-        </style>
-    <div id="alx-base-3d">
-    <model-viewer id="alebrije" src="https://ar-caddy.com/projects/ar-scio/albreije volador.glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls poster="https://ar-caddy.com/projects/ar-scio/poster.png" shadow-intensity="1" ios-src="https://ar-caddy.com/projects/ar-scio/Alebrije_10.usdz" autoplay>
-      <div class="progress-bar hide" slot="progress-bar">
-          <div class="update-bar"></div>
-      </div>
-      <button slot="ar-button" id="ar-button" style="display: none;">
-          View in your space
-      </button>
-      <div id="ar-prompt">
-          <img src="https://ar-caddy.com/projects/ar-scio/ar_hand_prompt.png">
-      </div>
-    </model-viewer>
-    <div id="alx-tapa-3d"></div>
-    </div>
-    <div id="alx-btn-simula-ver" onclick="document.getElementById('ar-button').click();">
-        View in your space
-    </div>
-    	<script src="https://ar-caddy.com/projects/ar-scio/script.js"></script>
-    	<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.2.0/model-viewer.min.js"></script>
-			@endif
-		@endforeach
+						#alebrije {
+							height: 400px;
+							width: 100%;
+							margin: 0px auto;
+						}
+
+						@media screen and (min-width: 768px) {
+							#alebrije {
+								height: 340px;
+								width: 50%;
+							}
+						}
+
+						@media screen and (min-width: 992px) {
+							#alebrije {
+								height: 340px;
+								width: 50%;
+							}
+						}
+
+						@media screen and (min-width: 1200px) {
+							#alebrije {
+								height: 600px;
+								width: 50%;
+							}
+						}
+
+						#alx-base-3d {
+							position: relative;
+						}
+
+						#alx-tapa-3d {
+							position: absolute;
+							height: 100%;
+							width: 100%;
+							z-index: 10;
+							left: 0px;
+							top: 0px;
+						}
+
+						#alx-btn-simula-ver {
+							background-image: url('https://ar-caddy.com/projects/ar-scio/ar_icon.png');
+							background-repeat: no-repeat;
+
+							background-size: 20px 20px;
+							background-position: 12px 50%;
+							width: 170px;
+							height: 30px;
+							border: 1px solid #DADCE0;
+							border-radius: 20px;
+							font-size: 12px;
+							line-height: 30px;
+							text-align: center;
+							margin: -40px auto 50px;
+							position: relative;
+							z-index: 10;
+							color: #4285f4;
+							padding-left: 22px;
+							display: none;
+						}
+
+						@media screen and (max-width: 991px) {
+							#alx-btn-simula-ver {
+								display: block;
+							}
+						}
+
+						#alebrije {
+							background-color: transparent;
+						}
+					</style>
+					<div id="alx-base-3d">
+						<model-viewer id="alebrije" src="https://ar-caddy.com/projects/ar-scio/albreije volador.glb" ar
+							ar-modes="scene-viewer webxr quick-look" camera-controls
+							poster="https://ar-caddy.com/projects/ar-scio/poster.png" shadow-intensity="1"
+							ios-src="https://ar-caddy.com/projects/ar-scio/Alebrije_10.usdz" autoplay>
+							<div class="progress-bar hide" slot="progress-bar">
+								<div class="update-bar"></div>
+							</div>
+							<button slot="ar-button" id="ar-button" style="display: none;">
+								View in your space
+							</button>
+							<div id="ar-prompt">
+								<img src="https://ar-caddy.com/projects/ar-scio/ar_hand_prompt.png">
+							</div>
+						</model-viewer>
+						<div id="alx-tapa-3d"></div>
+					</div>
+					<div id="alx-btn-simula-ver" onclick="document.getElementById('ar-button').click();">
+						View in your space
+					</div>
+					<script src="https://ar-caddy.com/projects/ar-scio/script.js"></script>
+					<script type="module"
+						src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.2.0/model-viewer.min.js"></script>
+				@endif
+			@endforeach
 		@endif
 	</main>
-</main>
-@include('componentes.footer')
+	</main>
+	@include('componentes.footer')
 
-@foreach ($cliente->flotantes as $flotante)
-<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000; font-size: 0.9em;">
-	<div class="py-3 px-5 text-white rounded-full "
-		style="background-color: {{ $flotante->color }}; font-weight: bold;">
-		<a href="{{ $flotante->link }}" target="{{ $flotante->target }}">{{ $flotante->texto }} <i
-				class="{{ $flotante->icono }}"></i></a>
-	</div>
-</div>
-@endforeach
+	@foreach ($cliente->flotantes as $flotante)
+		<div class="fixed {{ $flotante->posicion }} m-5" style="z-index: 5000; font-size: 0.9em;">
+			<div class="py-3 px-5 text-white rounded-full "
+				style="background-color: {{ $flotante->color }}; font-weight: bold;">
+				<a href="{{ $flotante->link }}" target="{{ $flotante->target }}">{{ $flotante->texto }} <i
+						class="{{ $flotante->icono }}"></i></a>
+			</div>
+		</div>
+	@endforeach
 	<!-- prettier-ignore -->
-	<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-		({key: "AIzaSyBxLFY8L9duiFmTS_zqgTPywfW4iiwMUVM", v: "weekly"});</script>
+	<script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+			({ key: "{{ env('GOOGLE_MAPS_API_KEY') }}", v: "weekly" });</script>
 	<script>
 		const votar_url = '{{ route('votar') }}';
-		window.addEventListener('load', function() {
+		window.addEventListener('load', function () {
 			$.ajaxSetup({
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			});
 			$('body').css('paddingTop', $('#header').innerHeight());
-			$('body').on('click', '.accordeon-link', function() {
+			$('body').on('click', '.accordeon-link', function () {
 				// close other accordions
 				$('.accordeon-link').not(this).removeClass('open').find('i').removeClass('fa-minus').addClass('fa-plus');
 				$('.accordeon-link').not(this).next().slideUp();
@@ -203,7 +222,7 @@
 				$(this).toggleClass('open').find('i').toggleClass('fa-plus fa-minus');
 			});
 			if ($('.isotope-votaciones').length > 0) {
-				const iso = new Isotope( '.isotope-votaciones', {
+				const iso = new Isotope('.isotope-votaciones', {
 					itemSelector: '.isotope-votaciones-item',
 					percentPosition: true,
 					layoutMode: 'masonry', /*fitRows*/
@@ -214,7 +233,7 @@
 					}
 				})
 				// filter items on button click
-				$('.filter-button-group').on( 'click', 'button', function() {
+				$('.filter-button-group').on('click', 'button', function () {
 					$('.filter-button-group button').removeClass('current-cat');
 					$(this).addClass('current-cat');
 					var filterValue = $(this).attr('data-filter');
@@ -232,7 +251,7 @@
 				});
 			}
 			if ($('.isotope-galeria').length > 0) {
-				const iso = new Isotope( '.isotope-galeria', {
+				const iso = new Isotope('.isotope-galeria', {
 					itemSelector: '.isotope-galeria-item',
 					percentPosition: true,
 					layoutMode: 'masonry', /*fitRows*/
@@ -244,7 +263,7 @@
 				})
 			}
 			if ($('.isotope-menu').length > 0) {
-				const iso = new Isotope( '.isotope-menu', {
+				const iso = new Isotope('.isotope-menu', {
 					itemSelector: '.isotope-menu-item',
 					percentPosition: true,
 					layoutMode: 'fitRows',
@@ -256,7 +275,7 @@
 				});
 				if ($('.filter-button-group2').length > 0) {
 					// filter items on button click
-					$('.filter-button-group2').on( 'click', 'button', function() {
+					$('.filter-button-group2').on('click', 'button', function () {
 						$('.filter-button-group2 button').removeClass('current-cat');
 						$(this).addClass('current-cat');
 						var filterValue = $(this).attr('data-filter');
@@ -264,7 +283,7 @@
 					});
 				}
 				if ($('#select-menu').length > 0) {
-					$('#select-menu').change(function() {
+					$('#select-menu').change(function () {
 						var filterValue = $(this).val();
 						iso.arrange({ filter: filterValue })
 					}).trigger('change');
@@ -281,7 +300,7 @@
 					toast.addEventListener('mouseleave', Swal.resumeTimer)
 				}
 			});
-			$('.isotope-votaciones-item').click(function(e) {
+			$('.isotope-votaciones-item').click(function (e) {
 				e.preventDefault();
 				const nombre = $(this).data('nombre');
 				const categoria = $(this).data('categoria');
@@ -298,9 +317,9 @@
 				} else if (plataforma === 'vimeo') {
 					/*media = `<iframe src="https://player.vimeo.com/video/${video_id}?h=${plataforma_user}&amp;badge=0&autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`*/
 					media = `<iframe src="https://player.vimeo.com/video/${video_id}?autopause=0&player_id=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
-				} else if( plataforma === 'youtube'){
+				} else if (plataforma === 'youtube') {
 					media = `<iframe  src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen  style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`
-				} else if( plataforma === 'imagen'){
+				} else if (plataforma === 'imagen') {
 					//media = `<img src="${imagen}" class="img-general inline-block object-cover w-full h-auto" />`
 					media = `<div class="img-votacion-detalle" style="background-image: url(${imagen})"></div>`
 				}
@@ -335,7 +354,7 @@
 							data: {
 								id: id,
 							},
-						}).then(function(data){
+						}).then(function (data) {
 							console.log(data)
 							$(`.participante-${id}`).data('votos', data.votos);
 							$(`.votos-${id}`).html(`${data.votos} votos`);
@@ -343,7 +362,7 @@
 								icon: 'success',
 								title: data.message
 							})
-						}).fail(function(error){
+						}).fail(function (error) {
 							console.log(error.responseJSON.message)
 							Toast.fire({
 								icon: 'error',
@@ -366,7 +385,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-2', {
@@ -377,9 +396,9 @@
 				centerInsufficientSlides: true,
 				autoHeight: true,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -390,7 +409,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 			new Swiper('.swiper-1', {
 				// Optional parameters
@@ -403,7 +422,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-quiz', {
@@ -451,7 +470,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 			new Swiper('.swiper-3', {
 				// Optional parameters
@@ -461,9 +480,9 @@
 				centerInsufficientSlides: true,
 				autoHeight: true,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -474,7 +493,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-galeria', {
@@ -486,9 +505,9 @@
 				loop: false,
 				autoHeight: true,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				breakpoints: {
 					1024: {
 						slidesPerView: 3,
@@ -502,7 +521,7 @@
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 
 			new Swiper('.swiper-experiencia', {
@@ -520,58 +539,58 @@
 				},
 				loop: false,
 				autoplay: {
-		          delay: 3000,
-		          disableOnInteraction: true,
-		        },
+					delay: 3000,
+					disableOnInteraction: true,
+				},
 				navigation: {
 					nextEl: ".swiper-button-next",
 					prevEl: ".swiper-button-prev",
-      	},
+				},
 			});
 		});
 	</script>
 	@include('componentes.estilos')
-@isset($sucursales_picker)
-@if($sucursales_picker->count() > 0)
-<script>
-	const sucursalesPicker = {!! json_encode($sucursales_picker->map->only(['id', 'nombre', 'lat', 'lng'])) !!};
-	const slugCliente = '{{ $cliente->slug }}';
+	@isset($sucursales_picker)
+		@if($sucursales_picker->count() > 0)
+			<script>
+				const sucursalesPicker = {!! json_encode($sucursales_picker->map->only(['id', 'nombre', 'lat', 'lng'])) !!};
+				const slugCliente = '{{ $cliente->slug }}';
 
-	function geoDistanciaSucursal(lat1, lng1, lat2, lng2) {
-		const R = 6371;
-		const dLat = (lat2 - lat1) * Math.PI / 180;
-		const dLng = (lng2 - lng1) * Math.PI / 180;
-		const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-				  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-				  Math.sin(dLng/2) * Math.sin(dLng/2);
-		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-	}
-
-	navigator.geolocation.getCurrentPosition(
-		function(position) {
-			let nearest = null;
-			let minDist = Infinity;
-			sucursalesPicker.forEach(function(s) {
-				const dist = geoDistanciaSucursal(
-					position.coords.latitude, position.coords.longitude,
-					s.lat, s.lng
-				);
-				if (dist < minDist) {
-					minDist = dist;
-					nearest = s;
+				function geoDistanciaSucursal(lat1, lng1, lat2, lng2) {
+					const R = 6371;
+					const dLat = (lat2 - lat1) * Math.PI / 180;
+					const dLng = (lng2 - lng1) * Math.PI / 180;
+					const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+						Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+						Math.sin(dLng / 2) * Math.sin(dLng / 2);
+					return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 				}
-			});
-			if (nearest) {
-				window.location.href = '/' + slugCliente + '/sucursales/' + nearest.id;
-			}
-		},
-		function() {
-			window.location.href = '/' + slugCliente + '/sucursales';
-		}
-	);
-</script>
-@endif
-@endisset
+
+				navigator.geolocation.getCurrentPosition(
+					function (position) {
+						let nearest = null;
+						let minDist = Infinity;
+						sucursalesPicker.forEach(function (s) {
+							const dist = geoDistanciaSucursal(
+								position.coords.latitude, position.coords.longitude,
+								s.lat, s.lng
+							);
+							if (dist < minDist) {
+								minDist = dist;
+								nearest = s;
+							}
+						});
+						if (nearest) {
+							window.location.href = '/' + slugCliente + '/sucursales/' + nearest.id;
+						}
+					},
+					function () {
+						window.location.href = '/' + slugCliente + '/sucursales';
+					}
+				);
+			</script>
+		@endif
+	@endisset
 </body>
 
 </html>
